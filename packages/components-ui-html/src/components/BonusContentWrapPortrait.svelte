@@ -1,95 +1,69 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { getContextLayout } from 'utils-layout';
-	import { resizeObserver, type ContentRect } from 'utils-resize-observer';
-
 	import BaseContent from './BaseContent.svelte';
 	import BaseScrollable from './BaseScrollable.svelte';
 
 	type Props = {
 		maxListLength: number;
+		onclose?: () => void;
 		betAmount: Snippet;
 		bonusCardsActivate: Snippet;
 		bonusCardsBuy: Snippet;
 	};
 
 	const props: Props = $props();
-
-	const { stateLayoutDerived } = getContextLayout();
-
-	let contentRect = $state({ width: 0, height: 0, left: 0, top: 0 } as ContentRect);
-
-	const horizontalScale = $derived(
-		stateLayoutDerived.canvasSizes().width / (240 * (props.maxListLength || 1)),
-	); // {maxListLength} columns, 240 is the width benchmark
-	const verticalScale = $derived(
-		(stateLayoutDerived.canvasSizes().height - 250) / (contentRect?.height || 0),
-	);
-	const scale = $derived(Math.min(verticalScale, horizontalScale));
-	const scaled = $derived(scale < 1);
 </script>
 
 <BaseContent maxWidth="100%">
-	<div class="wrap" class:scaled>
-		<div
-			class="bonuses"
-			style="transform: scale({Math.min(scale, 1)});"
-			use:resizeObserver={(value) => (contentRect = value)}
-		>
-			<BaseScrollable type="row" noScroll>
-				{@render props.bonusCardsActivate()}
-			</BaseScrollable>
-
-			<BaseScrollable type="row" noScroll>
-				{@render props.bonusCardsBuy()}
-			</BaseScrollable>
-		</div>
-
-		{#if !scaled}
-			<div>
-				{@render props.betAmount()}
-			</div>
+	<div class="top-row">
+		{@render props.betAmount()}
+		{#if props.onclose}
+			<button class="close-btn" data-test="bonus-close-button" onclick={props.onclose} aria-label="Close">
+				×
+			</button>
 		{/if}
 	</div>
 
-	{#if scaled}
-		<div class="badge-amount-wrap-scaled">
-			{@render props.betAmount()}
+	<BaseScrollable type="column">
+		<div class="bonuses-wrap">
+			{@render props.bonusCardsActivate()}
+			{@render props.bonusCardsBuy()}
 		</div>
-	{/if}
+	</BaseScrollable>
 </BaseContent>
 
 <style lang="scss">
-	.wrap {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, calc(-50%));
-
+	.top-row {
+		flex: 0 0 auto;
+		margin-top: 2rem;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
-		gap: 1rem;
-
-		&.scaled {
-			transform: translate(-50%, calc(-50% - 4rem));
-		}
+		gap: 0.75rem;
 	}
 
-	.bonuses {
+	.close-btn {
+		flex: 0 0 auto;
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.35);
+		border: 1px solid rgba(255, 255, 255, 0.15);
+		color: #ffffff;
+		font-size: 1.75rem;
+		line-height: 1;
+		cursor: pointer;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
-		gap: 1rem;
-
-		transform-origin: center center;
+		justify-content: center;
 	}
 
-	.badge-amount-wrap-scaled {
-		position: fixed;
-		bottom: 0;
-		left: 50%;
-		transform: translate(-50%, -20%);
+	.bonuses-wrap {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+		gap: 1rem;
+		width: min(96vw, 560px);
+		padding: 0.25rem 0.25rem 1.5rem;
+		box-sizing: border-box;
 	}
 </style>

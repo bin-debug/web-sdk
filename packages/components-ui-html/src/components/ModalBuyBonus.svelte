@@ -28,11 +28,16 @@
 	} as const;
 
 	const BonusContentWrap = $derived(COMPONENT_MAP[stateLayoutDerived.layoutType()]);
+
+	const closeBonusModal = () => (stateModal.modal = null);
 </script>
 
 {#if stateModal.modal?.name === 'buyBonus'}
-	<Popup zIndex={zIndex.modal} onclose={() => (stateModal.modal = null)}>
-		<BonusContentWrap maxListLength={Math.max(activateList.length, buyList.length)}>
+	<Popup zIndex={zIndex.modal} onclose={closeBonusModal} hideCloseButton>
+		<BonusContentWrap
+			maxListLength={Math.max(activateList.length, buyList.length)}
+			onclose={closeBonusModal}
+		>
 			{#snippet betAmount()}
 				<BetMenuAmountToggle />
 			{/snippet}

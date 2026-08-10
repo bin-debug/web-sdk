@@ -1,70 +1,69 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { getContextLayout } from 'utils-layout';
-	import { resizeObserver, type ContentRect } from 'utils-resize-observer';
-
 	import BaseContent from './BaseContent.svelte';
 	import BaseScrollable from './BaseScrollable.svelte';
 
 	type Props = {
 		maxListLength: number;
+		onclose?: () => void;
 		betAmount: Snippet;
 		bonusCardsActivate: Snippet;
 		bonusCardsBuy: Snippet;
 	};
 
 	const props: Props = $props();
-
-	const { stateLayoutDerived } = getContextLayout();
-
-	let contentRect = $state({ width: 0, height: 0, left: 0, top: 0 } as ContentRect);
-
-	const verticalScale = $derived(stateLayoutDerived.canvasSizes().height / (270 * 2)); // 2 rows, 270 is the height benchmark
-	const horizontalScale = $derived(
-		(stateLayoutDerived.canvasSizes().width - 250) / (contentRect?.width || 0),
-	);
-	const scale = $derived(Math.min(verticalScale, horizontalScale));
 </script>
 
 <BaseContent maxWidth="100%">
-	<div class="bonuses-wrap" use:resizeObserver={(value) => (contentRect = value)}>
-		<div class="bonuses" style="transform: scale({Math.min(scale, 1)});">
-			<BaseScrollable type="row" noScroll>
-				{@render props.bonusCardsActivate()}
-			</BaseScrollable>
-
-			<BaseScrollable type="row" noScroll>
-				{@render props.bonusCardsBuy()}
-			</BaseScrollable>
-		</div>
-	</div>
-
-	<div class="badge-amount-wrap">
+	<div class="top-row">
 		{@render props.betAmount()}
+		{#if props.onclose}
+			<button class="close-btn" data-test="bonus-close-button" onclick={props.onclose} aria-label="Close">
+				×
+			</button>
+		{/if}
 	</div>
+
+	<BaseScrollable type="column">
+		<div class="bonuses-wrap">
+			{@render props.bonusCardsActivate()}
+			{@render props.bonusCardsBuy()}
+		</div>
+	</BaseScrollable>
 </BaseContent>
 
 <style lang="scss">
-	.bonuses-wrap {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(calc(-50% - 7rem), -50%);
-	}
-
-	.bonuses {
+	.top-row {
+		flex: 0 0 auto;
+		margin-top: 1.5rem;
 		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-
-		transform-origin: center center;
+		align-items: center;
+		gap: 0.75rem;
 	}
 
-	.badge-amount-wrap {
-		position: fixed;
-		top: calc(50% + 1.2rem);
-		right: 1rem;
-		transform: translateY(-50%);
+	.close-btn {
+		flex: 0 0 auto;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.35);
+		border: 1px solid rgba(255, 255, 255, 0.15);
+		color: #ffffff;
+		font-size: 1.6rem;
+		line-height: 1;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.bonuses-wrap {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 0.75rem;
+		width: min(88vw, 620px);
+		padding: 0.25rem 0.25rem 1rem;
+		box-sizing: border-box;
 	}
 </style>

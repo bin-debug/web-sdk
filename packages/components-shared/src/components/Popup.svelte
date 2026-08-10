@@ -10,6 +10,7 @@
 		children: Snippet;
 		zIndex: number;
 		persistent?: boolean;
+		hideCloseButton?: boolean;
 		onclose: () => void;
 	};
 
@@ -55,7 +56,7 @@
 			style="--zIndex: {zIndexInternal.clickToCloseLayer}"
 		></div>
 
-		{#if !props.persistent}
+		{#if !props.persistent && !props.hideCloseButton}
 			<div class="close-button-wrap" style="--zIndex: {zIndexInternal.closeButton}">
 				<button class="close-button" data-test="close-button" onclick={closeModal}>×</button>
 			</div>
@@ -115,15 +116,15 @@
 
 	.close-button-wrap {
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: 1rem;
+		right: 1rem;
 		z-index: var(--zIndex);
 	}
 
 	.close-button {
 		cursor: pointer;
 		color: white;
-		font-size: 3rem;
+		font-size: 2.5rem;
 		font-weight: 900;
 		background-color: transparent;
 		border-color: transparent;
