@@ -66,6 +66,7 @@
 		if (isIdle && canSpin) {
 			// Clear buy-mode before a normal spin (ButtonBetProvider behaviour)
 			if (stateBetDerived.activeBetMode()?.type === 'buy') stateBet.activeBetModeKey = 'BASE';
+			context.eventEmitter.broadcast({ type: 'boardFramePulse' });
 			context.eventEmitter.broadcast({ type: 'bet' });
 		} else if (!isIdle && !stopDisabled) {
 			if (autoOn) stateBet.autoSpinsCounter = 0;

@@ -5,6 +5,7 @@
 	import { stateModal } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
+	import MissionsDrawer from '../components/MissionsDrawer.svelte';
 	import { setContext } from '../game/context';
 	import messagesMap from '../i18n/messagesMap';
 
@@ -69,6 +70,10 @@
 		</div>
 		<span class="tb-company">Atomic-Labs</span>
 	</div>
+{/if}
+
+{#if !introVisible && !bonusModalOpen}
+	<MissionsDrawer />
 {/if}
 
 <style>

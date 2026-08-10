@@ -1,7 +1,8 @@
 <script lang="ts" module>
 	export type EmitterEventBoardFrame =
 		| { type: 'boardFrameGlowShow' }
-		| { type: 'boardFrameGlowHide' };
+		| { type: 'boardFrameGlowHide' }
+		| { type: 'boardFramePulse' };
 </script>
 
 <script lang="ts">
@@ -11,9 +12,33 @@
 	const context = getContext();
 	const bl = () => context.stateGameDerived.boardLayout();
 
+	// Brief expand/contract on the reel frame when a spin starts — a small
+	// "something's about to happen" cue rather than anything load-bearing.
+	let frameScale = $state(1);
+	let pulseRaf = 0;
+	const PULSE_MS = 260;
+
+	function pulseFrame() {
+		cancelAnimationFrame(pulseRaf);
+		const start = performance.now();
+		const tick = (now: number) => {
+			const t = now - start;
+			if (t >= PULSE_MS) {
+				frameScale = 1;
+				return;
+			}
+			const p = t / PULSE_MS;
+			// out to 1.035x then back to 1x, single smooth beat
+			frameScale = 1 + Math.sin(p * Math.PI) * 0.035;
+			pulseRaf = requestAnimationFrame(tick);
+		};
+		pulseRaf = requestAnimationFrame(tick);
+	}
+
 	context.eventEmitter.subscribeOnMount({
 		boardFrameGlowShow: () => {},
 		boardFrameGlowHide: () => {},
+		boardFramePulse: () => pulseFrame(),
 	});
 </script>
 
@@ -26,7 +51,7 @@
 	anchor={0.5}
 	x={bl().x + bl().width * 0.0000}
 	y={bl().y + bl().height * 0.0070}
-	width={bl().width * 1.4560}
-	height={bl().height * 1.5448}
+	width={bl().width * 1.4560 * frameScale}
+	height={bl().height * 1.5448 * frameScale}
 	zIndex={0}
 />

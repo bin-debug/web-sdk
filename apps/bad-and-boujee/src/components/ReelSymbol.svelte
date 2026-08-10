@@ -3,6 +3,11 @@
 	import SymbolWrap from './SymbolWrap.svelte';
 	import { getSymbolInfo, getSymbolX } from '../game/utils';
 	import type { ReelSymbol } from '../game/stateGame.svelte';
+	import { triggerScreenShake } from '../game/stateShake.svelte';
+
+	// Special symbols get a little screen shake the instant they land, on top
+	// of whatever their own land animation does — makes them feel weightier.
+	const SPECIAL_SYMBOL_NAMES = new Set(['W', 'S', 'M']);
 
 	type Props = {
 		reelIndex: number;
@@ -32,7 +37,12 @@
 			rawSymbol={props.reelSymbol.rawSymbol}
 			oncomplete={() => {
 				if (props.reelSymbol.symbolState === 'win') props.reelSymbol.oncomplete();
-				if (props.reelSymbol.symbolState === 'land') props.reelSymbol.symbolState = 'static';
+				if (props.reelSymbol.symbolState === 'land') {
+					if (props.reelSymbol.rawSymbol && SPECIAL_SYMBOL_NAMES.has(props.reelSymbol.rawSymbol.name)) {
+						triggerScreenShake({});
+					}
+					props.reelSymbol.symbolState = 'static';
+				}
 			}}
 		/>
 	</SymbolWrap>

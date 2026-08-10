@@ -21,7 +21,7 @@
 </script>
 
 {#if isSprite}
-	<SymbolSprite {symbolInfo} x={props.x} y={props.y} oncomplete={props.oncomplete} />
+	<SymbolSprite {symbolInfo} x={props.x} y={props.y} state={props.state} oncomplete={props.oncomplete} />
 {:else}
 	{@const symbolBackgroundInfo = getSymbolBackgroundInfo({
 		rawSymbol: props.rawSymbol,

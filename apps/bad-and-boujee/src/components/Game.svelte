@@ -17,6 +17,7 @@
 	import ResumeBet from './ResumeBet.svelte';
 	import Sound from './Sound.svelte';
 	import Background from './Background.svelte';
+	import Particles from './Particles.svelte';
 	import LoadingScreen from './LoadingScreen.svelte';
 	import BoardFrame from './BoardFrame.svelte';
 	import Board from './Board.svelte';
@@ -51,6 +52,7 @@
 	<EnablePixiExtension />
 
 	<Background />
+	<Particles />
 
 	{#if context.stateLayout.showLoadingScreen}
 		<LoadingScreen onloaded={() => (context.stateLayout.showLoadingScreen = false)} />

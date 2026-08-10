@@ -16,10 +16,12 @@
 	const props: Props = $props();
 	const studioName = props.studioName ?? 'Atomic-Labs';
 	const tagline = props.tagline ?? 'Fortune Favours The Brave';
+	// Same symbol art + card language as the Buy Bonus screen, so the two feel
+	// like one system rather than two different UI kits.
 	const features: Feature[] = props.features ?? [
-		{ icon: '💥', image: '/assets/features/1.png', title: 'Tumbling Reels', subtitle: 'Winning symbols vanish — new ones drop in for more wins' },
-		{ icon: '🎁', image: '/assets/features/2.png', title: 'Free Spins', subtitle: 'Land Scatters across the reels to trigger the bonus' },
-		{ icon: '💰', image: '/assets/features/3.png', title: '5,000× Max Win', subtitle: 'Chase the biggest treasure payout' },
+		{ icon: '💥', image: '/assets/paytable/H1.png', title: 'Tumbling Reels', subtitle: 'Winning symbols vanish — new ones drop in for more wins' },
+		{ icon: '🎁', image: '/assets/paytable/S.png', title: 'Free Spins', subtitle: 'Land Scatters across the reels to trigger the bonus' },
+		{ icon: '💰', image: '/assets/paytable/W.png', title: '5,000× Max Win', subtitle: 'Chase the biggest treasure payout' },
 	];
 
 	let phase = $state<'studio' | 'features'>('studio');
@@ -133,18 +135,24 @@
 		filter: drop-shadow(0 0.5rem 1.2rem rgba(0,0,0,.6)); }
 
 	.carousel { flex: 1 1 auto; width: min(94%, 32rem); display: flex; align-items: center; justify-content: center; }
-	.fbox { width: 100%; box-sizing: border-box; padding: 1.8rem 1.6rem 2.2rem; text-align: center; border-radius: 1.4rem;
-		background: linear-gradient(180deg, rgba(18,40,33,.95), rgba(8,18,15,.97));
-		border: 0.24rem solid #e0932f;
-		box-shadow: 0 0 0 0.32rem rgba(20,40,34,.9), 0 0.9rem 2.2rem rgba(0,0,0,.6), inset 0 0 2.6rem rgba(224,147,47,.16); }
-	.fbox-art { height: 8.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
-	.fbox-art img { max-height: 8.5rem; max-width: 90%; object-fit: contain;
-		filter: drop-shadow(0 0.4rem 0.8rem rgba(0,0,0,.5)); animation: bob 2.6s ease-in-out infinite; }
+
+	/* Same card language as the Buy Bonus screen: off-white card, subtle
+	   border, rounded corners, dark text, theme-accent title. */
+	.fbox { width: 100%; box-sizing: border-box; padding: 1.6rem 1.6rem 2rem; text-align: center; border-radius: 14px;
+		background: var(--bc-card-bg, #f7f6f2);
+		border: 1px solid var(--bc-card-border, rgba(0, 0, 0, 0.12));
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 0.9rem 2.2rem rgba(0,0,0,.35);
+		color: var(--bc-card-text, #14141a); }
+	.fbox-art { height: 8.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;
+		border-radius: 10px; background: var(--bc-card-icon-bg, rgba(0, 0, 0, 0.05)); }
+	.fbox-art img { max-height: 6.5rem; max-width: 80%; object-fit: contain;
+		filter: drop-shadow(0 0.3rem 0.6rem rgba(0,0,0,.25)); animation: bob 2.6s ease-in-out infinite; }
 	.fbox-icon { font-size: 5.5rem; line-height: 1; animation: bob 2.6s ease-in-out infinite; }
 	@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-0.5rem); } }
-	.fbox-title { font-size: 2.2rem; font-weight: 700; letter-spacing: .02em; color: #f7d271; margin-bottom: 0.6rem;
-		text-shadow: 0 0.1rem 0.3rem rgba(0,0,0,.5); }
-	.fbox-sub { font-size: 1.35rem; font-weight: 500; line-height: 1.4; color: #eef5f2; opacity: .96; }
+	.fbox-title { font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 700; letter-spacing: .02em;
+		text-transform: uppercase; color: var(--bc-card-text, #14141a); margin-bottom: 0.6rem; }
+	.fbox-sub { font-size: clamp(1.05rem, 3.6vw, 1.3rem); font-weight: 500; line-height: 1.4;
+		color: var(--bc-card-text, #14141a); opacity: .8; }
 
 	.dots { display: flex; gap: .7rem; }
 	.dot { width: .75rem; height: .75rem; border-radius: 50%; background: rgba(255,255,255,.4); transition: all .25s;
