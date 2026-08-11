@@ -1,0 +1,384 @@
+{
+	"sprite": {
+		"bgm_freespin": [
+			0.0,
+			68800.0,
+			true
+		],
+		"bgm_main": [
+			70800.0,
+			120000.0,
+			true
+		],
+		"bgm_winlevel_big": [
+			192800.0,
+			8000.0,
+			true
+		],
+		"bgm_winlevel_epic": [
+			202800.0,
+			8000.0,
+			true
+		],
+		"bgm_winlevel_max": [
+			212800.0,
+			8000.0,
+			true
+		],
+		"bgm_winlevel_mega": [
+			222800.0,
+			8000.0,
+			true
+		],
+		"bgm_winlevel_superwin": [
+			232800.0,
+			8000.0,
+			true
+		],
+		"jng_intro_fs": [
+			242800.0,
+			2002.585
+		],
+		"sfx_anticipation": [
+			246802.585,
+			7680.544
+		],
+		"sfx_anticipation_start": [
+			256483.129,
+			1000.0
+		],
+		"sfx_bigwin_coinloop": [
+			259483.129,
+			17125.011,
+			true
+		],
+		"sfx_btn_general": [
+			278608.14,
+			58.662
+		],
+		"sfx_btn_spin": [
+			280666.802,
+			1005.578
+		],
+		"sfx_fs_respins": [
+			283672.38,
+			4062.494
+		],
+		"sfx_multiplier_combine_a": [
+			289734.874,
+			1208.844
+		],
+		"sfx_multiplier_combine_b": [
+			292943.718,
+			1045.85
+		],
+		"sfx_multiplier_explosion_a": [
+			295989.56799999997,
+			769.274
+		],
+		"sfx_multiplier_explosion_b": [
+			298758.84199999995,
+			2046.644
+		],
+		"sfx_multiplier_explosion_c": [
+			302805.4859999999,
+			1202.268
+		],
+		"sfx_multiplier_landing": [
+			306007.7539999999,
+			999.478
+		],
+		"sfx_multiplier_reset": [
+			309007.2319999999,
+			584.422
+		],
+		"sfx_multiplier_up": [
+			311591.6539999999,
+			1499.252
+		],
+		"sfx_multiplier_update": [
+			315090.9059999999,
+			1607.823
+		],
+		"sfx_multiplier_win": [
+			318698.7289999999,
+			3791.678
+		],
+		"sfx_reel_stop_1": [
+			324490.4069999999,
+			243.628
+		],
+		"sfx_reel_stop_2": [
+			326734.0349999999,
+			246.667
+		],
+		"sfx_reel_stop_3": [
+			328980.70199999993,
+			240.998
+		],
+		"sfx_reel_stop_4": [
+			331221.69999999995,
+			241.973
+		],
+		"sfx_reel_stop_5": [
+			333463.67299999995,
+			239.887
+		],
+		"sfx_royals_landing": [
+			335703.55999999994,
+			1199.229
+		],
+		"sfx_scatter_reveal": [
+			338902.78899999993,
+			1487.37
+		],
+		"sfx_scatter_stop_1": [
+			342390.1589999999,
+			994.853
+		],
+		"sfx_scatter_stop_2": [
+			345385.01199999993,
+			1344.785
+		],
+		"sfx_scatter_stop_3": [
+			348729.7969999999,
+			1060.522
+		],
+		"sfx_scatter_stop_4": [
+			351790.3189999999,
+			996.145
+		],
+		"sfx_scatter_stop_5": [
+			354786.4639999999,
+			997.528
+		],
+		"sfx_scatter_win": [
+			357783.9919999999,
+			1992.971
+		],
+		"sfx_scatter_win_v2": [
+			361776.96299999993,
+			3670.34
+		],
+		"sfx_superfreespin": [
+			367447.30299999996,
+			6000.0
+		],
+		"sfx_symbols_landing": [
+			375447.30299999996,
+			1202.585
+		],
+		"sfx_wild_explode": [
+			378649.888,
+			1401.224
+		],
+		"sfx_winlevel_end": [
+			382051.11199999996,
+			1998.912
+		],
+		"sfx_winlevel_nice": [
+			386050.024,
+			1474.286
+		],
+		"sfx_winlevel_small": [
+			389524.31,
+			1000.567
+		],
+		"sfx_winlevel_standard": [
+			392524.877,
+			1250.0
+		],
+		"sfx_winlevel_substantial": [
+			395774.877,
+			2490.317
+		],
+		"sfx_youwon_panel": [
+			400265.19399999996,
+			2996.689
+		],
+		"tumble_win_1": [
+			405261.883,
+			996.236
+		],
+		"tumble_win_2": [
+			408258.11899999995,
+			1134.671
+		],
+		"tumble_win_3": [
+			411392.7899999999,
+			1134.83
+		],
+		"tumble_win_4": [
+			414527.61999999994,
+			998.821
+		],
+		"tumble_win_5": [
+			417526.44099999993,
+			989.615
+		]
+	},
+	"src": [
+		"./assets/audio/sounds.ogg",
+		"./assets/audio/sounds.m4a",
+		"./assets/audio/sounds.mp3",
+		"./assets/audio/sounds.ac3"
+	],
+	"config": {
+		"bgm_freespin": {
+			"volume": 1
+		},
+		"bgm_main": {
+			"volume": 1
+		},
+		"bgm_winlevel_big": {
+			"volume": 1
+		},
+		"bgm_winlevel_epic": {
+			"volume": 1
+		},
+		"bgm_winlevel_max": {
+			"volume": 1
+		},
+		"bgm_winlevel_mega": {
+			"volume": 1
+		},
+		"bgm_winlevel_superwin": {
+			"volume": 1
+		},
+		"jng_intro_fs": {
+			"volume": 1
+		},
+		"sfx_anticipation": {
+			"volume": 1
+		},
+		"sfx_anticipation_start": {
+			"volume": 1
+		},
+		"sfx_bigwin_coinloop": {
+			"volume": 1
+		},
+		"sfx_btn_general": {
+			"volume": 1
+		},
+		"sfx_btn_spin": {
+			"volume": 1
+		},
+		"sfx_fs_respins": {
+			"volume": 1
+		},
+		"sfx_multiplier_combine_a": {
+			"volume": 1
+		},
+		"sfx_multiplier_combine_b": {
+			"volume": 1
+		},
+		"sfx_multiplier_explosion_a": {
+			"volume": 1
+		},
+		"sfx_multiplier_explosion_b": {
+			"volume": 1
+		},
+		"sfx_multiplier_explosion_c": {
+			"volume": 1
+		},
+		"sfx_multiplier_landing": {
+			"volume": 1
+		},
+		"sfx_multiplier_reset": {
+			"volume": 1
+		},
+		"sfx_multiplier_up": {
+			"volume": 1
+		},
+		"sfx_multiplier_update": {
+			"volume": 1
+		},
+		"sfx_multiplier_win": {
+			"volume": 1
+		},
+		"sfx_reel_stop_1": {
+			"volume": 1
+		},
+		"sfx_reel_stop_2": {
+			"volume": 1
+		},
+		"sfx_reel_stop_3": {
+			"volume": 1
+		},
+		"sfx_reel_stop_4": {
+			"volume": 1
+		},
+		"sfx_reel_stop_5": {
+			"volume": 1
+		},
+		"sfx_royals_landing": {
+			"volume": 1
+		},
+		"sfx_scatter_reveal": {
+			"volume": 1
+		},
+		"sfx_scatter_stop_1": {
+			"volume": 1
+		},
+		"sfx_scatter_stop_2": {
+			"volume": 1
+		},
+		"sfx_scatter_stop_3": {
+			"volume": 1
+		},
+		"sfx_scatter_stop_4": {
+			"volume": 1
+		},
+		"sfx_scatter_stop_5": {
+			"volume": 1
+		},
+		"sfx_scatter_win": {
+			"volume": 1
+		},
+		"sfx_scatter_win_v2": {
+			"volume": 1
+		},
+		"sfx_superfreespin": {
+			"volume": 1
+		},
+		"sfx_symbols_landing": {
+			"volume": 1
+		},
+		"sfx_wild_explode": {
+			"volume": 1
+		},
+		"sfx_winlevel_end": {
+			"volume": 1
+		},
+		"sfx_winlevel_nice": {
+			"volume": 1
+		},
+		"sfx_winlevel_small": {
+			"volume": 1
+		},
+		"sfx_winlevel_standard": {
+			"volume": 1
+		},
+		"sfx_winlevel_substantial": {
+			"volume": 1
+		},
+		"sfx_youwon_panel": {
+			"volume": 1
+		},
+		"tumble_win_1": {
+			"volume": 1
+		},
+		"tumble_win_2": {
+			"volume": 1
+		},
+		"tumble_win_3": {
+			"volume": 1
+		},
+		"tumble_win_4": {
+			"volume": 1
+		},
+		"tumble_win_5": {
+			"volume": 1
+		}
+	}
+}
