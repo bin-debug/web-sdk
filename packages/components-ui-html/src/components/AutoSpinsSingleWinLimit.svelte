@@ -69,6 +69,11 @@
 		&.is-infinity {
 			font-size: clamp(1.6rem, 5.5vw, 2rem);
 			padding-bottom: 0.65rem;
+
+			@media (orientation: landscape) and (min-width: 768px) {
+				font-size: 1.05rem;
+				padding-bottom: 0.55rem;
+			}
 		}
 	}
 </style>
