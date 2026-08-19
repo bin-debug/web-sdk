@@ -104,7 +104,7 @@
 	}
 
 	.subtitle {
-		font-size: clamp(1rem, 3.8vw, 1.3rem);
+		font-size: clamp(1.3rem, 4.8vw, 1.6rem);
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;

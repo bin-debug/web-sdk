@@ -26,7 +26,7 @@
 
 <style lang="scss">
 	.section-label {
-		font-size: clamp(1rem, 3.8vw, 1.25rem);
+		font-size: clamp(1.25rem, 4.5vw, 1.55rem);
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
@@ -37,12 +37,12 @@
 
 	.limit-btn {
 		width: 100%;
-		padding: 0.85rem 0.15rem;
+		padding: 1rem 0.15rem;
 		border-radius: 10px;
 		background: rgba(255, 255, 255, 0.06);
 		border: 2px solid rgba(255, 255, 255, 0.1);
 		color: rgba(255, 255, 255, 0.6);
-		font-size: clamp(1.15rem, 4.2vw, 1.45rem);
+		font-size: clamp(1.3rem, 4.8vw, 1.6rem);
 		font-weight: 700;
 		text-align: center;
 		white-space: nowrap;
@@ -57,8 +57,8 @@
 		}
 
 		&.is-infinity {
-			font-size: clamp(1.4rem, 5vw, 1.8rem);
-			padding-bottom: 0.6rem;
+			font-size: clamp(1.6rem, 5.5vw, 2rem);
+			padding-bottom: 0.65rem;
 		}
 	}
 </style>

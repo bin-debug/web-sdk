@@ -21,7 +21,7 @@
 	// Driven directly off stateModal so it reappears the instant the modal closes
 	// (X button, Escape, backdrop click) — there is no separate "restore" step,
 	// so it can't get stuck hidden.
-	const bonusModalOpen = $derived(stateModal.modal?.name === 'buyBonus');
+	const bonusModalOpen = $derived(stateModal.modal?.name === 'buyBonus' || stateModal.modal?.name === 'autoSpin');
 
 	// Currency symbol " resolved from the RGS-authenticated currency code
 	const CURRENCY_SYMBOLS: Record<string, string> = {
