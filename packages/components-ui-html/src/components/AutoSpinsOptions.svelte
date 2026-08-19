@@ -54,5 +54,31 @@
 			font-size: clamp(1.8rem, 6.5vw, 2.4rem);
 			padding-bottom: 0.9rem;
 		}
+
+		/* Desktop: smaller, tighter buttons */
+		@media (orientation: landscape) and (min-width: 768px) {
+			padding: 0.65rem 0.25rem;
+			font-size: 1.25rem;
+			border-radius: 10px;
+
+			&.is-infinity {
+				font-size: 1.5rem;
+				padding-bottom: 0.4rem;
+			}
+		}
+	}
+
+	/* 5-column grid on desktop so 9 options fit in 2 rows */
+	:global {
+		@media (orientation: landscape) and (min-width: 768px) {
+			.autospin-modal .wrap {
+				min-width: unset;
+				width: 100%;
+			}
+			.autospin-modal .grid {
+				grid-template-columns: repeat(5, 1fr) !important;
+				gap: 0.5rem !important;
+			}
+		}
 	}
 </style>

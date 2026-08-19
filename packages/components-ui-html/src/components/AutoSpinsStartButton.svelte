@@ -44,6 +44,12 @@
 		border-radius: 14px;
 		font-family: 'proxima-nova', sans-serif;
 		font-size: clamp(1.5rem, 5.5vw, 1.85rem);
+
+		@media (orientation: landscape) and (min-width: 768px) {
+			padding: 0.85rem 1rem;
+			font-size: 1.1rem;
+			border-radius: 10px;
+		}
 		font-weight: 900;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;

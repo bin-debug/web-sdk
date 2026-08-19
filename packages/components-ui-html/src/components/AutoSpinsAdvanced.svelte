@@ -56,6 +56,10 @@
 		gap: 0.75rem;
 		padding: 1.15rem 1.25rem;
 		border-radius: 14px;
+
+		@media (orientation: landscape) and (min-width: 768px) {
+			padding: 0.7rem 1rem;
+		}
 		background: rgba(255, 255, 255, 0.07);
 		border: 2px solid rgba(255, 255, 255, 0.15);
 		color: rgba(255, 255, 255, 0.8);
@@ -79,6 +83,10 @@
 		font-weight: 800;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
+
+		@media (orientation: landscape) and (min-width: 768px) {
+			font-size: 1.1rem;
+		}
 	}
 
 	.chevron {

@@ -27,6 +27,11 @@
 <style lang="scss">
 	.section-label {
 		font-size: clamp(1.25rem, 4.5vw, 1.55rem);
+
+		@media (orientation: landscape) and (min-width: 768px) {
+			font-size: 0.95rem;
+			margin-bottom: 0.2rem;
+		}
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
@@ -43,6 +48,11 @@
 		border: 2px solid rgba(255, 255, 255, 0.1);
 		color: rgba(255, 255, 255, 0.6);
 		font-size: clamp(1.3rem, 4.8vw, 1.6rem);
+
+		@media (orientation: landscape) and (min-width: 768px) {
+			padding: 0.55rem 0.15rem;
+			font-size: 1.05rem;
+		}
 		font-weight: 700;
 		text-align: center;
 		white-space: nowrap;
