@@ -4,14 +4,10 @@
 	import { OptionsGrid } from 'components-shared';
 
 	const { stateLayoutDerived } = getContextLayout();
-	const AUTO_SPINS_TEXT_OPTIONS_PORTRAIT = AUTO_SPINS_TEXT_OPTIONS.filter(
-		(value) => value !== '1000',
-	);
+	const WITHOUT_1000 = AUTO_SPINS_TEXT_OPTIONS.filter((v) => v !== '1000');
 
 	const options = $derived(
-		stateLayoutDerived.layoutType() === 'landscape'
-			? AUTO_SPINS_TEXT_OPTIONS_PORTRAIT
-			: AUTO_SPINS_TEXT_OPTIONS,
+		stateLayoutDerived.layoutType() === 'landscape' ? WITHOUT_1000 : AUTO_SPINS_TEXT_OPTIONS,
 	);
 </script>
 
@@ -35,26 +31,28 @@
 <style lang="scss">
 	.round-btn {
 		width: 100%;
-		padding: 1.1rem 0.25rem;
-		border-radius: 12px;
-		background: rgba(255, 255, 255, 0.08);
-		border: 2px solid rgba(255, 255, 255, 0.15);
-		color: rgba(255, 255, 255, 0.75);
-		font-size: clamp(1.4rem, 5.5vw, 1.8rem);
-		font-weight: 700;
+		padding: 1.2rem 0.25rem;
+		border-radius: 14px;
+		background: rgba(255, 255, 255, 0.07);
+		border: 2px solid rgba(255, 255, 255, 0.12);
+		color: rgba(255, 255, 255, 0.6);
+		font-size: clamp(1.5rem, 5.5vw, 2rem);
+		font-weight: 800;
 		text-align: center;
 		box-sizing: border-box;
-		transition: background 0.1s, border-color 0.1s, color 0.1s;
+		transition: background 0.12s, border-color 0.12s, color 0.12s;
+		letter-spacing: 0.01em;
 
 		&.selected {
-			background: rgba(78, 205, 196, 0.2);
-			border-color: #4ecdc4;
+			background: rgba(78, 205, 196, 0.18);
+			border-color: var(--bc-accent, #4ecdc4);
 			color: #ffffff;
+			box-shadow: 0 0 0 1px var(--bc-accent, #4ecdc4) inset;
 		}
 
 		&.is-infinity {
-			font-size: clamp(1.8rem, 6vw, 2.2rem);
-			line-height: 1;
+			font-size: clamp(1.8rem, 6.5vw, 2.4rem);
+			padding-bottom: 0.9rem;
 		}
 	}
 </style>

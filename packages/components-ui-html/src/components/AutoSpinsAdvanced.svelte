@@ -32,7 +32,7 @@
 	class:open
 	class:disabled
 	onclick={toggle}
-	disabled={disabled}
+	{disabled}
 	data-test="drop-down"
 >
 	<span class="label">{i18nDerived.advanced()}</span>
@@ -54,50 +54,52 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.75rem;
-		padding: 1.1rem 1.25rem;
-		border-radius: 12px;
-		background: rgba(255, 255, 255, 0.08);
-		border: 2px solid rgba(255, 255, 255, 0.2);
-		color: rgba(255, 255, 255, 0.85);
+		padding: 1.15rem 1.25rem;
+		border-radius: 14px;
+		background: rgba(255, 255, 255, 0.07);
+		border: 2px solid rgba(255, 255, 255, 0.15);
+		color: rgba(255, 255, 255, 0.8);
 		cursor: pointer;
-		transition: background 0.1s, border-color 0.1s;
+		transition: background 0.12s, border-color 0.12s;
 
 		&.open {
-			background: rgba(255, 255, 255, 0.12);
-			border-color: rgba(255, 255, 255, 0.4);
+			background: rgba(255, 255, 255, 0.11);
+			border-color: rgba(255, 255, 255, 0.35);
+			color: #ffffff;
 		}
 
 		&.disabled {
-			opacity: 0.4;
+			opacity: 0.35;
 			cursor: not-allowed;
 		}
 	}
 
 	.label {
-		font-size: clamp(1.3rem, 5vw, 1.6rem);
-		font-weight: 700;
+		font-size: clamp(1.3rem, 5vw, 1.65rem);
+		font-weight: 800;
 		text-transform: uppercase;
-		letter-spacing: 0.06em;
+		letter-spacing: 0.08em;
 	}
 
 	.chevron {
 		font-size: 1rem;
-		opacity: 0.7;
+		opacity: 0.65;
 	}
 
 	.advanced-panel {
 		border-radius: 14px;
-		border: 2px solid rgba(255, 255, 255, 0.2);
-		background: rgba(255, 255, 255, 0.05);
-		padding: 1.25rem 1rem;
+		border: 2px solid rgba(255, 255, 255, 0.15);
+		background: rgba(0, 0, 0, 0.25);
+		padding: 1.1rem 0.85rem 1.25rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.85rem;
 		overflow: hidden;
 	}
 
 	.divider {
 		height: 1px;
-		background: rgba(255, 255, 255, 0.12);
+		background: rgba(255, 255, 255, 0.1);
+		margin: 0.1rem 0;
 	}
 </style>

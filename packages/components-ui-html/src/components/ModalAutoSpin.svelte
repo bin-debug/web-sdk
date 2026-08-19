@@ -9,24 +9,24 @@
 	import { i18nDerived } from '../i18n/i18nDerived';
 
 	let scrollEl = $state(null as HTMLDivElement | null);
+
+	const close = () => (stateModal.modal = null);
 </script>
 
 {#if stateModal.modal?.name === 'autoSpin'}
-	<Popup zIndex={zIndex.modal} onclose={() => (stateModal.modal = null)}>
+	<Popup zIndex={zIndex.modal} onclose={close} hideCloseButton>
 		<div class="autospin-modal">
 			<div class="top-row">
 				<span class="title">{i18nDerived.autoSpins()}</span>
-				<button class="close-btn" onclick={() => (stateModal.modal = null)} aria-label="Close">×</button>
+				<button class="close-btn" onclick={close} aria-label="Close">×</button>
 			</div>
 
 			<div class="scroll-area" bind:this={scrollEl}>
 				<div class="subtitle" data-test="number-of-rounds">{i18nDerived.numberOfRounds()}</div>
 				<AutoSpinsOptions />
 				<AutoSpinsAdvanced
-					ontoggle={(duration) => {
-						if (scrollEl) {
-							setTimeout(() => scrollEl?.scrollTo({ top: scrollEl.scrollHeight, behavior: 'smooth' }), duration);
-						}
+					ontoggle={() => {
+						setTimeout(() => scrollEl?.scrollTo({ top: scrollEl.scrollHeight, behavior: 'smooth' }), 220);
 					}}
 				/>
 			</div>
@@ -40,9 +40,10 @@
 
 <style lang="scss">
 	.autospin-modal {
-		position: fixed;
-		inset: 0;
-		z-index: 10;
+		position: relative;
+		z-index: 3; /* above Popup's click-to-close-layer (z-index: 2) */
+		width: 100%;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
@@ -56,8 +57,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.75rem;
-		padding: 1rem 1rem 0.5rem;
+		padding: 1rem 4.5rem 0.5rem 1.5rem; /* right padding leaves room for close btn */
 		position: relative;
 	}
 
@@ -68,11 +68,14 @@
 		letter-spacing: 0.06em;
 		color: #ffffff;
 		text-align: center;
+		flex: 1;
 	}
 
 	.close-btn {
 		position: absolute;
 		right: 1rem;
+		top: 50%;
+		transform: translateY(-50%);
 		width: 3.5rem;
 		height: 3.5rem;
 		border-radius: 50%;
@@ -85,6 +88,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-shrink: 0;
 	}
 
 	.scroll-area {
@@ -94,23 +98,22 @@
 		-webkit-overflow-scrolling: touch;
 		display: flex;
 		flex-direction: column;
-		align-items: stretch;
-		gap: 1rem;
-		padding: 0.75rem 1rem;
+		gap: 0.85rem;
+		padding: 0.5rem 1rem 0.75rem;
 		box-sizing: border-box;
 	}
 
 	.subtitle {
-		font-size: clamp(1.1rem, 4vw, 1.4rem);
-		font-weight: 600;
+		font-size: clamp(1rem, 3.8vw, 1.3rem);
+		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: rgba(255, 255, 255, 0.6);
+		letter-spacing: 0.1em;
+		color: rgba(255, 255, 255, 0.5);
 		text-align: center;
 	}
 
 	.footer {
 		flex: 0 0 auto;
-		padding: 0.5rem 1rem 0.75rem;
+		padding: 0.5rem 1rem 1rem;
 	}
 </style>

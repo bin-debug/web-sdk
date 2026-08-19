@@ -10,9 +10,6 @@
 		AUTO_SPINS_SINGLE_WIN_LIMIT_MULTIPLIER_MAP,
 	} from 'state-shared';
 	import { getContextEventEmitter } from 'utils-event-emitter';
-
-	import BaseIcon from './BaseIcon.svelte';
-	import BaseButtonContent from './BaseButtonContent.svelte';
 	import { i18nDerived } from '../i18n/i18nDerived';
 	import type { EmitterEventModal } from '../types';
 
@@ -27,27 +24,39 @@
 		eventEmitter.broadcast({ type: 'autoBet' });
 		stateModal.modal = null;
 	};
+
+	const canStart = $derived(stateBetDerived.isBetCostAvailable());
 </script>
 
-<Button disabled={!stateBetDerived.isBetCostAvailable()} onclick={startAutoBet}>
-	<BaseIcon width="100%" height="5rem" />
-	<BaseButtonContent>
-		<div class="start-btn">
-			{i18nDerived.startAutoplay()}
-		</div>
-	</BaseButtonContent>
-</Button>
+<button
+	class="start-btn"
+	class:disabled={!canStart}
+	disabled={!canStart}
+	onclick={startAutoBet}
+>
+	{i18nDerived.startAutoplay()}
+</button>
 
 <style lang="scss">
 	.start-btn {
 		width: 100%;
-		padding: 1.35rem 1rem;
-		border-radius: 12px;
-		font-size: clamp(1.4rem, 5.5vw, 1.75rem);
-		font-weight: 800;
+		padding: 1.4rem 1rem;
+		border-radius: 14px;
+		font-family: 'proxima-nova', sans-serif;
+		font-size: clamp(1.5rem, 5.5vw, 1.85rem);
+		font-weight: 900;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: 0.06em;
 		color: #ffffff;
 		background: var(--bc-secondary, #f5a524);
+		border: none;
+		cursor: pointer;
+		box-shadow: 0 4px 16px rgba(245, 165, 36, 0.4);
+		transition: opacity 0.12s;
+
+		&.disabled {
+			opacity: 0.45;
+			cursor: not-allowed;
+		}
 	}
 </style>

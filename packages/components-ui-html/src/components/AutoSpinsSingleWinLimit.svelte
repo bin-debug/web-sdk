@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { stateUi, SINGLE_WIN_LIMIT_TEXT_OPTIONS } from 'state-shared';
 	import { OptionsGrid } from 'components-shared';
-
 	import { i18nDerived } from '../i18n/i18nDerived';
 </script>
 
-<div class="section-title">{i18nDerived.singleWinLimit()}</div>
+<div class="section-label">{i18nDerived.singleWinLimit()}</div>
 
 <OptionsGrid
 	miniSize
@@ -26,38 +25,40 @@
 </OptionsGrid>
 
 <style lang="scss">
-	.section-title {
-		font-size: clamp(1.1rem, 4vw, 1.35rem);
+	.section-label {
+		font-size: clamp(1rem, 3.8vw, 1.25rem);
 		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: rgba(255, 255, 255, 0.6);
+		letter-spacing: 0.08em;
+		color: rgba(255, 255, 255, 0.45);
 		text-align: center;
+		margin-bottom: 0.3rem;
 	}
 
 	.limit-btn {
 		width: 100%;
-		padding: 0.9rem 0.2rem;
+		padding: 0.85rem 0.15rem;
 		border-radius: 10px;
-		background: rgba(255, 255, 255, 0.08);
-		border: 2px solid rgba(255, 255, 255, 0.12);
-		color: rgba(255, 255, 255, 0.7);
-		font-size: clamp(1.1rem, 4vw, 1.4rem);
-		font-weight: 600;
+		background: rgba(255, 255, 255, 0.06);
+		border: 2px solid rgba(255, 255, 255, 0.1);
+		color: rgba(255, 255, 255, 0.6);
+		font-size: clamp(1.15rem, 4.2vw, 1.45rem);
+		font-weight: 700;
 		text-align: center;
 		white-space: nowrap;
 		box-sizing: border-box;
-		transition: background 0.1s, border-color 0.1s, color 0.1s;
+		transition: background 0.12s, border-color 0.12s, color 0.12s;
 
 		&.selected {
-			background: rgba(78, 205, 196, 0.2);
-			border-color: #4ecdc4;
+			background: rgba(78, 205, 196, 0.18);
+			border-color: var(--bc-accent, #4ecdc4);
 			color: #ffffff;
+			box-shadow: 0 0 0 1px var(--bc-accent, #4ecdc4) inset;
 		}
 
 		&.is-infinity {
 			font-size: clamp(1.4rem, 5vw, 1.8rem);
-			line-height: 1;
+			padding-bottom: 0.6rem;
 		}
 	}
 </style>
