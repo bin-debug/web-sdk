@@ -30,8 +30,24 @@
 </script>
 
 <Button disabled={!stateBetDerived.isBetCostAvailable()} onclick={startAutoBet}>
-	<BaseIcon width="100%" height="3rem" />
+	<BaseIcon width="100%" height="5rem" />
 	<BaseButtonContent>
-		<span style="font-size: 1rem;">{i18nDerived.startAutoplay()}</span>
+		<div class="start-btn">
+			{i18nDerived.startAutoplay()}
+		</div>
 	</BaseButtonContent>
 </Button>
+
+<style lang="scss">
+	.start-btn {
+		width: 100%;
+		padding: 1.35rem 1rem;
+		border-radius: 12px;
+		font-size: clamp(1.4rem, 5.5vw, 1.75rem);
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: #ffffff;
+		background: var(--bc-secondary, #f5a524);
+	}
+</style>

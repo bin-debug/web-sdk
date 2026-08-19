@@ -29,7 +29,13 @@
 	};
 	const cSym    = $derived(CURRENCY_SYMBOLS[stateBet.currency] ?? (stateBet.currency ? stateBet.currency + ' ' : '$'));
 	const balance = $derived(cSym + stateBet.balanceAmount.toFixed(2));
-	const bet     = $derived(cSym + stateBet.betAmount.toFixed(2));
+	const activeMeta   = $derived(stateBetDerived.activeBetMode());
+	const effectiveBet = $derived(
+		activeMeta?.type === 'activate'
+			? stateBet.betAmount * (activeMeta.costMultiplier ?? 1)
+			: stateBet.betAmount
+	);
+	const bet = $derived(cSym + effectiveBet.toFixed(2));
 	const win     = $derived(cSym + bookEventAmountToNormalisedAmount(stateBet.winBookEventAmount).toFixed(2));
 
 	// stop-button lock " mirrors ButtonBetProvider.svelte logic from lines app

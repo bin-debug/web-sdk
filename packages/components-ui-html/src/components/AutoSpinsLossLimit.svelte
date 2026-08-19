@@ -2,12 +2,10 @@
 	import { stateUi, LOSS_LIMIT_TEXT_OPTIONS } from 'state-shared';
 	import { OptionsGrid } from 'components-shared';
 
-	import BaseIcon from './BaseIcon.svelte';
-	import BaseButtonContent from './BaseButtonContent.svelte';
 	import { i18nDerived } from '../i18n/i18nDerived';
 </script>
 
-<span class="title">{i18nDerived.lossLimit()}</span>
+<div class="section-title">{i18nDerived.lossLimit()}</div>
 
 <OptionsGrid
 	miniSize
@@ -16,37 +14,50 @@
 	onchange={(value) => (stateUi.autoSpinsLossLimitText = value)}
 >
 	{#snippet option({ option })}
-		<BaseIcon
-			width="100%"
-			height="2rem"
-			border={option === stateUi.autoSpinsLossLimitText ? '2px white solid' : '2px black solid'}
-		/>
-		<BaseButtonContent>
-			<span
-				style="font-size: 1rem;"
-				class:infinity={option === '∞'}
-				class="option-wrap"
-				data-test="loss-limit-{option}"
-			>
-				{option}
-			</span>
-		</BaseButtonContent>
+		<div
+			class="limit-btn"
+			class:selected={option === stateUi.autoSpinsLossLimitText}
+			class:is-infinity={option === '∞'}
+			data-test="loss-limit-{option}"
+		>
+			{option}
+		</div>
 	{/snippet}
 </OptionsGrid>
 
 <style lang="scss">
-	.title {
-		line-height: 1.4rem;
+	.section-title {
+		font-size: clamp(1.1rem, 4vw, 1.35rem);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: rgba(255, 255, 255, 0.6);
+		text-align: center;
 	}
 
-	.option-wrap {
+	.limit-btn {
+		width: 100%;
+		padding: 0.9rem 0.2rem;
+		border-radius: 10px;
+		background: rgba(255, 255, 255, 0.08);
+		border: 2px solid rgba(255, 255, 255, 0.12);
+		color: rgba(255, 255, 255, 0.7);
+		font-size: clamp(1.1rem, 4vw, 1.4rem);
+		font-weight: 600;
+		text-align: center;
 		white-space: nowrap;
-	}
+		box-sizing: border-box;
+		transition: background 0.1s, border-color 0.1s, color 0.1s;
 
-	.infinity {
-		font-size: 1.5rem;
-		line-height: 1rem;
-		margin-top: 0.3rem;
-		vertical-align: middle;
+		&.selected {
+			background: rgba(245, 165, 36, 0.2);
+			border-color: #f5a524;
+			color: #ffffff;
+		}
+
+		&.is-infinity {
+			font-size: clamp(1.4rem, 5vw, 1.8rem);
+			line-height: 1;
+		}
 	}
 </style>

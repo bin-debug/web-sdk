@@ -3,9 +3,6 @@
 	import { stateUi, AUTO_SPINS_TEXT_OPTIONS } from 'state-shared';
 	import { OptionsGrid } from 'components-shared';
 
-	import BaseIcon from './BaseIcon.svelte';
-	import BaseButtonContent from './BaseButtonContent.svelte';
-
 	const { stateLayoutDerived } = getContextLayout();
 	const AUTO_SPINS_TEXT_OPTIONS_PORTRAIT = AUTO_SPINS_TEXT_OPTIONS.filter(
 		(value) => value !== '1000',
@@ -24,23 +21,40 @@
 	onchange={(value) => (stateUi.autoSpinsText = value)}
 >
 	{#snippet option({ option })}
-		<BaseIcon
-			width="100%"
-			height="2rem"
-			border={option === stateUi.autoSpinsText ? '2px white solid' : '2px black solid'}
-		/>
-		<BaseButtonContent>
-			<span style="font-size: 1rem;" class:infinity={option === '∞'} data-test="round-options">
-				{option}
-			</span>
-		</BaseButtonContent>
+		<div
+			class="round-btn"
+			class:selected={option === stateUi.autoSpinsText}
+			class:is-infinity={option === '∞'}
+			data-test="round-options"
+		>
+			{option}
+		</div>
 	{/snippet}
 </OptionsGrid>
 
 <style lang="scss">
-	.infinity {
-		font-size: 1.5rem;
-		line-height: 1rem;
-		margin-top: 0.3rem;
+	.round-btn {
+		width: 100%;
+		padding: 1.1rem 0.25rem;
+		border-radius: 12px;
+		background: rgba(255, 255, 255, 0.08);
+		border: 2px solid rgba(255, 255, 255, 0.15);
+		color: rgba(255, 255, 255, 0.75);
+		font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+		font-weight: 700;
+		text-align: center;
+		box-sizing: border-box;
+		transition: background 0.1s, border-color 0.1s, color 0.1s;
+
+		&.selected {
+			background: rgba(78, 205, 196, 0.2);
+			border-color: #4ecdc4;
+			color: #ffffff;
+		}
+
+		&.is-infinity {
+			font-size: clamp(1.8rem, 6vw, 2.2rem);
+			line-height: 1;
+		}
 	}
 </style>
