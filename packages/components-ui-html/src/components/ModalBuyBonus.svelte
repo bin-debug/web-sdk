@@ -33,7 +33,7 @@
 </script>
 
 {#if stateModal.modal?.name === 'buyBonus'}
-	<Popup zIndex={zIndex.modal} onclose={closeBonusModal} hideCloseButton>
+	<Popup zIndex={zIndex.info} onclose={closeBonusModal} hideCloseButton>
 		<BonusContentWrap
 			maxListLength={Math.max(activateList.length, buyList.length)}
 			onclose={closeBonusModal}

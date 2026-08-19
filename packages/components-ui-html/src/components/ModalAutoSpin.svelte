@@ -14,7 +14,7 @@
 </script>
 
 {#if stateModal.modal?.name === 'autoSpin'}
-	<Popup zIndex={zIndex.modal} onclose={close} hideCloseButton>
+	<Popup zIndex={zIndex.info} onclose={close} hideCloseButton>
 		<div class="autospin-modal">
 			<div class="top-row">
 				<span class="title">{i18nDerived.autoSpins()}</span>
