@@ -33,6 +33,7 @@
 
 			<div class="footer">
 				<AutoSpinsStartButton />
+				<button class="close-footer-btn" onclick={close}>Close</button>
 			</div>
 		</div>
 	</Popup>
@@ -115,5 +116,23 @@
 	.footer {
 		flex: 0 0 auto;
 		padding: 0.5rem 1rem 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.close-footer-btn {
+		width: 100%;
+		padding: 1rem;
+		border-radius: 14px;
+		font-family: 'proxima-nova', sans-serif;
+		font-size: clamp(1.25rem, 4.5vw, 1.55rem);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: rgba(255, 255, 255, 0.7);
+		background: rgba(255, 255, 255, 0.08);
+		border: 2px solid rgba(255, 255, 255, 0.2);
+		cursor: pointer;
 	}
 </style>
