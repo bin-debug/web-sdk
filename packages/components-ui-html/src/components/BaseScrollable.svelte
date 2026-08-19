@@ -41,5 +41,15 @@
 			justify-content: center;
 			max-width: 100%;
 		}
+
+		&.scrollY {
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		&.scrollX {
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+		}
 	}
 </style>

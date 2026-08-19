@@ -32,7 +32,7 @@
 
 <style lang="scss">
 	.bonus-card-wrap {
-		padding: 0.75rem;
+		padding: 1.25rem 1rem;
 		flex-direction: column;
 		display: flex;
 		justify-content: space-between;
@@ -44,11 +44,8 @@
 		color: var(--bc-card-text, #14141a);
 		text-align: center;
 		width: 100%;
-		min-width: 175px;
-		max-width: 280px;
-		flex: 1 1 190px;
-		gap: 0.75rem;
 		box-sizing: border-box;
+		gap: 0.85rem;
 	}
 
 	.icon {

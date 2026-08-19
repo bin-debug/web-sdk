@@ -10,7 +10,7 @@
 
 	const { eventEmitter } = getContextEventEmitter<EmitterEventModal>();
 
-	const iconSize = '3.25rem';
+	const iconSize = '5.5rem';
 </script>
 
 <OptionsToggle
@@ -26,7 +26,7 @@
 			<Button data-test="down-button" disabled={disabledDown} onclick={toggleDown}>
 				<BaseIcon width={iconSize} height={iconSize} />
 				<BaseButtonContent>
-					<span style="font-size: 2.25rem;">-</span>
+					<span style="font-size: 3.5rem;">-</span>
 				</BaseButtonContent>
 			</Button>
 
@@ -35,7 +35,7 @@
 			<Button data-test="up-button" disabled={disabledUp} onclick={toggleUp}>
 				<BaseIcon width={iconSize} height={iconSize} />
 				<BaseButtonContent>
-					<span style="font-size: 2.25rem;">+</span>
+					<span style="font-size: 3.5rem;">+</span>
 				</BaseButtonContent>
 			</Button>
 		</div>
@@ -47,17 +47,18 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 0.75rem;
-		padding: 0.5rem 1rem;
+		gap: 0.5rem;
+		padding: 0.5rem 1.25rem;
 		border-radius: 999px;
-		background: rgba(0, 0, 0, 0.35);
-		border: 1px solid rgba(255, 255, 255, 0.15);
+		background: rgba(0, 0, 0, 0.45);
+		border: 2px solid rgba(255, 255, 255, 0.25);
 	}
 
 	.amount {
-		font-size: 1.4rem;
-		font-weight: 700;
-		min-width: 5.5rem;
+		font-size: 2.2rem;
+		font-weight: 800;
+		min-width: 7.5rem;
 		text-align: center;
+		letter-spacing: 0.01em;
 	}
 </style>

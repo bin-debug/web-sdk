@@ -19,14 +19,8 @@
 {#each props.list as betModeData}
 	{#if betModeData.type !== 'default'}
 		<BonusCard>
-			{#snippet icon()}
-				{#if betModeData?.assets?.icon}
-					<img class="icon-img" src={betModeData.assets.icon} alt={betModeData.text.title} />
-				{/if}
-			{/snippet}
-
 			{#snippet title()}
-				<div class="title">
+				<div class="title" class:title--buy={betModeData.type === 'buy'} class:title--activate={betModeData.type === 'activate'}>
 					{betModeData.text.title}
 				</div>
 			{/snippet}
@@ -36,16 +30,6 @@
 					<div class="description">
 						{betModeData.text.description}
 					</div>
-				{/if}
-			{/snippet}
-
-			{#snippet volatility()}
-				{#if betModeData?.assets?.volatility}
-					<img
-						class="volatility-img"
-						src={betModeData.assets.volatility}
-						alt="volatility"
-					/>
 				{/if}
 			{/snippet}
 
@@ -75,56 +59,43 @@
 {/each}
 
 <style lang="scss">
-	.icon-img {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-	}
-
 	.title {
-		font-size: clamp(1.2rem, 5vw, 1.55rem);
-		font-weight: 700;
-		line-height: 1.25;
+		font-size: clamp(1.6rem, 6vw, 2.1rem);
+		font-weight: 900;
+		line-height: 1.15;
 		text-align: center;
 		text-transform: uppercase;
+		letter-spacing: 0.02em;
+		color: #0d0d0d;
 	}
 
 	.description {
-		font-size: clamp(1.2rem, 5vw, 1.5rem);
-		line-height: 1.4;
+		font-size: clamp(1.15rem, 4.5vw, 1.45rem);
+		line-height: 1.45;
 		text-align: center;
-		min-height: 5rem;
 		white-space: pre-line;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--bc-card-text, #14141a);
-		opacity: 0.92;
+		color: #14141a;
+		opacity: 0.65;
 	}
 
 	.description:empty {
 		display: none;
 	}
 
-	.volatility-img {
-		height: 1rem;
-		object-fit: contain;
-		align-self: center;
-	}
-
 	.price {
-		font-size: clamp(1.4rem, 5.5vw, 1.75rem);
-		font-weight: 700;
-		line-height: 1.3;
+		font-size: clamp(1.75rem, 6.5vw, 2.25rem);
+		font-weight: 800;
+		line-height: 1.2;
 		text-align: center;
 		white-space: nowrap;
+		color: #0d0d0d;
 	}
 
 	.buy-button {
 		width: 100%;
-		padding: 1.1rem 0.5rem;
+		padding: 1.35rem 0.5rem;
 		border-radius: 10px;
-		font-size: clamp(1.15rem, 4.5vw, 1.35rem);
+		font-size: clamp(1.3rem, 5.5vw, 1.6rem);
 		font-weight: 700;
 		text-transform: uppercase;
 		color: #ffffff;

@@ -30,7 +30,7 @@ const DEFAULT_BET_MODE_META = {
 		parent: '',
 		children: '',
 		assets: {
-			icon: 'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/icon_doubleboost.webp',
+			icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTQiIGZpbGw9IiMxYTFhMmUiLz48ZyBmaWxsPSJub25lIiBzdHJva2U9IiM0ZWNkYzQiIHN0cm9rZS13aWR0aD0iMy41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yNiA1MCBMNDAgMzAgTDU0IDUwIi8+PHBhdGggZD0iTTI2IDYyIEw0MCA0MiBMNTQgNjIiLz48bGluZSB4MT0iNDAiIHkxPSIxOCIgeDI9IjQwIiB5Mj0iMzAiLz48cG9seWxpbmUgcG9pbnRzPSIzNCwyNCA0MCwxOCA0NiwyNCIvPjwvZz48L3N2Zz4=',
 			dialogImage:
 				'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/doubleboost_image.webp',
 			dialogVolatility:
@@ -60,7 +60,7 @@ const DEFAULT_BET_MODE_META = {
 		parent: '',
 		children: '',
 		assets: {
-			icon: 'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/icon_superboost.webp',
+			icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTQiIGZpbGw9IiMxYTFhMmUiLz48cG9seWdvbiBwb2ludHM9IjQwLDEyIDQ3LDMyIDY4LDMyIDUyLDQ2IDU4LDY2IDQwLDU0IDIyLDY2IDI4LDQ2IDEyLDMyIDMzLDMyIiBmaWxsPSIjZjVhNTI0IiBmaWxsLW9wYWNpdHk9IjAuMjUiIHN0cm9rZT0iI2Y1YTUyNCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+',
 			dialogImage:
 				'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/superboost_image.webp',
 			dialogVolatility:
@@ -89,7 +89,7 @@ const DEFAULT_BET_MODE_META = {
 		parent: '',
 		children: '',
 		assets: {
-			icon: 'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/icon_superspin.webp',
+			icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTQiIGZpbGw9IiMxYTFhMmUiLz48ZyBmaWxsPSJub25lIiBzdHJva2U9IiNlNzRjM2MiIHN0cm9rZS13aWR0aD0iMy41IiBzdHJva2UtbGluZWNhcD0icm91bmQiPjxwYXRoIGQ9Ik0xOCA0MiBDMTggMjcgMjkgMTYgNDQgMTcgTDQ0IDEyIEw1NCAyMiBMNDQgMzIgTDQ0IDI3IEMzMyAyNiAyNCAzNCAyNCA0NiIvPjxwYXRoIGQ9Ik02MiAzOCBDNjIgNTMgNTEgNjQgMzYgNjMgTDM2IDY4IEwyNiA1OCBMMzYgNDggTDM2IDUzIEM0NyA1NCA1NiA0NiA1NiAzNCIvPjwvZz48L3N2Zz4=',
 			dialogImage:
 				'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/superspin_image.webp',
 			dialogVolatility:
@@ -118,7 +118,7 @@ const DEFAULT_BET_MODE_META = {
 		parent: '',
 		children: '',
 		assets: {
-			icon: 'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/icon_bonusbuy.webp',
+			icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTQiIGZpbGw9IiMxYTFhMmUiLz48ZyBzdHJva2U9IiM5YjU5YjYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIxNiIgeT0iMzMiIHdpZHRoPSI0OCIgaGVpZ2h0PSIxMCIgcng9IjMiIGZpbGw9IiM5YjU5YjYiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iMjAiIHk9IjQzIiB3aWR0aD0iNDAiIGhlaWdodD0iMjUiIHJ4PSIzIiBmaWxsPSIjOWI1OWI2IiBmaWxsLW9wYWNpdHk9IjAuMTIiLz48bGluZSB4MT0iNDAiIHkxPSIzMyIgeDI9IjQwIiB5Mj0iNjgiIHN0cm9rZT0iIzliNTliNiIvPjxwYXRoIGQ9Ik00MCAzMyBDNDAgMzMgMjggMzIgMjcgMjUgQzI2IDE4IDMzIDE0IDQwIDI0IiBmaWxsPSIjOWI1OWI2IiBmaWxsLW9wYWNpdHk9IjAuMjUiIHN0cm9rZT0iIzliNTliNiIvPjxwYXRoIGQ9Ik00MCAzMyBDNDAgMzMgNTIgMzIgNTMgMjUgQzU0IDE4IDQ3IDE0IDQwIDI0IiBmaWxsPSIjOWI1OWI2IiBmaWxsLW9wYWNpdHk9IjAuMjUiIHN0cm9rZT0iIzliNTliNiIvPjwvZz48L3N2Zz4=',
 			dialogImage:
 				'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/bonus_image.webp',
 			dialogVolatility:
@@ -146,7 +146,7 @@ const DEFAULT_BET_MODE_META = {
 		parent: '',
 		children: '',
 		assets: {
-			icon: 'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/icon_superbonusbuy.webp',
+			icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTQiIGZpbGw9IiMxYTFhMmUiLz48ZyBzdHJva2U9IiNmNWE1MjQiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMCA2MiBMMzAgMzAgTDQwIDEyIEw1MCAzMCBMNjAgNjIgWiIgZmlsbD0iI2Y1YTUyNCIgZmlsbC1vcGFjaXR5PSIwLjEyIi8+PGxpbmUgeDE9IjIwIiB5MT0iNDYiIHgyPSI2MCIgeTI9IjQ2IiBzdHJva2U9IiNmNWE1MjQiLz48cG9seWdvbiBwb2ludHM9IjQwLDE4IDQzLjUsMjggNTQsMjggNDUuNSwzNCA0OC41LDQ0IDQwLDM4IDMxLjUsNDQgMzQuNSwzNCAyNiwyOCAzNi41LDI4IiBmaWxsPSIjZjVhNTI0IiBmaWxsLW9wYWNpdHk9IjAuNTUiIHN0cm9rZT0iI2Y1YTUyNCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48L2c+PC9zdmc+',
 			dialogImage:
 				'https://test-fart-cdn-bucket.s3.ap-southeast-2.amazonaws.com/1_9_97/betModes/superbonus_image.webp',
 			dialogVolatility:
