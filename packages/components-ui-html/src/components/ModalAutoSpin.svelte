@@ -41,10 +41,9 @@
 
 <style lang="scss">
 	.autospin-modal {
-		position: relative;
-		z-index: 3; /* above Popup's click-to-close-layer (z-index: 2) */
-		width: 100%;
-		height: 100%;
+		position: fixed;
+		inset: 0;
+		z-index: 10;
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
