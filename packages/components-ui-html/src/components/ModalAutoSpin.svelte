@@ -58,7 +58,7 @@
 			left: 50%;
 			transform: translate(-50%, -50%);
 			width: min(680px, 92vw);
-			height: min(680px, 92vh);
+			height: min(820px, 95vh);
 			border-radius: 20px;
 			background: rgba(18, 12, 28, 0.98);
 			border: 1px solid rgba(255, 255, 255, 0.1);
