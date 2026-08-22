@@ -40,6 +40,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Build pixi-svelte
+        run: pnpm --filter pixi-svelte build
+
       - name: Build ${{ matrix.app }}
         run: pnpm --filter ${{ matrix.app }} build
         env:
