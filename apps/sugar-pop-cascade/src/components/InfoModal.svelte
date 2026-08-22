@@ -57,10 +57,17 @@
 			<li><b>Wild</b> substitutes for paying symbols; <b>Multiplier</b> boosts the wins it joins.</li>
 		</ul>
 
+		<h2>Buy Bonus</h2>
+		<p>The <b>Buy Bonus</b> button skips you straight to Free Spins — no waiting for Scatters. You pay a one-time fee to enter.</p>
+		<ul>
+			<li>Your Free Spins wins are based on your <b>stake</b> (the bet amount shown in the bottom bar), not the bonus fee.</li>
+			<li>To win more during Free Spins, <b>set a higher stake first</b>, then buy the bonus.</li>
+			<li>The bonus fee buys you guaranteed entry into Free Spins. Free Spins typically pay back a similar amount to playing the same number of regular spins.</li>
+		</ul>
+
 		<h2>Game Information</h2>
 		<table>
 			<tbody>
-				<tr><td>Return to Player (RTP)</td><td>{gameMeta.rtp}</td></tr>
 				<tr><td>Maximum Win</td><td>{gameMeta.maxWin} total bet</td></tr>
 				<tr><td>Reels × Rows</td><td>{gameMeta.reels} × {gameMeta.rows}</td></tr>
 				<tr><td>Ways to Win</td><td>Pay anywhere (8+)</td></tr>

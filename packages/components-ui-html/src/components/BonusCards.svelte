@@ -37,6 +37,9 @@
 				<div class="price">
 					{`${numberToCurrencyString(stateBet.betAmount * betModeData.costMultiplier)}`}
 				</div>
+				<div class="stake-note">
+					Wins based on your <strong>{numberToCurrencyString(stateBet.betAmount)}</strong> stake
+				</div>
 			{/snippet}
 
 			{#snippet button()}
@@ -89,6 +92,19 @@
 		text-align: center;
 		white-space: nowrap;
 		color: #0d0d0d;
+	}
+
+	.stake-note {
+		font-size: clamp(1rem, 3.5vw, 1.25rem);
+		text-align: center;
+		color: #14141a;
+		opacity: 0.55;
+		line-height: 1.35;
+	}
+
+	.stake-note strong {
+		opacity: 1;
+		font-weight: 700;
 	}
 
 	.buy-button {
