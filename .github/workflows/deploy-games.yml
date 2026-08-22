@@ -1,0 +1,56 @@
+name: Deploy Games to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: amapiano-after-dark
+            project: amapiano-after-dark
+          - app: boulder-bash
+            project: boulder-bash
+          - app: cheerful-charlie
+            project: cheerful-charlie
+          - app: ke-dezemba
+            project: ke-dezemba
+          - app: mzansi-magic
+            project: mzansi-magic
+          - app: pops-and-bangs
+            project: pops-and-bangs
+          - app: shamrocks-and-shenanigans
+            project: shamrocks-and-shenanigans
+          - app: sugar-pop-cascade
+            project: sugar-pop-cascade
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build ${{ matrix.app }}
+        run: pnpm --filter ${{ matrix.app }} build
+        env:
+          PUBLIC_RGS_URL: https://website.rgs.atomic-labs.co
+
+      - name: Deploy ${{ matrix.app }} to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages deploy apps/${{ matrix.app }}/build --project-name ${{ matrix.project }} --commit-dirty=true

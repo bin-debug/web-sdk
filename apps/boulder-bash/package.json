@@ -7,9 +7,9 @@
     "format": "prettier --write --ignore-path=../../.prettierignore .",
     "lint": "eslint \"src\"",
     "storybook": "PUBLIC_CHROMATIC=true storybook dev -p 6001 public",
-    "dev": "vite dev --host --port 3015",
+    "dev": "vite dev --host --port 3034",
     "build": "vite build",
-    "preview": "vite preview --host --port 3015"
+    "preview": "vite preview --host --port 3034"
   },
   "type": "module",
   "devDependencies": {

@@ -2,7 +2,7 @@
 export const gameMeta = {
   "gameName": "Boulder Bash",
   "studioName": "Atomic-Labs",
-  "tagline": "Fortune Favours The Brave",
+  "tagline": "Fortune Favors the Brave",
   "rtp": "97.00%",
   "maxWin": "5,000×",
   "reels": 7,
@@ -12,19 +12,19 @@ export const gameMeta = {
   "pays": [
     {
       "name": "H1",
-      "label": "Stone Wheel",
+      "label": "High 1",
       "tiers": [
         [
           5,
-          3
+          5
         ],
         [
           6,
-          7.5
+          12.5
         ],
         [
           9,
-          15
+          25
         ],
         [
           13,
@@ -34,7 +34,7 @@ export const gameMeta = {
     },
     {
       "name": "H2",
-      "label": "Bone Tusk",
+      "label": "High 2",
       "tiers": [
         [
           5,
@@ -56,7 +56,7 @@ export const gameMeta = {
     },
     {
       "name": "H3",
-      "label": "Fire Cauldron",
+      "label": "High 3",
       "tiers": [
         [
           5,
@@ -78,7 +78,7 @@ export const gameMeta = {
     },
     {
       "name": "H4",
-      "label": "Spiked Mace",
+      "label": "High 4",
       "tiers": [
         [
           5,
@@ -100,7 +100,7 @@ export const gameMeta = {
     },
     {
       "name": "L1",
-      "label": "Q",
+      "label": "Low 1",
       "tiers": [
         [
           5,
@@ -122,7 +122,7 @@ export const gameMeta = {
     },
     {
       "name": "L2",
-      "label": "K",
+      "label": "Low 2",
       "tiers": [
         [
           5,
@@ -144,7 +144,7 @@ export const gameMeta = {
     },
     {
       "name": "L3",
-      "label": "A",
+      "label": "Low 3",
       "tiers": [
         [
           5,
@@ -166,7 +166,7 @@ export const gameMeta = {
     },
     {
       "name": "L4",
-      "label": "J",
+      "label": "Low 4",
       "tiers": [
         [
           5,

@@ -13,7 +13,7 @@
 	const props: Props = $props();
 
 	let introVisible = $state(true);
-	const introFeatures = [{"icon":"🪨","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win big"},{"icon":"🎁","title":"Free Spins","subtitle":"Land Scatters to trigger the boulder bonus"},{"icon":"💰","title":"5,000× Max Win","subtitle":"Smash your way to the biggest payout"}];
+	const introFeatures = [{"icon":"🪨","image":"/assets/features/feature1.png","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win big"},{"icon":"🎁","image":"/assets/features/feature2.png","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"💰","image":"/assets/features/feature3.png","title":"5,000× Max Win","subtitle":"Draw fast, win biggest"}];
 	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');
 	onMount(() => {
@@ -42,7 +42,7 @@
 		logoUrl="/assets/sprites/game/logo.png"
 		bgUrl="/assets/sprites/game/bg-mobile.png"
 		studioName="Atomic-Labs"
-		tagline="Fortune Favours The Brave"
+		tagline="Fortune Favors the Brave"
 		features={introFeatures}
 		ondismiss={() => (introVisible = false)}
 	/>
@@ -76,6 +76,10 @@
 	<MissionsDrawer />
 {/if}
 
+{#if !introVisible && !bonusModalOpen}
+	<img class="game-logo" src="/assets/sprites/game/logo.png" alt="Boulder Bash" />
+{/if}
+
 <style>
 	.ticker { position: fixed; left: 0; right: 0; top: 0; height: 30px; z-index: 91;
 		display: flex; align-items: center; pointer-events: none;
@@ -96,4 +100,9 @@
 	.tb-time { color: #fff; font-size: 12px; font-weight: 600; }
 	.tb-name { color: #ffe9a0; font-size: 12px; font-weight: 600; }
 	.tb-company { color: #fff; font-size: 11px; font-weight: 600; opacity: .9; }
+	.game-logo { position: fixed; top: 100px; left: 12px; height: 180px; width: auto;
+		z-index: 89; pointer-events: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); display: none;
+		animation: logo-pulse 3s ease-in-out infinite; }
+	@keyframes logo-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.92; } }
+	@media (min-width: 1024px) and (orientation: landscape) { .game-logo { display: block; } }
 </style>
