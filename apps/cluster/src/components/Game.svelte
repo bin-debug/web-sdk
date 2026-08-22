@@ -67,14 +67,13 @@
 		</MainContainer>
 
 		<MainContainer>
-			<MultiplierGrid />
-		</MainContainer>
-
-		<MainContainer>
 			<Board />
 			<Anticipations />
 			<TumbleWinAmount />
-			<GlobalMultiplier />
+		</MainContainer>
+
+		<MainContainer>
+			<MultiplierGrid />
 		</MainContainer>
 
 		<MainContainer>

@@ -67,8 +67,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 				wins: bookEvent.wins.map((win) => {
 					return {
 						win: win.meta.winWithoutMult,
-						mult: win.meta.globalMult,
-						result: win.meta.winWithoutMult * win.meta.globalMult,
+						mult: win.meta.clusterMult,  // per-cell multiplier accumulated on this cluster
+						result: win.win,              // actual win already includes clusterMult
 						reel: win.meta.overlay.reel,
 						row: win.meta.overlay.row,
 					};
@@ -109,11 +109,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		stateGame.gameType = 'freegame';
 		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
 		eventEmitter.broadcast({ type: 'boardFrameGlowShow' });
-		eventEmitter.broadcast({ type: 'globalMultiplierShow' });
-		await eventEmitter.broadcastAsync({
-			type: 'globalMultiplierUpdate',
-			multiplier: 1, // resets when multiplier === 1
-		});
+		// globalMultiplier not shown: cluster book uses per-cell clusterMult via updateGrid, not updateGlobalMult
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
 		eventEmitter.broadcast({
 			type: 'freeSpinCounterUpdate',
@@ -142,11 +138,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		stateGame.gameType = 'freegame';
 		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
 		eventEmitter.broadcast({ type: 'boardFrameGlowShow' });
-		eventEmitter.broadcast({ type: 'globalMultiplierShow' });
-		await eventEmitter.broadcastAsync({
-			type: 'globalMultiplierUpdate',
-			multiplier: 1, // resets when multiplier === 1
-		});
+		// globalMultiplier not shown: cluster book uses per-cell clusterMult via updateGrid, not updateGlobalMult
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
 		eventEmitter.broadcast({
 			type: 'freeSpinCounterUpdate',
@@ -235,6 +227,10 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 	updateGrid: async (bookEvent: BookEventOfType<'updateGrid'>) => {
 		eventEmitter.broadcast({ type: 'multiplierGridShow' });
 		eventEmitter.broadcast({ type: 'multiplierGridUpdate', grid: bookEvent.gridMultipliers });
+	},
+	wincap: async (bookEvent: BookEventOfType<'wincap'>) => {
+		// Max-win cap reached — apply the capped amount to the displayed total win.
+		stateBet.winBookEventAmount = bookEvent.amount;
 	},
 	finalWin: async (bookEvent: BookEventOfType<'finalWin'>) => {
 		eventEmitter.broadcast({ type: 'multiplierGridClear' });

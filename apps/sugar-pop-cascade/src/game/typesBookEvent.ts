@@ -88,7 +88,26 @@ type BookEventSetWin = {
 };
 
 // new
+type BookEventWinCap = {
+	index: number;
+	type: 'wincap';
+	amount: number;
+};
+
 type BookEventUpdateGrid = {
+	index: number;
+	type: 'updateGrid';
+	gridMultipliers: number[][];
+};
+
+type BookEventWinCap = {
+	index: number;
+	type: 'wincap';
+	amount: number;
+};
+
+// placeholder (will be replaced below)
+type __PLACEHOLDER__ = {
 	index: number;
 	type: 'updateGrid';
 	gridMultipliers: number[][];
@@ -124,6 +143,7 @@ export type BookEvent =
 	// new
 	| BookEventUpdateGrid
 	| BookEventFreeSpinRetrigger
+	| BookEventWinCap
 	// customised
 	| BookEventCreateBonusSnapshot;
 

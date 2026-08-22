@@ -6,6 +6,7 @@ import { stateBet } from 'state-shared';
 const NO_LOCALISATION_CURRENCY_MAP: Record<string, string> = {
 	XGC: 'GC',
 	XSC: 'SC',
+	ZAR: 'R',  // Intl formats ZAR as "ZAR 5.00" but 'Z' is absent from the gold bitmap font
 };
 
 // bookEventAmount: is the amount or win numbers in the events of books, e.g. the amount in setTotalWin bookEvent

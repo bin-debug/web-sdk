@@ -67,13 +67,13 @@
 		</MainContainer>
 
 		<MainContainer>
-			<MultiplierGrid />
-		</MainContainer>
-
-		<MainContainer>
 			<Board />
 			<Anticipations />
 			<GlobalMultiplier />
+		</MainContainer>
+
+		<MainContainer>
+			<MultiplierGrid />
 		</MainContainer>
 
 		<MainContainer>
