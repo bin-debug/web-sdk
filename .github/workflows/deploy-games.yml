@@ -27,6 +27,8 @@ jobs:
             project: shamrocks-and-shenanigans
           - app: sugar-pop-cascade
             project: sugar-pop-cascade
+          - app: brimstone-bookies
+            project: brimstone-bookies
 
     steps:
       - uses: actions/checkout@v4
