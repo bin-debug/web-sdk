@@ -1,6 +1,11 @@
 import type { paths } from './schema';
 import { fetcher } from 'utils-fetcher';
 
+const buildUrl = (rgsUrl: string, path: string) => {
+	const protocol = rgsUrl.startsWith('localhost') || rgsUrl.startsWith('127.') ? 'http' : 'https';
+	return `${protocol}://${rgsUrl}${path}`;
+};
+
 export const rgsFetcher = {
 	post: async function post<
 		T extends keyof paths,
@@ -13,7 +18,7 @@ export const rgsFetcher = {
 		const response = await fetcher({
 			method: 'POST',
 			variables: options.variables,
-			endpoint: `https://${options.rgsUrl}${options.url}`,
+			endpoint: buildUrl(options.rgsUrl, options.url),
 		});
 
 		if (response.status !== 200) console.error('error', response);
@@ -26,7 +31,7 @@ export const rgsFetcher = {
 	>(options: { url: T; rgsUrl: string }): Promise<TResponse> {
 		const response = await fetcher({
 			method: 'GET',
-			endpoint: `https://${options.rgsUrl}${options.url}`,
+			endpoint: buildUrl(options.rgsUrl, options.url),
 		});
 
 		if (response.status !== 200) console.error('error', response);

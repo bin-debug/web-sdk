@@ -16,6 +16,11 @@
 	const autoOn      = $derived(stateBetDerived.hasAutoBetCounter());
 	const bonusActive = $derived(stateBetDerived.activeBetMode()?.type === 'activate');
 
+	// Feature visibility — driven by jurisdiction flags from the RGS authenticate response
+	const turboVisible    = $derived(!stateConfig.jurisdiction.disabledTurbo);
+	const buyBonusVisible = $derived(!stateConfig.jurisdiction.disabledBuyFeature);
+	const autoplayVisible = $derived(!stateConfig.jurisdiction.disabledAutoplay);
+
 	// Mobile-only: hide the reel/spin bar while the Buy Bonus screen is open — it
 	// has its own bet controls and the bar just gets in the way / overlaps it.
 	// Driven directly off stateModal so it reappears the instant the modal closes
@@ -260,6 +265,7 @@
 	</div>
 
 	<!-- Buy Bonus -->
+	{#if buyBonusVisible}
 	<button class="bc-btn bc-bonus" class:bc-active={bonusActive} onclick={toggleBuyBonus} title={bonusActive ? 'Disable Bonus' : 'Buy Bonus'} disabled={!isIdle}>
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 			<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -269,6 +275,7 @@
 			<path d="M16.5 8a2.5 2.5 0 0 0 0 -5a4.8 8 0 0 0 -4.5 5"/>
 		</svg>
 	</button>
+	{/if}
 
 	<!-- Balance -->
 	<div class="bc-info">
@@ -314,14 +321,17 @@
 	<div class="bc-spacer"></div>
 
 	<!-- Repeat / Autoplay -->
+	{#if autoplayVisible}
 	<button class="bc-btn bc-repeat" class:bc-active={autoOn} onclick={toggleAutoplay} title="Repeat Bet">
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 			<path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"/>
 			<path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"/>
 		</svg>
 	</button>
+	{/if}
 
 	<!-- Turbo (last) -->
+	{#if turboVisible}
 	<button class="bc-btn bc-turbo" class:bc-active={turbo} onclick={toggleTurbo} title="Turbo">
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 			<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -340,12 +350,14 @@
 
 	<!-- Row 1: Repeat | ' | SPIN | + | Turbo -->
 	<div class="bcm-row1">
+		{#if autoplayVisible}
 		<button class="bcm-ibtn bc-repeat" class:bc-active={autoOn} onclick={toggleAutoplay} title="Repeat Bet">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"/>
 				<path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"/>
 			</svg>
 		</button>
+		{/if}
 
 		<button class="bcm-chev" class:bc-hint-down={isIdle && canDecrease} class:bcm-stake-hidden={inFreeSpin} onclick={decreaseBet} title="Decrease bet" disabled={!isIdle}>
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -363,6 +375,7 @@
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
 		</button>
 
+		{#if turboVisible}
 		<button class="bcm-ibtn bc-turbo" class:bc-active={turbo} onclick={toggleTurbo} title="Turbo">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"/>
@@ -472,6 +485,7 @@
 	</button>
 
 	<!-- Turbo -->
+	{#if turboVisible}
 	<button class="bc-mrow" onclick={menuToggleTurbo}>
 		<span class="bc-micon">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -481,6 +495,7 @@
 		<span class="bc-mlabel">TURBO</span>
 		<span class="bc-mbadge" class:bc-mbadge--on={turbo}>{turbo ? 'ON' : 'OFF'}</span>
 	</button>
+	{/if}
 
 	<!-- Home -->
 	<button class="bc-mrow bc-mrow--home" onclick={menuHome}>

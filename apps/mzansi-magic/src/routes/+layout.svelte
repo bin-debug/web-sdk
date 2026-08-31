@@ -2,7 +2,7 @@
 	import { type Snippet, onMount } from 'svelte';
 	import { GlobalStyle } from 'components-ui-html';
 	import { Authenticate, LoadI18n } from 'components-shared';
-	import { stateModal } from 'state-shared';
+	import { stateModal, stateConfig } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
 	import MissionsDrawer from '../components/MissionsDrawer.svelte';
@@ -14,7 +14,6 @@
 
 	let introVisible = $state(true);
 	const introFeatures = [{"icon":"💥","image":"/assets/features/feature1.png","title":"Tumbling Reels","subtitle":"Winning symbols vanish — new ones drop in for more wins"},{"icon":"🎁","image":"/assets/features/feature2.png","title":"Free Spins","subtitle":"Land Scatters across the reels to trigger the bonus"},{"icon":"💰","image":"/assets/features/feature3.png","title":"5,000× Max Win","subtitle":"Chase the biggest payout"}];
-	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');
 	onMount(() => {
 		const tick = () => { const n = new Date(); timeStr = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0'); };
@@ -50,20 +49,21 @@
 
 {@render props.children()}
 
-{#if !introVisible && tickerItems.length && !bonusModalOpen}
+{#if !introVisible && !bonusModalOpen && !stateConfig.jurisdiction.disabledNoticeBar && stateConfig.noticeBarContent}
 	<div class="ticker">
 		<div class="ticker__viewport">
 			<div class="ticker__track">
-				{#each [0, 1] as _dup}
-					{#each tickerItems as msg}<span class="ticker__item">{msg}</span><span class="ticker__sep">✦</span>{/each}
-				{/each}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html stateConfig.noticeBarContent}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html stateConfig.noticeBarContent}
 			</div>
 		</div>
 	</div>
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<div class="top-bar">
+	<div class="top-bar" style:top={(!stateConfig.jurisdiction.disabledNoticeBar && stateConfig.noticeBarContent) ? '30px' : '0'}>
 		<div class="tb-left">
 			<span class="tb-time">{timeStr}</span>
 			<span class="tb-name">Mzansi Magic</span>
@@ -72,7 +72,7 @@
 	</div>
 {/if}
 
-{#if !introVisible && !bonusModalOpen}
+{#if !introVisible && !bonusModalOpen && !stateConfig.jurisdiction.disabledMissions}
 	<MissionsDrawer />
 {/if}
 
@@ -92,7 +92,7 @@
 	.ticker__item { color: #ffe9a0; font-size: 13px; font-weight: 600; padding: 0 6px; }
 	.ticker__sep { color: rgba(245,197,24,.65); font-size: 11px; padding: 0 4px; }
 	@keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-	.top-bar { position: fixed; left: 0; right: 0; top: 30px; height: 26px; z-index: 90;
+	.top-bar { position: fixed; left: 0; right: 0; height: 26px; transition: top 0.15s ease; z-index: 90;
 		display: flex; align-items: center; justify-content: space-between; padding: 0 12px; pointer-events: none;
 		background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }

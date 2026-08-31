@@ -12,7 +12,10 @@ export const stateConfig = $state({
 		displayRTP: false,
 		displaySessionTimer: false,
 		minimumRoundDuration: 0,
+		disabledMissions: false,
+		disabledNoticeBar: false,
 	},
+	noticeBarContent: '',
 	betAmountOptions: [1, 5, 25, 50, 75, 100, 200, 500, 800, 1000],
 	betMenuOptions: [1, 5, 25, 50, 75, 100, 200, 500, 800, 1000],
 });

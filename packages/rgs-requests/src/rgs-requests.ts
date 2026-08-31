@@ -7,6 +7,9 @@ export const requestAuthenticate = async (options: {
 	sessionID: string;
 	rgsUrl: string;
 	language: string;
+	operatorId?: string;
+	brandId?: string;
+	gameId?: string;
 }) => {
 	const data = await rgsFetcher.post({
 		rgsUrl: options.rgsUrl,
@@ -14,7 +17,10 @@ export const requestAuthenticate = async (options: {
 		variables: {
 			sessionID: options.sessionID,
 			language: options.language,
-		},
+			operatorId: options.operatorId,
+			brandId: options.brandId,
+			gameId: options.gameId,
+		} as any,
 	});
 
 	return data;
@@ -23,12 +29,16 @@ export const requestAuthenticate = async (options: {
 export const requestEndRound = async (options: {
 	sessionID: string;
 	rgsUrl: string;
+	operatorId?: string;
+	brandId?: string;
 }) => {
 	const data = await rgsFetcher.post({
 		rgsUrl: options.rgsUrl,
 		url: '/wallet/end-round',
 		variables: {
 			sessionID: options.sessionID,
+			operatorId: options.operatorId,
+			brandId: options.brandId,
 		},
 	});
 
@@ -39,6 +49,8 @@ export const requestEndEvent = async (options: {
 	sessionID: string;
 	eventIndex: number;
 	rgsUrl: string;
+	operatorId?: string;
+	brandId?: string;
 }) => {
 	const data = await rgsFetcher.post({
 		rgsUrl: options.rgsUrl,
@@ -46,6 +58,8 @@ export const requestEndEvent = async (options: {
 		variables: {
 			sessionID: options.sessionID,
 			event: `${options.eventIndex}`,
+			operatorId: options.operatorId,
+			brandId: options.brandId,
 		},
 	});
 
@@ -58,6 +72,8 @@ export const requestBet = async (options: {
 	amount: number;
 	mode: string;
 	rgsUrl: string;
+	operatorId?: string;
+	brandId?: string;
 }) => {
 	const data = await rgsFetcher.post({
 		rgsUrl: options.rgsUrl,
@@ -67,6 +83,8 @@ export const requestBet = async (options: {
 			currency: options.currency,
 			sessionID: options.sessionID,
 			amount: options.amount * API_AMOUNT_MULTIPLIER,
+			operatorId: options.operatorId,
+			brandId: options.brandId,
 		},
 	});
 

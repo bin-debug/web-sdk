@@ -102,6 +102,8 @@ export interface components {
 		req_authenticate: {
 			sessionID: components['schemas']['SessionID'];
 			language?: components['schemas']['Language'];
+			operatorId?: string;
+			brandId?: string;
 		};
 		/**
 		 * @description Describe the result of an API call to the casino.
@@ -224,7 +226,10 @@ export interface components {
 				displayRTP: boolean,
 				displaySessionTimer: boolean,
 				minimumRoundDuration: number,
+				disabledMissions: boolean,
+				disabledNoticeBar: boolean,
 			},
+			noticeBarContent?: string,
 		};
 		res_authenticate: {
 			status?: components['schemas']['StatusObject'];

@@ -17,6 +17,9 @@
 				rgsUrl: stateUrlDerived.rgsUrl(),
 				sessionID: stateUrlDerived.sessionID(),
 				language: stateUrlDerived.lang(),
+				operatorId: stateUrlDerived.operatorId(),
+				brandId: stateUrlDerived.brandId(),
+				gameId: stateUrlDerived.gameId(),
 			});
 
 			// error
@@ -60,6 +63,7 @@
 				// 	}
 				// }
 				stateConfig.jurisdiction = authenticateData?.config?.jurisdiction;
+				stateConfig.noticeBarContent = authenticateData?.config?.noticeBarContent ?? '';
 				stateConfig.betAmountOptions = (authenticateData.config?.betLevels || []).map(
 					(level) => level / API_AMOUNT_MULTIPLIER,
 				);
