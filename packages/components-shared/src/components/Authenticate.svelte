@@ -2,7 +2,7 @@
 	import { onMount, type Snippet } from 'svelte';
 
 	import { requestAuthenticate, requestReplay } from 'rgs-requests';
-	import { stateUrlDerived, stateBet, stateConfig, stateModal, stateUi } from 'state-shared';
+	import { stateUrlDerived, stateBet, stateConfig, stateFreeSpins, stateModal, stateUi } from 'state-shared';
 	import { API_AMOUNT_MULTIPLIER, MOST_USED_BET_INDEXES } from 'constants-shared/bet';
 
 	type Props = { children: Snippet };
@@ -70,6 +70,13 @@
 				stateConfig.betMenuOptions = stateConfig.betAmountOptions.filter((_, index) =>
 					MOST_USED_BET_INDEXES.includes(index),
 				);
+			}
+
+			// round
+			if (authenticateData?.freeSpins?.length) {
+				stateFreeSpins.allocations = authenticateData.freeSpins;
+				stateFreeSpins.showAwardPopup = true;
+				stateModal.modal = { name: 'freeSpinAward' };
 			}
 
 			// round

@@ -37,6 +37,8 @@ type ModalGameRules = {
 type ModalSettings = {
 	name: 'settings';
 };
+type ModalFreeSpinAward = { name: 'freeSpinAward' };
+type ModalFreeSpinComplete = { name: 'freeSpinComplete'; totalWinnings: number; wageringTarget: number };
 
 type Modal =
 	| ModalEmpty
@@ -48,7 +50,9 @@ type Modal =
 	| ModalAutoSpinMessage
 	| ModalPayTable
 	| ModalGameRules
-	| ModalSettings;
+	| ModalSettings
+	| ModalFreeSpinAward
+	| ModalFreeSpinComplete;
 
 export const stateModal = $state({
 	modal: null as Modal,

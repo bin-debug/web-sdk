@@ -236,6 +236,7 @@ export interface components {
 			balance?: components['schemas']['BalanceObject'];
 			round?: components['schemas']['RoundDetailObject'];
 			config?: components['schemas']['ConfigObject'];
+			freeSpins?: components['schemas']['FreeSpinAllocation'][];
 			error?: components['schemas']['Error'];
 		};
 		req_Balance: {
@@ -254,7 +255,9 @@ export interface components {
 			currency: components['schemas']['Currency'];
 			mode: components['schemas']['Mode'];
 			meta?: components['schemas']['Meta'];
+			freeSpinAllocationId?: string;
 		};
+		FreeSpinAllocation: { id: string; type: string; spinCount: number; spinsUsed: number; spinValue: number; gameIds: string[] | null; wageringMultiplier: number; expiresAt: string | null; };
 		res_play: {
 			status?: components['schemas']['StatusObject'];
 			balance?: components['schemas']['BalanceObject'];

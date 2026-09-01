@@ -9,6 +9,7 @@ export const requestAuthenticate = async (options: {
 	language: string;
 	operatorId?: string;
 	brandId?: string;
+	freeSpinAllocationId?: string;
 	gameId?: string;
 }) => {
 	const data = await rgsFetcher.post({
@@ -19,6 +20,7 @@ export const requestAuthenticate = async (options: {
 			language: options.language,
 			operatorId: options.operatorId,
 			brandId: options.brandId,
+			freeSpinAllocationId: options.freeSpinAllocationId,
 			gameId: options.gameId,
 		} as any,
 	});
@@ -74,6 +76,7 @@ export const requestBet = async (options: {
 	rgsUrl: string;
 	operatorId?: string;
 	brandId?: string;
+	freeSpinAllocationId?: string;
 }) => {
 	const data = await rgsFetcher.post({
 		rgsUrl: options.rgsUrl,
@@ -85,6 +88,7 @@ export const requestBet = async (options: {
 			amount: options.amount * API_AMOUNT_MULTIPLIER,
 			operatorId: options.operatorId,
 			brandId: options.brandId,
+			freeSpinAllocationId: options.freeSpinAllocationId,
 		},
 	});
 

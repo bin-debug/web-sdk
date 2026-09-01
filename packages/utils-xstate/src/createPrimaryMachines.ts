@@ -1,7 +1,7 @@
 import { fromPromise } from 'xstate';
 
 import { API_AMOUNT_MULTIPLIER } from 'constants-shared/bet';
-import { stateBet, stateUrlDerived, stateModal } from 'state-shared';
+import { stateBet, stateFreeSpins, stateUrlDerived, stateModal } from 'state-shared';
 import { requestBet, requestEndRound } from 'rgs-requests';
 
 import type { BaseBet } from './types';
@@ -16,6 +16,7 @@ const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 			amount: stateBet.betAmount,
 			operatorId: stateUrlDerived.operatorId(),
 			brandId: stateUrlDerived.brandId(),
+			freeSpinAllocationId: stateFreeSpins.activeAllocation?.id,
 		});
 
 		if (data?.error) {
@@ -24,6 +25,21 @@ const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 
 		if (data?.round?.state && data?.round?.state?.length > 0) {
 			stateBet.wageredBetAmount = stateBet.betAmount;
+			if (stateFreeSpins.activeAllocation) {
+				stateFreeSpins.totalWinnings += (data.round.payoutMultiplier ?? 0) * stateBet.betAmount;
+				stateFreeSpins.currentSpin += 1;
+				if (stateFreeSpins.currentSpin >= stateFreeSpins.activeAllocation.spinCount) {
+					const alloc = stateFreeSpins.activeAllocation;
+					if (alloc.wageringMultiplier > 0 && stateFreeSpins.totalWinnings > 0) {
+						stateModal.modal = {
+							name: 'freeSpinComplete',
+							totalWinnings: stateFreeSpins.totalWinnings,
+							wageringTarget: stateFreeSpins.totalWinnings * alloc.wageringMultiplier,
+						};
+					}
+					stateFreeSpins.activeAllocation = null;
+				}
+			}
 
 			return data;
 		} else {

@@ -10,6 +10,8 @@
 	import ModalPayTable from './ModalPayTable.svelte';
 	import ModalGameRules from './ModalGameRules.svelte';
 	import ModalSettings from './ModalSettings.svelte';
+	import ModalFreeSpinAward from './ModalFreeSpinAward.svelte';
+	import ModalFreeSpinComplete from './ModalFreeSpinComplete.svelte';
 
 	type Props = {
 		version: Snippet;
@@ -31,6 +33,8 @@
 	{@render props.version()}
 </ModalGameRules>
 <ModalSettings />
+<ModalFreeSpinAward />
+<ModalFreeSpinComplete />
 
 <style lang="scss">
 	:global(html) {
