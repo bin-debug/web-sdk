@@ -63,7 +63,7 @@
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<div class="top-bar">
+	<div class="top-bar" class:top-bar--no-ticker={stateConfig.jurisdiction.disabledNoticeBar}>
 		<div class="tb-left">
 			<span class="tb-time">{timeStr}</span>
 			<span class="tb-name">Skull Fiesta Frenzy</span>
@@ -92,6 +92,7 @@
 	.ticker__item { color: #ffe9a0; font-size: 13px; font-weight: 600; padding: 0 6px; }
 	.ticker__sep { color: rgba(245,197,24,.65); font-size: 11px; padding: 0 4px; }
 	@keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+	.top-bar--no-ticker { top: 0 !important; }
 	.top-bar { position: fixed; left: 0; right: 0; top: 30px; height: 26px; z-index: 90;
 		display: flex; align-items: center; justify-content: space-between; padding: 0 12px; pointer-events: none;
 		background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
