@@ -14,6 +14,8 @@ const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 			currency: stateBet.currency,
 			mode: stateBet.activeBetModeKey,
 			amount: stateBet.betAmount,
+			operatorId: stateUrlDerived.operatorId(),
+			brandId: stateUrlDerived.brandId(),
 		});
 
 		if (data?.error) {
@@ -46,6 +48,8 @@ const handleRequestEndRound = async () => {
 		const data = await requestEndRound({
 			sessionID: stateUrlDerived.sessionID(),
 			rgsUrl: stateUrlDerived.rgsUrl(),
+			operatorId: stateUrlDerived.operatorId(),
+			brandId: stateUrlDerived.brandId(),
 		});
 
 		if (data?.error) {

@@ -2,6 +2,9 @@ import type { paths } from './schema';
 import { fetcher } from 'utils-fetcher';
 
 const buildUrl = (rgsUrl: string, path: string) => {
+	if (rgsUrl.startsWith('http://') || rgsUrl.startsWith('https://')) {
+		return `${rgsUrl}${path}`;
+	}
 	const protocol = rgsUrl.startsWith('localhost') || rgsUrl.startsWith('127.') ? 'http' : 'https';
 	return `${protocol}://${rgsUrl}${path}`;
 };
