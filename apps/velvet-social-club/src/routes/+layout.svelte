@@ -2,7 +2,7 @@
 	import { type Snippet, onMount } from 'svelte';
 	import { GlobalStyle } from 'components-ui-html';
 	import { Authenticate, LoadI18n } from 'components-shared';
-	import { stateModal } from 'state-shared';
+	import { stateModal, stateConfig } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
 	import MissionsDrawer from '../components/MissionsDrawer.svelte';
@@ -50,7 +50,7 @@
 
 {@render props.children()}
 
-{#if !introVisible && tickerItems.length && !bonusModalOpen}
+{#if !introVisible && tickerItems.length && !bonusModalOpen && !stateConfig.jurisdiction.disabledNoticeBar}
 	<div class="ticker">
 		<div class="ticker__viewport">
 			<div class="ticker__track">
@@ -72,7 +72,7 @@
 	</div>
 {/if}
 
-{#if !introVisible && !bonusModalOpen}
+{#if !introVisible && !bonusModalOpen && !stateConfig.jurisdiction.disabledMissions}
 	<MissionsDrawer />
 {/if}
 
