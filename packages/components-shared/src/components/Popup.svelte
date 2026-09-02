@@ -61,7 +61,9 @@
 				<button class="close-button" data-test="close-button" onclick={closeModal}>×</button>
 			</div>
 		{/if}
-		{@render props.children()}
+		<div class="content-layer" style="--zIndex: {zIndexInternal.contentLayer}">
+			{@render props.children()}
+		</div>
 	</div>
 </div>
 
@@ -112,6 +114,11 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
+	}
+
+	.content-layer {
+		position: relative;
+		z-index: var(--zIndex);
 	}
 
 	.close-button-wrap {

@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { MainContainer, OnPressFullScreen } from 'components-layout';
 	import { OnHotkey } from 'components-shared';
-	import { stateUrlDerived } from 'state-shared';
+	import { stateUrlDerived, stateFreeSpins } from 'state-shared';
 	import { Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
@@ -12,6 +13,13 @@
 
 	const props: Props = $props();
 	const context = getContext();
+
+	onMount(() => {
+		if (stateFreeSpins.activeAllocation) {
+			const id = setInterval(() => props.onpress(), 800);
+			return () => clearInterval(id);
+		}
+	});
 </script>
 
 <MainContainer alignVertical="bottom">

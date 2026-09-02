@@ -30,13 +30,11 @@ const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 				stateFreeSpins.currentSpin += 1;
 				if (stateFreeSpins.currentSpin >= stateFreeSpins.activeAllocation.spinCount) {
 					const alloc = stateFreeSpins.activeAllocation;
-					if (alloc.wageringMultiplier > 0 && stateFreeSpins.totalWinnings > 0) {
-						stateModal.modal = {
-							name: 'freeSpinComplete',
-							totalWinnings: stateFreeSpins.totalWinnings,
-							wageringTarget: stateFreeSpins.totalWinnings * alloc.wageringMultiplier,
-						};
-					}
+					stateModal.modal = {
+						name: 'freeSpinComplete',
+						totalWinnings: stateFreeSpins.totalWinnings,
+						wageringTarget: stateFreeSpins.totalWinnings * alloc.wageringMultiplier,
+					};
 					stateFreeSpins.activeAllocation = null;
 				}
 			}

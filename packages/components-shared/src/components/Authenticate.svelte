@@ -76,7 +76,6 @@
 			if (authenticateData?.freeSpins?.length) {
 				stateFreeSpins.allocations = authenticateData.freeSpins;
 				stateFreeSpins.showAwardPopup = true;
-				stateModal.modal = { name: 'freeSpinAward' };
 			}
 
 			// round

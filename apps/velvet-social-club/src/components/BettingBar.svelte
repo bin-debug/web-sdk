@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { stateBet, stateConfig, stateBetDerived, stateModal, stateUi, stateSound } from 'state-shared';
+	import { stateBet, stateConfig, stateBetDerived, stateFreeSpins, stateModal, stateUi, stateSound } from 'state-shared';
 	import { bookEventAmountToNormalisedAmount } from 'utils-shared/amount';
 	import { getContext } from '../game/context';
 	import { setBoardCenterY } from '../game/stateGame.svelte';
@@ -15,6 +15,14 @@
 	const turbo       = $derived(stateBet.isTurbo);
 	const autoOn      = $derived(stateBetDerived.hasAutoBetCounter());
 	const bonusActive = $derived(stateBetDerived.activeBetMode()?.type === 'activate');
+	const isAwardedFreeSpin = $derived(stateFreeSpins.activeAllocation !== null);
+	let awardedSpinQueued = $state(false);
+	$effect(() => {
+		if (isAwardedFreeSpin && isIdle && !awardedSpinQueued) {
+			awardedSpinQueued = true;
+			queueMicrotask(() => { awardedSpinQueued = false; context.eventEmitter.broadcast({ type: 'bet' }); });
+		}
+	});
 
 	// Mobile-only: hide the reel/spin bar while the Buy Bonus screen is open — it
 	// has its own bet controls and the bar just gets in the way / overlaps it.
@@ -30,7 +38,12 @@
 	const cSym    = $derived(CURRENCY_SYMBOLS[stateBet.currency] ?? (stateBet.currency ? stateBet.currency + ' ' : '$'));
 	const balance = $derived(cSym + stateBet.balanceAmount.toFixed(2));
 	const bet     = $derived(cSym + stateBet.betAmount.toFixed(2));
-	const win     = $derived(cSym + bookEventAmountToNormalisedAmount(stateBet.winBookEventAmount).toFixed(2));
+	const win     = $derived(
+		cSym + (isAwardedFreeSpin
+			? stateFreeSpins.totalWinnings
+			: bookEventAmountToNormalisedAmount(stateBet.winBookEventAmount)
+		).toFixed(2),
+	);
 
 	// stop-button lock " mirrors ButtonBetProvider.svelte logic from lines app
 	let stopDisabled = $state(false);
@@ -49,6 +62,12 @@
 	let inFreeSpin     = $state(false);
 	let fsCurrentCount = $state(0);
 	let fsTotalCount   = $state(0);
+	const isFreeSpinActive = $derived(inFreeSpin || isAwardedFreeSpin);
+	const freeSpinCount = $derived(
+		isAwardedFreeSpin
+			? `${stateFreeSpins.currentSpin} / ${stateFreeSpins.activeAllocation?.spinCount ?? 0}`
+			: `${fsCurrentCount} / ${fsTotalCount}`,
+	);
 	context.eventEmitter.subscribeOnMount({
 		freeSpinCounterShow:   () => (inFreeSpin = true),
 		freeSpinCounterHide:   () => { inFreeSpin = false; fsCurrentCount = 0; fsTotalCount = 0; },
@@ -63,7 +82,7 @@
 	// Spin / Stop " matches ButtonBetProvider.svelte exactly
 	const spin = () => {
 		context.eventEmitter.broadcast({ type: 'soundPressBet' });
-		if (isIdle && canSpin) {
+		if (isIdle && (canSpin || isAwardedFreeSpin)) {
 			// Clear buy-mode before a normal spin (ButtonBetProvider behaviour)
 			if (stateBetDerived.activeBetMode()?.type === 'buy') stateBet.activeBetModeKey = 'BASE';
 			context.eventEmitter.broadcast({ type: 'boardFramePulse' });
@@ -76,14 +95,14 @@
 
 	// Bet up / down " matches ButtonIncrease / ButtonDecrease
 	const increaseBet = () => {
-		if (!isIdle) return;
+		if (!isIdle || isAwardedFreeSpin) return;
 		context.eventEmitter.broadcast({ type: 'soundPressGeneral' });
 		const opts = [...stateConfig.betAmountOptions].sort((a, b) => a - b);
 		const next = opts.find((o) => o > stateBet.betAmount);
 		if (next !== undefined) stateBetDerived.setBetAmount(next);
 	};
 	const decreaseBet = () => {
-		if (!isIdle) return;
+		if (!isIdle || isAwardedFreeSpin) return;
 		context.eventEmitter.broadcast({ type: 'soundPressGeneral' });
 		const opts = [...stateConfig.betAmountOptions].sort((a, b) => b - a);
 		const prev = opts.find((o) => o < stateBet.betAmount);
@@ -289,23 +308,23 @@
 	<!-- Stake with +/- -->
 	<div class="bc-bet-group">
 		<div class="bc-info">
-			<span class="bc-lbl">Bet</span>
-			<span class="bc-val">{bet}</span>
+			<span class="bc-lbl">{isFreeSpinActive ? 'FREE SPIN' : 'Bet'}</span>
+			<span class="bc-val">{isFreeSpinActive ? freeSpinCount : bet}</span>
 		</div>
-		<div class="bc-chevrons">
+		{#if !isAwardedFreeSpin}<div class="bc-chevrons">
 			<button class="bc-chev" class:bc-hint-up={isIdle && canIncrease} onclick={increaseBet} title="Increase bet">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
 			</button>
 			<button class="bc-chev" class:bc-hint-down={isIdle && canDecrease} onclick={decreaseBet} title="Decrease bet">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
 			</button>
-		</div>
+		</div>{/if}
 	</div>
 
 	<div class="bc-spacer"></div>
 
 	<!-- Spin button -->
-	<button class="bc-spin" onclick={spin} disabled={isIdle ? !canSpin : stopDisabled} title={isIdle ? 'Spin' : 'Stop'}>
+	<button class="bc-spin" onclick={spin} disabled={isIdle ? !(canSpin || isAwardedFreeSpin) : stopDisabled} title={isIdle ? 'Spin' : 'Stop'}>
 		{#if isIdle}
 			<svg style={spinIconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
 		{:else}
@@ -359,7 +378,7 @@
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
 		</button>
 
-		<button class="bcm-spin" onclick={spin} disabled={isIdle ? !canSpin : stopDisabled}>
+		<button class="bcm-spin" onclick={spin} disabled={isIdle ? !(canSpin || isAwardedFreeSpin) : stopDisabled}>
 			{#if isIdle}
 				<svg style={spinIconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
 			{:else}
@@ -425,10 +444,10 @@
 
 		<div class="bcm-spacer"></div>
 
-		{#if inFreeSpin}
+		{#if isFreeSpinActive}
 			<div class="bcm-fs-counter">
 				<span class="bcm-lbl">FREE SPINS</span>
-				<span class="bcm-val">{fsCurrentCount} / {fsTotalCount}</span>
+				<span class="bcm-val">{freeSpinCount}</span>
 			</div>
 		{:else}
 			<div class="bcm-info">

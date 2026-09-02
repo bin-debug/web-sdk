@@ -50,7 +50,7 @@
 					const processed = getProcessed({ key, rawAsset, type, src });
 					return processed;
 				} catch (error) {
-					console.error(error);
+					console.error(`[AssetLoader] Failed to load "${key}":`, error);
 				}
 			}),
 		);

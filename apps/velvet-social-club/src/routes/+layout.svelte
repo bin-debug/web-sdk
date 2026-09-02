@@ -2,7 +2,7 @@
 	import { type Snippet, onMount } from 'svelte';
 	import { GlobalStyle } from 'components-ui-html';
 	import { Authenticate, LoadI18n } from 'components-shared';
-	import { stateModal, stateConfig } from 'state-shared';
+	import { stateModal, stateConfig, stateFreeSpins } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
 	import MissionsDrawer from '../components/MissionsDrawer.svelte';
@@ -44,7 +44,12 @@
 		studioName="Atomic-Labs"
 		tagline="Fortune Favours The Brave"
 		features={introFeatures}
-		ondismiss={() => (introVisible = false)}
+		ondismiss={() => {
+			introVisible = false;
+			if (stateFreeSpins.showAwardPopup) {
+				stateModal.modal = { name: 'freeSpinAward' };
+			}
+		}}
 	/>
 {/if}
 
