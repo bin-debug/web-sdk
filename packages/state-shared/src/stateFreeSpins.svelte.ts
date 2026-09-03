@@ -14,5 +14,8 @@ export const stateFreeSpins = $state({
 	activeAllocation: null as FreeSpinAllocation | null,
 	currentSpin: 0,
 	totalWinnings: 0,
+	// Set when the final awarded spin is received. The game actor promotes this
+	// to a dialog only after the reel and win animations have returned to idle.
+	pendingCompletion: null as { totalWinnings: number; wageringTarget: number } | null,
 	showAwardPopup: false,
 });

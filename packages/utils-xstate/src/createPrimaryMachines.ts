@@ -30,8 +30,9 @@ const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 				stateFreeSpins.currentSpin += 1;
 				if (stateFreeSpins.currentSpin >= stateFreeSpins.activeAllocation.spinCount) {
 					const alloc = stateFreeSpins.activeAllocation;
-					stateModal.modal = {
-						name: 'freeSpinComplete',
+					// Do not cover the final reel result. The game actor publishes this
+					// once it has completed every animation and returned to idle.
+					stateFreeSpins.pendingCompletion = {
 						totalWinnings: stateFreeSpins.totalWinnings,
 						wageringTarget: stateFreeSpins.totalWinnings * alloc.wageringMultiplier,
 					};

@@ -76,6 +76,10 @@
 			if (authenticateData?.freeSpins?.length) {
 				stateFreeSpins.allocations = authenticateData.freeSpins;
 				stateFreeSpins.showAwardPopup = true;
+				// An allocation is only usable once the player explicitly accepts it.
+				// Keeping this alongside authentication ensures every game that uses the
+				// shared flow presents the award instead of falling through to a cash spin.
+				stateModal.modal = { name: 'freeSpinAward' };
 			}
 
 			// round
