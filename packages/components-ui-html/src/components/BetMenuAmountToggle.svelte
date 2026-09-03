@@ -10,7 +10,7 @@
 
 	const { eventEmitter } = getContextEventEmitter<EmitterEventModal>();
 
-	const iconSize = '5.5rem';
+	const iconSize = 'clamp(4.5rem, 13vw, 5.5rem)';
 </script>
 
 <OptionsToggle
@@ -26,7 +26,7 @@
 			<Button data-test="down-button" disabled={disabledDown} onclick={toggleDown}>
 				<BaseIcon width={iconSize} height={iconSize} />
 				<BaseButtonContent>
-					<span style="font-size: 3.5rem;">-</span>
+					<span class="toggle-symbol">−</span>
 				</BaseButtonContent>
 			</Button>
 
@@ -35,7 +35,7 @@
 			<Button data-test="up-button" disabled={disabledUp} onclick={toggleUp}>
 				<BaseIcon width={iconSize} height={iconSize} />
 				<BaseButtonContent>
-					<span style="font-size: 3.5rem;">+</span>
+					<span class="toggle-symbol">+</span>
 				</BaseButtonContent>
 			</Button>
 		</div>
@@ -47,18 +47,24 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem 1.25rem;
+		gap: 0.4rem;
+		padding: 0.4rem 0.6rem;
 		border-radius: 999px;
 		background: rgba(0, 0, 0, 0.45);
 		border: 2px solid rgba(255, 255, 255, 0.25);
 	}
 
 	.amount {
-		font-size: 2.2rem;
+		font-size: clamp(1.65rem, 6.7vw, 2.25rem);
 		font-weight: 800;
-		min-width: 7.5rem;
+		min-width: 7.2rem;
 		text-align: center;
 		letter-spacing: 0.01em;
+	}
+
+	.toggle-symbol {
+		font-size: clamp(2.45rem, 10vw, 3.3rem);
+		font-weight: 500;
+		line-height: 1;
 	}
 </style>

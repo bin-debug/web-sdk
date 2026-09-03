@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="scroll-area">
-		<div class="bonuses-wrap">
+		<div class="bonuses-wrap" class:single-feature={props.maxListLength === 1}>
 			{@render props.bonusCardsActivate()}
 			{@render props.bonusCardsBuy()}
 		</div>
@@ -49,7 +49,7 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.75rem;
-		padding: 1rem 1.25rem 0.75rem;
+		padding: max(1rem, env(safe-area-inset-top, 0px)) 1.25rem 0.85rem;
 	}
 
 	.close-btn {
@@ -73,7 +73,7 @@
 		min-height: 0;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
-		padding: 0.5rem 1.5rem 1rem;
+		padding: 0.75rem 1.5rem 1.5rem;
 		box-sizing: border-box;
 	}
 
@@ -88,5 +88,17 @@
 			min-width: 0;
 			box-sizing: border-box;
 		}
+	}
+
+	.bonuses-wrap.single-feature {
+		grid-template-columns: minmax(0, 640px);
+		grid-auto-rows: auto;
+		justify-content: center;
+		align-content: start;
+		min-height: 0;
+	}
+
+	.bonuses-wrap.single-feature :global(.bonus-card-wrap) {
+		min-height: 0;
 	}
 </style>

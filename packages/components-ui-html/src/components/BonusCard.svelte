@@ -32,20 +32,20 @@
 
 <style lang="scss">
 	.bonus-card-wrap {
-		padding: 1.25rem 1rem;
+		padding: clamp(1.25rem, 3vw, 2rem);
 		flex-direction: column;
 		display: flex;
 		justify-content: space-between;
 
-		border-radius: 14px;
-		background: var(--bc-card-bg, #f7f6f2);
-		border: 1px solid var(--bc-card-border, rgba(0, 0, 0, 0.12));
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-		color: var(--bc-card-text, #14141a);
+		border-radius: 1.25rem;
+		background: linear-gradient(145deg, var(--bonus-surface-highlight, rgba(255, 255, 255, 0.98)), var(--bonus-surface, var(--bc-card-bg, #f7f6f2)));
+		border: 1px solid var(--bonus-border, var(--bc-card-border, rgba(255, 255, 255, 0.72)));
+		box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+		color: var(--bonus-text, var(--bc-card-text, #14141a));
 		text-align: center;
 		width: 100%;
 		box-sizing: border-box;
-		gap: 0.85rem;
+		gap: clamp(0.85rem, 2vw, 1.25rem);
 	}
 
 	.icon {

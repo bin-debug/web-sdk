@@ -2,7 +2,7 @@
 	import { onMount, type Snippet } from 'svelte';
 
 	import { requestAuthenticate, requestReplay } from 'rgs-requests';
-	import { stateUrlDerived, stateBet, stateConfig, stateFreeSpins, stateModal, stateUi } from 'state-shared';
+	import { stateUrlDerived, stateBet, stateConfig, stateFreeSpins, stateModal, stateUi, stateMeta } from 'state-shared';
 	import { API_AMOUNT_MULTIPLIER, MOST_USED_BET_INDEXES } from 'constants-shared/bet';
 
 	type Props = { children: Snippet };
@@ -70,6 +70,26 @@
 				stateConfig.betMenuOptions = stateConfig.betAmountOptions.filter((_, index) =>
 					MOST_USED_BET_INDEXES.includes(index),
 				);
+
+				// The RGS is the source of truth for available modes and their prices.
+				// Retain the game's presentation metadata, but never show a card that
+				// the live game has not registered.
+				const serverModes = authenticateData.config?.betModes ?? {};
+				const reconciledModes = Object.entries(serverModes).reduce<Record<string, any>>(
+					(result, [modeKey, modeConfig]: [string, any]) => {
+						const key = modeKey.toUpperCase();
+						const localMode = stateMeta.betModeMeta[key];
+						if (!localMode) return result;
+						result[key] = {
+							...localMode,
+							mode: modeConfig.mode ?? key,
+							costMultiplier: modeConfig.costMultiplier,
+						};
+						return result;
+					},
+					{},
+				);
+				if (Object.keys(reconciledModes).length > 0) stateMeta.betModeMeta = reconciledModes;
 			}
 
 			// round
