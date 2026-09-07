@@ -33,7 +33,7 @@ const sessionID = () => getUrlSearchParam('sessionID') || '';
 const rgsUrl = () => getUrlSearchParam('rgs_url') || import.meta.env.PUBLIC_RGS_URL || '';
 const operatorId = () => getUrlSearchParam('operator_id') || '';
 const brandId = () => getUrlSearchParam('brand_id') || '';
-const gameId = () => getUrlSearchParam('game_id') || '';
+const gameId = () => getUrlSearchParam('game_id') || import.meta.env.PUBLIC_GAME_ID || '';
 const social = () => getUrlSearchParam('social') === 'true';
 
 // params for replay

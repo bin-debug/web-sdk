@@ -3,6 +3,7 @@ name: Deploy Games to Cloudflare Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -11,24 +12,50 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - app: skull-fiesta-frenzy
+            project: skull-fiesta-frenzy
+            game_id: skull_fiesta_frenzy
+            domain: skull-fiesta-frenzy.atomic-labs.co
+          - app: fruit-pop-frenzy
+            project: fruit-pop-frenzy
+            game_id: fruit_pop_frenzy
+            domain: fruit-pop-frenzy.atomic-labs.co
           - app: amapiano-after-dark
             project: amapiano-after-dark
+            game_id: amapiano_after_dark
+            domain: amapiano-after-dark.atomic-labs.co
           - app: boulder-bash
             project: boulder-bash
+            game_id: boulder_bash
+            domain: boulder-bash.atomic-labs.co
           - app: cheerful-charlie
             project: cheerful-charlie
+            game_id: cheerful_charlie
+            domain: cheerful-charlie.atomic-labs.co
           - app: ke-dezemba
             project: ke-dezemba
+            game_id: ke_dezemba
+            domain: ke-dezemba.atomic-labs.co
           - app: mzansi-magic
             project: mzansi-magic
+            game_id: mzansi_magic
+            domain: mzansi-magic.atomic-labs.co
           - app: pops-and-bangs
             project: pops-and-bangs
+            game_id: pops_and_bangs
+            domain: pops-and-bangs.atomic-labs.co
           - app: shamrocks-and-shenanigans
             project: shamrocks-and-shenanigans
+            game_id: shamrocks_and_shenanigans
+            domain: shamrocks-and-shenanigans.atomic-labs.co
           - app: sugar-pop-cascade
             project: sugar-pop-cascade
+            game_id: sugar_pop_cascade
+            domain: sugar-pop-cascade.atomic-labs.co
           - app: brimstone-bookies
             project: brimstone-bookies
+            game_id: brimstone_bookies
+            domain: brimstone-bookies.atomic-labs.co
 
     steps:
       - uses: actions/checkout@v4
@@ -49,6 +76,7 @@ jobs:
         run: pnpm --filter ${{ matrix.app }} build
         env:
           PUBLIC_RGS_URL: https://website.rgs.atomic-labs.co
+          PUBLIC_GAME_ID: ${{ matrix.game_id }}
 
       - name: Deploy ${{ matrix.app }} to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
@@ -56,3 +84,17 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: pages deploy apps/${{ matrix.app }}/build --project-name ${{ matrix.project }} --commit-dirty=true
+
+      - name: Register custom domain ${{ matrix.domain }}
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ matrix.project }}/domains" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"name\": \"${{ matrix.domain }}\"}")
+          # 200 = added, 409 = already registered — both are fine
+          if [ "$STATUS" != "200" ] && [ "$STATUS" != "409" ]; then
+            echo "Custom domain registration returned HTTP $STATUS"
+            exit 1
+          fi
+          echo "Custom domain ${{ matrix.domain }} is registered (HTTP $STATUS)"
