@@ -6,46 +6,77 @@ on:
   workflow_dispatch:
 
 jobs:
+  # ── Detect what actually changed ─────────────────────────────────────────
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build-matrix.outputs.matrix }}
+      any_games: ${{ steps.build-matrix.outputs.any_games }}
+      deploy_router: ${{ steps.build-matrix.outputs.deploy_router }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Build deploy matrix
+        id: build-matrix
+        run: |
+          # Full game registry — add new games here only
+          declare -A GAME_IDS=(
+            [skull-fiesta-frenzy]=skull_fiesta_frenzy
+            [fruit-pop-frenzy]=fruit_pop_frenzy
+            [amapiano-after-dark]=amapiano_after_dark
+            [boulder-bash]=boulder_bash
+            [cheerful-charlie]=cheerful_charlie
+            [ke-dezemba]=ke_dezemba
+            [mzansi-magic]=mzansi_magic
+            [pops-and-bangs]=pops_and_bangs
+            [shamrocks-and-shenanigans]=shamrocks_and_shenanigans
+            [sugar-pop-cascade]=sugar_pop_cascade
+            [brimstone-bookies]=brimstone_bookies
+          )
+
+          CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "ALL")
+
+          # Force full redeploy on: manual trigger, shared package changes, pixi-svelte changes
+          FORCE_ALL=false
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            FORCE_ALL=true
+          elif echo "$CHANGED" | grep -qE "^packages/|^ALL$"; then
+            FORCE_ALL=true
+          fi
+
+          MATRIX="[]"
+          for slug in "${!GAME_IDS[@]}"; do
+            game_id="${GAME_IDS[$slug]}"
+            if [ "$FORCE_ALL" = "true" ] || echo "$CHANGED" | grep -q "^apps/$slug/"; then
+              MATRIX=$(echo "$MATRIX" | jq \
+                --arg app "$slug" \
+                --arg project "$slug" \
+                --arg game_id "$game_id" \
+                '. + [{"app": $app, "project": $project, "game_id": $game_id}]')
+            fi
+          done
+
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          echo "any_games=$(echo "$MATRIX" | jq 'length > 0')" >> "$GITHUB_OUTPUT"
+
+          # Deploy router if its own files changed, or if any game changed (new game added)
+          ROUTER_CHANGED=false
+          if echo "$CHANGED" | grep -qE "^workers/game-router/|^ALL$"; then
+            ROUTER_CHANGED=true
+          fi
+          echo "deploy_router=$ROUTER_CHANGED" >> "$GITHUB_OUTPUT"
+
+  # ── Build and deploy only the games that changed ─────────────────────────
   deploy-games:
+    needs: detect
+    if: needs.detect.outputs.any_games == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - app: skull-fiesta-frenzy
-            project: skull-fiesta-frenzy
-            game_id: skull_fiesta_frenzy
-          - app: fruit-pop-frenzy
-            project: fruit-pop-frenzy
-            game_id: fruit_pop_frenzy
-          - app: amapiano-after-dark
-            project: amapiano-after-dark
-            game_id: amapiano_after_dark
-          - app: boulder-bash
-            project: boulder-bash
-            game_id: boulder_bash
-          - app: cheerful-charlie
-            project: cheerful-charlie
-            game_id: cheerful_charlie
-          - app: ke-dezemba
-            project: ke-dezemba
-            game_id: ke_dezemba
-          - app: mzansi-magic
-            project: mzansi-magic
-            game_id: mzansi_magic
-          - app: pops-and-bangs
-            project: pops-and-bangs
-            game_id: pops_and_bangs
-          - app: shamrocks-and-shenanigans
-            project: shamrocks-and-shenanigans
-            game_id: shamrocks_and_shenanigans
-          - app: sugar-pop-cascade
-            project: sugar-pop-cascade
-            game_id: sugar_pop_cascade
-          - app: brimstone-bookies
-            project: brimstone-bookies
-            game_id: brimstone_bookies
-
+        include: ${{ fromJson(needs.detect.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -74,9 +105,11 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: pages deploy apps/${{ matrix.app }}/build --project-name ${{ matrix.project }} --commit-dirty=true
 
+  # ── Deploy the router Worker when its code changes ────────────────────────
   deploy-router:
+    needs: detect
+    if: needs.detect.outputs.deploy_router == 'true'
     runs-on: ubuntu-latest
-    needs: deploy-games
     steps:
       - uses: actions/checkout@v4
 
