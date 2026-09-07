@@ -1,0 +1,8 @@
+name = "game-router"
+main = "index.js"
+compatibility_date = "2024-09-23"
+
+routes = [
+  { pattern = "games.atomic-labs.co/*", zone_name = "atomic-labs.co" },
+  { pattern = "games.atomic-labs.co", zone_name = "atomic-labs.co" },
+]
