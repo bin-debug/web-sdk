@@ -58,7 +58,11 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 	winInfo: async (bookEvent: BookEventOfType<'winInfo'>) => {
 		const promise1 = async () => {
 			eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_winlevel_small' });
-			await animateSymbols({ positions: _.flatten(bookEvent.wins.map((win) => win.positions)) });
+			// Deduplicate positions: overlapping clusters share cells; duplicate entries overwrite
+			// oncomplete on the same reelSymbol, leaving the first promise resolver dangling.
+			const allPositions = _.flatten(bookEvent.wins.map((win) => win.positions));
+			const uniquePositions = _.uniqWith(allPositions, _.isEqual);
+			await animateSymbols({ positions: uniquePositions });
 		};
 
 		const promise2 = async () => {

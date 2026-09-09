@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import { waitForResolve } from 'utils-shared/wait';
+	import { waitForResolve, waitForTimeout } from 'utils-shared/wait';
 	import { BoardContext } from 'components-shared';
 
 	import { getContext } from '../game/context';
@@ -34,7 +34,12 @@
 				symbolPositions.map(async (position) => {
 					const reelSymbol = context.stateGame.board[position.reel].reelState.symbols[position.row];
 					reelSymbol.symbolState = 'win';
-					await waitForResolve((resolve) => (reelSymbol.oncomplete = resolve));
+					// Race with a timeout: if the win animation never fires oncomplete (e.g.
+					// a future edge case not caught by deduplication), the game still advances.
+					await Promise.race([
+						waitForResolve((resolve) => (reelSymbol.oncomplete = resolve)),
+						waitForTimeout(1500),
+					]);
 					reelSymbol.symbolState = 'postWinStatic';
 				});
 

@@ -74,8 +74,8 @@
 		<h2>Game Information</h2>
 		<table>
 			<tbody>
-				<tr><td>Game ID</td><td class="id">{(gameMeta as any).gameId ?? ''}</td></tr>
-				{#if gameVersion}<tr><td>Version</td><td class="id">{gameVersion}</td></tr>{/if}
+				<tr><td>Game ID</td><td>{(gameMeta as any).gameId ?? ''}</td></tr>
+				<tr><td>Version</td><td>{(gameMeta as any).version ?? gameVersion}</td></tr>
 				<tr><td>RTP</td><td>{gameMeta.rtp}</td></tr>
 				<tr><td>Maximum Win</td><td>{gameMeta.maxWin} total bet</td></tr>
 				<tr><td>Reels × Rows</td><td>{gameMeta.reels} × {gameMeta.rows}</td></tr>
@@ -126,7 +126,6 @@
 	table { width: 100%; border-collapse: collapse; }
 	td { padding: 1.1rem 0.5rem; border-bottom: 0.1rem solid rgba(255,255,255,.1); font-size: clamp(1.5rem, 5vw, 2rem); }
 	td:last-child { text-align: right; color: #ffe9a0; font-weight: 700; }
-	td.id { color: rgba(255,233,160,0.6); font-size: clamp(1.1rem, 3.8vw, 1.6rem); font-weight: 500; }
 	.fine { font-size: clamp(1.1rem, 3.6vw, 1.45rem); opacity: .68; line-height: 1.5; margin-top: 1.3rem; }
 	.spacer { height: 2rem; }
 </style>
