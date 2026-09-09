@@ -24,14 +24,14 @@
 
 	const context = getContext();
 	const BACKGROUND_RATIO = 920 / 720;
-	const BACKGROUND_WIDTH = SYMBOL_SIZE * BOARD_DIMENSIONS.x;
+	const BACKGROUND_WIDTH = SYMBOL_SIZE * BOARD_DIMENSIONS.y;
 	const BACKGROUND_SIZES = {
 		width: BACKGROUND_WIDTH,
 		height: BACKGROUND_WIDTH / BACKGROUND_RATIO,
 	};
 	const PANEL_SIZES = {
-		width: SYMBOL_SIZE * BOARD_DIMENSIONS.x,
-		height: SYMBOL_SIZE * BOARD_DIMENSIONS.x,
+		width: SYMBOL_SIZE * BOARD_DIMENSIONS.y,
+		height: SYMBOL_SIZE * BOARD_DIMENSIONS.y,
 	};
 
 	let animationName = $state<AnimationName>('intro');

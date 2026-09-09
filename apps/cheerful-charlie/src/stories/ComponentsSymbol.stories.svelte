@@ -23,15 +23,7 @@
 
 	const BASE = 180;
 
-	const SYMBOLS_LEFT = [
-		{ name: 'S' },
-		{ name: 'W' },
-		{ name: 'M', multiplier: 2 },
-		{ name: 'M', multiplier: 4 },
-		{ name: 'M', multiplier: 5 },
-		{ name: 'M', multiplier: 7 },
-		{ name: 'M', multiplier: 10 },
-	];
+	const SYMBOLS_LEFT = [{ name: 'S' }, { name: 'W' }];
 
 	const SYMBOLS_RIGHT = [
 		{ name: 'H1' },

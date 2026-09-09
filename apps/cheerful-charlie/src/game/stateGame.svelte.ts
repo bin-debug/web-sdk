@@ -29,7 +29,7 @@ const onSymbolLand = ({ rawSymbol }: { rawSymbol: RawSymbol }) => {
 		});
 	}
 
-	if (rawSymbol.name === 'M') {
+	if (rawSymbol.name === 'W') {
 		eventEmitter.broadcast({
 			type: 'soundOnce',
 			name: 'sfx_multiplier_landing',

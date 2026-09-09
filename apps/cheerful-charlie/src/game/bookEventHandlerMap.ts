@@ -25,7 +25,7 @@ const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) =>
 
 const winLevelSoundsStop = () => {
 	eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_bigwin_coinloop' });
-	if (stateBet.activeBetModeKey === 'SUPERSPIN' || stateGame.gameType === 'freeSpins') {
+	if (stateBet.activeBetModeKey === 'SUPERSPIN' || stateGame.gameType === 'freegame') {
 		// check if SUPERSPIN, when finishing a bet.
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_freespin' });
 	} else {
@@ -67,8 +67,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 				wins: bookEvent.wins.map((win) => {
 					return {
 						win: win.meta.winWithoutMult,
-						mult: win.meta.globalMult,
-						result: win.meta.winWithoutMult * win.meta.globalMult,
+						mult: win.meta.clusterMult,  // per-cell multiplier accumulated on this cluster
+						result: win.win,              // actual win already includes clusterMult
 						reel: win.meta.overlay.reel,
 						row: win.meta.overlay.row,
 					};
@@ -106,14 +106,10 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 			type: 'freeSpinIntroUpdate',
 			totalFreeSpins: bookEvent.totalFs,
 		});
-		stateGame.gameType = 'freeSpins';
+		stateGame.gameType = 'freegame';
 		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
 		eventEmitter.broadcast({ type: 'boardFrameGlowShow' });
-		eventEmitter.broadcast({ type: 'globalMultiplierShow' });
-		await eventEmitter.broadcastAsync({
-			type: 'globalMultiplierUpdate',
-			multiplier: 1, // resets when multiplier === 1
-		});
+		// globalMultiplier not shown: cluster book uses per-cell clusterMult via updateGrid, not updateGlobalMult
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
 		eventEmitter.broadcast({
 			type: 'freeSpinCounterUpdate',
@@ -123,6 +119,33 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		await eventEmitter.broadcastAsync({ type: 'uiShow' });
 		await eventEmitter.broadcastAsync({ type: 'drawerButtonShow' });
 		eventEmitter.broadcast({ type: 'drawerFold' });
+	},
+	freeSpinRetrigger: async (bookEvent: BookEventOfType<'freeSpinTrigger'>) => {
+		// animate scatters
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_scatter_win_v2' });
+		await animateSymbols({ positions: bookEvent.positions });
+		// show free spin intro
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_superfreespin' });
+		await eventEmitter.broadcastAsync({ type: 'uiHide' });
+		await eventEmitter.broadcastAsync({ type: 'transition' });
+		eventEmitter.broadcast({ type: 'freeSpinIntroShow' });
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'jng_intro_fs' });
+		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_freespin' });
+		await eventEmitter.broadcastAsync({
+			type: 'freeSpinIntroUpdate',
+			totalFreeSpins: bookEvent.totalFs,
+		});
+		stateGame.gameType = 'freegame';
+		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
+		eventEmitter.broadcast({ type: 'boardFrameGlowShow' });
+		// globalMultiplier not shown: cluster book uses per-cell clusterMult via updateGrid, not updateGlobalMult
+		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
+		eventEmitter.broadcast({
+			type: 'freeSpinCounterUpdate',
+			current: undefined,
+			total: bookEvent.totalFs,
+		});
+		await eventEmitter.broadcastAsync({ type: 'uiShow' });
 	},
 	updateFreeSpin: async (bookEvent: BookEventOfType<'updateFreeSpin'>) => {
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
@@ -167,36 +190,6 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		await eventEmitter.broadcastAsync({ type: 'drawerUnfold' });
 		eventEmitter.broadcast({ type: 'drawerButtonHide' });
 	},
-	boardMultiplierInfo: async (bookEvent: BookEventOfType<'boardMultiplierInfo'>) => {
-		eventEmitter.broadcast({ type: 'tumbleWinAmountShow' });
-		await eventEmitter.broadcastAsync({
-			type: 'tumbleWinAmountUpdate',
-			amount: bookEvent.winInfo.tumbleWin,
-			animate: false,
-		});
-		eventEmitter.broadcast({ type: 'multiplierBoardShow' });
-		eventEmitter.broadcast({ type: 'multiplierBoardInit' });
-		eventEmitter.broadcast({ type: 'soundOnce', name: 'tumble_win_4' });
-		await eventEmitter.broadcastAsync({ type: 'multiplierBoardAnimate' });
-		eventEmitter.broadcast({ type: 'boardWithMovingMultiplierTexts' });
-		await eventEmitter.broadcastAsync({ type: 'multiplierBoardMove' });
-		eventEmitter.broadcast({ type: 'multiplierBoardReset' });
-		eventEmitter.broadcast({ type: 'multiplierBoardHide' });
-		eventEmitter.broadcast({ type: 'multiplierTotalShow' });
-		eventEmitter.broadcast({
-			type: 'multiplierTotalUpdate',
-			totalMultiplier: bookEvent.winInfo.boardMult,
-		});
-		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_win' });
-		await eventEmitter.broadcastAsync({ type: 'multiplierTotalAnimate' });
-		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_explosion_a' });
-		eventEmitter.broadcast({ type: 'multiplierTotalHide' });
-		await eventEmitter.broadcastAsync({
-			type: 'tumbleWinAmountUpdate',
-			amount: bookEvent.winInfo.totalWin,
-			animate: true,
-		});
-	},
 	tumbleBoard: async (bookEvent: BookEventOfType<'tumbleBoard'>) => {
 		eventEmitter.broadcast({ type: 'boardHide' });
 		eventEmitter.broadcast({ type: 'tumbleBoardShow' });
@@ -231,7 +224,18 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		winLevelSoundsStop();
 		eventEmitter.broadcast({ type: 'winHide' });
 	},
+	updateGrid: async (bookEvent: BookEventOfType<'updateGrid'>) => {
+		eventEmitter.broadcast({ type: 'multiplierGridShow' });
+		eventEmitter.broadcast({ type: 'multiplierGridUpdate', grid: bookEvent.gridMultipliers });
+	},
+	wincap: async (bookEvent: BookEventOfType<'wincap'>) => {
+		// Max-win cap reached — the RGS has already applied the cap to subsequent win amounts.
+		// Update the displayed total win so the UI reflects the capped amount.
+		stateBet.winBookEventAmount = bookEvent.amount;
+	},
 	finalWin: async (bookEvent: BookEventOfType<'finalWin'>) => {
+		eventEmitter.broadcast({ type: 'multiplierGridClear' });
+		eventEmitter.broadcast({ type: 'multiplierGridHide' });
 		eventEmitter.broadcast({ type: 'globalMultiplierHide' });
 		eventEmitter.broadcast({ type: 'tumbleWinAmountHide' });
 	},

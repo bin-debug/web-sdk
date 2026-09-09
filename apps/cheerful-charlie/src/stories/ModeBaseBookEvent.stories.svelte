@@ -19,7 +19,6 @@
 	import { playBookEvent } from '../game/utils';
 	import events from './data/base_events';
 
-	
 	setContext();
 </script>
 
@@ -61,6 +60,16 @@
 	args={templateArgs({
 		skipLoadingScreen: true,
 		data: events.freeSpinTrigger,
+		action: async (data) => await playBookEvent(data, { bookEvents: [] }),
+	})}
+	{template}
+/>
+
+<Story
+	name="freeSpinRetrigger"
+	args={templateArgs({
+		skipLoadingScreen: true,
+		data: events.freeSpinRetrigger,
 		action: async (data) => await playBookEvent(data, { bookEvents: [] }),
 	})}
 	{template}
@@ -117,13 +126,12 @@
 />
 
 <Story
-	name="boardMultiplierInfo"
+	name="updateGrid"
 	args={templateArgs({
 		skipLoadingScreen: true,
-		data: events.boardMultiplierInfo,
+		data: events.updateGrid,
 		action: async (data) => await playBookEvent(data, { bookEvents: [] }),
 	})}
-	{template}
 />
 
 <Story

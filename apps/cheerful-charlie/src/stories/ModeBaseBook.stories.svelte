@@ -20,7 +20,6 @@
 	import { playBet } from '../game/utils';
 	import books from './data/base_books';
 
-	
 	setContext();
 </script>
 

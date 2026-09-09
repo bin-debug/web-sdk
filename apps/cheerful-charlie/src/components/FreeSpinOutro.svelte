@@ -82,7 +82,7 @@
 							/>
 							<SpineSlot slotName="slot_number">
 								<ResponsiveBitmapText
-									anchor={0.5}
+									anchor={{ x: 0.5, y: 0.5 }}
 									style={{
 										fontFamily: 'gold',
 										fontSize: sizes.width * 0.15,
@@ -94,6 +94,7 @@
 						</SpineProvider>
 
 						<Sprite
+							y={0}
 							anchor={{ x: 0.5, y: isBigWin ? -3.2 : -2 }}
 							width={177 * (isBigWin ? 2.2 : 3)}
 							height={42 * (isBigWin ? 2.2 : 3)}

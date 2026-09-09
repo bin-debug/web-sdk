@@ -8,8 +8,7 @@
 		| {
 				type: 'boardWithAnimateSymbols';
 				symbolPositions: Position[];
-		  }
-		| { type: 'boardWithMovingMultiplierTexts' };
+		  };
 </script>
 
 <script lang="ts">
@@ -40,18 +39,6 @@
 				});
 
 			await Promise.all(getPromises());
-		},
-		boardWithMovingMultiplierTexts: () => {
-			context.stateGame.board.forEach((reel) => {
-				reel.reelState.symbols.forEach((reelSymbol) => {
-					if (reelSymbol.rawSymbol.name === 'M') {
-						reelSymbol.rawSymbol = {
-							...reelSymbol.rawSymbol,
-							name: 'M_TAKEN', // TODO fix type error
-						};
-					}
-				});
-			});
 		},
 	});
 

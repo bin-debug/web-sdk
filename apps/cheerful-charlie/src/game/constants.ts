@@ -2,65 +2,214 @@ import _ from 'lodash';
 
 import type { RawSymbol, SymbolState } from './types';
 
-export const SYMBOL_SIZE = 118;
+export const SYMBOL_SIZE = 80;
 
 export const REEL_PADDING = 0.53;
 
 // initial board (padded top and bottom)
 export const INITIAL_BOARD: RawSymbol[][] = [
 	[
-		{ name: 'M', multiplier: 10 },
-		{ name: 'H1' },
-		{ name: 'M', multiplier: 2 },
-		{ name: 'L1' },
-		{ name: 'H1' },
-		{ name: 'H4' },
-		{ name: 'H1' },
+		{
+			name: 'L1',
+		},
+		{
+			name: 'H1',
+		},
+		{
+			name: 'L1',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'H3',
+		},
 	],
 	[
-		{ name: 'L3' },
-		{ name: 'H2' },
-		{ name: 'M', multiplier: 4 },
-		{ name: 'L2' },
-		{ name: 'S', scatter: true },
-		{ name: 'S', scatter: true },
-		{ name: 'L2' },
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'H2',
+		},
 	],
 	[
-		{ name: 'L2' },
-		{ name: 'H3' },
-		{ name: 'M', multiplier: 5 },
-		{ name: 'L3' },
-		{ name: 'W' },
-		{ name: 'L2' },
-		{ name: 'L2' },
+		{
+			name: 'L3',
+		},
+		{
+			name: 'H3',
+		},
+		{
+			name: 'L1',
+		},
+		{
+			name: 'L1',
+		},
+		{
+			name: 'H4',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'H4',
+		},
+		{
+			name: 'H4',
+		},
+		{
+			name: 'H2',
+		},
 	],
 	[
-		{ name: 'L3' },
-		{ name: 'H4' },
-		{ name: 'M', multiplier: 7 },
-		{ name: 'L4' },
-		{ name: 'W' },
-		{ name: 'H1' },
-		{ name: 'H1' },
+		{
+			name: 'H4',
+		},
+		{
+			name: 'L1',
+		},
+		{
+			name: 'H2',
+		},
+		{
+			name: 'H2',
+		},
+		{
+			name: 'H4',
+		},
+		{
+			name: 'H2',
+		},
+		{
+			name: 'H2',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'L3',
+		},
 	],
 	[
-		{ name: 'H3' },
-		{ name: 'H4' },
-		{ name: 'M', multiplier: 10 },
-		{ name: 'H2' },
-		{ name: 'S', scatter: true },
-		{ name: 'L2' },
-		{ name: 'M', multiplier: 7 },
+		{
+			name: 'L1',
+		},
+		{
+			name: 'L1',
+		},
+		{
+			name: 'H3',
+		},
+		{
+			name: 'H1',
+		},
+		{
+			name: 'H1',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'L3',
+		},
 	],
 	[
-		{ name: 'H2' },
-		{ name: 'H2' },
-		{ name: 'S', scatter: true },
-		{ name: 'L3' },
-		{ name: 'H1' },
-		{ name: 'S', scatter: true },
-		{ name: 'L2' },
+		{
+			name: 'L1',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'L2',
+		},
+		{
+			name: 'H1',
+		},
+		{
+			name: 'H4',
+		},
+		{
+			name: 'H4',
+		},
+		{
+			name: 'H2',
+		},
+		{
+			name: 'H3',
+		},
+		{
+			name: 'H2',
+		},
+	],
+	[
+		{
+			name: 'L3',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'H3',
+		},
+		{
+			name: 'H1',
+		},
+		{
+			name: 'L3',
+		},
+		{
+			name: 'H3',
+		},
+		{
+			name: 'H3',
+		},
+		{
+			name: 'H2',
+		},
 	],
 ];
 
@@ -173,97 +322,6 @@ const m10Static = { type: 'sprite', assetKey: 'm3_10x.png', sizeRatios: { width:
 
 const wSizeRatios = { width: 1.5 * 0.9, height: SPECIAL_SYMBOL_SIZE * 1.15 };
 const sSizeRatios = { width: 2.5, height: SPECIAL_SYMBOL_SIZE * 2.3 };
-
-const backgroundLowStatic = {
-	type: 'spine',
-	assetKey: 'M',
-	animationName: 'low_multiplier_static',
-	sizeRatios: { width: M_SIZE, height: M_SIZE },
-};
-const backgroundMidStatic = {
-	type: 'spine',
-	assetKey: 'M',
-	animationName: 'mid_multiplier_static',
-	sizeRatios: { width: M_SIZE, height: M_SIZE },
-};
-const backgroundHighStatic = {
-	type: 'spine',
-	assetKey: 'M',
-	animationName: 'high_multiplier_static',
-	sizeRatios: { width: M_SIZE, height: M_SIZE },
-};
-
-const backgroundLow = {
-	explosion,
-	win: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'low_multiplier_pay',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-	postWinStatic: backgroundLowStatic,
-	static: backgroundLowStatic,
-	spin: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'low_multiplier_static',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-	land: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'low_multiplier_land',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-};
-
-const backgroundMid = {
-	explosion,
-	win: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'mid_multiplier_pay',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-	postWinStatic: backgroundMidStatic,
-	static: backgroundMidStatic,
-	spin: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'mid_multiplier_static',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-	land: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'mid_multiplier_land',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-};
-
-const backgroundHigh = {
-	explosion,
-	win: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'high_multiplier_pay',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-	postWinStatic: backgroundHighStatic,
-	static: backgroundHighStatic,
-	spin: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'high_multiplier_static',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-	land: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'high_multiplier_land',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
-};
 
 export const SYMBOL_INFO_MAP = {
 	H1: {
@@ -418,110 +476,7 @@ export const SYMBOL_INFO_MAP = {
 			sizeRatios: sSizeRatios,
 		},
 	},
-	M_2: {
-		explosion,
-		postWinStatic: m2Static,
-		static: m2Static,
-		spin: m2Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '2x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '2x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-	},
-	M_4: {
-		explosion,
-		postWinStatic: m4Static,
-		static: m4Static,
-		spin: m4Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '4x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '4x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-	},
-	M_5: {
-		explosion,
-		postWinStatic: m5Static,
-		static: m5Static,
-		spin: m5Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '5x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '5x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-	},
-	M_7: {
-		explosion,
-		postWinStatic: m7Static,
-		static: m7Static,
-		spin: m7Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '7x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '7x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-	},
-	M_10: {
-		explosion,
-		postWinStatic: m10Static,
-		static: m10Static,
-		spin: m10Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '10x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '10x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-	},
-	M_TAKEN_2: backgroundLow,
-	M_TAKEN_4: backgroundLow,
-	M_TAKEN_5: backgroundMid,
-	M_TAKEN_7: backgroundMid,
-	M_TAKEN_10: backgroundHigh,
 } as const;
-
-export const MULTIPLIER_BACKGROUND_INFO_MAP = {
-	M_2: backgroundLow,
-	M_4: backgroundLow,
-	M_5: backgroundMid,
-	M_7: backgroundMid,
-	M_10: backgroundHigh,
-};
 
 export const SCATTER_LAND_SOUND_MAP = {
 	1: 'sfx_scatter_stop_1',

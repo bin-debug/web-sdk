@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { stateBet, stateConfig, stateBetDerived, stateModal, stateUi, stateSound } from 'state-shared';
+	import { stateBet, stateConfig, stateBetDerived, stateFreeSpins, stateModal, stateUi, stateSound } from 'state-shared';
 	import { bookEventAmountToNormalisedAmount } from 'utils-shared/amount';
 	import { getContext } from '../game/context';
 	import { setBoardCenterY } from '../game/stateGame.svelte';
@@ -15,11 +15,14 @@
 	const turbo       = $derived(stateBet.isTurbo);
 	const autoOn      = $derived(stateBetDerived.hasAutoBetCounter());
 	const bonusActive = $derived(stateBetDerived.activeBetMode()?.type === 'activate');
-
-	// Feature visibility — driven by jurisdiction flags from the RGS authenticate response
-	const turboVisible    = $derived(!stateConfig.jurisdiction.disabledTurbo);
-	const buyBonusVisible = $derived(!stateConfig.jurisdiction.disabledBuyFeature);
-	const autoplayVisible = $derived(!stateConfig.jurisdiction.disabledAutoplay);
+	const isAwardedFreeSpin = $derived(stateFreeSpins.activeAllocation !== null);
+	let awardedSpinQueued = $state(false);
+	$effect(() => {
+		if (isAwardedFreeSpin && isIdle && !awardedSpinQueued) {
+			awardedSpinQueued = true;
+			queueMicrotask(() => { awardedSpinQueued = false; context.eventEmitter.broadcast({ type: 'bet' }); });
+		}
+	});
 
 	// Mobile-only: hide the reel/spin bar while the Buy Bonus screen is open — it
 	// has its own bet controls and the bar just gets in the way / overlaps it.
@@ -68,7 +71,7 @@
 	// Spin / Stop " matches ButtonBetProvider.svelte exactly
 	const spin = () => {
 		context.eventEmitter.broadcast({ type: 'soundPressBet' });
-		if (isIdle && canSpin) {
+		if (isIdle && (canSpin || isAwardedFreeSpin)) {
 			// Clear buy-mode before a normal spin (ButtonBetProvider behaviour)
 			if (stateBetDerived.activeBetMode()?.type === 'buy') stateBet.activeBetModeKey = 'BASE';
 			context.eventEmitter.broadcast({ type: 'boardFramePulse' });
@@ -81,14 +84,14 @@
 
 	// Bet up / down " matches ButtonIncrease / ButtonDecrease
 	const increaseBet = () => {
-		if (!isIdle) return;
+		if (!isIdle || isAwardedFreeSpin) return;
 		context.eventEmitter.broadcast({ type: 'soundPressGeneral' });
 		const opts = [...stateConfig.betAmountOptions].sort((a, b) => a - b);
 		const next = opts.find((o) => o > stateBet.betAmount);
 		if (next !== undefined) stateBetDerived.setBetAmount(next);
 	};
 	const decreaseBet = () => {
-		if (!isIdle) return;
+		if (!isIdle || isAwardedFreeSpin) return;
 		context.eventEmitter.broadcast({ type: 'soundPressGeneral' });
 		const opts = [...stateConfig.betAmountOptions].sort((a, b) => b - a);
 		const prev = opts.find((o) => o < stateBet.betAmount);
@@ -265,7 +268,7 @@
 	</div>
 
 	<!-- Buy Bonus -->
-	{#if buyBonusVisible}
+	{#if !stateConfig.jurisdiction.disabledBuyFeature}
 	<button class="bc-btn bc-bonus" class:bc-active={bonusActive} onclick={toggleBuyBonus} title={bonusActive ? 'Disable Bonus' : 'Buy Bonus'} disabled={!isIdle}>
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 			<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -294,23 +297,23 @@
 	<!-- Stake with +/- -->
 	<div class="bc-bet-group">
 		<div class="bc-info">
-			<span class="bc-lbl">Bet</span>
-			<span class="bc-val">{bet}</span>
+			<span class="bc-lbl">{isAwardedFreeSpin ? 'FREE SPIN' : 'Bet'}</span>
+			<span class="bc-val">{isAwardedFreeSpin ? `${stateFreeSpins.currentSpin} / ${stateFreeSpins.activeAllocation?.spinCount}` : bet}</span>
 		</div>
-		<div class="bc-chevrons">
+		{#if !isAwardedFreeSpin}<div class="bc-chevrons">
 			<button class="bc-chev" class:bc-hint-up={isIdle && canIncrease} onclick={increaseBet} title="Increase bet">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
 			</button>
 			<button class="bc-chev" class:bc-hint-down={isIdle && canDecrease} onclick={decreaseBet} title="Decrease bet">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
 			</button>
-		</div>
+		</div>{/if}
 	</div>
 
 	<div class="bc-spacer"></div>
 
 	<!-- Spin button -->
-	<button class="bc-spin" onclick={spin} disabled={isIdle ? !canSpin : stopDisabled} title={isIdle ? 'Spin' : 'Stop'}>
+	<button class="bc-spin" onclick={spin} disabled={isIdle ? !(canSpin || isAwardedFreeSpin) : stopDisabled} title={isIdle ? 'Spin' : 'Stop'}>
 		{#if isIdle}
 			<svg style={spinIconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
 		{:else}
@@ -321,7 +324,7 @@
 	<div class="bc-spacer"></div>
 
 	<!-- Repeat / Autoplay -->
-	{#if autoplayVisible}
+	{#if !stateConfig.jurisdiction.disabledAutoplay}
 	<button class="bc-btn bc-repeat" class:bc-active={autoOn} onclick={toggleAutoplay} title="Repeat Bet">
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 			<path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"/>
@@ -331,13 +334,14 @@
 	{/if}
 
 	<!-- Turbo (last) -->
-	{#if turboVisible}
+	{#if !stateConfig.jurisdiction.disabledTurbo}
 	<button class="bc-btn bc-turbo" class:bc-active={turbo} onclick={toggleTurbo} title="Turbo">
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 			<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
 			<path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"/>
 		</svg>
 	</button>
+	{/if}
 
 </div>
 {/if}
@@ -350,7 +354,7 @@
 
 	<!-- Row 1: Repeat | ' | SPIN | + | Turbo -->
 	<div class="bcm-row1">
-		{#if autoplayVisible}
+		{#if !stateConfig.jurisdiction.disabledAutoplay}
 		<button class="bcm-ibtn bc-repeat" class:bc-active={autoOn} onclick={toggleAutoplay} title="Repeat Bet">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"/>
@@ -363,7 +367,7 @@
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
 		</button>
 
-		<button class="bcm-spin" onclick={spin} disabled={isIdle ? !canSpin : stopDisabled}>
+		<button class="bcm-spin" onclick={spin} disabled={isIdle ? !(canSpin || isAwardedFreeSpin) : stopDisabled}>
 			{#if isIdle}
 				<svg style={spinIconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
 			{:else}
@@ -375,12 +379,13 @@
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
 		</button>
 
-		{#if turboVisible}
+		{#if !stateConfig.jurisdiction.disabledTurbo}
 		<button class="bcm-ibtn bc-turbo" class:bc-active={turbo} onclick={toggleTurbo} title="Turbo">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"/>
 			</svg>
 		</button>
+		{/if}
 	</div>
 
 	<!-- Row 2: Menu | Buy Bonus | Balance | Win | Stake -->
@@ -402,6 +407,7 @@
 			{/if}
 		</div>
 
+		{#if !stateConfig.jurisdiction.disabledBuyFeature}
 		<button class="bcm-btn bcm-bonus bc-bonus" class:bc-active={bonusActive} onclick={toggleBuyBonus} title={bonusActive ? 'Disable Bonus' : 'Buy Bonus'} disabled={!isIdle}>
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -411,6 +417,7 @@
 				<path d="M16.5 8a2.5 2.5 0 0 0 0 -5a4.8 8 0 0 0 -4.5 5"/>
 			</svg>
 		</button>
+		{/if}
 
 		<div class="bcm-info">
 			<span class="bcm-lbl">Balance</span>
@@ -426,10 +433,10 @@
 
 		<div class="bcm-spacer"></div>
 
-		{#if inFreeSpin}
+		{#if inFreeSpin || isAwardedFreeSpin}
 			<div class="bcm-fs-counter">
 				<span class="bcm-lbl">FREE SPINS</span>
-				<span class="bcm-val">{fsCurrentCount} / {fsTotalCount}</span>
+				<span class="bcm-val">{isAwardedFreeSpin ? `${stateFreeSpins.currentSpin} / ${stateFreeSpins.activeAllocation?.spinCount}` : `${fsCurrentCount} / ${fsTotalCount}`}</span>
 			</div>
 		{:else}
 			<div class="bcm-info">
@@ -485,7 +492,6 @@
 	</button>
 
 	<!-- Turbo -->
-	{#if turboVisible}
 	<button class="bc-mrow" onclick={menuToggleTurbo}>
 		<span class="bc-micon">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -495,7 +501,6 @@
 		<span class="bc-mlabel">TURBO</span>
 		<span class="bc-mbadge" class:bc-mbadge--on={turbo}>{turbo ? 'ON' : 'OFF'}</span>
 	</button>
-	{/if}
 
 	<!-- Home -->
 	<button class="bc-mrow bc-mrow--home" onclick={menuHome}>

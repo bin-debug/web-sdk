@@ -5,6 +5,7 @@
 	import { stateModal, stateConfig } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
+	import FreeSpinAwardPopup from '../components/FreeSpinAwardPopup.svelte';
 	import MissionsDrawer from '../components/MissionsDrawer.svelte';
 	import { setContext } from '../game/context';
 	import messagesMap from '../i18n/messagesMap';
@@ -13,7 +14,8 @@
 	const props: Props = $props();
 
 	let introVisible = $state(true);
-	const introFeatures = [{"icon":"💥","image":"/assets/features/feature1.png","title":"Tumbling Reels","subtitle":"Winning symbols vanish — new ones drop in for more wins"},{"icon":"🎁","image":"/assets/features/feature2.png","title":"Free Spins","subtitle":"Land Scatters across the reels to trigger the bonus"},{"icon":"💰","image":"/assets/features/feature3.png","title":"5,000× Max Win","subtitle":"Chase the biggest payout"}];
+	const introFeatures = [{"icon":"🪨","image":"/assets/features/feature1.png","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win big"},{"icon":"🎁","image":"/assets/features/feature2.png","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"💰","image":"/assets/features/feature3.png","title":"2,500× Max Win","subtitle":"Chase the ultimate top prize"}];
+	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');
 	onMount(() => {
 		const tick = () => { const n = new Date(); timeStr = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0'); };
@@ -32,6 +34,7 @@
 	<Authenticate>
 		<LoadI18n {messagesMap}>
 			<Game />
+			<FreeSpinAwardPopup />
 		</LoadI18n>
 	</Authenticate>
 </GlobalStyle>
@@ -41,7 +44,7 @@
 		logoUrl="/assets/sprites/game/logo.png"
 		bgUrl="/assets/sprites/game/bg-mobile.png"
 		studioName="Atomic-Labs"
-		tagline="Fortune Favors the Brave"
+		tagline="Fortune Favours The Brave"
 		features={introFeatures}
 		ondismiss={() => (introVisible = false)}
 	/>
@@ -49,21 +52,20 @@
 
 {@render props.children()}
 
-{#if !introVisible && !bonusModalOpen && !stateConfig.jurisdiction.disabledNoticeBar && stateConfig.noticeBarContent}
+{#if !introVisible && tickerItems.length && !bonusModalOpen && !stateConfig.jurisdiction.disabledNoticeBar}
 	<div class="ticker">
 		<div class="ticker__viewport">
 			<div class="ticker__track">
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				{@html stateConfig.noticeBarContent}
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				{@html stateConfig.noticeBarContent}
+				{#each [0, 1] as _dup}
+					{#each tickerItems as msg}<span class="ticker__item">{msg}</span><span class="ticker__sep">✦</span>{/each}
+				{/each}
 			</div>
 		</div>
 	</div>
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<div class="top-bar" style:top={(!stateConfig.jurisdiction.disabledNoticeBar && stateConfig.noticeBarContent) ? '30px' : '0'}>
+	<div class="top-bar" class:top-bar--no-ticker={stateConfig.jurisdiction.disabledNoticeBar}>
 		<div class="tb-left">
 			<span class="tb-time">{timeStr}</span>
 			<span class="tb-name">Cheerful Charlie</span>
@@ -92,7 +94,8 @@
 	.ticker__item { color: #ffe9a0; font-size: 13px; font-weight: 600; padding: 0 6px; }
 	.ticker__sep { color: rgba(245,197,24,.65); font-size: 11px; padding: 0 4px; }
 	@keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-	.top-bar { position: fixed; left: 0; right: 0; height: 26px; transition: top 0.15s ease; z-index: 90;
+	.top-bar--no-ticker { top: 0 !important; }
+	.top-bar { position: fixed; left: 0; right: 0; top: 30px; height: 26px; z-index: 90;
 		display: flex; align-items: center; justify-content: space-between; padding: 0 12px; pointer-events: none;
 		background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }

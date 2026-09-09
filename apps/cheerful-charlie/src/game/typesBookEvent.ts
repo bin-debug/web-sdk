@@ -67,19 +67,6 @@ type BookEventFreeSpinEnd = {
 	winLevel: number;
 };
 
-type BookEventBoardMultiplierInfo = {
-	index: number;
-	type: 'boardMultiplierInfo';
-	multInfo: {
-		positions: (Position & { multiplier: number })[];
-	};
-	winInfo: {
-		tumbleWin: 400;
-		boardMult: 5;
-		totalWin: 2000;
-	};
-};
-
 type BookEventTumbleBoard = {
 	index: number;
 	type: 'tumbleBoard';
@@ -100,6 +87,26 @@ type BookEventSetWin = {
 	winLevel: number;
 };
 
+// new
+type BookEventUpdateGrid = {
+	index: number;
+	type: 'updateGrid';
+	gridMultipliers: number[][];
+};
+
+type BookEventWinCap = {
+	index: number;
+	type: 'wincap';
+	amount: number;
+};
+
+type BookEventFreeSpinRetrigger = {
+	index: number;
+	type: 'freeSpinRetrigger';
+	totalFs: number;
+	positions: Position[];
+};
+
 // customised
 type BookEventCreateBonusSnapshot = {
 	index: number;
@@ -110,7 +117,6 @@ type BookEventCreateBonusSnapshot = {
 export type BookEvent =
 	| BookEventReveal
 	| BookEventWinInfo
-	| BookEventBoardMultiplierInfo
 	| BookEventSetTumbleWin
 	| BookEventSetTotalWin
 	| BookEventFreeSpinTrigger
@@ -121,6 +127,10 @@ export type BookEvent =
 	| BookEventFinalWin
 	| BookEventSetWin
 	| BookEventFreeSpinEnd
+	// new
+	| BookEventUpdateGrid
+	| BookEventFreeSpinRetrigger
+	| BookEventWinCap
 	// customised
 	| BookEventCreateBonusSnapshot;
 
