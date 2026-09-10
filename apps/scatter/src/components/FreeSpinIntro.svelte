@@ -22,6 +22,7 @@
 
 	let show = $state(false);
 	let animationName = $state<AnimationName>('intro');
+	const playIdleLoop = $derived(stateUrlDerived.device() !== 'mobile');
 	let freeSpinsFromEvent = $state(0);
 	let oncomplete = $state(() => {});
 
@@ -55,9 +56,9 @@
 				<SpineTrack
 					trackIndex={0}
 					{animationName}
-					loop={animationName === 'idle'}
+					loop={animationName === 'idle' && playIdleLoop}
 					listener={{
-						complete: () => (animationName = 'idle'),
+						complete: () => { if (playIdleLoop) animationName = 'idle'; },
 					}}
 				/>
 				<SpineSlot slotName="slot_number">

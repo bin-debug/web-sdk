@@ -27,6 +27,7 @@
 
 	let show = $state(true);
 	let animationName = $state<AnimationName>('intro');
+	const playIdleLoop = $derived(stateUrlDerived.device() !== 'mobile');
 	let amount = $state(0);
 	let winLevelData = $state<WinLevelData>();
 	let oncomplete = $state(() => {});
@@ -75,9 +76,9 @@
 							<SpineTrack
 								trackIndex={0}
 								{animationName}
-								loop={animationName === 'idle'}
+								loop={animationName === 'idle' && playIdleLoop}
 								listener={{
-									complete: () => (animationName = 'idle'),
+									complete: () => { if (playIdleLoop) animationName = 'idle'; },
 								}}
 							/>
 							<SpineSlot slotName="slot_number">
@@ -103,7 +104,9 @@
 					{/snippet}
 				</FreeSpinAnimation>
 
-				<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />
+				{#if stateUrlDerived.device() !== 'mobile'}
+					<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />
+				{/if}
 
 				<PressToContinue onpress={() => (countUpCompleted ? oncomplete() : finishCountUp())} />
 			{/snippet}
