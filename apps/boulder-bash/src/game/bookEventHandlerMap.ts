@@ -229,7 +229,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'multiplierGridUpdate', grid: bookEvent.gridMultipliers });
 	},
 	wincap: async (bookEvent: BookEventOfType<'wincap'>) => {
-		// Max-win cap reached — apply the capped amount to the displayed total win.
+		// Max-win cap reached — the RGS has already applied the cap to subsequent win amounts.
+		// Update the displayed total win so the UI reflects the capped amount.
 		stateBet.winBookEventAmount = bookEvent.amount;
 	},
 	finalWin: async (bookEvent: BookEventOfType<'finalWin'>) => {

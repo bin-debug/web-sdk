@@ -1,27 +1,27 @@
 export default {
 	bgDesktop: {
 		type: 'sprite' as const,
-		src: new URL('../../assets/sprites/game/bg-desktop.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/game/bg-desktop.webp', import.meta.url).href,
 		preload: true,
 	},
 	bgMobile: {
 		type: 'sprite' as const,
-		src: new URL('../../assets/sprites/game/bg-mobile.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/game/bg-mobile.webp', import.meta.url).href,
 		preload: true,
 	},
 	reelFrame: {
 		type: 'sprite' as const,
-		src: new URL('../../assets/sprites/game/frame.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/game/frame.webp', import.meta.url).href,
 		preload: true,
 	},
 	bgFrame: {
 		type: 'sprite' as const,
-		src: new URL('../../assets/sprites/game/bg-frame.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/game/bg-frame.webp', import.meta.url).href,
 		preload: true,
 	},
 	gameLogo: {
 		type: 'sprite' as const,
-		src: new URL('../../assets/sprites/game/logo.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/game/logo.webp', import.meta.url).href,
 		preload: true,
 	},
 	loader: {

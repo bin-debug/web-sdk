@@ -180,7 +180,7 @@
         "h": 80
       }
     },
-    "explodedW.png": {
+    "s.png": {
       "frame": {
         "x": 320,
         "y": 80,
@@ -199,34 +199,14 @@
         "w": 80,
         "h": 80
       }
-    },
-    "s.png": {
-      "frame": {
-        "x": 0,
-        "y": 160,
-        "w": 80,
-        "h": 80
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 80,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      }
     }
   },
   "meta": {
-    "image": "symbolsStatic.png",
+    "image": "symbolsStatic.webp",
     "format": "RGBA8888",
     "size": {
       "w": 400,
-      "h": 240
+      "h": 160
     },
     "scale": "1"
   }
