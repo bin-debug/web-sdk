@@ -30,8 +30,14 @@
 		boardShow: () => (show = true),
 		boardHide: () => (show = false),
 		boardWithAnimateSymbols: async ({ symbolPositions }) => {
+			// Winning clusters can overlap on Wilds. A cell must only receive one
+			// animation promise, otherwise a duplicate position replaces its
+			// completion callback and leaves the original promise pending.
+			const uniqueSymbolPositions = Array.from(
+				new Map(symbolPositions.map((position) => [`${position.reel}:${position.row}`, position])).values(),
+			);
 			const getPromises = () =>
-				symbolPositions.map(async (position) => {
+				uniqueSymbolPositions.map(async (position) => {
 					const reelSymbol = context.stateGame.board[position.reel].reelState.symbols[position.row];
 					reelSymbol.symbolState = 'win';
 					await waitForResolve((resolve) => (reelSymbol.oncomplete = resolve));
