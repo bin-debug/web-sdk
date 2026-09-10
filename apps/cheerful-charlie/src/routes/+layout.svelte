@@ -41,8 +41,8 @@
 
 {#if introVisible}
 	<IntroOverlay
-		logoUrl="/assets/sprites/game/logo.png"
-		bgUrl="/assets/sprites/game/bg-mobile.png"
+		logoUrl="/assets/sprites/game/logo.webp"
+		bgUrl="/assets/sprites/game/bg-mobile.webp"
 		studioName="Atomic-Labs"
 		tagline="Fortune Favours The Brave"
 		features={introFeatures}
@@ -79,7 +79,7 @@
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<img class="game-logo" src="/assets/sprites/game/logo.png" alt="Cheerful Charlie" />
+	<img class="game-logo" src="/assets/sprites/game/logo.webp" alt="Cheerful Charlie" />
 {/if}
 
 <style>

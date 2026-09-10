@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import { waitForResolve, waitForTimeout } from 'utils-shared/wait';
+	import { waitForResolve } from 'utils-shared/wait';
 	import { BoardContext } from 'components-shared';
 
 	import { getContext } from '../game/context';
@@ -30,16 +30,17 @@
 		boardShow: () => (show = true),
 		boardHide: () => (show = false),
 		boardWithAnimateSymbols: async ({ symbolPositions }) => {
+			// Winning clusters can overlap on Wilds. A cell must only receive one
+			// animation promise, otherwise a duplicate position replaces its
+			// completion callback and leaves the original promise pending.
+			const uniqueSymbolPositions = Array.from(
+				new Map(symbolPositions.map((position) => [`${position.reel}:${position.row}`, position])).values(),
+			);
 			const getPromises = () =>
-				symbolPositions.map(async (position) => {
+				uniqueSymbolPositions.map(async (position) => {
 					const reelSymbol = context.stateGame.board[position.reel].reelState.symbols[position.row];
 					reelSymbol.symbolState = 'win';
-					// Race with a timeout: if the win animation never fires oncomplete (e.g.
-					// a future edge case not caught by deduplication), the game still advances.
-					await Promise.race([
-						waitForResolve((resolve) => (reelSymbol.oncomplete = resolve)),
-						waitForTimeout(1500),
-					]);
+					await waitForResolve((resolve) => (reelSymbol.oncomplete = resolve));
 					reelSymbol.symbolState = 'postWinStatic';
 				});
 

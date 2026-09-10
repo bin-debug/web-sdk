@@ -34,6 +34,7 @@ const rgsUrl = () => getUrlSearchParam('rgs_url') || import.meta.env.PUBLIC_RGS_
 const operatorId = () => getUrlSearchParam('operator_id') || '';
 const brandId = () => getUrlSearchParam('brand_id') || '';
 const gameId = () => getUrlSearchParam('game_id') || import.meta.env.PUBLIC_GAME_ID || '';
+const device = () => getUrlSearchParam('device') || '';
 const social = () => getUrlSearchParam('social') === 'true';
 
 // params for replay
@@ -52,6 +53,7 @@ export const stateUrlDerived = {
 	operatorId,
 	brandId,
 	gameId,
+	device,
 	social,
 	// states for replay
 	replay,

@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { waitForResolve, waitForTimeout } from 'utils-shared/wait';
+	import { waitForResolve } from 'utils-shared/wait';
 
 	import BoardContainer from './BoardContainer.svelte';
 	import { getContext } from '../game/context';
@@ -22,10 +22,7 @@
 			wins = emitterEvent.wins.map((rawWin) => ({ ...rawWin, oncomplete: () => {} }));
 			const gerPromises = () =>
 				wins.map(async (win) => {
-					await Promise.race([
-						waitForResolve((resolve) => (win.oncomplete = resolve)),
-						waitForTimeout(3500),
-					]);
+					await waitForResolve((resolve) => (win.oncomplete = resolve));
 				});
 			await Promise.all(gerPromises());
 			wins = [];

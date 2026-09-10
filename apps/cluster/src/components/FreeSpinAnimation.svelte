@@ -10,6 +10,7 @@
 		type Sizes,
 	} from 'pixi-svelte';
 	import { MainContainer } from 'components-layout';
+	import { stateUrlDerived } from 'state-shared';
 
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE, BOARD_DIMENSIONS } from '../game/constants';
@@ -35,6 +36,7 @@
 	};
 
 	let animationName = $state<AnimationName>('intro');
+	const playIdleLoop = $derived(stateUrlDerived.device() !== 'mobile');
 </script>
 
 <MainContainer>
@@ -52,9 +54,12 @@
 			<SpineTrack
 				trackIndex={0}
 				{animationName}
-				loop={animationName === 'idle'}
+				loop={animationName === 'idle' && playIdleLoop}
 				listener={{
-					complete: () => (animationName = 'idle'),
+					// Phones keep the completed pose rather than continuously rendering the idle loop.
+					complete: () => {
+						if (playIdleLoop) animationName = 'idle';
+					},
 				}}
 			/>
 			<SpineSlot slotName="slot_text_placeholder">
