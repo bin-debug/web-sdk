@@ -14,7 +14,7 @@
 	const props: Props = $props();
 
 	let introVisible = $state(true);
-	const introFeatures = [{"icon":"🪨","image":"/assets/features/feature1.png","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win big"},{"icon":"🎁","image":"/assets/features/feature2.png","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"💰","image":"/assets/features/feature3.png","title":"2,500× Max Win","subtitle":"Chase the ultimate top prize"}];
+	const introFeatures = [{"icon":"*","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win"},{"icon":"*","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"*","title":"2 500x Max Win","subtitle":"Chase the ultimate top prize"}];
 	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');
 	onMount(() => {

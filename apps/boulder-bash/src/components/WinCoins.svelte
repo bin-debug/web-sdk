@@ -18,7 +18,12 @@
 	const extraConfig = $derived(
 		props?.levelAlias ? LEVEL_PARTICLE_COIN_MAP[props.levelAlias] : null,
 	);
-	const particleConfig = $derived(stateUrlDerived.device() === 'mobile' && extraConfig?.frequency ? { ...extraConfig, frequency: extraConfig.frequency * 1.6 } : extraConfig);
+	// Mobile keeps the same coin celebration, with fewer concurrent particles.
+	const particleConfig = $derived(
+		stateUrlDerived.device() === 'mobile' && extraConfig?.frequency
+			? { ...extraConfig, frequency: extraConfig.frequency * 1.6 }
+			: extraConfig,
+	);
 	const config = $derived({ ...baseConfig, ...particleConfig });
 </script>
 

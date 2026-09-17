@@ -17,23 +17,10 @@
 	type AnimationName = 'anticipation_intro' | 'anticipation_loop' | 'anticipation_out';
 
 	let animationName = $state<AnimationName>('anticipation_intro');
-	let hasCompleted = false;
-
-	const playOut = () => {
-		if (!hasCompleted && animationName !== 'anticipation_out') {
-			animationName = 'anticipation_out';
-		}
-	};
-
-	const complete = () => {
-		if (hasCompleted) return;
-		hasCompleted = true;
-		props.oncomplete();
-	};
 
 	$effect(() => {
 		if (props.reel.reelState.motion === 'stopped') {
-			playOut();
+			animationName = 'anticipation_out';
 		}
 	});
 </script>
@@ -55,17 +42,11 @@
 		listener={{
 			complete: () => {
 				if (animationName === 'anticipation_intro') {
-					// A fast bonus spin can stop the reel before the intro callback arrives.
-					// Go straight to the outro in that case instead of restarting the loop.
-					if (props.reel.reelState.motion === 'stopped') {
-						playOut();
-					} else {
-						animationName = 'anticipation_loop';
-					}
+					animationName = 'anticipation_loop';
 				}
 
 				if (animationName === 'anticipation_out') {
-					complete();
+					props.oncomplete();
 				}
 			},
 		}}

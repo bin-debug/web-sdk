@@ -5,11 +5,11 @@ export const gameMeta = {
   "version": "CC92026100",
   "studioName": "Atomic-Labs",
   "tagline": "Back a Winner, Claim the Crown",
-  "rtp": "96.70%",
+  "rtp": "97.00%",
   "maxWin": "2,500×",
   "reels": 7,
   "rows": 7,
-  "volatility": "Low",
+  "volatility": "Low-Medium",
   "minCluster": 5,
   "about": "Play Cheerful Charlie — a 7×7 pay-anywhere adventure where 5 or more matching symbols land a win from anywhere on the reels. Winning symbols tumble away and fresh ones drop in for chained wins, with a top prize of 2,500× your total bet.",
   "pays": [
@@ -19,19 +19,19 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          3
+          4
         ],
         [
           6,
-          7.5
+          10
         ],
         [
           9,
-          15
+          20
         ],
         [
           13,
-          35
+          45
         ]
       ]
     },
@@ -41,19 +41,19 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          2
+          2.5
         ],
         [
           6,
-          5
+          6
         ],
         [
           9,
-          10
+          12
         ],
         [
           13,
-          25
+          30
         ]
       ]
     },
@@ -71,11 +71,11 @@ export const gameMeta = {
         ],
         [
           9,
-          7.5
+          8
         ],
         [
           13,
-          18
+          20
         ]
       ]
     },
@@ -93,11 +93,11 @@ export const gameMeta = {
         ],
         [
           9,
-          5.5
+          6
         ],
         [
           13,
-          14
+          15
         ]
       ]
     },
@@ -107,15 +107,15 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.8
+          0.7
         ],
         [
           6,
-          2
+          1.8
         ],
         [
           9,
-          4.5
+          4
         ],
         [
           13,
@@ -129,11 +129,11 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.6
+          0.5
         ],
         [
           6,
-          1.5
+          1.3
         ],
         [
           9,
@@ -141,7 +141,7 @@ export const gameMeta = {
         ],
         [
           13,
-          8
+          7
         ]
       ]
     },
@@ -151,11 +151,11 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.4
+          0.3
         ],
         [
           6,
-          1
+          0.8
         ],
         [
           9,
@@ -173,19 +173,19 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.3
+          0.2
         ],
         [
           6,
-          0.8
+          0.6
         ],
         [
           9,
-          2
+          1.5
         ],
         [
           13,
-          4
+          3.5
         ]
       ]
     }

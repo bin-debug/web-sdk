@@ -95,7 +95,7 @@ jobs:
       - name: Build ${{ matrix.app }}
         run: pnpm --filter ${{ matrix.app }} build
         env:
-          PUBLIC_RGS_URL: https://website.rgs.atomic-labs.co
+          PUBLIC_RGS_URL: https://uat-rgs.atomic-labs.co
           PUBLIC_GAME_ID: ${{ matrix.game_id }}
 
       - name: Deploy ${{ matrix.app }} to Cloudflare Pages

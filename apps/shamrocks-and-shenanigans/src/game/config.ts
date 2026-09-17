@@ -1,7 +1,7 @@
 export default {
 	providerName: 'sample_provider',
 	gameName: 'sample_lines',
-	gameID: 'gambit_cluster_001',
+	gameID: '0_0_cluster',
 	rtp: 0.97,
 	numReels: 7,
 	numRows: [7, 7, 7, 7, 7, 7, 7],
@@ -14,7 +14,7 @@ export default {
 			max_win: 5000.0,
 		},
 		bonus: {
-			cost: 200,
+			cost: 500,
 			feature: true,
 			buyBonus: false,
 			rtp: 0.97,
@@ -533,28 +533,28 @@ export default {
 		H1: {
 			paytable: [
 				{
-					'5': 5.0,
+					'5': 3.0,
 				},
 				{
-					'6': 12.5,
+					'6': 7.5,
 				},
 				{
-					'7': 12.5,
+					'7': 7.5,
 				},
 				{
-					'8': 12.5,
+					'8': 7.5,
 				},
 				{
-					'9': 25.0,
+					'9': 15.0,
 				},
 				{
-					'10': 25.0,
+					'10': 15.0,
 				},
 				{
-					'11': 25.0,
+					'11': 15.0,
 				},
 				{
-					'12': 25.0,
+					'12': 15.0,
 				},
 				{
 					'13': 60.0,

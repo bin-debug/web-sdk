@@ -58,7 +58,9 @@
 					{animationName}
 					loop={animationName === 'idle' && playIdleLoop}
 					listener={{
-						complete: () => { if (playIdleLoop) animationName = 'idle'; },
+						complete: () => {
+							if (playIdleLoop) animationName = 'idle';
+						},
 					}}
 				/>
 				<SpineSlot slotName="slot_number">

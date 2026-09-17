@@ -38,12 +38,7 @@
 	const cSym    = $derived(CURRENCY_SYMBOLS[stateBet.currency] ?? (stateBet.currency ? stateBet.currency + ' ' : '$'));
 	const balance = $derived(cSym + stateBet.balanceAmount.toFixed(2));
 	const bet     = $derived(cSym + stateBet.betAmount.toFixed(2));
-	const win     = $derived(
-		cSym + (isAwardedFreeSpin
-			? stateFreeSpins.totalWinnings
-			: bookEventAmountToNormalisedAmount(stateBet.winBookEventAmount)
-		).toFixed(2),
-	);
+	const win     = $derived(cSym + bookEventAmountToNormalisedAmount(stateBet.winBookEventAmount).toFixed(2));
 
 	// stop-button lock " mirrors ButtonBetProvider.svelte logic from lines app
 	let stopDisabled = $state(false);
@@ -62,12 +57,6 @@
 	let inFreeSpin     = $state(false);
 	let fsCurrentCount = $state(0);
 	let fsTotalCount   = $state(0);
-	const isFreeSpinActive = $derived(inFreeSpin || isAwardedFreeSpin);
-	const freeSpinCount = $derived(
-		isAwardedFreeSpin
-			? `${stateFreeSpins.currentSpin} / ${stateFreeSpins.activeAllocation?.spinCount ?? 0}`
-			: `${fsCurrentCount} / ${fsTotalCount}`,
-	);
 	context.eventEmitter.subscribeOnMount({
 		freeSpinCounterShow:   () => (inFreeSpin = true),
 		freeSpinCounterHide:   () => { inFreeSpin = false; fsCurrentCount = 0; fsTotalCount = 0; },
@@ -308,8 +297,8 @@
 	<!-- Stake with +/- -->
 	<div class="bc-bet-group">
 		<div class="bc-info">
-			<span class="bc-lbl">{isFreeSpinActive ? 'FREE SPIN' : 'Bet'}</span>
-			<span class="bc-val">{isFreeSpinActive ? freeSpinCount : bet}</span>
+			<span class="bc-lbl">{isAwardedFreeSpin ? 'FREE SPIN' : 'Bet'}</span>
+			<span class="bc-val">{isAwardedFreeSpin ? `${stateFreeSpins.currentSpin} / ${stateFreeSpins.activeAllocation?.spinCount}` : bet}</span>
 		</div>
 		{#if !isAwardedFreeSpin}<div class="bc-chevrons">
 			<button class="bc-chev" class:bc-hint-up={isIdle && canIncrease} onclick={increaseBet} title="Increase bet">
@@ -444,10 +433,10 @@
 
 		<div class="bcm-spacer"></div>
 
-		{#if isFreeSpinActive}
+		{#if inFreeSpin || isAwardedFreeSpin}
 			<div class="bcm-fs-counter">
 				<span class="bcm-lbl">FREE SPINS</span>
-				<span class="bcm-val">{freeSpinCount}</span>
+				<span class="bcm-val">{isAwardedFreeSpin ? `${stateFreeSpins.currentSpin} / ${stateFreeSpins.activeAllocation?.spinCount}` : `${fsCurrentCount} / ${fsTotalCount}`}</span>
 			</div>
 		{:else}
 			<div class="bcm-info">

@@ -5,11 +5,11 @@ export const gameMeta = {
   "version": "BB92026100",
   "studioName": "Atomic-Labs",
   "tagline": "Back a Winner, Claim the Crown",
-  "rtp": "96.70%",
+  "rtp": "97.00%",
   "maxWin": "2,500×",
   "reels": 7,
   "rows": 7,
-  "volatility": "Low",
+  "volatility": "Medium",
   "minCluster": 5,
   "about": "Play Boulder Bash — a 7×7 pay-anywhere adventure where 5 or more matching symbols land a win from anywhere on the reels. Winning symbols tumble away and fresh ones drop in for chained wins, with a top prize of 2,500× your total bet.",
   "pays": [
@@ -19,19 +19,19 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          3
+          5
         ],
         [
           6,
-          7.5
+          12
         ],
         [
           9,
-          15
+          25
         ],
         [
           13,
-          35
+          55
         ]
       ]
     },
@@ -41,19 +41,19 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          2
+          2.5
         ],
         [
           6,
-          5
+          6.5
         ],
         [
           9,
-          10
+          13
         ],
         [
           13,
-          25
+          35
         ]
       ]
     },
@@ -71,11 +71,11 @@ export const gameMeta = {
         ],
         [
           9,
-          7.5
+          8
         ],
         [
           13,
-          18
+          25
         ]
       ]
     },
@@ -93,11 +93,11 @@ export const gameMeta = {
         ],
         [
           9,
-          5.5
+          6
         ],
         [
           13,
-          14
+          18
         ]
       ]
     },
@@ -107,15 +107,15 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.8
+          0.5
         ],
         [
           6,
-          2
+          1.5
         ],
         [
           9,
-          4.5
+          4
         ],
         [
           13,
@@ -129,19 +129,19 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.6
+          0.3
         ],
         [
           6,
-          1.5
+          1
         ],
         [
           9,
-          3.5
+          3
         ],
         [
           13,
-          8
+          7
         ]
       ]
     },
@@ -151,15 +151,15 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.4
+          0.2
         ],
         [
           6,
-          1
+          0.6
         ],
         [
           9,
-          2.5
+          2
         ],
         [
           13,
@@ -173,19 +173,19 @@ export const gameMeta = {
       "tiers": [
         [
           5,
-          0.3
+          0.1
         ],
         [
           6,
-          0.8
+          0.4
         ],
         [
           9,
-          2
+          1.2
         ],
         [
           13,
-          4
+          3.5
         ]
       ]
     }

@@ -2,9 +2,10 @@
 	import { type Snippet, onMount } from 'svelte';
 	import { GlobalStyle } from 'components-ui-html';
 	import { Authenticate, LoadI18n } from 'components-shared';
-	import { stateModal, stateConfig, stateFreeSpins } from 'state-shared';
+	import { stateModal, stateConfig } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
+	import FreeSpinAwardPopup from '../components/FreeSpinAwardPopup.svelte';
 	import MissionsDrawer from '../components/MissionsDrawer.svelte';
 	import { setContext } from '../game/context';
 	import messagesMap from '../i18n/messagesMap';
@@ -13,7 +14,7 @@
 	const props: Props = $props();
 
 	let introVisible = $state(true);
-	const introFeatures = [{"icon":"🪨","image":"/assets/features/feature1.png","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win big"},{"icon":"🎁","image":"/assets/features/feature2.png","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"💰","image":"/assets/features/feature3.png","title":"5,000× Max Win","subtitle":"Draw fast, win biggest"}];
+	const introFeatures = [{"icon":"*","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win"},{"icon":"*","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"*","title":"2 500x Max Win","subtitle":"Chase the ultimate top prize"}];
 	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');
 	onMount(() => {
@@ -33,23 +34,19 @@
 	<Authenticate>
 		<LoadI18n {messagesMap}>
 			<Game />
+			<FreeSpinAwardPopup />
 		</LoadI18n>
 	</Authenticate>
 </GlobalStyle>
 
 {#if introVisible}
 	<IntroOverlay
-		logoUrl="/assets/sprites/game/logo.png"
-		bgUrl="/assets/sprites/game/bg-mobile.png"
+		logoUrl="/assets/sprites/game/logo.webp"
+		bgUrl="/assets/sprites/game/bg-mobile.webp"
 		studioName="Atomic-Labs"
 		tagline="Fortune Favours The Brave"
 		features={introFeatures}
-		ondismiss={() => {
-			introVisible = false;
-			if (stateFreeSpins.showAwardPopup) {
-				stateModal.modal = { name: 'freeSpinAward' };
-			}
-		}}
+		ondismiss={() => (introVisible = false)}
 	/>
 {/if}
 
@@ -82,7 +79,7 @@
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<img class="game-logo" src="/assets/sprites/game/logo.png" alt="Velvet Social Club" />
+	<img class="game-logo" src="/assets/sprites/game/logo.webp" alt="Velvet Social Club" />
 {/if}
 
 <style>

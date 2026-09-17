@@ -82,8 +82,14 @@
 			context.stateGame.tumbleBoardBase = [];
 		},
 		tumbleBoardExplode: async ({ explodingPositions }) => {
+			// A symbol can belong to more than one winning cluster (notably Wilds).
+			// Animate each board cell once: duplicate entries would replace its
+			// completion callback and leave the first animation promise unresolved.
+			const uniqueExplodingPositions = Array.from(
+				new Map(explodingPositions.map((position) => [`${position.reel}:${position.row}`, position])).values(),
+			);
 			const getPromises = () =>
-				explodingPositions.map(async (position) => {
+				uniqueExplodingPositions.map(async (position) => {
 					const tumbleSymbol = context.stateGame.tumbleBoardBase[position.reel][position.row];
 					tumbleSymbol.symbolState = 'explosion';
 					await waitForResolve((resolve) => (tumbleSymbol.oncomplete = resolve));

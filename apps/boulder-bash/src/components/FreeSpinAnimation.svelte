@@ -56,7 +56,10 @@
 				{animationName}
 				loop={animationName === 'idle' && playIdleLoop}
 				listener={{
-					complete: () => { if (playIdleLoop) animationName = 'idle'; },
+					// Phones keep the completed pose rather than continuously rendering the idle loop.
+					complete: () => {
+						if (playIdleLoop) animationName = 'idle';
+					},
 				}}
 			/>
 			<SpineSlot slotName="slot_text_placeholder">
