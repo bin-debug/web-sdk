@@ -30,19 +30,21 @@
 	const bonusModalOpen = $derived(stateModal.modal?.name === 'buyBonus');
 </script>
 
-<GlobalStyle>
-	<Authenticate>
-		<LoadI18n {messagesMap}>
-			<Game />
-			<FreeSpinAwardPopup />
-		</LoadI18n>
-	</Authenticate>
-</GlobalStyle>
+<div class:intro-active={introVisible}>
+	<GlobalStyle>
+		<Authenticate>
+			<LoadI18n {messagesMap}>
+				<Game />
+				<FreeSpinAwardPopup />
+			</LoadI18n>
+		</Authenticate>
+	</GlobalStyle>
+</div>
 
 {#if introVisible}
 	<IntroOverlay
-		logoUrl="/assets/sprites/game/logo.webp"
-		bgUrl="/assets/sprites/game/bg-mobile.webp"
+		logoUrl="./assets/sprites/game/logo.webp"
+		bgUrl="./assets/sprites/game/bg-mobile.webp"
 		studioName="Atomic-Labs"
 		tagline="Fortune Favours The Brave"
 		features={introFeatures}
@@ -79,7 +81,7 @@
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<img class="game-logo" src="/assets/sprites/game/logo.webp" alt="Boulder Bash" />
+	<img class="game-logo" src="./assets/sprites/game/logo.webp" alt="Boulder Bash" />
 {/if}
 
 <style>

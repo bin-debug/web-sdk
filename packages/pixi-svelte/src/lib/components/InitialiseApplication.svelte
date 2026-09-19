@@ -60,3 +60,11 @@
 		{@render props.children()}
 	{/if}
 </div>
+
+<style>
+	/* Game layouts wrap <GlobalStyle> in <div class:intro-active={introVisible}>.
+	   WebGPU/WebGL canvases get their own GPU compositor layer and render above
+	   position:fixed HTML overlays regardless of z-index. visibility:hidden is
+	   the only CSS property that suppresses the compositor layer entirely. */
+	:global(.intro-active canvas) { visibility: hidden; }
+</style>
