@@ -10,3 +10,4 @@
 # Everything else (HTML, favicon) — always revalidate
 /*
   Cache-Control: public, max-age=0, must-revalidate
+
