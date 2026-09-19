@@ -50,7 +50,7 @@ jobs:
           for slug in "${!GAME_IDS[@]}"; do
             game_id="${GAME_IDS[$slug]}"
             if [ "$FORCE_ALL" = "true" ] || echo "$CHANGED" | grep -q "^apps/$slug/"; then
-              MATRIX=$(echo "$MATRIX" | jq \
+              MATRIX=$(echo "$MATRIX" | jq -c \
                 --arg app "$slug" \
                 --arg project "$slug" \
                 --arg game_id "$game_id" \
