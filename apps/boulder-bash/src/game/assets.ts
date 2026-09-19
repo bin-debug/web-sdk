@@ -19,11 +19,6 @@ export default {
 		src: new URL('../../assets/sprites/game/bg-frame.webp', import.meta.url).href,
 		preload: true,
 	},
-	gameLogo: {
-		type: 'sprite' as const,
-		src: new URL('../../assets/sprites/game/logo.webp', import.meta.url).href,
-		preload: true,
-	},
 	loader: {
 		type: 'spine',
 		src: {

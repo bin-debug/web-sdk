@@ -58,7 +58,9 @@
 		role="button" tabindex="0" onclick={dismiss} onkeydown={(e) => e.key === 'Enter' && dismiss()}
 		in:fade={{ duration: 500 }}
 	>
-		<img class="logo" src={props.logoUrl} alt="game logo" in:scale={{ duration: 700, easing: backOut, start: 0.6 }} />
+		<div class="logo-wrap" in:scale={{ duration: 700, easing: backOut, start: 0.6 }}>
+			<img class="logo" src={props.logoUrl} alt="game logo" />
+		</div>
 		<div class="tap">Tap to play</div>
 	</div>
 {/if}
@@ -106,14 +108,18 @@
 		font-family: 'Jura', system-ui, sans-serif; height: 100dvh;
 	}
 
-	.logo {
-		width: min(88%, 36rem); height: auto; object-fit: contain;
-		filter: drop-shadow(0 0 2.5rem rgba(255,220,80,.35)) drop-shadow(0 0.8rem 2rem rgba(0,0,0,.7));
+	.logo-wrap {
+		width: min(88%, 36rem);
 		animation: logopulse 2.2s ease-in-out infinite;
+		will-change: transform;
+	}
+	.logo {
+		width: 100%; height: auto; object-fit: contain; display: block;
+		filter: drop-shadow(0 0 2.5rem rgba(255,220,80,.35)) drop-shadow(0 0.8rem 2rem rgba(0,0,0,.7));
 	}
 	@keyframes logopulse {
-		0%,100% { transform: scale(1);    filter: drop-shadow(0 0 2.5rem rgba(255,220,80,.35)) drop-shadow(0 0.8rem 2rem rgba(0,0,0,.7)); }
-		50%      { transform: scale(1.06); filter: drop-shadow(0 0 4.5rem rgba(255,220,80,.75)) drop-shadow(0 0.8rem 2rem rgba(0,0,0,.7)); }
+		0%,100% { transform: scale(1); }
+		50%      { transform: scale(1.06); }
 	}
 
 	.tap {
@@ -127,11 +133,11 @@
 	@keyframes pulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
 
 	@media (orientation: landscape) and (min-width: 900px) {
-		.logo { width: min(55%, 28rem); }
+		.logo-wrap { width: min(55%, 28rem); }
 	}
 	@media (max-height: 500px) {
 		.features { gap: 3vh; }
-		.logo { width: min(60%, 20rem); }
+		.logo-wrap { width: min(60%, 20rem); }
 		.tap { font-size: 0.9rem; }
 	}
 </style>

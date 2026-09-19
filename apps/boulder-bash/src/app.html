@@ -3,10 +3,15 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
-		<link rel="stylesheet" href="https://use.typekit.net/aba0ebl.css" />
+		<link rel="preconnect" href="https://use.typekit.net" crossorigin />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Megrim&family=Jura:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<link rel="preload" as="style" href="https://use.typekit.net/aba0ebl.css" onload="this.onload=null;this.rel='stylesheet'" />
+		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Megrim&family=Jura:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+		<noscript>
+			<link rel="stylesheet" href="https://use.typekit.net/aba0ebl.css" />
+			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Megrim&family=Jura:wght@400;500;600;700&display=swap" />
+		</noscript>
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
 	</head>

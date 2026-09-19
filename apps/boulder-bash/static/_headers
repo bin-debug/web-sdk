@@ -1,0 +1,12 @@
+# SvelteKit immutable chunks — content-hashed filenames, safe to cache forever
+/_app/immutable/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Game assets (spines, sprites, audio) — not content-hashed, cache for 1 day
+# Browser will serve from cache and revalidate in background via ETag
+/_app/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Everything else (HTML, favicon) — always revalidate
+/*
+  Cache-Control: public, max-age=0, must-revalidate
