@@ -110,4 +110,5 @@
 		animation: logo-pulse 3s ease-in-out infinite; }
 	@keyframes logo-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.92; } }
 	@media (min-width: 1024px) and (orientation: landscape) { .game-logo { display: block; } }
+	:global(.intro-active canvas) { visibility: hidden; }
 </style>
