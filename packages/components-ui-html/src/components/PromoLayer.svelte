@@ -127,6 +127,12 @@
 {/if}
 
 <style lang="scss">
+	/*
+	 * Responsive sizing: every promo element sets one font-size from the viewport
+	 * (portrait → width, landscape → height) and sizes everything inside in em, so it
+	 * scales with the game on any phone, tablet or desktop. No rem — games set the root
+	 * font-size to 50% on small screens.
+	 */
 	.promo-banner,
 	.promo-drop,
 	.promo-info {
@@ -135,6 +141,7 @@
 		--promo-surface: var(--game-promo-surface, rgb(14 16 28 / 86%));
 		--promo-text: var(--game-promo-text, #fff8e6);
 		--promo-muted: var(--game-promo-muted, #d9cfb8);
+		--promo-top: calc(env(safe-area-inset-top, 0px) + clamp(26px, 4.2vh, 44px));
 		font-family: inherit;
 	}
 
@@ -145,24 +152,25 @@
 
 	/* ── Banner ─────────────────────────────────────────────── */
 	.promo-banner {
+		font-size: clamp(11px, 3.1vw, 22px);
 		position: fixed;
-		top: calc(env(safe-area-inset-top, 0px) + 34px);
+		top: var(--promo-top);
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: 900;
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 0.7em;
 		max-width: calc(100vw - 24px);
-		padding: 6px 14px 6px 6px;
+		box-sizing: border-box;
+		padding: 0.42em 1em 0.42em 0.42em;
 		border: 1px solid rgb(245 197 66 / 55%);
 		border-radius: 999px;
 		background: var(--promo-surface);
 		color: var(--promo-text);
-		box-shadow: 0 6px 20px rgb(0 0 0 / 40%);
+		box-shadow: 0 0.45em 1.5em rgb(0 0 0 / 40%);
 		backdrop-filter: blur(6px);
 		cursor: pointer;
-		font-size: 13px;
 		line-height: 1.15;
 		white-space: nowrap;
 	}
@@ -173,14 +181,14 @@
 		flex: none;
 		display: grid;
 		place-items: center;
-		width: 32px;
-		height: 32px;
+		width: 2.4em;
+		height: 2.4em;
 		border-radius: 50%;
 		background: radial-gradient(circle at 35% 30%, #fff2b8, var(--promo-accent) 55%, var(--promo-accent-deep));
 	}
 	.promo-banner__badge svg {
-		width: 18px;
-		height: 18px;
+		width: 1.35em;
+		height: 1.35em;
 		fill: #6b3d00;
 	}
 	.promo-banner__text {
@@ -191,14 +199,14 @@
 	}
 	.promo-banner__title {
 		color: var(--promo-muted);
-		font-size: 10px;
+		font-size: 0.75em;
 		font-weight: 800;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 	}
 	.promo-banner__pot {
 		color: var(--promo-accent);
-		font-size: 17px;
+		font-size: 1.3em;
 		font-weight: 800;
 		font-variant-numeric: tabular-nums;
 	}
@@ -206,10 +214,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		padding-left: 10px;
+		padding-left: 0.75em;
 		border-left: 1px solid rgb(255 255 255 / 15%);
 		color: var(--promo-muted);
-		font-size: 11px;
+		font-size: 0.85em;
 		font-variant-numeric: tabular-nums;
 	}
 	.promo-banner__meta strong {
@@ -218,6 +226,7 @@
 
 	/* ── Prize pop-up ───────────────────────────────────────── */
 	.promo-drop {
+		font-size: clamp(12px, 3.6vw, 24px);
 		position: fixed;
 		inset: 0;
 		z-index: 1100;
@@ -231,48 +240,53 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 6px;
-		min-width: min(300px, calc(100vw - 32px));
-		padding: 0 28px 20px;
+		gap: 0.4em;
+		min-width: min(18em, calc(100vw - 32px));
+		max-width: calc(100vw - 32px);
+		box-sizing: border-box;
+		padding: 0 1.8em 1.3em;
 		border: 2px solid var(--promo-accent);
-		border-radius: 18px;
+		border-radius: 1.1em;
 		background: linear-gradient(180deg, #2a1f05, #120d02);
 		color: var(--promo-text);
-		box-shadow: 0 0 0 6px rgb(245 197 66 / 18%), 0 18px 50px rgb(0 0 0 / 60%);
+		font-size: 1em;
+		box-shadow: 0 0 0 0.4em rgb(245 197 66 / 18%), 0 1.1em 3em rgb(0 0 0 / 60%);
 		cursor: pointer;
 		animation: promo-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
 	}
 	.promo-drop__ribbon {
-		margin-top: -14px;
-		padding: 6px 18px;
+		margin-top: -0.9em;
+		padding: 0.4em 1.2em;
 		border-radius: 999px;
 		background: linear-gradient(180deg, #ffe58a, var(--promo-accent) 60%, var(--promo-accent-deep));
 		color: #3d2300;
-		font-size: 13px;
+		font-size: 0.85em;
 		font-weight: 900;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 	}
 	.promo-drop__label {
-		margin-top: 8px;
+		margin-top: 0.5em;
 		color: var(--promo-muted);
-		font-size: 14px;
+		font-size: 0.9em;
 		font-weight: 700;
 	}
 	.promo-drop__amount {
 		color: var(--promo-accent);
-		font-size: clamp(34px, 10vw, 48px);
+		font-size: 2.6em;
 		font-weight: 900;
+		line-height: 1.1;
 		font-variant-numeric: tabular-nums;
 		text-shadow: 0 2px 18px rgb(245 197 66 / 45%);
 	}
 	.promo-drop__note {
 		color: var(--promo-muted);
-		font-size: 12px;
+		font-size: 0.75em;
 	}
 
 	/* ── Info sheet ─────────────────────────────────────────── */
 	.promo-info {
+		font-size: clamp(12px, 3.6vw, 17px);
 		position: fixed;
 		inset: 0;
 		z-index: 1200;
@@ -289,11 +303,13 @@
 	}
 	.promo-info__sheet {
 		position: relative;
-		width: min(26rem, 100%);
+		width: min(26em, 100%);
+		max-height: calc(100vh - 32px);
+		overflow-y: auto;
 		box-sizing: border-box;
-		padding: 24px;
+		padding: 1.5em;
 		border: 1px solid rgb(245 197 66 / 45%);
-		border-radius: 18px;
+		border-radius: 1.1em;
 		background: #15131c;
 		color: var(--promo-text);
 		text-align: center;
@@ -301,90 +317,95 @@
 	.promo-info__eyebrow {
 		margin: 0;
 		color: var(--promo-accent);
-		font-size: 12px;
+		font-size: 0.75em;
 		font-weight: 800;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 	}
 	.promo-info h2 {
-		margin: 6px 0;
-		font-size: 26px;
+		margin: 0.25em 0;
+		font-size: 1.6em;
 	}
 	.promo-info__subtitle {
-		margin: 0 0 14px;
+		margin: 0 0 0.9em;
 		color: var(--promo-muted);
-		font-size: 15px;
+		font-size: 0.95em;
 	}
 	.promo-info__stats {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-		gap: 8px;
-		margin: 0 0 14px;
+		grid-template-columns: repeat(auto-fit, minmax(6.5em, 1fr));
+		gap: 0.5em;
+		margin: 0 0 0.9em;
 	}
 	.promo-info__stats div {
-		padding: 10px;
-		border-radius: 10px;
+		padding: 0.6em;
+		border-radius: 0.6em;
 		background: rgb(255 255 255 / 6%);
 	}
 	.promo-info__stats dt {
 		color: var(--promo-muted);
-		font-size: 11px;
+		font-size: 0.7em;
 		text-transform: uppercase;
 	}
 	.promo-info__stats dd {
-		margin: 4px 0 0;
+		margin: 0.25em 0 0;
 		color: var(--promo-accent);
-		font-size: 18px;
+		font-size: 1.1em;
 		font-weight: 800;
 		font-variant-numeric: tabular-nums;
 	}
 	.promo-info__terms,
 	.promo-info__fine {
-		margin: 0 0 10px;
+		margin: 0 0 0.6em;
 		color: var(--promo-muted);
-		font-size: 13px;
+		font-size: 0.8em;
 		line-height: 1.45;
 	}
 	.promo-info__fine {
-		font-size: 11px;
+		font-size: 0.7em;
 		opacity: 0.8;
 	}
 	.promo-info__close {
 		width: 100%;
-		min-height: 46px;
-		margin-top: 6px;
+		min-height: 2.8em;
+		margin-top: 0.4em;
 		border: 0;
-		border-radius: 12px;
+		border-radius: 0.75em;
 		background: var(--promo-accent);
 		color: #3d2300;
 		font: inherit;
-		font-size: 16px;
+		font-size: 1em;
 		font-weight: 800;
 		cursor: pointer;
 	}
 
+	/* ── Landscape / desktop: size from height, board fills the height ── */
+	@media (orientation: landscape) {
+		.promo-banner { font-size: clamp(11px, 2.3vh, 26px); }
+		.promo-drop { font-size: clamp(12px, 2.9vh, 30px); padding-top: 14vh; }
+		.promo-info { font-size: clamp(11px, 2.4vh, 22px); }
+	}
+	/* Wide layouts: sit in the free space top-right instead of over the reels. */
+	@media (min-aspect-ratio: 4/3) {
+		.promo-banner {
+			right: calc(env(safe-area-inset-right, 0px) + 16px);
+			left: auto;
+			transform: none;
+			max-width: calc(50vw - 16px);
+		}
+	}
+	/* Very narrow screens: drop the divider meta into a tighter layout. */
+	@media (max-width: 340px) {
+		.promo-banner__meta { padding-left: 0.5em; }
+	}
+
 	@keyframes promo-glow {
-		0%, 100% { box-shadow: 0 6px 20px rgb(0 0 0 / 40%), 0 0 0 0 rgb(245 197 66 / 0%); }
-		50% { box-shadow: 0 6px 20px rgb(0 0 0 / 40%), 0 0 16px 2px rgb(245 197 66 / 45%); }
+		0%, 100% { box-shadow: 0 0.45em 1.5em rgb(0 0 0 / 40%), 0 0 0 0 rgb(245 197 66 / 0%); }
+		50% { box-shadow: 0 0.45em 1.5em rgb(0 0 0 / 40%), 0 0 1.2em 0.15em rgb(245 197 66 / 45%); }
 	}
 	@keyframes promo-pop {
 		from { opacity: 0; transform: scale(0.6) translateY(20px); }
 		to { opacity: 1; transform: none; }
-	}
-	/* Wide layouts: the board fills the height, so sit in the free space top-right. */
-	@media (min-aspect-ratio: 4/3) {
-		.promo-banner {
-			top: calc(env(safe-area-inset-top, 0px) + 30px);
-			right: calc(env(safe-area-inset-right, 0px) + 16px);
-			left: auto;
-			transform: none;
-		}
-	}
-	@media (max-width: 420px) {
-		.promo-banner { gap: 8px; padding-right: 10px; font-size: 12px; }
-		.promo-banner__badge { width: 28px; height: 28px; }
-		.promo-banner__pot { font-size: 15px; }
-		.promo-banner__meta { padding-left: 8px; font-size: 10px; }
 	}
 	@media (prefers-reduced-motion: reduce) {
 		.promo-banner--live, .promo-drop__card { animation: none; }
