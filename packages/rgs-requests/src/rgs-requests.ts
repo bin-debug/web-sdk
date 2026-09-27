@@ -1,5 +1,6 @@
 import { API_AMOUNT_MULTIPLIER } from 'constants-shared/bet';
 import { rgsFetcher } from 'rgs-fetcher';
+import type { PromoSummary } from './types';
 
 export * from './types';
 
@@ -110,3 +111,23 @@ export const requestReplay = async (options: {
 
 	return data;
 }
+
+export const requestActivePromos = async (options: {
+	sessionID: string;
+	rgsUrl: string;
+	operatorId?: string;
+	brandId?: string;
+}) => {
+	// Gambit extension (not in the Stake RGS schema): live promo summaries for the banner.
+	const base = /^https?:\/\//.test(options.rgsUrl)
+		? options.rgsUrl
+		: `${/^(localhost|127\.)/.test(options.rgsUrl) ? 'http' : 'https'}://${options.rgsUrl}`;
+	const query = new URLSearchParams({
+		sessionID: options.sessionID,
+		operatorId: options.operatorId ?? '',
+		brandId: options.brandId ?? '',
+	});
+	const response = await fetch(`${base}/promos/active?${query}`);
+	if (!response.ok) return null;
+	return (await response.json()) as { active: PromoSummary[] };
+};
