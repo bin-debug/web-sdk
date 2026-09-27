@@ -17,9 +17,26 @@ export type PromoSummary = {
 	windowStart: string;
 	windowEnd: string;
 	endsAt: string;
+	boost?: { multiplier: number; minWinMultiplier: number; maxPerAward: number; budgetLeft: number };
+	mission?: {
+		steps: { goal: 'spins' | 'wins_at_least' | 'total_win' | 'total_wagered'; target: number; threshold: number; reward: number; label: string }[];
+		step: number;
+		current: number;
+	};
+	leaderboard?: {
+		scoreBy: 'max_multiplier' | 'total_win' | 'spins' | 'total_wagered';
+		top: PromoLeaderboardEntry[];
+		you: PromoLeaderboardEntry | null;
+		paidPlaces: number;
+	};
+	prizes?: { tier: number; label: string; count: number; amount: number }[];
 };
 
+export type PromoLeaderboardEntry = { position: number; player: string; score: number; you: boolean };
+
 export type PromoAward = {
+	// 'result' = a final placing paid when a leaderboard closed (already in the wallet balance).
+	display?: 'result';
 	promoId: string;
 	type: string;
 	kind: string;
@@ -38,12 +55,20 @@ export const statePromo = $state({
 	pendingAmount: 0,
 	// Awards ready to show, oldest first. The pop-up shows queue[0].
 	queue: [] as PromoAward[],
-	infoOpen: false,
+	// Promo shown in the info sheet (null = closed).
+	infoPromoId: null as string | null,
+	// Leaderboard results already announced to this player.
+	resultsShown: [] as string[],
 });
+
+const isShowable = (p: PromoSummary) =>
+	p.phase !== 'ended' || (p.type === 'leaderboard' && !!p.leaderboard?.you);
 
 export const statePromoDerived = {
 	current: () => statePromo.queue[0] ?? null,
-	banner: () => statePromo.active.find((p) => p.phase !== 'ended') ?? null,
+	/** Promos for the banner: live/upcoming ones, plus finished leaderboards the player was on. */
+	showable: () => statePromo.active.filter(isShowable),
+	info: () => statePromo.active.find((p) => p.promoId === statePromo.infoPromoId) ?? null,
 };
 
 export const promoActions = {
@@ -65,5 +90,11 @@ export const promoActions = {
 	},
 	dismissCurrent: () => {
 		statePromo.queue = statePromo.queue.slice(1);
+	},
+	/** Announces a final leaderboard placing once (the prize was credited when the board closed). */
+	announceResult: (award: PromoAward) => {
+		if (statePromo.resultsShown.includes(award.promoId)) return;
+		statePromo.resultsShown = [...statePromo.resultsShown, award.promoId];
+		statePromo.queue = [...statePromo.queue, { ...award, display: 'result' }];
 	},
 };
