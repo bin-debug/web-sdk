@@ -219,6 +219,12 @@ function createPrimaryMachines<TBet extends BaseBet>(options: Options<TBet>) {
 			// The game's own win presentation is done — now reveal any promo reward.
 			const revealed = promoActions.revealAwards();
 			if (revealed > 0) stateBet.balanceAmount += revealed / API_AMOUNT_MULTIPLIER;
+
+			// Free spins finished on this round: show the summary now that every animation has played.
+			if (stateFreeSpins.pendingCompletion) {
+				stateModal.modal = { name: 'freeSpinComplete', ...stateFreeSpins.pendingCompletion };
+				stateFreeSpins.pendingCompletion = null;
+			}
 		},
 	);
 
