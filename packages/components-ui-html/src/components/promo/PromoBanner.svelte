@@ -12,9 +12,13 @@
 	let index = $state(0);
 	const promo = $derived(props.promos[index % Math.max(1, props.promos.length)]);
 
+	// Depend on the count only, so the 15s data refresh doesn't restart the rotation timer.
+	// Paused while an info sheet is open.
+	const count = $derived(props.promos.length);
+	const paused = $derived(statePromo.infoPromoId !== null);
 	$effect(() => {
-		if (props.promos.length < 2) return;
-		const id = setInterval(() => (index = (index + 1) % props.promos.length), ROTATE_MS);
+		if (count < 2 || paused) return;
+		const id = setInterval(() => (index = (index + 1) % count), ROTATE_MS);
 		return () => clearInterval(id);
 	});
 
@@ -34,6 +38,77 @@
 					t,
 				};
 			}
+			case 'jackpot': {
+				const tiers = [...(p.jackpot ?? [])].sort((a, b) => a.tier - b.tier);
+				const top = tiers[0];
+				return {
+					icon: 'crown' as const,
+					main: top ? `${top.label} ${money(top.pot)}` : money(p.pot),
+					line: tiers.slice(1).map((t) => `${t.label} ${money(t.pot)}`).join(' · ') || `Must drop by ${money(top?.cap ?? 0)}`,
+					progress: top ? Math.min(1, top.pot / top.cap) : null,
+					t,
+				};
+			}
+			case 'race': {
+				const r = p.race!;
+				const left = Math.max(0, r.placesTotal - r.placesTaken);
+				return {
+					icon: 'flag' as const,
+					main: r.position
+						? `You finished ${ordinal(r.position)}`
+						: left === 0
+							? 'All places taken'
+							: r.goal.target === 1 ? goalText(r.goal) : progressText(r.goal, r.current),
+					line: `${left} of ${r.placesTotal} places left`,
+					progress: r.position ? 1 : Math.min(1, r.current / r.goal.target),
+					t,
+				};
+			}
+			case 'guaranteed_win': {
+				const g = p.rules!;
+				const spins = p.you?.spins ?? 0;
+				const done = spins >= g.minSpins;
+				return {
+					icon: 'shield' as const,
+					main: done ? 'Qualified ✓' : `${spins} / ${g.minSpins} spins`,
+					line: `Guaranteed ${multiplier(g.targetMultiplier)} win`,
+					progress: Math.min(1, spins / g.minSpins),
+					t,
+				};
+			}
+			case 'loss_rebate': {
+				const g = p.rules!;
+				const net = p.you?.windowNet ?? 0;
+				return {
+					icon: 'shield' as const,
+					main: `${p.you?.windowSpins ?? 0} / ${g.everySpins} spins`,
+					line: `${g.pct}% back · ${net > 0 ? `down ${money(net)}` : 'no loss yet'}`,
+					progress: Math.min(1, (p.you?.windowSpins ?? 0) / g.everySpins),
+					t,
+				};
+			}
+			case 'cashback': {
+				const g = p.rules!;
+				const lost = Math.max(0, (p.you?.turnover ?? 0) - (p.you?.gameWin ?? 0));
+				return {
+					icon: 'coins' as const,
+					main: money(Math.floor((lost * g.pct) / 100 / 10_000) * 10_000),
+					line: `${g.pct}% cashback so far`,
+					progress: null,
+					t,
+				};
+			}
+			case 'stake_discount': {
+				const g = p.rules!;
+				return {
+					icon: 'tag' as const,
+					main: `${g.pct}% off every spin`,
+					line: (p.you?.won ?? 0) > 0 ? `Saved ${money(p.you!.won)}` : g.maxPerSpin > 0 ? `Up to ${money(g.maxPerSpin)} per spin` : 'On your stake',
+					progress: null,
+					t,
+				};
+			}
+			case 'achievement':
 			case 'mission': {
 				const m = p.mission!;
 				const step = m.steps[m.step];

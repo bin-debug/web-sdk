@@ -36,7 +36,9 @@ export const goalText = (step: MissionStep) => {
 		case 'spins':
 			return `Play ${step.target} spins`;
 		case 'wins_at_least':
-			return `Land ${step.target} wins of ${multiplier(step.threshold)}+`;
+			return step.target === 1
+				? `Land a ${multiplier(step.threshold)}+ win`
+				: `Land ${step.target} wins of ${multiplier(step.threshold)}+`;
 		case 'total_win':
 			return `Win ${money(step.target)} in total`;
 		case 'total_wagered':

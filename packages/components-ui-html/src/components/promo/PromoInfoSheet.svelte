@@ -19,7 +19,14 @@
 					win_boost: 'Win boost',
 					multiplier_window: 'Multiplier window',
 					mission: 'Missions',
+					achievement: 'Achievements',
 					leaderboard: 'Leaderboard',
+					jackpot: 'Must-drop jackpot',
+					race: 'Race',
+					guaranteed_win: 'Guaranteed win',
+					loss_rebate: 'Safety net',
+					cashback: 'Cashback',
+					stake_discount: 'Stake discount',
 				} as Record<string, string>)[p.type] ?? 'Promotion'
 			: '',
 	);
@@ -57,9 +64,48 @@
 				{:else if p.leaderboard}
 					<div><dt>Your place</dt><dd>{p.leaderboard.you ? ordinal(p.leaderboard.you.position) : '–'}</dd></div>
 					<div><dt>Your best</dt><dd>{p.leaderboard.you ? scoreText(p.leaderboard.scoreBy, p.leaderboard.you.score) : '–'}</dd></div>
+				{:else if p.race}
+					<div><dt>Places left</dt><dd>{Math.max(0, p.race.placesTotal - p.race.placesTaken)} of {p.race.placesTotal}</dd></div>
+					<div><dt>You</dt><dd>{p.race.position ? ordinal(p.race.position) : progressText(p.race.goal, p.race.current)}</dd></div>
+				{:else if p.type === 'guaranteed_win' && p.rules}
+					<div><dt>Your spins</dt><dd>{p.you?.spins ?? 0} / {p.rules.minSpins}</dd></div>
+					<div><dt>Your best</dt><dd>{multiplier(p.you?.bestMultiplier ?? 0)}</dd></div>
+				{:else if p.type === 'loss_rebate' && p.rules}
+					<div><dt>This round</dt><dd>{p.you?.windowSpins ?? 0} / {p.rules.everySpins}</dd></div>
+					<div><dt>Back so far</dt><dd>{money(p.you?.won ?? 0)}</dd></div>
+				{:else if p.type === 'cashback' && p.rules}
+					<div><dt>Cashback</dt><dd>{p.rules.pct}%</dd></div>
+					<div><dt>So far</dt><dd>{money(Math.floor((Math.max(0, (p.you?.turnover ?? 0) - (p.you?.gameWin ?? 0)) * p.rules.pct) / 100 / 10_000) * 10_000)}</dd></div>
+				{:else if p.type === 'stake_discount' && p.rules}
+					<div><dt>Discount</dt><dd>{p.rules.pct}%</dd></div>
+					<div><dt>Saved</dt><dd>{money(p.you?.won ?? 0)}</dd></div>
 				{/if}
 				{#if t}<div><dt>{t.label}</dt><dd>{t.value || '—'}</dd></div>{/if}
 			</dl>
+
+			{#if p.jackpot}
+				<ul class="promo-info__jackpots">
+					{#each [...p.jackpot].sort((a, b) => a.tier - b.tier) as j (j.tier)}
+						<li>
+							<span class="jp__label">{j.label}</span>
+							<span class="jp__pot">{money(j.pot)}</span>
+							<span class="jp__bar"><span style:width={`${Math.min(100, (j.pot / j.cap) * 100)}%`}></span></span>
+							<small>Must drop before {money(j.cap)}</small>
+						</li>
+					{/each}
+				</ul>
+				<p class="promo-info__body">Every eligible spin grows the pots. Each jackpot drops on the spin that reaches its secret drop point — always before it reaches the cap.</p>
+			{:else if p.race}
+				<p class="promo-info__body">First {p.race.placesTotal} players to {goalText(p.race.goal).toLowerCase()} win, in finishing order.</p>
+			{:else if p.type === 'guaranteed_win' && p.rules}
+				<p class="promo-info__body">Play {p.rules.minSpins} spins before the timer ends and you're guaranteed a win of {multiplier(p.rules.targetMultiplier)} your average stake. If your best win is lower, the difference is paid when the promo ends.</p>
+			{:else if p.type === 'loss_rebate' && p.rules}
+				<p class="promo-info__body">After every {p.rules.everySpins} spins, {p.rules.pct}% of what you lost in those spins comes straight back.</p>
+			{:else if p.type === 'cashback' && p.rules}
+				<p class="promo-info__body">{p.rules.pct}% of your net loss during the promo is paid back when it ends.</p>
+			{:else if p.type === 'stake_discount' && p.rules}
+				<p class="promo-info__body">Every spin costs {p.rules.pct}% less{p.rules.maxPerSpin > 0 ? ` (up to ${money(p.rules.maxPerSpin)} per spin)` : ''}. Wins are still paid on your full stake.</p>
+			{/if}
 
 			{#if p.type === 'win_boost'}
 				<p class="promo-info__body">Winning spins can be boosted at random: the promo adds {multiplier(p.boost!.multiplier - 1)} your win on top, paid separately from the game win.</p>
@@ -105,8 +151,8 @@
 					<tbody>
 						{#each prizeRows as row}
 							<tr>
-								<td>{p.type === 'leaderboard' ? row.place : `${row.count}× ${row.label}`}</td>
-								<td>{p.type === 'leaderboard' ? row.label : ''}</td>
+								<td>{p.type === 'leaderboard' || p.type === 'race' ? row.place : `${row.count}× ${row.label}`}</td>
+								<td>{p.type === 'leaderboard' || p.type === 'race' ? row.label : ''}</td>
 								<td>{money(row.amount)}{p.type === 'prize_drop' && row.count > 1 ? ' each' : ''}</td>
 							</tr>
 						{/each}
@@ -223,6 +269,21 @@
 	.promo-info__board li.you { background: rgb(245 197 66 / 18%); color: var(--promo-accent); font-weight: 800; }
 	.promo-info__board li.gap { margin-top: 0.4em; }
 	.promo-info__board li.empty { display: block; color: var(--promo-muted); text-align: center; }
+
+	.promo-info__jackpots { margin: 0 0 0.9em; padding: 0; list-style: none; }
+	.promo-info__jackpots li {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 0.2em 0.6em;
+		padding: 0.6em 0;
+		border-bottom: 1px solid rgb(255 255 255 / 8%);
+		text-align: left;
+	}
+	.jp__label { font-weight: 800; }
+	.jp__pot { color: var(--promo-accent); font-weight: 900; font-variant-numeric: tabular-nums; }
+	.jp__bar { grid-column: 1 / -1; height: 0.35em; border-radius: 999px; background: rgb(255 255 255 / 12%); overflow: hidden; }
+	.jp__bar span { display: block; height: 100%; background: var(--promo-accent); }
+	.promo-info__jackpots small { grid-column: 1 / -1; color: var(--promo-muted); font-size: 0.75em; }
 
 	.promo-info__prizes { width: 100%; margin: 0 0 0.9em; border-collapse: collapse; font-size: 0.85em; }
 	.promo-info__prizes td { padding: 0.35em 0.4em; border-bottom: 1px solid rgb(255 255 255 / 8%); text-align: left; }

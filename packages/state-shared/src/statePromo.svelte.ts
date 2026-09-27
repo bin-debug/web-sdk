@@ -30,6 +30,26 @@ export type PromoSummary = {
 		paidPlaces: number;
 	};
 	prizes?: { tier: number; label: string; count: number; amount: number }[];
+	jackpot?: { tier: number; label: string; pot: number; cap: number }[];
+	race?: {
+		goal: { goal: 'spins' | 'wins_at_least' | 'total_win' | 'total_wagered'; target: number; threshold: number; reward: number; label: string };
+		current: number;
+		position: number | null;
+		placesTaken: number;
+		placesTotal: number;
+	};
+	rules?: { pct: number; minSpins: number; everySpins: number; targetMultiplier: number; minLoss: number; maxPerSpin: number };
+	you?: {
+		spins: number;
+		turnover: number;
+		gameWin: number;
+		bestMultiplier: number;
+		won: number;
+		windowSpins: number;
+		windowNet: number;
+		resultLabel: string | null;
+		resultAmount: number;
+	};
 };
 
 export type PromoLeaderboardEntry = { position: number; player: string; score: number; you: boolean };
@@ -62,7 +82,7 @@ export const statePromo = $state({
 });
 
 const isShowable = (p: PromoSummary) =>
-	p.phase !== 'ended' || (p.type === 'leaderboard' && !!p.leaderboard?.you);
+	p.phase !== 'ended' || (p.type === 'leaderboard' && !!p.leaderboard?.you) || (p.you?.resultAmount ?? 0) > 0;
 
 export const statePromoDerived = {
 	current: () => statePromo.queue[0] ?? null,
@@ -76,9 +96,11 @@ export const promoActions = {
 		statePromo.active = active ?? [];
 	},
 	holdAwards: (awards: PromoAward[] | null | undefined) => {
-		if (!awards?.length) return;
-		statePromo.pending = [...statePromo.pending, ...awards];
-		statePromo.pendingAmount += awards.reduce((sum, a) => sum + a.amount, 0);
+		// Only cash credits are held and popped up. A stake discount already shows as a smaller debit.
+		const cash = (awards ?? []).filter((a) => a.kind === 'cash');
+		if (!cash.length) return;
+		statePromo.pending = [...statePromo.pending, ...cash];
+		statePromo.pendingAmount += cash.reduce((sum, a) => sum + a.amount, 0);
 	},
 	/** Moves held awards to the pop-up queue. Returns the micro-units now revealed. */
 	revealAwards: () => {

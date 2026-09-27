@@ -8,7 +8,7 @@
 	import PromoBanner from './promo/PromoBanner.svelte';
 	import PromoAwardPopup from './promo/PromoAwardPopup.svelte';
 	import PromoInfoSheet from './promo/PromoInfoSheet.svelte';
-	import { ordinal, prizeForPosition } from './promo/promoFormat';
+
 
 	// Operator promos for every game (mounted from the shared Modals layer):
 	// prize drops, win boosts, multiplier windows, missions and leaderboards.
@@ -53,20 +53,18 @@
 		};
 	});
 
-	// Leaderboards pay when they close; announce the player's final placing once.
+	// Leaderboards, guaranteed wins and cashback pay when the promo closes; announce the result once.
 	$effect(() => {
 		for (const p of statePromo.active) {
-			const you = p.leaderboard?.you;
-			if (p.type !== 'leaderboard' || p.phase !== 'ended' || !you || you.position > p.leaderboard!.paidPlaces) continue;
+			const you = p.you;
+			if (p.phase !== 'ended' || !you?.resultLabel || you.resultAmount <= 0) continue;
 			if (statePromo.resultsShown.includes(p.promoId)) continue;
-			const prize = prizeForPosition(p, you.position);
-			if (!prize) continue;
 			promoActions.announceResult({
-				promoId: p.promoId, type: p.type, kind: 'cash', tier: prize.tier,
-				label: `You finished ${ordinal(you.position)}`, amount: prize.amount, currency: p.currency, title: p.title,
+				promoId: p.promoId, type: p.type, kind: 'cash', tier: 0,
+				label: you.resultLabel, amount: you.resultAmount, currency: p.currency, title: p.title,
 			});
 			// Already in the wallet; the next RGS response sets the exact balance again.
-			stateBet.balanceAmount += prize.amount / API_AMOUNT_MULTIPLIER;
+			stateBet.balanceAmount += you.resultAmount / API_AMOUNT_MULTIPLIER;
 		}
 	});
 </script>

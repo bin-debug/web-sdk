@@ -28,7 +28,7 @@
 				<span class="promo-drop__label">{line}</span>
 				<span class="promo-drop__amount">{money(award.amount)}</span>
 				<span class="promo-drop__note">
-					{award.display === 'result' ? 'Leaderboard prize · credited to your balance' : 'Promo reward · added to your balance'}
+					{award.display === 'result' ? 'Promo result · credited to your balance' : 'Promo reward · added to your balance'}
 				</span>
 			</button>
 		</div>
