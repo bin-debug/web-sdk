@@ -2,7 +2,7 @@
 	import { statePromo, statePromoDerived } from 'state-shared';
 
 	import {
-		money, multiplier, ordinal, timing, goalText, progressText, scoreText, scoreByText,
+		money, multiplier, ordinal, timing, goalText, progressText, scoreText, scoreByText, clock,
 	} from './promoFormat';
 
 	type Props = { now: number };
@@ -22,6 +22,7 @@
 					achievement: 'Achievements',
 					leaderboard: 'Leaderboard',
 					jackpot: 'Must-drop jackpot',
+					jackpot_race: 'Jackpot race',
 					race: 'Race',
 					guaranteed_win: 'Guaranteed win',
 					loss_rebate: 'Safety net',
@@ -54,7 +55,10 @@
 			{#if p.subtitle}<p class="promo-info__subtitle">{p.subtitle}</p>{/if}
 
 			<dl class="promo-info__stats">
-				{#if p.type === 'prize_drop'}
+				{#if p.type === 'jackpot_race'}
+					<div><dt>Jackpot pot</dt><dd>{money(p.pot)}</dd></div>
+					<div><dt>Jackpots</dt><dd>{(p.jackpotRace ?? []).length}</dd></div>
+				{:else if p.type === 'prize_drop'}
 					<div><dt>Prize pot</dt><dd>{money(p.pot)}</dd></div>
 					<div><dt>Prizes left</dt><dd>{p.prizesRemaining} of {p.prizesTotal}</dd></div>
 				{:else if p.boost}
@@ -83,7 +87,26 @@
 				{#if t}<div><dt>{t.label}</dt><dd>{t.value || '—'}</dd></div>{/if}
 			</dl>
 
-			{#if p.jackpot}
+			{#if p.jackpotRace}
+				<ul class="promo-info__jackpots">
+					{#each p.jackpotRace as r (r.index)}
+						<li>
+							<span class="jp__label">{r.label}</span>
+							<span class="jp__pot">
+								{#if r.status === 'won'}{money(r.wonAmount)}{:else if r.amount > 0}{money(r.amount)}{:else}{r.pctOfPot}% of pot{/if}
+							</span>
+							<small>
+								{clock(r.windowStart)}–{clock(r.windowEnd)} ·
+								{#if r.status === 'won'}{r.youWon ? 'You won it! 🎉' : `Won by ${(r.winners ?? []).join(', ')}`}{r.wonAt ? ` at ${clock(r.wonAt)}` : ''}
+								{:else if r.status === 'live'}Live now — can hit any second
+								{:else if r.status === 'rolled_over'}Nobody played — prize stays in the pot
+								{:else}Upcoming{/if}
+							</small>
+						</li>
+					{/each}
+				</ul>
+				<p class="promo-info__body">Every eligible spin grows the pot. Each jackpot hits at a secret random moment inside its time slot, and the qualifying spin closest to that moment wins it — keep spinning during the slot to be in with a chance.</p>
+			{:else if p.jackpot}
 				<ul class="promo-info__jackpots">
 					{#each [...p.jackpot].sort((a, b) => a.tier - b.tier) as j (j.tier)}
 						<li>

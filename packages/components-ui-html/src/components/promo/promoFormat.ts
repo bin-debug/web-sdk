@@ -8,6 +8,10 @@ type ScoreBy = NonNullable<PromoSummary['leaderboard']>['scoreBy'];
 /** API amounts are micro-units. */
 export const money = (micro: number) => numberToCurrencyString(micro / API_AMOUNT_MULTIPLIER);
 
+/** Local wall-clock time, e.g. "20:30". */
+export const clock = (iso: string) =>
+	new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
 export const multiplier = (x: number) => `${Number(x.toFixed(2))}×`;
 
 export const ordinal = (n: number) => {

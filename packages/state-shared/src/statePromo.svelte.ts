@@ -38,6 +38,7 @@ export type PromoSummary = {
 		placesTaken: number;
 		placesTotal: number;
 	};
+	jackpotRace?: PromoJackpotRaceRound[];
 	rules?: { pct: number; minSpins: number; everySpins: number; targetMultiplier: number; minLoss: number; maxPerSpin: number };
 	you?: {
 		spins: number;
@@ -49,7 +50,23 @@ export type PromoSummary = {
 		windowNet: number;
 		resultLabel: string | null;
 		resultAmount: number;
+		// Increases every time a new result is paid (e.g. each jackpot-race round won off-spin).
+		resultSeq?: number;
 	};
+};
+
+export type PromoJackpotRaceRound = {
+	index: number;
+	label: string;
+	windowStart: string;
+	windowEnd: string;
+	pctOfPot: number;
+	amount: number;
+	status: 'upcoming' | 'live' | 'won' | 'rolled_over';
+	winners: string[] | null;
+	wonAmount: number;
+	wonAt: string | null;
+	youWon: boolean;
 };
 
 export type PromoLeaderboardEntry = { position: number; player: string; score: number; you: boolean };
@@ -113,10 +130,13 @@ export const promoActions = {
 	dismissCurrent: () => {
 		statePromo.queue = statePromo.queue.slice(1);
 	},
-	/** Announces a final leaderboard placing once (the prize was credited when the board closed). */
-	announceResult: (award: PromoAward) => {
-		if (statePromo.resultsShown.includes(award.promoId)) return;
-		statePromo.resultsShown = [...statePromo.resultsShown, award.promoId];
+	/**
+	 * Announces a result paid outside the player's own spin (leaderboard placing, cashback, a jackpot-race
+	 * round won by the spin closest to the moment) once per key. The prize is already in the wallet.
+	 */
+	announceResult: (award: PromoAward, key: string = award.promoId) => {
+		if (statePromo.resultsShown.includes(key)) return;
+		statePromo.resultsShown = [...statePromo.resultsShown, key];
 		statePromo.queue = [...statePromo.queue, { ...award, display: 'result' }];
 	},
 };

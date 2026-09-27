@@ -53,16 +53,30 @@
 		};
 	});
 
-	// Leaderboards, guaranteed wins and cashback pay when the promo closes; announce the result once.
+	// Results paid outside the player's own spin — leaderboards, guaranteed wins and cashback when the promo
+	// closes, and jackpot-race rounds while it is live — are announced once per result (promoId + resultSeq).
+	// Remembered in localStorage too, so a reload doesn't show the same result again.
+	const SEEN_KEY = 'promo-results-seen';
+	const seen = (): string[] => {
+		try { return JSON.parse(localStorage.getItem(SEEN_KEY) ?? '[]'); } catch { return []; }
+	};
+	const remember = (key: string) => {
+		try { localStorage.setItem(SEEN_KEY, JSON.stringify([...seen(), key].slice(-50))); } catch { /* optional */ }
+	};
 	$effect(() => {
 		for (const p of statePromo.active) {
 			const you = p.you;
-			if (p.phase !== 'ended' || !you?.resultLabel || you.resultAmount <= 0) continue;
-			if (statePromo.resultsShown.includes(p.promoId)) continue;
+			if (!you?.resultLabel || you.resultAmount <= 0) continue;
+			const seq = you.resultSeq ?? 0;
+			if (p.phase !== 'ended' && seq === 0) continue;
+			const key = `${p.promoId}:${seq}`;
+			if (statePromo.resultsShown.includes(key)) continue;
+			if (seen().includes(key)) { statePromo.resultsShown = [...statePromo.resultsShown, key]; continue; }
+			remember(key);
 			promoActions.announceResult({
 				promoId: p.promoId, type: p.type, kind: 'cash', tier: 0,
 				label: you.resultLabel, amount: you.resultAmount, currency: p.currency, title: p.title,
-			});
+			}, key);
 			// Already in the wallet; the next RGS response sets the exact balance again.
 			stateBet.balanceAmount += you.resultAmount / API_AMOUNT_MULTIPLIER;
 		}

@@ -2,7 +2,7 @@
 	import { statePromo, type PromoSummary } from 'state-shared';
 
 	import PromoIcon from './PromoIcon.svelte';
-	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal } from './promoFormat';
+	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal, clock } from './promoFormat';
 
 	type Props = { promos: PromoSummary[]; now: number };
 	const props: Props = $props();
@@ -46,6 +46,26 @@
 					main: top ? `${top.label} ${money(top.pot)}` : money(p.pot),
 					line: tiers.slice(1).map((t) => `${t.label} ${money(t.pot)}`).join(' · ') || `Must drop by ${money(top?.cap ?? 0)}`,
 					progress: top ? Math.min(1, top.pot / top.cap) : null,
+					t,
+				};
+			}
+			case 'jackpot_race': {
+				const rounds = p.jackpotRace ?? [];
+				const live = rounds.find((r) => r.status === 'live');
+				const next = live ?? rounds.find((r) => r.status === 'upcoming');
+				const done = rounds.filter((r) => r.status === 'won' || r.status === 'rolled_over').length;
+				const won = [...rounds].reverse().find((r) => r.youWon);
+				return {
+					icon: 'crown' as const,
+					main: money(p.pot),
+					line: won && !next
+						? `You won the ${won.label}!`
+						: live
+							? `${live.label} can hit any second`
+							: next
+								? `${next.label} from ${clock(next.windowStart)}`
+								: `${done} of ${rounds.length} jackpots paid`,
+					progress: rounds.length ? done / rounds.length : null,
 					t,
 				};
 			}
