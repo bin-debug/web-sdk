@@ -2,11 +2,10 @@
 	import { type Snippet, onMount } from 'svelte';
 	import { GlobalStyle } from 'components-ui-html';
 	import { Authenticate, LoadI18n } from 'components-shared';
-	import { stateModal, stateConfig } from 'state-shared';
+	import { stateModal } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
 	import FreeSpinAwardPopup from '../components/FreeSpinAwardPopup.svelte';
-	import MissionsDrawer from '../components/MissionsDrawer.svelte';
 	import { setContext } from '../game/context';
 	import messagesMap from '../i18n/messagesMap';
 
@@ -15,7 +14,6 @@
 
 	let introVisible = $state(true);
 	const introFeatures = [{"icon":"*","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win"},{"icon":"*","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"*","title":"2 500x Max Win","subtitle":"Chase the ultimate top prize"}];
-	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');
 	onMount(() => {
 		const tick = () => { const n = new Date(); timeStr = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0'); };
@@ -24,8 +22,8 @@
 
 	setContext();
 
-	// Ticker + game/studio name bar (and the missions drawer) hide while the
-	// Buy Bonus screen is open, and come straight back the instant it closes —
+	// The game/studio name bar hides while the
+	// Buy Bonus screen is open, and comes straight back the instant it closes —
 	// driven off stateModal directly, so there's no separate restore step.
 	const bonusModalOpen = $derived(stateModal.modal?.name === 'buyBonus');
 </script>
@@ -54,20 +52,8 @@
 
 {@render props.children()}
 
-{#if !introVisible && tickerItems.length && !bonusModalOpen && !stateConfig.jurisdiction.disabledNoticeBar}
-	<div class="ticker">
-		<div class="ticker__viewport">
-			<div class="ticker__track">
-				{#each [0, 1] as _dup}
-					{#each tickerItems as msg}<span class="ticker__item">{msg}</span><span class="ticker__sep">✦</span>{/each}
-				{/each}
-			</div>
-		</div>
-	</div>
-{/if}
-
 {#if !introVisible && !bonusModalOpen}
-	<div class="top-bar" class:top-bar--no-ticker={stateConfig.jurisdiction.disabledNoticeBar}>
+	<div class="top-bar">
 		<div class="tb-left">
 			<span class="tb-time">{timeStr}</span>
 			<span class="tb-name">Shamrocks and Shenanigans</span>
@@ -76,28 +62,12 @@
 	</div>
 {/if}
 
-{#if !introVisible && !bonusModalOpen && !stateConfig.jurisdiction.disabledMissions}
-	<MissionsDrawer />
-{/if}
-
 {#if !introVisible && !bonusModalOpen}
 	<img class="game-logo" src="./assets/sprites/game/logo.webp" alt="Shamrocks and Shenanigans" />
 {/if}
 
 <style>
-	.ticker { position: fixed; left: 0; right: 0; top: 0; height: 30px; z-index: 91;
-		display: flex; align-items: center; pointer-events: none;
-		background: linear-gradient(90deg, rgba(20,8,30,.82), rgba(40,16,55,.82));
-		border-bottom: 1px solid rgba(245,197,24,.5); box-shadow: 0 2px 10px rgba(0,0,0,.35);
-		overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-	.ticker__viewport { flex: 1 1 auto; overflow: hidden; }
-	.ticker__track { display: inline-flex; align-items: center; white-space: nowrap;
-		will-change: transform; animation: ticker-scroll 22s linear infinite; }
-	.ticker__item { color: #ffe9a0; font-size: 13px; font-weight: 600; padding: 0 6px; }
-	.ticker__sep { color: rgba(245,197,24,.65); font-size: 11px; padding: 0 4px; }
-	@keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-	.top-bar--no-ticker { top: 0 !important; }
-	.top-bar { position: fixed; left: 0; right: 0; top: 30px; height: 26px; z-index: 90;
+	.top-bar { position: fixed; left: 0; right: 0; top: 0; height: 26px; z-index: 90;
 		display: flex; align-items: center; justify-content: space-between; padding: 0 12px; pointer-events: none;
 		background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
