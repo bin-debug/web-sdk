@@ -206,7 +206,8 @@
 		background: var(--promo-surface);
 		color: var(--promo-text);
 		box-shadow: 0 0.45em 1.5em rgb(0 0 0 / 40%);
-		backdrop-filter: blur(6px);
+		/* No backdrop-filter: blurring the WebGL canvas behind it costs a GPU pass every frame on phones. */
+		contain: layout style;
 		cursor: pointer;
 		font-family: inherit;
 		line-height: 1.15;
@@ -215,7 +216,16 @@
 	:global(.intro-active) .promo-banner {
 		display: none;
 	}
-	.promo-banner--live {
+	/* Live glow: a static shadow on a pseudo-element, only its opacity animates (compositor-only, no repaints). */
+	.promo-banner--live::after {
+		content: '';
+		position: absolute;
+		inset: -1px;
+		border-radius: inherit;
+		box-shadow: 0 0 1.2em 0.15em rgb(245 197 66 / 45%);
+		pointer-events: none;
+		opacity: 0;
+		will-change: opacity;
 		animation: promo-glow 2.4s ease-in-out infinite;
 	}
 	.promo-banner__badge {
@@ -310,10 +320,10 @@
 		}
 	}
 	@keyframes promo-glow {
-		0%, 100% { box-shadow: 0 0.45em 1.5em rgb(0 0 0 / 40%), 0 0 0 0 rgb(245 197 66 / 0%); }
-		50% { box-shadow: 0 0.45em 1.5em rgb(0 0 0 / 40%), 0 0 1.2em 0.15em rgb(245 197 66 / 45%); }
+		0%, 100% { opacity: 0; }
+		50% { opacity: 1; }
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.promo-banner--live { animation: none; }
+		.promo-banner--live::after { animation: none; }
 	}
 </style>
