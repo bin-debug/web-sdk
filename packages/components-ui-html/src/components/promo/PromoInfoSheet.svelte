@@ -192,7 +192,7 @@
 
 <style lang="scss">
 	.promo-info {
-		font-size: clamp(12px, 3.6vw, 17px);
+		font-size: clamp(14px, 4.3vw, 20px);
 		position: fixed;
 		inset: 0;
 		z-index: 1200;
@@ -224,7 +224,7 @@
 	.promo-info__eyebrow {
 		margin: 0;
 		color: var(--promo-accent);
-		font-size: 0.75em;
+		font-size: 0.8em;
 		font-weight: 800;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
@@ -243,7 +243,7 @@
 		margin: 0 0 0.9em;
 	}
 	.promo-info__stats div { padding: 0.6em; border-radius: 0.6em; background: rgb(255 255 255 / 6%); }
-	.promo-info__stats dt { color: var(--promo-muted); font-size: 0.7em; text-transform: uppercase; }
+	.promo-info__stats dt { color: var(--promo-muted); font-size: 0.78em; text-transform: uppercase; }
 	.promo-info__stats dd {
 		margin: 0.25em 0 0;
 		color: var(--promo-accent);
@@ -273,7 +273,7 @@
 	.step--done .step__mark { background: var(--promo-accent); color: #3d2300; }
 	.step--locked { opacity: 0.5; }
 	.step__body { display: flex; flex-direction: column; gap: 0.15em; min-width: 0; }
-	.step__body small { color: var(--promo-muted); font-size: 0.75em; }
+	.step__body small { color: var(--promo-muted); font-size: 0.82em; }
 	.step__bar { height: 0.35em; border-radius: 999px; background: rgb(255 255 255 / 12%); overflow: hidden; }
 	.step__bar span { display: block; height: 100%; background: var(--promo-accent); }
 	.step__reward { color: var(--promo-accent); font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -306,19 +306,19 @@
 	.jp__pot { color: var(--promo-accent); font-weight: 900; font-variant-numeric: tabular-nums; }
 	.jp__bar { grid-column: 1 / -1; height: 0.35em; border-radius: 999px; background: rgb(255 255 255 / 12%); overflow: hidden; }
 	.jp__bar span { display: block; height: 100%; background: var(--promo-accent); }
-	.promo-info__jackpots small { grid-column: 1 / -1; color: var(--promo-muted); font-size: 0.75em; }
+	.promo-info__jackpots small { grid-column: 1 / -1; color: var(--promo-muted); font-size: 0.82em; }
 
-	.promo-info__prizes { width: 100%; margin: 0 0 0.9em; border-collapse: collapse; font-size: 0.85em; }
+	.promo-info__prizes { width: 100%; margin: 0 0 0.9em; border-collapse: collapse; font-size: 0.92em; }
 	.promo-info__prizes td { padding: 0.35em 0.4em; border-bottom: 1px solid rgb(255 255 255 / 8%); text-align: left; }
 	.promo-info__prizes td:last-child { color: var(--promo-accent); font-weight: 800; text-align: right; }
 
 	.promo-info__terms, .promo-info__fine {
 		margin: 0 0 0.6em;
 		color: var(--promo-muted);
-		font-size: 0.8em;
+		font-size: 0.86em;
 		line-height: 1.45;
 	}
-	.promo-info__fine { font-size: 0.7em; opacity: 0.8; }
+	.promo-info__fine { font-size: 0.78em; opacity: 0.8; }
 	.promo-info__close {
 		width: 100%;
 		min-height: 2.8em;
@@ -333,6 +333,6 @@
 		cursor: pointer;
 	}
 	@media (orientation: landscape) {
-		.promo-info { font-size: clamp(11px, 2.4vh, 22px); }
+		.promo-info { font-size: clamp(13px, 2.7vh, 24px); }
 	}
 </style>

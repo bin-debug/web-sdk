@@ -189,7 +189,7 @@
 <style lang="scss">
 	/* Sized from the viewport, everything inside in em (see PromoLayer). */
 	.promo-banner {
-		font-size: clamp(11px, 3.1vw, 22px);
+		font-size: clamp(13px, 3.9vw, 24px);
 		position: fixed;
 		top: var(--promo-top);
 		left: 50%;
@@ -249,9 +249,9 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		color: var(--promo-muted);
-		font-size: 0.75em;
+		font-size: 0.8em;
 		font-weight: 800;
-		letter-spacing: 0.1em;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
 	}
 	.promo-banner__main {
@@ -283,7 +283,7 @@
 		padding-left: 0.75em;
 		border-left: 1px solid rgb(255 255 255 / 15%);
 		color: var(--promo-muted);
-		font-size: 0.85em;
+		font-size: 0.9em;
 		font-variant-numeric: tabular-nums;
 	}
 	.promo-banner__meta strong {
@@ -308,7 +308,7 @@
 	}
 
 	@media (orientation: landscape) {
-		.promo-banner { font-size: clamp(11px, 2.3vh, 26px); }
+		.promo-banner { font-size: clamp(13px, 2.6vh, 28px); }
 	}
 	/* Wide layouts: sit in the free space top-right instead of over the reels. */
 	@media (min-aspect-ratio: 4/3) {
