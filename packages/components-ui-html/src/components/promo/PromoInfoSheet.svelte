@@ -2,7 +2,7 @@
 	import { statePromo, statePromoDerived } from 'state-shared';
 
 	import {
-		money, multiplier, ordinal, timing, goalText, progressText, scoreText, scoreByText, clock,
+		money, multiplier, ordinal, timing, goalText, progressText, scoreText, scoreByText, clock, whenText,
 	} from './promoFormat';
 
 	type Props = { now: number };
@@ -28,6 +28,8 @@
 					loss_rebate: 'Safety net',
 					cashback: 'Cashback',
 					stake_discount: 'Stake discount',
+					welcome_bonus: 'Welcome bonus',
+					free_spins: 'Free spins',
 				} as Record<string, string>)[p.type] ?? 'Promotion'
 			: '',
 	);
@@ -53,9 +55,23 @@
 			<p class="promo-info__eyebrow">{eyebrow}</p>
 			<h2 id="promo-info-title">{p.title}</h2>
 			{#if p.subtitle}<p class="promo-info__subtitle">{p.subtitle}</p>{/if}
+			{#if p.phase === 'upcoming'}
+				<p class="promo-info__soon">Starts {whenText(p.startsAt ?? p.windowStart, props.now)}{#if p.teaserText} — {p.teaserText}{/if}</p>
+			{/if}
 
 			<dl class="promo-info__stats">
-				{#if p.type === 'jackpot_race'}
+				{#if p.bonus}
+					{#if p.bonus.stage === 'spins'}
+						<div><dt>Spins left</dt><dd>{p.bonus.spinsTotal - p.bonus.spinsUsed} of {p.bonus.spinsTotal}</dd></div>
+						<div><dt>Spin value</dt><dd>{money(p.bonus.spinValue)}</dd></div>
+						<div><dt>Won so far</dt><dd>{money(p.bonus.bonusWinnings)}</dd></div>
+						<div><dt>Wagering</dt><dd>{p.bonus.wageringMultiplier > 0 ? multiplier(p.bonus.wageringMultiplier) : 'None'}</dd></div>
+					{:else}
+						<div><dt>Bonus winnings</dt><dd>{money(p.bonus.bonusWinnings)}</dd></div>
+						<div><dt>Wagered</dt><dd>{money(p.bonus.wageringProgress)} / {money(p.bonus.wageringTarget)}</dd></div>
+						<div><dt>Still to wager</dt><dd>{money(Math.max(0, p.bonus.wageringTarget - p.bonus.wageringProgress))}</dd></div>
+					{/if}
+				{:else if p.type === 'jackpot_race'}
 					<div><dt>Jackpot pot</dt><dd>{money(p.pot)}</dd></div>
 					<div><dt>Jackpots</dt><dd>{(p.jackpotRace ?? []).length}</dd></div>
 				{:else if p.type === 'prize_drop'}
@@ -87,7 +103,16 @@
 				{#if t}<div><dt>{t.label}</dt><dd>{t.value || '—'}</dd></div>{/if}
 			</dl>
 
-			{#if p.jackpotRace}
+			{#if p.bonus}
+				{#if p.bonus.stage === 'wagering'}
+					<span class="promo-info__wager"><span style:width={`${Math.min(100, (p.bonus.wageringProgress / Math.max(1, p.bonus.wageringTarget)) * 100)}%`}></span></span>
+				{/if}
+				<p class="promo-info__body">
+					{#if p.bonus.stage === 'spins'}Your free spins are played at {money(p.bonus.spinValue)} each.{/if}
+					{#if p.bonus.wageringMultiplier > 0}Winnings from the free spins are held as bonus money until you have wagered {multiplier(p.bonus.wageringMultiplier)} those winnings. Every real-money spin counts, in any game. Once the target is reached the winnings are released to your balance.
+					{:else}Winnings from the free spins go straight to your balance.{/if}
+				</p>
+			{:else if p.jackpotRace}
 				<ul class="promo-info__jackpots">
 					{#each p.jackpotRace as r (r.index)}
 						<li>
@@ -184,7 +209,7 @@
 			{/if}
 
 			{#if p.termsText}<p class="promo-info__terms">{p.termsText}</p>{/if}
-			<p class="promo-info__fine">Promo rewards are paid by the operator, separately from game wins. Game rules and RTP are unchanged.</p>
+			<p class="promo-info__fine">{p.bonus ? 'Free spins are awarded by the operator. Game rules and RTP are unchanged.' : 'Promo rewards are paid by the operator, separately from game wins. Game rules and RTP are unchanged.'}</p>
 			<button class="promo-info__close" onclick={close}>Got it</button>
 		</section>
 	</div>
@@ -306,6 +331,9 @@
 	.jp__pot { color: var(--promo-accent); font-weight: 900; font-variant-numeric: tabular-nums; }
 	.jp__bar { grid-column: 1 / -1; height: 0.35em; border-radius: 999px; background: rgb(255 255 255 / 12%); overflow: hidden; }
 	.jp__bar span { display: block; height: 100%; background: var(--promo-accent); }
+	.promo-info__soon { margin: 0 0 0.8em; padding: 0.55em 0.8em; border: 1px solid rgb(245 197 66 / 45%); border-radius: 0.6em; background: rgb(245 197 66 / 10%); color: var(--promo-accent); font-weight: 800; }
+	.promo-info__wager { display: block; height: 0.45em; margin: 0 0 0.8em; border-radius: 999px; background: rgb(255 255 255 / 12%); overflow: hidden; }
+	.promo-info__wager span { display: block; height: 100%; background: var(--promo-accent); }
 	.promo-info__jackpots small { grid-column: 1 / -1; color: var(--promo-muted); font-size: 0.82em; }
 
 	.promo-info__prizes { width: 100%; margin: 0 0 0.9em; border-collapse: collapse; font-size: 0.92em; }

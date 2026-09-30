@@ -2,7 +2,7 @@
 	import { statePromo, type PromoSummary } from 'state-shared';
 
 	import PromoIcon from './PromoIcon.svelte';
-	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal, clock } from './promoFormat';
+	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal, clock, whenText } from './promoFormat';
 
 	type Props = { promos: PromoSummary[]; now: number };
 	const props: Props = $props();
@@ -26,6 +26,17 @@
 		const p = promo;
 		if (!p) return null;
 		const t = timing(p, props.now);
+		if (p.bonus) {
+			const b = p.bonus;
+			const left = b.spinsTotal - b.spinsUsed;
+			return b.stage === 'spins'
+				? { icon: 'star' as const, main: `${left} free spin${left === 1 ? '' : 's'} left`, line: b.wageringMultiplier > 0 ? `${money(b.spinValue)} each · ${multiplier(b.wageringMultiplier)} wagering` : `${money(b.spinValue)} each · no wagering`, progress: b.spinsUsed / Math.max(1, b.spinsTotal), t }
+				: { icon: 'coins' as const, main: `Wager ${money(Math.max(0, b.wageringTarget - b.wageringProgress))}`, line: `to unlock ${money(b.bonusWinnings)}`, progress: b.wageringTarget > 0 ? Math.min(1, b.wageringProgress / b.wageringTarget) : null, t };
+		}
+		if (p.phase === 'upcoming') {
+			const icon = ({ jackpot: 'crown', jackpot_race: 'crown', leaderboard: 'trophy', race: 'flag', mission: 'flag', achievement: 'flag', win_boost: 'bolt', multiplier_window: 'bolt', cashback: 'coins', stake_discount: 'tag', guaranteed_win: 'shield', loss_rebate: 'shield' } as const)[p.type as 'jackpot'] ?? ('star' as const);
+			return { icon, main: `Starts ${whenText(p.startsAt ?? p.windowStart, props.now)}`, line: p.teaserText || p.subtitle || 'Coming soon', progress: null, t };
+		}
 		switch (p.type) {
 			case 'win_boost':
 			case 'multiplier_window': {
@@ -162,7 +173,7 @@
 {#if promo && view}
 	<button
 		class="promo-banner"
-		class:promo-banner--live={promo.phase === 'live'}
+		class:promo-banner--live={promo.phase === 'live' || promo.phase === 'upcoming'}
 		onclick={() => (statePromo.infoPromoId = promo.promoId)}
 		aria-label={`${promo.title}: ${view.main}. Tap for details`}
 	>

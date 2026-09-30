@@ -9,7 +9,8 @@ export type PromoSummary = {
 	title: string;
 	subtitle: string;
 	termsText?: string | null;
-	phase: 'accumulating' | 'live' | 'ended';
+	// upcoming = teaser before the start (display only).
+	phase: 'upcoming' | 'accumulating' | 'live' | 'ended';
 	pot: number;
 	currency: string;
 	prizesRemaining: number;
@@ -17,6 +18,20 @@ export type PromoSummary = {
 	windowStart: string;
 	windowEnd: string;
 	endsAt: string;
+	startsAt?: string;
+	teaserText?: string | null;
+	// Welcome bonus / free spins (type welcome_bonus | free_spins): spins left, then wagering.
+	bonus?: {
+		stage: 'spins' | 'wagering';
+		spinsTotal: number;
+		spinsUsed: number;
+		spinValue: number;
+		wageringMultiplier: number;
+		bonusWinnings: number;
+		wageringTarget: number;
+		wageringProgress: number;
+		expiresAt: string | null;
+	};
 	boost?: { multiplier: number; minWinMultiplier: number; maxPerAward: number; budgetLeft: number };
 	mission?: {
 		steps: { goal: 'spins' | 'wins_at_least' | 'total_win' | 'total_wagered'; target: number; threshold: number; reward: number; label: string }[];

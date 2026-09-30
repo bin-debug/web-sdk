@@ -25,12 +25,27 @@ export const countdown = (targetIso: string, now: number) => {
 	const h = Math.floor(s / 3600);
 	const m = Math.floor((s % 3600) / 60);
 	const pad = (n: number) => String(n).padStart(2, '0');
+	if (h >= 48) return `${Math.floor(h / 24)}d ${h % 24}h`;
 	return h > 0 ? `${h}:${pad(m)}:${pad(s % 60)}` : `${pad(m)}:${pad(s % 60)}`;
+};
+
+/** "tonight 20:30", "today 14:00", "tomorrow 20:30", "Sat 20:30" or "12 Oct 20:30". */
+export const whenText = (iso: string, now: number) => {
+	const d = new Date(iso);
+	const day = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+	const days = Math.round((day(d) - day(new Date(now))) / 86_400_000);
+	const at = clock(iso);
+	if (days <= 0) return `${d.getHours() >= 18 ? 'tonight' : 'today'} ${at}`;
+	if (days === 1) return `tomorrow ${at}`;
+	if (days < 7) return `${d.toLocaleDateString([], { weekday: 'short' })} ${at}`;
+	return `${d.toLocaleDateString([], { day: 'numeric', month: 'short' })} ${at}`;
 };
 
 /** "Starts in" before the window, "Ends in" during it, "Ended" after. */
 export const timing = (p: PromoSummary, now: number) => {
+	if (p.bonus) return p.bonus.expiresAt ? { label: 'Expires in', value: countdown(p.bonus.expiresAt, now) } : { label: p.bonus.stage === 'spins' ? 'Free spins' : 'Wagering', value: '' };
 	if (p.phase === 'ended') return { label: 'Ended', value: '' };
+	if (p.phase === 'upcoming' && p.startsAt) return { label: 'Starts in', value: countdown(p.startsAt, now) };
 	if (now < new Date(p.windowStart).getTime()) return { label: 'Starts in', value: countdown(p.windowStart, now) };
 	return { label: 'Ends in', value: countdown(p.windowEnd, now) };
 };
