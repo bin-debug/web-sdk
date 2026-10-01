@@ -177,7 +177,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		winLevelSoundsPlay({ winLevelData });
 		await eventEmitter.broadcastAsync({
 			type: 'freeSpinOutroCountUp',
-			amount: bookEvent.amount,
+			// freeSpinEnd.amount excludes the trigger spin's win; show the whole round total
+			amount: Math.max(bookEvent.amount, stateBet.winBookEventAmount),
 			winLevelData,
 		});
 		winLevelSoundsStop();
