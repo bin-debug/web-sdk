@@ -14,6 +14,10 @@
 	const props: Props = $props();
 
 	let introVisible = $state(true);
+	// app.html starts with <html class="intro-active">, which hides the game canvas until the intro is dismissed.
+	$effect(() => {
+		document.documentElement.classList.toggle('intro-active', introVisible);
+	});
 	const introFeatures = [{"icon":"*","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win"},{"icon":"*","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"*","title":"2 500x Max Win","subtitle":"Chase the ultimate top prize"}];
 	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');

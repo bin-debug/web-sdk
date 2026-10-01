@@ -19,15 +19,33 @@
 	let phase = $state<'studio' | 'features'>('studio');
 	let progress = $state(0);
 
+	// Measured from page open (performance.now), so time spent loading the app counts.
 	const STUDIO_MS = 3000;
+	const ASSET_TIMEOUT_MS = 8000;
+
+	const preload = (url: string) =>
+		new Promise<void>((resolve) => {
+			const img = new Image();
+			img.onload = () => img.decode().catch(() => {}).then(() => resolve());
+			img.onerror = () => resolve();
+			img.src = url;
+		});
 
 	onMount(() => {
-		const start = performance.now();
+		// Hand over from the static splash in app.html, which shows the same screen.
+		document.getElementById('boot-splash')?.remove();
+
+		let assetsReady = false;
+		const urls = [props.logoUrl, props.bgUrl].filter((u): u is string => !!u);
+		const timeout = new Promise<void>((resolve) => setTimeout(resolve, ASSET_TIMEOUT_MS));
+		Promise.race([Promise.all(urls.map(preload)), timeout]).then(() => (assetsReady = true));
+
 		let raf = 0;
 		const step = (now: number) => {
-			progress = Math.min(100, Math.round(((now - start) / STUDIO_MS) * 100));
-			if (progress < 100) raf = requestAnimationFrame(step);
-			else phase = 'features';
+			const timeProgress = Math.min(100, Math.round((now / STUDIO_MS) * 100));
+			progress = assetsReady ? timeProgress : Math.min(timeProgress, 95);
+			if (progress >= 100) phase = 'features';
+			else raf = requestAnimationFrame(step);
 		};
 		raf = requestAnimationFrame(step);
 		return () => cancelAnimationFrame(raf);
@@ -39,13 +57,16 @@
 	}
 </script>
 
+<!-- Opaque backdrop: nothing behind the intro shows through while the two screens cross-fade. -->
+<div class="backdrop"></div>
+
 {#if phase === 'studio'}
 	<div class="studio" out:fade={{ duration: 400 }}>
 		<div class="studio-inner">
-			<div class="studio-name" in:fade={{ duration: 600 }}>{studioName}</div>
-			<div class="studio-rule" in:fade={{ delay: 200, duration: 600 }}></div>
-			<div class="studio-tag" in:fade={{ delay: 350, duration: 700 }}>{tagline}</div>
-			<div class="pbar" in:fade={{ delay: 500, duration: 600 }}>
+			<div class="studio-name">{studioName}</div>
+			<div class="studio-rule"></div>
+			<div class="studio-tag">{tagline}</div>
+			<div class="pbar">
 				<div class="pbar-fill" style="width:{progress}%"></div>
 			</div>
 			<div class="pbar-label">Loading… {progress}%</div>
@@ -58,15 +79,14 @@
 		role="button" tabindex="0" onclick={dismiss} onkeydown={(e) => e.key === 'Enter' && dismiss()}
 		in:fade={{ duration: 500 }}
 	>
-		<div class="logo-wrap" in:scale={{ duration: 700, easing: backOut, start: 0.6 }}>
-			<img class="logo" src={props.logoUrl} alt="game logo" />
-		</div>
+		<img class="logo" src={props.logoUrl} alt="game logo" in:scale={{ duration: 700, easing: backOut, start: 0.6 }} />
 		<div class="tap">Tap to play</div>
 	</div>
 {/if}
 
 <style>
 	.studio, .features { position: fixed; inset: 0; z-index: 500; user-select: none; overflow: hidden; }
+	.backdrop { position: fixed; inset: 0; z-index: 499; background: #000; }
 
 	/* ── Studio splash ─────────────────────────────────────────────── */
 	.studio { display: flex; align-items: center; justify-content: center; background: #000; }
@@ -105,17 +125,13 @@
 		display: flex; flex-direction: column; align-items: center; justify-content: center;
 		gap: 6vh; padding: 4vh 4vw; box-sizing: border-box;
 		background-size: cover; background-position: center; cursor: pointer;
-		font-family: 'Jura', system-ui, sans-serif; height: 100dvh;
+		font-family: 'Jura', system-ui, sans-serif; height: 100vh; height: 100dvh;
 	}
 
-	.logo-wrap {
-		width: min(88%, 36rem);
-		animation: logopulse 2.2s ease-in-out infinite;
-		will-change: transform;
-	}
 	.logo {
-		width: 100%; height: auto; object-fit: contain; display: block;
+		width: min(88%, 36rem); height: auto; object-fit: contain;
 		filter: drop-shadow(0 0 2.5rem rgba(255,220,80,.35)) drop-shadow(0 0.8rem 2rem rgba(0,0,0,.7));
+		animation: logopulse 2.2s ease-in-out infinite;
 	}
 	@keyframes logopulse {
 		0%,100% { transform: scale(1); }
@@ -133,11 +149,11 @@
 	@keyframes pulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
 
 	@media (orientation: landscape) and (min-width: 900px) {
-		.logo-wrap { width: min(55%, 28rem); }
+		.logo { width: min(55%, 28rem); }
 	}
 	@media (max-height: 500px) {
 		.features { gap: 3vh; }
-		.logo-wrap { width: min(60%, 20rem); }
+		.logo { width: min(60%, 20rem); }
 		.tap { font-size: 0.9rem; }
 	}
 </style>
