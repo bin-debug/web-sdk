@@ -31,14 +31,14 @@
 </script>
 
 <div class:intro-active={introVisible}>
-<GlobalStyle>
-	<Authenticate>
-		<LoadI18n {messagesMap}>
-			<Game />
-			<FreeSpinAwardPopup />
-		</LoadI18n>
-	</Authenticate>
-</GlobalStyle>
+	<GlobalStyle>
+		<Authenticate>
+			<LoadI18n {messagesMap}>
+				<Game />
+				<FreeSpinAwardPopup />
+			</LoadI18n>
+		</Authenticate>
+	</GlobalStyle>
 </div>
 
 {#if introVisible}
@@ -70,7 +70,7 @@
 	<div class="top-bar" class:top-bar--no-ticker={stateConfig.jurisdiction.disabledNoticeBar}>
 		<div class="tb-left">
 			<span class="tb-time">{timeStr}</span>
-			<span class="tb-name">Dragons & Diamonds</span>
+			<span class="tb-name">Dragons and Diamonds</span>
 		</div>
 		<span class="tb-company">Atomic-Labs</span>
 	</div>
@@ -81,7 +81,7 @@
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<img class="game-logo" src="./assets/sprites/game/logo.webp" alt="Dragons & Diamonds" />
+	<img class="game-logo" src="./assets/sprites/game/logo.webp" alt="Dragons and Diamonds" />
 {/if}
 
 <style>
@@ -105,10 +105,10 @@
 	.tb-time { color: #fff; font-size: 12px; font-weight: 600; }
 	.tb-name { color: #ffe9a0; font-size: 12px; font-weight: 600; }
 	.tb-company { color: #fff; font-size: 11px; font-weight: 600; opacity: .9; }
-	.game-logo { position: fixed; top: 100px; left: 12px; height: 180px; width: auto;
-		z-index: 89; pointer-events: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); display: none;
+	.game-logo { position: fixed; top: 100px; left: 12px; height: clamp(96px, 20vh, 180px); max-width: 38vw; width: auto;
+		z-index: 89; pointer-events: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); display: none; object-fit: contain; object-position: left top;
 		animation: logo-pulse 3s ease-in-out infinite; }
-	@keyframes logo-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.92; } }
 	@media (min-width: 1024px) and (orientation: landscape) { .game-logo { display: block; } }
+	@keyframes logo-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.92; } }
 	:global(.intro-active canvas) { visibility: hidden; }
 </style>

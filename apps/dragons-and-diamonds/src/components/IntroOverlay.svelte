@@ -103,7 +103,7 @@
 		display: flex; flex-direction: column; align-items: center; justify-content: center;
 		gap: 6vh; padding: 4vh 4vw; box-sizing: border-box;
 		background-size: cover; background-position: center; cursor: pointer;
-		font-family: 'Jura', system-ui, sans-serif; height: 100dvh;
+		font-family: 'Jura', system-ui, sans-serif; height: 100vh; height: 100dvh;
 	}
 
 	.logo {
@@ -112,8 +112,8 @@
 		animation: logopulse 2.2s ease-in-out infinite;
 	}
 	@keyframes logopulse {
-		0%,100% { transform: scale(1);    filter: drop-shadow(0 0 2.5rem rgba(255,220,80,.35)) drop-shadow(0 0.8rem 2rem rgba(0,0,0,.7)); }
-		50%      { transform: scale(1.06); filter: drop-shadow(0 0 4.5rem rgba(255,220,80,.75)) drop-shadow(0 0.8rem 2rem rgba(0,0,0,.7)); }
+		0%,100% { transform: scale(1); }
+		50%      { transform: scale(1.06); }
 	}
 
 	.tap {
