@@ -28,12 +28,50 @@
 {/if}
 
 <style lang="scss">
-	.complete { width: min(30rem, calc(100vw - 1.5rem)); box-sizing: border-box; padding: clamp(28px, 6vw, 48px); border: 1px solid #d7dce3; border-radius: clamp(16px, 3vw, 24px); background: #fff; box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 55%); color: #111827; text-align: center; }
-	.complete__eyebrow { margin: 0; color: #526070; font-size: clamp(11px, 2.9vw, 13px); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-	h2 { margin: .5rem 0 1.5rem; font-size: clamp(27px, 7.2vw, 37px); line-height: 1.1; }
-	.complete__label { margin: 0; color: #526070; font-size: clamp(14px, 3.7vw, 17px); font-weight: 700; text-transform: uppercase; }
-	.complete__win { display: block; margin-top: .35rem; font-size: clamp(48px, 13vw, 62px); font-variant-numeric: tabular-nums; line-height: 1; }
-	.complete__note { margin: 1.5rem auto; max-width: 22rem; color: #526070; font-size: clamp(15px, 4vw, 18px); line-height: 1.45; }
-	.complete__button { width: 100%; min-height: clamp(50px, 13vw, 56px); border: 0; border-radius: .75rem; background: #111827; color: #fff; cursor: pointer; font: inherit; font-size: clamp(16px, 4vw, 18px); font-weight: 800; }
-	.complete__button:hover { filter: brightness(1.15); }
+	/* Same look as the promo layer (black and gold). Sized from the viewport, everything inside in em. */
+	.complete {
+		--accent: var(--game-promo-accent, #f5c542);
+		--accent-deep: var(--game-promo-accent-deep, #b7791f);
+		--text: var(--game-promo-text, #fff8e6);
+		--muted: var(--game-promo-muted, #d9cfb8);
+		font-size: clamp(12px, 3.6vw, 18px);
+		width: min(24em, calc(100vw - 32px));
+		box-sizing: border-box;
+		padding: 1.8em 1.6em 1.6em;
+		border: 1px solid rgb(245 197 66 / 55%);
+		border-radius: 1.1em;
+		background: linear-gradient(180deg, #1d1a26, #121019);
+		box-shadow: 0 0 0 0.35em rgb(245 197 66 / 10%), 0 1.2em 3.5em rgb(0 0 0 / 60%);
+		color: var(--text);
+		font-family: inherit;
+		text-align: center;
+	}
+	.complete__eyebrow { margin: 0; color: var(--accent); font-size: 0.75em; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+	h2 { margin: 0.3em 0 1em; color: var(--text); font-size: 1.8em; line-height: 1.1; }
+	.complete__label { margin: 0; color: var(--muted); font-size: 0.8em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+	.complete__win {
+		display: block;
+		margin-top: 0.2em;
+		color: var(--accent);
+		font-size: 3.2em;
+		font-weight: 900;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		text-shadow: 0 2px 18px rgb(245 197 66 / 40%);
+	}
+	.complete__note { margin: 1.1em auto; max-width: 20em; color: var(--muted); font-size: 0.95em; line-height: 1.45; }
+	.complete__button {
+		width: 100%;
+		min-height: 2.9em;
+		border: 0;
+		border-radius: 0.75em;
+		background: var(--accent);
+		color: #3d2300;
+		cursor: pointer;
+		font: inherit;
+		font-size: 1em;
+		font-weight: 800;
+	}
+	.complete__button:hover { filter: brightness(1.08); }
+	@media (orientation: landscape) { .complete { font-size: clamp(11px, 2.6vh, 18px); } }
 </style>

@@ -237,6 +237,7 @@ export interface components {
 			round?: components['schemas']['RoundDetailObject'];
 			config?: components['schemas']['ConfigObject'];
 			freeSpins?: components['schemas']['FreeSpinAllocation'][];
+			promos?: components['schemas']['PromoSummary'][];
 			error?: components['schemas']['Error'];
 		};
 		req_Balance: {
@@ -258,11 +259,16 @@ export interface components {
 			freeSpinAllocationId?: string;
 		};
 		FreeSpinAllocation: { id: string; type: string; spinCount: number; spinsUsed: number; spinValue: number; gameIds: string[] | null; wageringMultiplier: number; expiresAt: string | null; };
+		/** Promo engine: operator-funded promos. Amounts are API micro-units. */
+		PromoSummary: { promoId: string; type: string; title: string; subtitle: string; termsText?: string | null; phase: 'accumulating' | 'live' | 'ended'; pot: number; currency: string; prizesRemaining: number; prizesTotal: number; windowStart: string; windowEnd: string; endsAt: string; };
+		PromoAward: { promoId: string; type: string; kind: string; tier: number; label: string; amount: number; currency: string; title: string; };
+		PromoSpinResult: { awards: components['schemas']['PromoAward'][]; active: components['schemas']['PromoSummary'][]; };
 		res_play: {
 			status?: components['schemas']['StatusObject'];
 			balance?: components['schemas']['BalanceObject'];
 			round?: components['schemas']['RoundDetailObject'];
 			error?: components['schemas']['Error'];
+			promos?: components['schemas']['PromoSpinResult'];
 		};
 		req_end_round: {
 			sessionID: components['schemas']['SessionID'];

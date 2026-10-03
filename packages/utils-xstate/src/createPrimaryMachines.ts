@@ -1,7 +1,7 @@
 import { fromPromise } from 'xstate';
 
 import { API_AMOUNT_MULTIPLIER } from 'constants-shared/bet';
-import { stateBet, stateFreeSpins, stateUrlDerived, stateModal } from 'state-shared';
+import { stateBet, stateFreeSpins, stateUrlDerived, stateModal, statePromo, promoActions } from 'state-shared';
 import { requestBet, requestEndRound } from 'rgs-requests';
 
 import type { BaseBet } from './types';
@@ -85,7 +85,8 @@ const handleRequestEndRound = async () => {
 };
 
 const handleUpdateBalance = ({ balanceAmountFromApi }: { balanceAmountFromApi: number }) => {
-	stateBet.balanceAmount = balanceAmountFromApi / API_AMOUNT_MULTIPLIER;
+	// Promo credits are already in the wallet balance; hold them back until their pop-up shows.
+	stateBet.balanceAmount = (balanceAmountFromApi - statePromo.pendingAmount) / API_AMOUNT_MULTIPLIER;
 };
 
 type Options<TBet extends BaseBet> = {
@@ -162,6 +163,9 @@ function createPrimaryMachines<TBet extends BaseBet>(options: Options<TBet>) {
 		const data = await handleRequestBet({ onError: onNewGameError });
 
 		if (data) {
+			promoActions.setActive(data.promos?.active);
+			promoActions.holdAwards(data.promos?.awards);
+
 			if (data.balance) {
 				handleUpdateBalance({ balanceAmountFromApi: data.balance.amount });
 			}
@@ -211,6 +215,15 @@ function createPrimaryMachines<TBet extends BaseBet>(options: Options<TBet>) {
 			if (targetBet) {
 				const betType = getBetType({ bet: targetBet });
 				await BET_TYPE_METHODS_MAP[betType].endGame();
+			}
+			// The game's own win presentation is done — now reveal any promo reward.
+			const revealed = promoActions.revealAwards();
+			if (revealed > 0) stateBet.balanceAmount += revealed / API_AMOUNT_MULTIPLIER;
+
+			// Free spins finished on this round: show the summary now that every animation has played.
+			if (stateFreeSpins.pendingCompletion) {
+				stateModal.modal = { name: 'freeSpinComplete', ...stateFreeSpins.pendingCompletion };
+				stateFreeSpins.pendingCompletion = null;
 			}
 		},
 	);

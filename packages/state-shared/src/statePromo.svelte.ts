@@ -1,0 +1,157 @@
+// Promo engine state. Amounts from the API are micro-units (API_AMOUNT_MULTIPLIER).
+// Promo rewards are paid by the RGS as separate wallet credits. The wallet balance in the
+// play response already includes them, so the shown balance holds the credit back until
+// the reward pop-up appears after the game's own win presentation has finished.
+
+export type PromoSummary = {
+	promoId: string;
+	type: string;
+	title: string;
+	subtitle: string;
+	termsText?: string | null;
+	// upcoming = teaser before the start (display only).
+	phase: 'upcoming' | 'accumulating' | 'live' | 'ended';
+	pot: number;
+	currency: string;
+	prizesRemaining: number;
+	prizesTotal: number;
+	windowStart: string;
+	windowEnd: string;
+	endsAt: string;
+	startsAt?: string;
+	teaserText?: string | null;
+	// Welcome bonus / free spins (type welcome_bonus | free_spins): spins left, then wagering.
+	bonus?: {
+		stage: 'spins' | 'wagering';
+		spinsTotal: number;
+		spinsUsed: number;
+		spinValue: number;
+		wageringMultiplier: number;
+		bonusWinnings: number;
+		wageringTarget: number;
+		wageringProgress: number;
+		expiresAt: string | null;
+	};
+	boost?: { multiplier: number; minWinMultiplier: number; maxPerAward: number; budgetLeft: number };
+	mission?: {
+		steps: { goal: 'spins' | 'wins_at_least' | 'total_win' | 'total_wagered'; target: number; threshold: number; reward: number; label: string }[];
+		step: number;
+		current: number;
+	};
+	leaderboard?: {
+		scoreBy: 'max_multiplier' | 'total_win' | 'spins' | 'total_wagered';
+		top: PromoLeaderboardEntry[];
+		you: PromoLeaderboardEntry | null;
+		paidPlaces: number;
+	};
+	prizes?: { tier: number; label: string; count: number; amount: number }[];
+	jackpot?: { tier: number; label: string; pot: number; cap: number }[];
+	race?: {
+		goal: { goal: 'spins' | 'wins_at_least' | 'total_win' | 'total_wagered'; target: number; threshold: number; reward: number; label: string };
+		current: number;
+		position: number | null;
+		placesTaken: number;
+		placesTotal: number;
+	};
+	jackpotRace?: PromoJackpotRaceRound[];
+	rules?: { pct: number; minSpins: number; everySpins: number; targetMultiplier: number; minLoss: number; maxPerSpin: number };
+	you?: {
+		spins: number;
+		turnover: number;
+		gameWin: number;
+		bestMultiplier: number;
+		won: number;
+		windowSpins: number;
+		windowNet: number;
+		resultLabel: string | null;
+		resultAmount: number;
+		// Increases every time a new result is paid (e.g. each jackpot-race round won off-spin).
+		resultSeq?: number;
+	};
+};
+
+export type PromoJackpotRaceRound = {
+	index: number;
+	label: string;
+	windowStart: string;
+	windowEnd: string;
+	pctOfPot: number;
+	amount: number;
+	status: 'upcoming' | 'live' | 'won' | 'rolled_over';
+	winners: string[] | null;
+	wonAmount: number;
+	wonAt: string | null;
+	youWon: boolean;
+};
+
+export type PromoLeaderboardEntry = { position: number; player: string; score: number; you: boolean };
+
+export type PromoAward = {
+	// 'result' = a final placing paid when a leaderboard closed (already in the wallet balance).
+	display?: 'result';
+	promoId: string;
+	type: string;
+	kind: string;
+	tier: number;
+	label: string;
+	amount: number;
+	currency: string;
+	title: string;
+};
+
+export const statePromo = $state({
+	active: [] as PromoSummary[],
+	// Awarded on a spin whose game presentation is still running.
+	pending: [] as PromoAward[],
+	// Micro-units credited by the wallet but not yet revealed to the player.
+	pendingAmount: 0,
+	// Awards ready to show, oldest first. The pop-up shows queue[0].
+	queue: [] as PromoAward[],
+	// Promo shown in the info sheet (null = closed).
+	infoPromoId: null as string | null,
+	// Leaderboard results already announced to this player.
+	resultsShown: [] as string[],
+});
+
+const isShowable = (p: PromoSummary) =>
+	p.phase !== 'ended' || (p.type === 'leaderboard' && !!p.leaderboard?.you) || (p.you?.resultAmount ?? 0) > 0;
+
+export const statePromoDerived = {
+	current: () => statePromo.queue[0] ?? null,
+	/** Promos for the banner: live/upcoming ones, plus finished leaderboards the player was on. */
+	showable: () => statePromo.active.filter(isShowable),
+	info: () => statePromo.active.find((p) => p.promoId === statePromo.infoPromoId) ?? null,
+};
+
+export const promoActions = {
+	setActive: (active: PromoSummary[] | null | undefined) => {
+		statePromo.active = active ?? [];
+	},
+	holdAwards: (awards: PromoAward[] | null | undefined) => {
+		// Only cash credits are held and popped up. A stake discount already shows as a smaller debit.
+		const cash = (awards ?? []).filter((a) => a.kind === 'cash');
+		if (!cash.length) return;
+		statePromo.pending = [...statePromo.pending, ...cash];
+		statePromo.pendingAmount += cash.reduce((sum, a) => sum + a.amount, 0);
+	},
+	/** Moves held awards to the pop-up queue. Returns the micro-units now revealed. */
+	revealAwards: () => {
+		const revealed = statePromo.pendingAmount;
+		if (statePromo.pending.length) statePromo.queue = [...statePromo.queue, ...statePromo.pending];
+		statePromo.pending = [];
+		statePromo.pendingAmount = 0;
+		return revealed;
+	},
+	dismissCurrent: () => {
+		statePromo.queue = statePromo.queue.slice(1);
+	},
+	/**
+	 * Announces a result paid outside the player's own spin (leaderboard placing, cashback, a jackpot-race
+	 * round won by the spin closest to the moment) once per key. The prize is already in the wallet.
+	 */
+	announceResult: (award: PromoAward, key: string = award.promoId) => {
+		if (statePromo.resultsShown.includes(key)) return;
+		statePromo.resultsShown = [...statePromo.resultsShown, key];
+		statePromo.queue = [...statePromo.queue, { ...award, display: 'result' }];
+	},
+};
