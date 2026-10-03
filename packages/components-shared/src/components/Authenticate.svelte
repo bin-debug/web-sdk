@@ -11,6 +11,34 @@
 
 	let authenticated = $state(false);
 
+	// Betting bar look from the backoffice. Set inline on <html>, which outranks each
+	// game's own :root defaults, so every game picks it up without changes.
+	const BAR_THEME_VARS: Record<string, string> = {
+		barBg: '--bc-bg',
+		barBorder: '--bc-border',
+		radius: '--bc-radius',
+		accent: '--bc-accent',
+		secondary: '--bc-secondary',
+		icon: '--bc-icon',
+		text: '--bc-text',
+		menuColor: '--bc-menu-color',
+		bonusColor: '--bc-bonus-color',
+		repeatColor: '--bc-repeat-color',
+		turboColor: '--bc-turbo-color',
+		spinFill: '--bc-spin-fill',
+		spinRing: '--bc-spin-ring',
+	};
+	const SAFE_CSS_VALUE = /^(#[0-9a-fA-F]{3,8}|rgba?\([0-9.,\s%]+\)|\d{1,3}(\.\d+)?px)$/;
+	const applyBettingBarTheme = (theme?: Record<string, string>) => {
+		if (!theme || typeof document === 'undefined') return;
+		for (const [key, value] of Object.entries(theme)) {
+			const cssVar = BAR_THEME_VARS[key];
+			if (cssVar && typeof value === 'string' && SAFE_CSS_VALUE.test(value.trim())) {
+				document.documentElement.style.setProperty(cssVar, value.trim());
+			}
+		}
+	};
+
 	const authenticate = async () => {
 		try {
 			const authenticateData = await requestAuthenticate({
@@ -70,6 +98,14 @@
 				stateConfig.betMenuOptions = stateConfig.betAmountOptions.filter((_, index) =>
 					MOST_USED_BET_INDEXES.includes(index),
 				);
+
+				// Open on the stake chosen in the backoffice. A round being resumed (below) overrides it.
+				const defaultBetLevel = authenticateData.config?.defaultBetLevel;
+				if (defaultBetLevel && authenticateData.config?.betLevels?.includes(defaultBetLevel)) {
+					stateBet.betAmount = defaultBetLevel / API_AMOUNT_MULTIPLIER;
+				}
+
+				applyBettingBarTheme((authenticateData.config as { uiTheme?: Record<string, string> })?.uiTheme);
 
 				// The RGS is the source of truth for available modes and their prices.
 				// Retain the game's presentation metadata, but never show a card that
