@@ -17,7 +17,7 @@
 	$effect(() => {
 		document.documentElement.classList.toggle('intro-active', introVisible);
 	});
-	const introFeatures = [{"icon":"*","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win","image":"./assets/features/feature1.png"},{"icon":"*","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round","image":"./assets/features/feature2.png"},{"icon":"*","title":"2 500x Max Win","subtitle":"Chase the ultimate top prize","image":"./assets/features/feature3.png"}];
+	const introFeatures = [{"icon":"*","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win"},{"icon":"*","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"*","title":"2 500x Max Win","subtitle":"Chase the ultimate top prize"}];
 	let timeStr = $state('');
 	onMount(() => {
 		const tick = () => { const n = new Date(); timeStr = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0'); };
