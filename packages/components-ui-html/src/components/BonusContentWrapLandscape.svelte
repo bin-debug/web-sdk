@@ -18,11 +18,6 @@
 <BaseContent maxWidth="100%">
 	<div class="top-row">
 		{@render props.betAmount()}
-		{#if props.onclose}
-			<button class="close-btn" data-test="bonus-close-button" onclick={props.onclose} aria-label="Close">
-				×
-			</button>
-		{/if}
 	</div>
 
 	<BaseScrollable type="column">
@@ -30,6 +25,9 @@
 			{@render props.bonusCardsActivate()}
 			{@render props.bonusCardsBuy()}
 		</div>
+		{#if props.onclose}
+			<button class="close-btn" data-test="bonus-close-button" onclick={props.onclose}>Close</button>
+		{/if}
 	</BaseScrollable>
 </BaseContent>
 
@@ -42,30 +40,51 @@
 		gap: 0.75rem;
 	}
 
+	/* Below the offer, outside the card: dark with white text, never smaller than a 48px touch target. */
 	.close-btn {
-		/* Matches the stake control: dark with a gold ring, never smaller than a 48px touch target. */
+		font-size: clamp(14px, 4.2vw, 20px);
+		display: block;
 		flex: 0 0 auto;
-		width: max(48px, calc(clamp(14px, 4.2vw, 20px) * 2.6));
-		height: max(48px, calc(clamp(14px, 4.2vw, 20px) * 2.6));
-		padding: 0;
-		border-radius: 50%;
-		background: linear-gradient(180deg, #1d1a26, #121019);
-		border: 1px solid rgb(245 197 66 / 55%);
+		align-self: center;
+		margin-left: auto;
+		margin-right: auto;
+		min-width: min(100%, 11em);
+		min-height: max(48px, 2.8em);
+		margin-top: 0.4em;
+		padding: 0 2em;
+		border-radius: 999px;
+		background: rgb(14 13 20 / 88%);
+		border: 1px solid rgb(255 255 255 / 22%);
 		box-shadow: 0 0.5em 1.4em rgb(0 0 0 / 45%);
-		color: var(--game-promo-accent, #f5c542);
-		font-size: max(24px, calc(clamp(14px, 4.2vw, 20px) * 1.5));
-		font-weight: 700;
-		line-height: 1;
+		color: #ffffff;
+		font-family: inherit;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 		touch-action: manipulation;
 		-webkit-tap-highlight-color: transparent;
-		transition: transform 0.08s ease;
+		transition: transform 0.08s ease, background 0.15s ease;
 
 		&:active {
-			transform: scale(0.92);
+			transform: scale(0.96);
+		}
+
+		&:focus-visible {
+			outline: 2px solid #ffffff;
+			outline-offset: 3px;
+		}
+	}
+
+	@media (hover: hover) {
+		.close-btn:hover {
+			background: rgb(30 28 40 / 92%);
+		}
+	}
+
+	@media (orientation: landscape) {
+		.close-btn {
+			font-size: clamp(13px, 2.6vh, 20px);
 		}
 	}
 
