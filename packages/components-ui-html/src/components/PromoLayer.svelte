@@ -20,7 +20,9 @@
 	let now = $state(Date.now());
 	const showable = $derived(statePromoDerived.showable());
 	// Step aside for full-screen game UI, like the game's own ticker does.
-	const hideBanner = $derived(stateModal.modal?.name === 'buyBonus');
+	const hideBanner = $derived(
+		stateModal.modal?.name === 'buyBonus' || stateModal.modal?.name === 'buyBonusConfirm',
+	);
 
 	const refresh = async () => {
 		if (stateUrlDerived.replay()) return;

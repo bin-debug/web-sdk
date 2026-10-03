@@ -43,19 +43,30 @@
 	}
 
 	.close-btn {
+		/* Matches the stake control: dark with a gold ring, never smaller than a 48px touch target. */
 		flex: 0 0 auto;
-		width: 2.75rem;
-		height: 2.75rem;
+		width: max(48px, calc(clamp(14px, 4.2vw, 20px) * 2.6));
+		height: max(48px, calc(clamp(14px, 4.2vw, 20px) * 2.6));
+		padding: 0;
 		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.35);
-		border: 1px solid rgba(255, 255, 255, 0.15);
-		color: #ffffff;
-		font-size: 1.6rem;
+		background: linear-gradient(180deg, #1d1a26, #121019);
+		border: 1px solid rgb(245 197 66 / 55%);
+		box-shadow: 0 0.5em 1.4em rgb(0 0 0 / 45%);
+		color: var(--game-promo-accent, #f5c542);
+		font-size: max(24px, calc(clamp(14px, 4.2vw, 20px) * 1.5));
+		font-weight: 700;
 		line-height: 1;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		touch-action: manipulation;
+		-webkit-tap-highlight-color: transparent;
+		transition: transform 0.08s ease;
+
+		&:active {
+			transform: scale(0.92);
+		}
 	}
 
 	.bonuses-wrap {

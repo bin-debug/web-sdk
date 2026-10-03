@@ -39,7 +39,6 @@
 					<div class="price">
 						{`${numberToCurrencyString(stateBet.betAmount * betModeData.costMultiplier)}`}
 					</div>
-					<span class="multiplier">{betModeData.costMultiplier}× selected stake</span>
 				</div>
 				<div class="stake-note">
 					Feature wins use your <strong>{numberToCurrencyString(stateBet.betAmount)}</strong> stake
@@ -73,7 +72,8 @@
 		text-align: center;
 		text-transform: uppercase;
 		letter-spacing: 0.035em;
-		color: var(--bonus-text, #0d0d0d);
+		color: var(--accent);
+		text-shadow: 0 2px 14px rgb(245 197 66 / 35%);
 	}
 
 	.description {
@@ -82,7 +82,7 @@
 		text-align: center;
 		white-space: pre-line;
 		font-weight: 600;
-		color: var(--bonus-supporting-text, #353942);
+		color: var(--muted);
 	}
 
 	.description:empty {
@@ -95,7 +95,9 @@
 		line-height: 1.2;
 		text-align: center;
 		white-space: nowrap;
-		color: #0d0d0d;
+		color: var(--accent);
+		font-variant-numeric: tabular-nums;
+		text-shadow: 0 2px 18px rgb(245 197 66 / 40%);
 	}
 
 	.price-panel {
@@ -103,30 +105,30 @@
 		gap: 0.18rem;
 		padding: 0.85rem 1rem;
 		border-radius: 0.9rem;
-		background: var(--bonus-price-surface, rgba(13, 13, 13, 0.055));
-		border: 1px solid var(--bonus-price-border, rgba(13, 13, 13, 0.08));
+		background: rgb(255 255 255 / 6%);
+		border: 1px solid rgb(245 197 66 / 25%);
 	}
 
-	.price-label,
-	.multiplier {
+	.price-label {
 		font-size: clamp(0.78rem, 2.4vw, 0.95rem);
 		font-weight: 800;
-		letter-spacing: 0.09em;
+		letter-spacing: 0.12em;
 		text-transform: uppercase;
-		color: var(--bonus-label-text, #3d424b);
+		color: var(--muted);
 	}
 
 	.stake-note {
 		font-size: clamp(1.05rem, 3.7vw, 1.3rem);
 		text-align: center;
 		font-weight: 600;
-		color: var(--bonus-supporting-text, #353942);
+		color: var(--muted);
 		line-height: 1.35;
 	}
 
 	.stake-note strong {
 		opacity: 1;
 		font-weight: 700;
+		color: var(--text);
 	}
 
 	.buy-button {
@@ -137,11 +139,12 @@
 		font-weight: 800;
 		letter-spacing: 0.025em;
 		text-transform: uppercase;
-		color: #ffffff;
-		background: var(--bonus-cta, var(--bc-secondary, #f5a524));
-		box-shadow: 0 0.4rem 1rem var(--bonus-cta-shadow, rgba(0, 0, 0, 0.2));
+		color: #3d2300;
+		background: linear-gradient(180deg, #ffe58a, var(--accent) 60%, var(--accent-deep));
+		box-shadow: 0 0.4rem 1.2rem rgb(245 197 66 / 30%);
 
 		&.activate {
+			color: #062b29;
 			background: var(--bc-accent, #4ecdc4);
 		}
 	}
@@ -164,8 +167,7 @@
 			font-size: clamp(2.5rem, 10.5vw, 3.25rem);
 		}
 
-		.price-label,
-		.multiplier {
+		.price-label {
 			font-size: clamp(1.35rem, 5.6vw, 1.6rem);
 		}
 

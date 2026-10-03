@@ -81,17 +81,24 @@
 		z-index: 10;
 	}
 
+	/* Same look as the promo layer (black and gold); games can restyle it with the --game-promo-* variables. */
 	.confirm-card {
+		--accent: var(--game-promo-accent, #f5c542);
+		--accent-deep: var(--game-promo-accent-deep, #b7791f);
+		--text: var(--game-promo-text, #fff8e6);
+		--muted: var(--game-promo-muted, #d9cfb8);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 1.5rem;
-		background: #ffffff;
+		background: linear-gradient(180deg, #1d1a26, #121019);
+		border: 1px solid rgb(245 197 66 / 55%);
 		border-radius: 20px;
 		padding: 2rem 1.75rem 1.75rem;
 		width: 100%;
 		max-width: 420px;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+		box-shadow: 0 0 0 0.35rem rgb(245 197 66 / 10%), 0 1.2rem 3.5rem rgb(0 0 0 / 60%);
+		color: var(--text);
 		box-sizing: border-box;
 	}
 
@@ -102,10 +109,11 @@
 		text-align: center;
 		letter-spacing: 0.02em;
 		line-height: 1.15;
-		color: #0d0d0d;
+		color: var(--text);
 
 		&--buy {
-			color: #7a4a00;
+			color: var(--accent);
+			text-shadow: 0 2px 14px rgb(245 197 66 / 35%);
 		}
 
 		&--activate {
@@ -117,14 +125,16 @@
 		font-size: clamp(1.2rem, 4.5vw, 1.5rem);
 		line-height: 1.55;
 		text-align: center;
-		color: #333;
+		color: var(--muted);
 	}
 
 	.cost {
 		font-size: clamp(2rem, 7.5vw, 2.75rem);
 		font-weight: 900;
-		color: #0d0d0d;
+		color: var(--accent);
 		text-align: center;
+		font-variant-numeric: tabular-nums;
+		text-shadow: 0 2px 18px rgb(245 197 66 / 40%);
 	}
 
 	.confirm-btn {
@@ -135,13 +145,15 @@
 		font-weight: 800;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: #ffffff;
+		color: #3d2300;
 
 		&--buy {
-			background: var(--bc-secondary, #f5a524);
+			background: linear-gradient(180deg, #ffe58a, var(--accent) 60%, var(--accent-deep));
+			box-shadow: 0 0.4rem 1.2rem rgb(245 197 66 / 30%);
 		}
 
 		&--activate {
+			color: #062b29;
 			background: var(--bc-accent, #4ecdc4);
 		}
 	}

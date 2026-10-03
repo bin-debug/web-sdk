@@ -31,17 +31,22 @@
 </div>
 
 <style lang="scss">
+	/* Same look as the promo layer (black and gold); games can restyle it with the --game-promo-* variables. */
 	.bonus-card-wrap {
+		--accent: var(--game-promo-accent, #f5c542);
+		--accent-deep: var(--game-promo-accent-deep, #b7791f);
+		--text: var(--game-promo-text, #fff8e6);
+		--muted: var(--game-promo-muted, #d9cfb8);
 		padding: clamp(1.25rem, 3vw, 2rem);
 		flex-direction: column;
 		display: flex;
 		justify-content: space-between;
 
 		border-radius: 1.25rem;
-		background: linear-gradient(145deg, var(--bonus-surface-highlight, rgba(255, 255, 255, 0.98)), var(--bonus-surface, var(--bc-card-bg, #f7f6f2)));
-		border: 1px solid var(--bonus-border, var(--bc-card-border, rgba(255, 255, 255, 0.72)));
-		box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.85);
-		color: var(--bonus-text, var(--bc-card-text, #14141a));
+		background: linear-gradient(180deg, #1d1a26, #121019);
+		border: 1px solid rgb(245 197 66 / 55%);
+		box-shadow: 0 0 0 0.35rem rgb(245 197 66 / 10%), 0 1.2rem 3.5rem rgb(0 0 0 / 60%);
+		color: var(--text);
 		text-align: center;
 		width: 100%;
 		box-sizing: border-box;
@@ -57,7 +62,7 @@
 		justify-content: center;
 		border-radius: 10px;
 		overflow: hidden;
-		background: var(--bc-card-icon-bg, rgba(0, 0, 0, 0.05));
+		background: rgb(255 255 255 / 6%);
 	}
 
 	.info {
