@@ -6,6 +6,23 @@ type MissionStep = NonNullable<PromoSummary['mission']>['steps'][number];
 type ScoreBy = NonNullable<PromoSummary['leaderboard']>['scoreBy'];
 
 /** API amounts are micro-units. */
+/** The operator's promo colours as --promo-* variables (empty when the game's own colours apply). */
+export const lookStyle = (look?: PromoSummary['look']) => {
+	if (!look) return '';
+	const vars: [string, string | undefined][] = [
+		['--promo-accent', look.accent],
+		['--promo-accent-deep', look.accentDeep],
+		['--promo-surface', look.surface],
+		// Panels (info dialog, reward pop-up) keep the game's own look unless the operator picked a background.
+		['--promo-panel', look.surface],
+		['--promo-text', look.text],
+		['--promo-muted', look.muted],
+		['--promo-border', look.border],
+		['--promo-badge-text', look.badgeText],
+	];
+	return vars.filter(([, v]) => !!v).map(([k, v]) => `${k}:${v}`).join(';');
+};
+
 export const money = (micro: number) => numberToCurrencyString(micro / API_AMOUNT_MULTIPLIER);
 
 /** Local wall-clock time, e.g. "20:30". */

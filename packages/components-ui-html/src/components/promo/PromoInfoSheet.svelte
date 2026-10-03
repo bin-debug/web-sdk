@@ -2,7 +2,7 @@
 	import { statePromo, statePromoDerived } from 'state-shared';
 
 	import {
-		money, multiplier, ordinal, timing, goalText, progressText, scoreText, scoreByText, clock, whenText,
+		money, multiplier, ordinal, timing, goalText, progressText, scoreText, scoreByText, clock, whenText, lookStyle,
 	} from './promoFormat';
 
 	type Props = { now: number };
@@ -12,8 +12,9 @@
 	const t = $derived(p ? timing(p, props.now) : null);
 	const close = () => (statePromo.infoPromoId = null);
 
+	const look = $derived(p?.look);
 	const eyebrow = $derived(
-		p
+		look?.eyebrow ? look.eyebrow : p
 			? ({
 					prize_drop: 'Prize drops',
 					win_boost: 'Win boost',
@@ -22,7 +23,7 @@
 					achievement: 'Achievements',
 					leaderboard: 'Leaderboard',
 					jackpot: 'Must-drop jackpot',
-					jackpot_race: 'Jackpot race',
+					jackpot_race: 'Game Time Jackpot',
 					race: 'Race',
 					guaranteed_win: 'Guaranteed win',
 					loss_rebate: 'Safety net',
@@ -51,7 +52,7 @@
 {#if p}
 	<div class="promo-info" role="dialog" aria-modal="true" aria-labelledby="promo-info-title">
 		<button class="promo-info__backdrop" aria-label="Close" onclick={close}></button>
-		<section class="promo-info__sheet">
+		<section class="promo-info__sheet" class:promo-info__sheet--custom={!!look?.body} style={lookStyle(look)}>
 			<p class="promo-info__eyebrow">{eyebrow}</p>
 			<h2 id="promo-info-title">{p.title}</h2>
 			{#if p.subtitle}<p class="promo-info__subtitle">{p.subtitle}</p>{/if}
@@ -208,14 +209,18 @@
 				</table>
 			{/if}
 
+			{#if look?.body}<p class="promo-info__custom">{look.body}</p>{/if}
 			{#if p.termsText}<p class="promo-info__terms">{p.termsText}</p>{/if}
-			<p class="promo-info__fine">{p.bonus ? 'Free spins are awarded by the operator. Game rules and RTP are unchanged.' : 'Promo rewards are paid by the operator, separately from game wins. Game rules and RTP are unchanged.'}</p>
-			<button class="promo-info__close" onclick={close}>Got it</button>
+			<p class="promo-info__fine">{look?.fineText || (p.bonus ? 'Free spins are awarded by the operator. Game rules and RTP are unchanged.' : 'Promo rewards are paid by the operator, separately from game wins. Game rules and RTP are unchanged.')}</p>
+			<button class="promo-info__close" onclick={close}>{look?.buttonText || 'Got it'}</button>
 		</section>
 	</div>
 {/if}
 
 <style lang="scss">
+	/* The operator's own "how it works" text replaces the game's. */
+	.promo-info__sheet--custom .promo-info__body { display: none; }
+	.promo-info__custom { margin: 0.8em 0 0; line-height: 1.45; white-space: pre-line; }
 	.promo-info {
 		font-size: clamp(14px, 4.3vw, 20px);
 		position: fixed;
@@ -242,7 +247,7 @@
 		padding: 1.5em;
 		border: 1px solid rgb(245 197 66 / 45%);
 		border-radius: 1.1em;
-		background: #15131c;
+		background: var(--promo-panel, #15131c);
 		color: var(--promo-text);
 		text-align: center;
 	}

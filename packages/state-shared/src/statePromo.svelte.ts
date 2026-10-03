@@ -68,6 +68,29 @@ export type PromoSummary = {
 		// Increases every time a new result is paid (e.g. each jackpot-race round won off-spin).
 		resultSeq?: number;
 	};
+	// Operator wording and colours from the backoffice. Every field is optional.
+	look?: PromoLook;
+};
+
+export type PromoLook = {
+	icon?: 'star' | 'bolt' | 'flag' | 'trophy' | 'crown' | 'shield' | 'tag' | 'coins' | 'gift';
+	bannerHeadline?: string;
+	bannerLine?: string;
+	showProgress?: boolean;
+	showTimer?: boolean;
+	eyebrow?: string;
+	body?: string;
+	fineText?: string;
+	buttonText?: string;
+	awardTitle?: string;
+	awardNote?: string;
+	accent?: string;
+	accentDeep?: string;
+	surface?: string;
+	text?: string;
+	muted?: string;
+	border?: string;
+	badgeText?: string;
 };
 
 export type PromoJackpotRaceRound = {

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { promoActions, statePromoDerived } from 'state-shared';
+	import { promoActions, statePromo, statePromoDerived } from 'state-shared';
 
-	import { money } from './promoFormat';
+	import { money, lookStyle } from './promoFormat';
 
 	// Shown after the game's own win presentation; separate from game wins. Never blocks play.
 	const AUTO_DISMISS_MS = 5_000;
@@ -13,6 +13,8 @@
 		return award.label;
 	});
 
+	const look = $derived(award ? statePromo.active.find((p) => p.promoId === award.promoId)?.look : undefined);
+
 	$effect(() => {
 		if (!award) return;
 		const id = setTimeout(() => promoActions.dismissCurrent(), AUTO_DISMISS_MS);
@@ -22,13 +24,13 @@
 
 {#if award}
 	{#key award}
-		<div class="promo-drop" role="status" aria-live="polite">
+		<div class="promo-drop" role="status" aria-live="polite" style={lookStyle(look)}>
 			<button class="promo-drop__card" onclick={() => promoActions.dismissCurrent()} aria-label="Dismiss reward">
-				<span class="promo-drop__ribbon">{award.title || 'Promo reward'}</span>
+				<span class="promo-drop__ribbon">{look?.awardTitle || award.title || 'Promo reward'}</span>
 				<span class="promo-drop__label">{line}</span>
 				<span class="promo-drop__amount">{money(award.amount)}</span>
 				<span class="promo-drop__note">
-					{award.display === 'result' ? 'Promo result · credited to your balance' : 'Promo reward · added to your balance'}
+					{look?.awardNote || (award.display === 'result' ? 'Promo result · credited to your balance' : 'Promo reward · added to your balance')}
 				</span>
 			</button>
 		</div>
@@ -58,7 +60,7 @@
 		padding: 0 1.8em 1.3em;
 		border: 2px solid var(--promo-accent);
 		border-radius: 1.1em;
-		background: linear-gradient(180deg, #2a1f05, #120d02);
+		background: var(--promo-panel, linear-gradient(180deg, #2a1f05, #120d02));
 		color: var(--promo-text);
 		font-family: inherit;
 		font-size: 1em;

@@ -2,7 +2,7 @@
 	import { statePromo, type PromoSummary } from 'state-shared';
 
 	import PromoIcon from './PromoIcon.svelte';
-	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal, clock, whenText } from './promoFormat';
+	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal, clock, whenText, lookStyle } from './promoFormat';
 
 	type Props = { promos: PromoSummary[]; now: number };
 	const props: Props = $props();
@@ -22,7 +22,22 @@
 		return () => clearInterval(id);
 	});
 
+	// The operator's own wording and colours (backoffice) replace the game's defaults where set.
 	const view = $derived.by(() => {
+		const v = baseView();
+		const look = promo?.look;
+		if (!v || !look) return v;
+		return {
+			...v,
+			icon: look.icon ?? v.icon,
+			main: look.bannerHeadline || v.main,
+			line: look.bannerLine || v.line,
+			progress: look.showProgress === false ? null : v.progress,
+		};
+	});
+	const showTimer = $derived(promo?.look?.showTimer !== false);
+
+	const baseView = () => {
 		const p = promo;
 		if (!p) return null;
 		const t = timing(p, props.now);
@@ -167,13 +182,14 @@
 			default:
 				return { icon: 'star' as const, main: money(p.pot), line: `${p.prizesRemaining}/${p.prizesTotal} prizes left`, progress: null, t };
 		}
-	});
+	};
 </script>
 
 {#if promo && view}
 	<button
 		class="promo-banner"
 		class:promo-banner--live={promo.phase === 'live' || promo.phase === 'upcoming'}
+		style={lookStyle(promo.look)}
 		onclick={() => (statePromo.infoPromoId = promo.promoId)}
 		aria-label={`${promo.title}: ${view.main}. Tap for details`}
 	>
@@ -186,7 +202,7 @@
 			{/if}
 		</span>
 		<span class="promo-banner__meta">
-			<span>{view.t.label} {#if view.t.value}<strong>{view.t.value}</strong>{/if}</span>
+			{#if showTimer}<span>{view.t.label} {#if view.t.value}<strong>{view.t.value}</strong>{/if}</span>{/if}
 			<span>{view.line}</span>
 		</span>
 		{#if props.promos.length > 1}
@@ -212,7 +228,7 @@
 		max-width: calc(100vw - 24px);
 		box-sizing: border-box;
 		padding: 0.42em 1em 0.42em 0.42em;
-		border: 1px solid rgb(245 197 66 / 55%);
+		border: 1px solid var(--promo-border, rgb(245 197 66 / 55%));
 		border-radius: 999px;
 		background: var(--promo-surface);
 		color: var(--promo-text);
@@ -247,7 +263,7 @@
 		height: 2.4em;
 		border-radius: 50%;
 		background: radial-gradient(circle at 35% 30%, #fff2b8, var(--promo-accent) 55%, var(--promo-accent-deep));
-		color: #6b3d00;
+		color: var(--promo-badge-text, #6b3d00);
 	}
 	.promo-banner__text {
 		display: flex;
