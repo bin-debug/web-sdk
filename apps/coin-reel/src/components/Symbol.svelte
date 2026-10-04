@@ -1,11 +1,9 @@
 <script lang="ts">
 	import SymbolSpine from './SymbolSpine.svelte';
 	import SymbolSprite from './SymbolSprite.svelte';
-	import SymbolSpriteSheet from './SymbolSpriteSheet.svelte';
-	import { getSymbolInfo } from '../game/utils';
+	import { getSymbolBackgroundInfo, getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
 	import { getContext } from '../game/context';
-	import { BitmapText } from 'pixi-svelte';
 
 	type Props = {
 		x?: number;
@@ -24,18 +22,15 @@
 
 {#if isSprite}
 	<SymbolSprite {symbolInfo} x={props.x} y={props.y} oncomplete={props.oncomplete} />
-{:else if symbolInfo.type === 'spriteSheet'}
-	<SymbolSpriteSheet
-		{symbolInfo}
-		x={props.x}
-		y={props.y}
-		loop={props.loop}
-		oncomplete={props.oncomplete}
-	/>
 {:else}
+	{@const symbolBackgroundInfo = getSymbolBackgroundInfo({
+		rawSymbol: props.rawSymbol,
+		state: props.state,
+	})}
 	<SymbolSpine
 		loop={props.loop}
 		{symbolInfo}
+		{symbolBackgroundInfo}
 		x={props.x}
 		y={props.y}
 		showWinFrame={props.state === 'win' && !['S', 'M'].includes(props.rawSymbol.name)}
@@ -46,19 +41,6 @@
 					context.eventEmitter?.broadcast({ type: 'soundOnce', name: 'sfx_wild_explode' });
 				}
 			},
-		}}
-	/>
-{/if}
-
-{#if props.rawSymbol.multiplier}
-	<BitmapText
-		anchor={0.5}
-		x={props.x}
-		y={props.y}
-		text={`${props.rawSymbol.multiplier}X`}
-		style={{
-			fontFamily: 'gold',
-			fontSize: 50,
 		}}
 	/>
 {/if}
