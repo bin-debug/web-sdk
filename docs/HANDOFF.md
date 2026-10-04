@@ -15,6 +15,7 @@ Newest log entry on top. Keep it short and factual.
 |---|---|
 | Master plan (architecture, every layout, mechanics catalogue, animation strategy, roadmap) | `docs/STUDIO-KIT-PLAN.md` |
 | Teardown of the reference game (structure only, no assets) | `docs/teardowns/coin-reel-5x5-teardown.md` |
+| **coin-reel build plan: art/audio/animation manifest, tests, budget** | `docs/games/coin-reel/BUILD-PLAN.md` |
 | POC game | `apps/coin-reel` (+ its `README.md`) |
 | Mock RGS (any books, forced outcomes) | `tools/mock-rgs` |
 | Synthetic book generator for coin-reel | `tools/book-gen/coin-reel.mjs` |
@@ -66,19 +67,33 @@ Not done / known gaps:
 
 ## Next up (in order)
 
-1. Polish the bar against the reference (hold-to-turbo on spin, bet sheet on tap of the bet value,
-   autoplay stop conditions) and move it into a shared package for kit games.
-2. **Art via an AI image/video tool** (e.g. Higgsfield, when access is given): generate per the art
-   brief in STUDIO-KIT-PLAN §8.2 (symbols as single PNGs on transparent or #00FF00, 1:1 clips with
-   first/last frame = still pose; mascot idle/point/cheer clips; coin flip/expand clips; background
-   loops). Convert clips with `tools/video-to-sprites`, wire through `SYMBOL_INFO_MAP` states and the
-   mascot texture slot (`Mascot.svelte` `MASCOT_TEXTURE`).
-3. Drop polish: per-symbol landing dust/sparks (particles), a quick anticipation slow-down on reels
-   when a trigger-row special is on its way, and land sounds per symbol tier.
-4. Move generic pieces into packages per the plan (`kit-board`, `kit-symbols`, `kit-fx`).
-5. Second teardown → second game to prove the kit generalises (e.g. a 6×5 or jagged layout).
+**Current task: build our own version of the Hacksaw 5×5 coin game as a production-quality
+`apps/coin-reel`, with 100% our own art, audio and animation.**
+Follow `docs/games/coin-reel/BUILD-PLAN.md` (theme decisions, Tests 0–4, full asset manifest,
+lean budget ≈ 5,300 Artlist credits, template-removal checklist, acceptance tests).
+
+1. Get the product owner's decisions D1–D4 (theme, name, style, mascot); do not bulk-generate before.
+2. Run **Test 0** (Artlist MCP pipeline proof) and record real credit costs in BUILD-PLAN §3.
+3. Tests 1–2 (style board, mascot lock), then Test 3 vertical slice for sign-off.
+4. Generate the remaining assets in batches; wire each into the game; log credits per batch.
+5. Template removal (BUILD-PLAN §4): replace Spine-based components, add the `video` asset type,
+   web font for numbers, delete all template assets.
+6. Run the acceptance tests (BUILD-PLAN §5) and record results here.
+7. Afterwards: pull shared pieces into kit packages (`kit-board`, `kit-symbols`, `kit-fx`) and the
+   shared art library, then start the next game from the owner's reference list.
+
+Budget rule from the owner: AI Core ($40/month, 40,000 credits) must cover **5–10 games a month**,
+so keep each game ≤ ~5,000 credits: video only for premium moments, everything else animated in code,
+and reuse the shared library across games. Flag anything that looks patented or trademarked
+(e.g. Megaways) instead of copying it.
 
 ## Session log
+
+### 2026-10-04 (later) — coin-reel production plan
+- Wrote `docs/games/coin-reel/BUILD-PLAN.md`: all template art/audio/animation to be replaced by our
+  own (Artlist AI Core via MCP), Tests 0–4, asset manifest (31 stills, 16 clips, music/SFX), lean
+  budget ≈ 5,300 credits (follow-on games ≈ 3,000–4,000), template-removal checklist, QA scenarios.
+  Waiting on owner decisions D1–D4 and the Artlist MCP connection.
 
 ### 2026-10-04 (later) — symbol drop
 - Added fall easing to the cascading reel engine (opt-in) and squash-and-stretch in coin-reel;
