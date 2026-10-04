@@ -14,10 +14,6 @@
 	const props: Props = $props();
 
 	let introVisible = $state(true);
-	// app.html starts with <html class="intro-active">, which hides the game canvas until the intro is dismissed.
-	$effect(() => {
-		document.documentElement.classList.toggle('intro-active', introVisible);
-	});
 	const introFeatures = [{"icon":"*","title":"Cluster Pays","subtitle":"Match 5+ adjacent symbols to win"},{"icon":"*","title":"Free Spins","subtitle":"Land Scatters to trigger the bonus round"},{"icon":"*","title":"2 500x Max Win","subtitle":"Chase the ultimate top prize"}];
 	let tickerItems = $state<string[]>(["🎉 MEGA JACKPOT starts 25 Dec, 20:00","🥇 1st Prize  R50,000","🥈 2nd Prize  R20,000","🥉 3rd Prize  R10,000","⭐ Daily Drop every hour — could be YOU"]);
 	let timeStr = $state('');
@@ -34,7 +30,6 @@
 	const bonusModalOpen = $derived(stateModal.modal?.name === 'buyBonus');
 </script>
 
-<div class:intro-active={introVisible}>
 <GlobalStyle>
 	<Authenticate>
 		<LoadI18n {messagesMap}>
@@ -43,12 +38,11 @@
 		</LoadI18n>
 	</Authenticate>
 </GlobalStyle>
-</div>
 
 {#if introVisible}
 	<IntroOverlay
-		logoUrl="./assets/sprites/game/logo.webp"
-		bgUrl="./assets/sprites/game/bg-mobile.webp"
+		logoUrl="/assets/sprites/game/logo.webp"
+		bgUrl="/assets/sprites/game/bg-mobile.webp"
 		studioName="Atomic-Labs"
 		tagline="Fortune Favours The Brave"
 		features={introFeatures}
@@ -85,7 +79,7 @@
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<img class="game-logo" src="./assets/sprites/game/logo.webp" alt="Sugar Pop Cascade" />
+	<img class="game-logo" src="/assets/sprites/game/logo.webp" alt="Sugar Pop Cascade" />
 {/if}
 
 <style>
@@ -109,10 +103,8 @@
 	.tb-time { color: #fff; font-size: 12px; font-weight: 600; }
 	.tb-name { color: #ffe9a0; font-size: 12px; font-weight: 600; }
 	.tb-company { color: #fff; font-size: 11px; font-weight: 600; opacity: .9; }
-	.game-logo { position: fixed; top: 100px; left: 12px; height: 180px; width: auto;
-		z-index: 89; pointer-events: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); display: none;
+	.game-logo { position: fixed; top: 100px; left: 12px; height: clamp(96px, 20vh, 180px); max-width: 38vw; width: auto;
+		z-index: 89; pointer-events: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); display: block; object-fit: contain; object-position: left top;
 		animation: logo-pulse 3s ease-in-out infinite; }
 	@keyframes logo-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.92; } }
-	@media (min-width: 1024px) and (orientation: landscape) { .game-logo { display: block; } }
-	:global(.intro-active canvas) { visibility: hidden; }
 </style>
