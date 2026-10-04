@@ -2,7 +2,7 @@
 export const gameMeta = {
   "gameName": "Sugar Pop Cascade",
   "gameId": "sugar_pop_cascade",
-  "version": "SP92026100",
+  "version": "SP102026100",
   "studioName": "Atomic-Labs",
   "tagline": "Back a Winner, Claim the Crown",
   "rtp": "97.00%",

@@ -542,8 +542,8 @@
 		display: flex;
 		align-items: center;
 		gap: 2px;
-		background: rgba(0,0,0,0.95);
-		border: 1px solid #1c1f2e;
+		background: var(--bc-bg, rgba(0,0,0,0.95));
+		border: 1px solid var(--bc-border, #1c1f2e);
 		border-radius: var(--bc-radius);
 		padding: 8px 10px;
 		box-shadow: 0 10px 48px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.04);
@@ -679,8 +679,8 @@
 		flex-shrink: 0;
 		width: 88px; height: 88px;
 		border-radius: 50%;
-		background: radial-gradient(circle at 38% 33%, #1a1e2e 0%, #0c0d16 100%);
-		border: 2.5px solid var(--bc-accent);
+		background: radial-gradient(circle at 38% 33%, color-mix(in srgb, var(--bc-spin-fill, #0c0d16), white 7%) 0%, var(--bc-spin-fill, #0c0d16) 100%);
+		border: 2.5px solid var(--bc-spin-ring, var(--bc-accent));
 		box-shadow: 0 0 18px rgba(78,205,196,.35), 0 8px 24px rgba(0,0,0,.65);
 		color: var(--bc-text);
 		cursor: pointer;
@@ -731,8 +731,8 @@
 	.bcm-spin {
 		width: 96px; height: 96px;
 		border-radius: 50%;
-		background: radial-gradient(circle at 38% 33%, #1a1e2e 0%, #0c0d16 100%);
-		border: 2.5px solid var(--bc-accent);
+		background: radial-gradient(circle at 38% 33%, color-mix(in srgb, var(--bc-spin-fill, #0c0d16), white 7%) 0%, var(--bc-spin-fill, #0c0d16) 100%);
+		border: 2.5px solid var(--bc-spin-ring, var(--bc-accent));
 		box-shadow: 0 0 18px rgba(78,205,196,.35), 0 8px 24px rgba(0,0,0,.65);
 		color: var(--bc-text);
 		cursor: pointer;
@@ -785,8 +785,8 @@
 		display: flex;
 		align-items: center;
 		gap: 4px;
-		background: rgba(0,0,0,0.95);
-		border: 1px solid #1c1f2e;
+		background: var(--bc-bg, rgba(0,0,0,0.95));
+		border: 1px solid var(--bc-border, #1c1f2e);
 		border-radius: var(--bc-radius);
 		box-shadow: 0 10px 48px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.04);
 		padding: 8px 8px;
