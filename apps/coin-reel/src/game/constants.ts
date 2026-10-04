@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { cubicIn } from 'svelte/easing';
 
 import type { RawSymbol, SymbolState } from './types';
 
@@ -57,14 +58,20 @@ const SPIN_OPTIONS_SHARED = {
 	reelFallOutDelay: 145,
 };
 
+// Drop feel: symbols accelerate like gravity, columns stagger left to right, rows land bottom-up,
+// then a short overshoot bounce plus a squash on the symbol (see game/squash.svelte.ts).
 export const SPIN_OPTIONS_DEFAULT = {
 	...SPIN_OPTIONS_SHARED,
-	symbolFallInSpeed: 3.5,
-	symbolFallInInterval: 30,
-	symbolFallInBounceSpeed: 0.15,
-	symbolFallInBounceSizeMulti: 0.5,
-	symbolFallOutSpeed: 3.5,
-	symbolFallOutInterval: 20,
+	reelFallInDelay: 60,
+	reelFallOutDelay: 55,
+	symbolFallInSpeed: 2.6,
+	symbolFallInInterval: 45,
+	symbolFallInBounceSpeed: 0.22,
+	symbolFallInBounceSizeMulti: 0.12,
+	symbolFallOutSpeed: 2.8,
+	symbolFallOutInterval: 25,
+	symbolFallInEasing: cubicIn,
+	symbolFallOutEasing: cubicIn,
 };
 
 export const SPIN_OPTIONS_FAST = {
@@ -75,6 +82,7 @@ export const SPIN_OPTIONS_FAST = {
 	symbolFallInBounceSizeMulti: 0.25,
 	symbolFallOutSpeed: 7,
 	symbolFallOutInterval: 0,
+	symbolFallInEasing: cubicIn,
 };
 
 export const MOTION_BLUR_VELOCITY = 31;

@@ -54,10 +54,13 @@ Done and checked in the browser:
   chevrons, big round spin/stop, autoplay; coin-style BUY BONUS outside the strip (shows BOOST ON when
   a boost mode is active); in free spins it shows TOTAL WIN + FREE SPINS; hides on `uiHide`; phone
   layout stacks into two rows. Honours jurisdiction flags and `--bc-*` colours.
+- **Slick symbol drop:** gravity easing (`cubicIn`) on fall-in/out via new optional
+  `symbolFallInEasing`/`symbolFallOutEasing` in `utils-slots` (other games unchanged), tighter column
+  stagger, small overshoot, and squash-and-stretch per symbol (`src/game/squash.svelte.ts`: stretch
+  1.12 while falling, squash 0.76 on impact, elastic spring back) on spins and tumbles.
 
 Not done / known gaps:
 - **All art is placeholder** (template mining symbols, procedural coins, symbol-as-mascot).
-- Symbol fall-in feel is the template's; needs the "slick drop" pass (Next up #3).
 - `I18nTest` overlay is commented out in coin-reel; template header text "ADD YOUR LOGO" still shows.
 - No automated tests; verification is manual in the browser.
 
@@ -70,13 +73,16 @@ Not done / known gaps:
    first/last frame = still pose; mascot idle/point/cheer clips; coin flip/expand clips; background
    loops). Convert clips with `tools/video-to-sprites`, wire through `SYMBOL_INFO_MAP` states and the
    mascot texture slot (`Mascot.svelte` `MASCOT_TEXTURE`).
-3. **Slick symbol drop**: per-column staggered fall with overshoot + squash on land (tune
-   `SPIN_OPTIONS_*` in `constants.ts`, add a land "squash" juice in the symbol renderer), quick
-   anticipation on reels with a trigger-row special.
+3. Drop polish: per-symbol landing dust/sparks (particles), a quick anticipation slow-down on reels
+   when a trigger-row special is on its way, and land sounds per symbol tier.
 4. Move generic pieces into packages per the plan (`kit-board`, `kit-symbols`, `kit-fx`).
 5. Second teardown → second game to prove the kit generalises (e.g. a 6×5 or jagged layout).
 
 ## Session log
+
+### 2026-10-04 (later) — symbol drop
+- Added fall easing to the cascading reel engine (opt-in) and squash-and-stretch in coin-reel;
+  measured in the browser (sx/sy ranges above). Cost estimate for AI art discussed with the owner.
 
 ### 2026-10-04 (later) — Hacksaw-style bar
 - Replaced the template Pixi UI in coin-reel with `HacksawBar.svelte`; checked desktop, narrow and

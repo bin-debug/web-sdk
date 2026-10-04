@@ -33,6 +33,9 @@ export type CascadingReelSpinOptions = {
 	reelPaddingMultiplierNormal: number;
 	reelPaddingMultiplierAnticipated: number;
 	reelFallOutDelay: number;
+	// optional easing (default linear); e.g. cubicIn for a gravity-like drop
+	symbolFallInEasing?: (t: number) => number;
+	symbolFallOutEasing?: (t: number) => number;
 };
 
 type ReelCreateOptions<TRawSymbol extends object, TSymbolState extends string> = {
