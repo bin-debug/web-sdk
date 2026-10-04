@@ -49,21 +49,22 @@ Done and checked in the browser:
 - Placeholder **mascot** with code-driven reactions (idle bob, point on collect, jump on bonus/big win).
 - Portrait pass: board scaled to ~85–90% width, meter/stash stacked above.
 - Video clip → in-game symbol win animation proven in `lines`.
+- **Hacksaw-style bar** (`apps/coin-reel/src/components/HacksawBar.svelte`, HTML overlay, replaces the
+  Pixi UI): slim strip with menu (sound, turbo, paytable, rules, settings), balance, win, bet with
+  chevrons, big round spin/stop, autoplay; coin-style BUY BONUS outside the strip (shows BOOST ON when
+  a boost mode is active); in free spins it shows TOTAL WIN + FREE SPINS; hides on `uiHide`; phone
+  layout stacks into two rows. Honours jurisdiction flags and `--bc-*` colours.
 
 Not done / known gaps:
 - **All art is placeholder** (template mining symbols, procedural coins, symbol-as-mascot).
-- Hacksaw-style betting bar: in progress (see Next up #1).
 - Symbol fall-in feel is the template's; needs the "slick drop" pass (Next up #3).
 - `I18nTest` overlay is commented out in coin-reel; template header text "ADD YOUR LOGO" still shows.
 - No automated tests; verification is manual in the browser.
 
 ## Next up (in order)
 
-1. **Hacksaw-style betting bar for kit games** (approved by the product owner for the POC, overriding
-   the old "bar layout is fixed" rule for these games only): thin dark strip under the board, menu,
-   balance, win, bet with up/down, big round spin button, autoplay; in bonus the bet/spin area shows
-   TOTAL WIN + FREE SPINS; round coin-style BUY BONUS button outside the bar. Keep operator colour
-   theming via `--bc-*` variables.
+1. Polish the bar against the reference (hold-to-turbo on spin, bet sheet on tap of the bet value,
+   autoplay stop conditions) and move it into a shared package for kit games.
 2. **Art via an AI image/video tool** (e.g. Higgsfield, when access is given): generate per the art
    brief in STUDIO-KIT-PLAN §8.2 (symbols as single PNGs on transparent or #00FF00, 1:1 clips with
    first/last frame = still pose; mascot idle/point/cheer clips; coin flip/expand clips; background
@@ -76,6 +77,11 @@ Not done / known gaps:
 5. Second teardown → second game to prove the kit generalises (e.g. a 6×5 or jagged layout).
 
 ## Session log
+
+### 2026-10-04 (later) — Hacksaw-style bar
+- Replaced the template Pixi UI in coin-reel with `HacksawBar.svelte`; checked desktop, narrow and
+  bonus states in the browser. Mascot now shows only on desktop/landscape; win meter uses the stacked
+  position on tablet. Product owner approved a non-standard bar for kit games (POC).
 
 ### 2026-10-04 — Studio Kit kickoff + coin-reel POC
 - Wrote the plan, mock RGS, video-to-sprites, sprite-sheet symbols in `lines`.

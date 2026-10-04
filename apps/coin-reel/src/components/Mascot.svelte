@@ -23,7 +23,7 @@
 	const tilt = new Tween(0);
 	const punch = new Tween(1);
 
-	const visible = $derived(!context.stateLayoutDerived.isStacked());
+	const visible = $derived(['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()));
 	const position = $derived({
 		x: context.stateGameDerived.boardLayout().x - context.stateGameDerived.boardLayout().width * 0.5 - SIZE * 0.62,
 		y: context.stateGameDerived.boardLayout().y + SYMBOL_SIZE * 0.9,

@@ -32,7 +32,7 @@
 	});
 
 	const position = $derived(
-		context.stateLayoutDerived.isStacked() ? portraitPosition : desktopPosition,
+		['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()) ? desktopPosition : portraitPosition,
 	);
 
 	const scale = $derived(context.stateLayoutDerived.isStacked() ? 1.28 : 1);
