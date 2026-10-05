@@ -89,7 +89,27 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
-### 2026-10-05 (newest) — Step 4 win clips done
+### 2026-10-05 (newest) — Step 5 backgrounds + logo, vertical slice ready — STOP
+- Base background (dusk rooftops) and bonus background (gold vault, laser beams) generated 16:9 on
+  z-image Turbo, 10cr each; logo ("CAPTAIN KACHINK" wordmark) same model, keyed transparent. 9:16
+  portrait versions made by ffmpeg-cropping the 16:9 masters instead of a second generation — 0 extra
+  credits (backgrounds are static scenery, a centre crop holds up). 30 credits total; 14,770 -> 14,740.
+- Replaced `Background.svelte`'s spine idle/dust layers (template mining background) with plain
+  Sprites, switching between the landscape/portrait texture based on
+  `stateLayoutDerived.layoutType()`. Verified on both desktop and a 375x812 phone-portrait viewport —
+  background fills correctly in both, matches the symbol/mascot style.
+- Logo asset generated and keyed but **not wired in yet** — the loading screen's "Mining Mayhem" title
+  card is a spine animation (`loader` asset, `title_screen` track), and replacing it belongs to Step 10
+  (template removal / LoadingScreen rebuild), not Step 5. Flagging so the next session doesn't think the
+  logo was missed.
+- One harmless console warning on first mount ("baseBackgroundPortrait not found in loadedAssets") —
+  logged once before the asset preload finished, never recurs on later spins/resizes. Not blocking.
+- **Total spent: 1,760 credits (16,500 -> 14,740)**, far under the 5,300 budget. This is the Step 5
+  **STOP**: vertical slice (mascot, all symbols, win clips, backgrounds, logo) is ready for the owner
+  to review on phone before the remaining batches (coins/bonus UI, mascot clips, big win, audio,
+  template removal, QA).
+
+### 2026-10-05 (latest) — Step 4 win clips done
 - H1-H4 win + W/S land generated as image-to-video from the Step 3 stills on Seedance 2.0 Mini
   (480p, 4s, no audio, 200cr each = 1,200 total; 15,970 -> 14,770). Picked after comparing costs:
   Kling 2.5 Turbo Pro 750cr, Omni 1.1 350cr, Seedance Mini 200cr — cheapest capable option.

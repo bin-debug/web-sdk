@@ -292,6 +292,26 @@ export default {
 		type: 'spriteSheet',
 		src: new URL('../../assets/symbols/S_land.json', import.meta.url).href,
 	},
+	baseBackgroundLandscape: {
+		type: 'sprite',
+		src: new URL('../../assets/backgrounds/base_bg_16x9.webp', import.meta.url).href,
+	},
+	baseBackgroundPortrait: {
+		type: 'sprite',
+		src: new URL('../../assets/backgrounds/base_bg_9x16.webp', import.meta.url).href,
+	},
+	bonusBackgroundLandscape: {
+		type: 'sprite',
+		src: new URL('../../assets/backgrounds/bonus_bg_16x9.webp', import.meta.url).href,
+	},
+	bonusBackgroundPortrait: {
+		type: 'sprite',
+		src: new URL('../../assets/backgrounds/bonus_bg_9x16.webp', import.meta.url).href,
+	},
+	logo: {
+		type: 'sprite',
+		src: new URL('../../assets/logo/logo.webp', import.meta.url).href,
+	},
 	captainKachink: {
 		type: 'sprite',
 		src: new URL('../../assets/mascot/captain_kachink.webp', import.meta.url).href,

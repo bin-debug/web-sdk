@@ -54,7 +54,7 @@ Queue outcomes: `curl -XPOST localhost:5109/mock/queue -d '{"gameId":"coin-reel"
 | 2 | **Mascot lock**: master (front, full body, neutral) + point/cheer/sad poses from the master. **STOP**: owner approves (D4). | 250 | [x] 2026-10-05 |
 | 3 | **Symbols**: L1â€“L4, H1â€“H4, W, S stills (S-01..10) â†’ static sprites in game, replacing `symbolsStatic`. Same prompt prefix for the whole set (style, outline, light from top-left). | 600 | [x] 2026-10-05 |
 | 4 | **Win clips**: C-01..05, C-07 (H1â€“H4 win, W/S land) â†’ sprite sheets. | 1,200 | [x] 2026-10-05 |
-| 5 | **Backgrounds + logo**: S-17..19 (16:9 and 9:16). **STOP**: owner reviews the vertical slice on phone. | 300 | [ ] |
+| 5 | **Backgrounds + logo**: S-17..19 (16:9 and 9:16). **STOP**: owner reviews the vertical slice on phone. | 300 | [x] 2026-10-05 |
 | 6 | **Coins, bonus, buy menu**: S-11..15, S-20, S-21. | 400 | [ ] |
 | 7 | **Mascot clips + FX**: C-10..12 from the approved master only; C-06, C-08, C-09. | 1,200 | [ ] |
 | 8 | **Big win, bg loops, transition**: C-13..16 (needs `video` asset type, BUILD-PLAN Â§4.3). | 800 | [ ] |
