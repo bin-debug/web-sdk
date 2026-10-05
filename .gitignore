@@ -60,3 +60,5 @@ packages/e2e/math-testing/__pycache__/*
 # mock-rgs: generated books (regenerate with node tools/book-gen/<game>.mjs)
 tools/mock-rgs/books/*/*.json
 !tools/mock-rgs/books/*/modes.json
+
+apps/*/static/review/

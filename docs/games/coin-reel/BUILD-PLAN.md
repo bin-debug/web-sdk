@@ -1,14 +1,14 @@
-# coin-reel: production art, audio & animation plan + test plan + lean budget
+﻿# coin-reel: production art, audio & animation plan + test plan + lean budget
 
-**Goal:** turn `apps/coin-reel` (5×5 structure studied in
+**Goal:** turn `apps/coin-reel` (5Ã—5 structure studied in
 `docs/teardowns/coin-reel-5x5-teardown.md`) into a production-quality game with **100% our own
 artwork, audio and animation**. Every template asset (mining art, Spine files, bitmap fonts, audio
 sprite) is replaced and deleted; nothing from the template or the reference game ships.
 Maths is out of scope (separate pipeline); the game keeps using the event names already defined.
 
-**Tooling:** Artlist **AI Core** ($39.99/month, 40,000 credits) via the Artlist MCP
+**Tooling:** Artlist **AI Starter** ($19.99/month, 16,500 credits; AI Core 40,000 if it proves out) via the Artlist MCP
 (`https://mcp.artlist.io/mcp`), `tools/video-to-sprites`, the mock RGS and synthetic books.
-**Target:** ≤ 5,000 credits for this game (≈ $5), so 6–10 games fit in one month.
+**Target:** â‰¤ 5,000 credits for this game (â‰ˆ $5), so 6â€“10 games fit in one month.
 
 ---
 
@@ -25,32 +25,32 @@ Maths is out of scope (separate pipeline); the game keeps using the event names 
 
 ## 1. Tests (run in order, each has a pass/fail)
 
-### Test 0: Pipeline proof (≈ 150 credits) — **PASSED 2026-10-05** (free tier, H1 diamond, book 35)
+### Test 0: Pipeline proof (â‰ˆ 150 credits) â€” **PASSED 2026-10-05** (free tier, H1 diamond, book 35)
 1. Connect the Artlist MCP; confirm generated files can be **downloaded to disk** (not only saved in the Artlist library).
-2. Generate one high symbol still (1024², transparent PNG; if transparency is not supported, `#00FF00` background).
+2. Generate one high symbol still (1024Â², transparent PNG; if transparency is not supported, `#00FF00` background).
 3. Generate a 2 s image-to-video win clip from that still on `#00FF00`, first and last frame = the still pose.
 4. `node tools/video-to-sprites/video-to-sprites.mjs H1_win.mp4 --name H1_win --key 00ff00 --cell 256 --fps 24 --duration 2 --crop 1240:1076` (crop only for 16:9 clips; Artlist I2V minimum is 5 s, so trim with `--duration`).
 5. Wire into `SYMBOL_INFO_MAP.H1.win` (type `spriteSheet`) and play a queued H1 win in the browser.
 
-Pass: files download; keyed edges clean at 2× zoom (no green fringe); loop seam not noticeable;
+Pass: files download; keyed edges clean at 2Ã— zoom (no green fringe); loop seam not noticeable;
 clip ends and hands back to the static symbol without a pop; **actual credit cost per image / per
-clip recorded in this doc** (replace the assumptions in §3).
+clip recorded in this doc** (replace the assumptions in Â§3).
 
-### Test 1: Style board (≈ 300 credits)
+### Test 1: Style board (â‰ˆ 300 credits)
 For each theme option: 1 high symbol, 1 low symbol, 1 background thumbnail, 1 mascot sketch.
 Pass: owner picks D1/D3.
 
-### Test 2: Mascot lock (≈ 200 credits)
+### Test 2: Mascot lock (â‰ˆ 200 credits)
 Mascot master (front, full body, neutral pose) + 3 pose stills (point, cheer, sad). Pass: owner
 approves; this master is the **only** source image for every mascot clip (consistency).
 
-### Test 3: Vertical slice (≈ 600 credits)
-All 10 symbol stills + base background + logo in game; H1–H4 win clips; W land/expand clip.
+### Test 3: Vertical slice (â‰ˆ 600 credits)
+All 10 symbol stills + base background + logo in game; H1â€“H4 win clips; W land/expand clip.
 Pass: one full base-game spin cycle looks shippable on desktop and phone; owner signs off before
 the remaining batch.
 
 ### Test 4: Full game QA (no credits)
-See §5. Pass: every scenario in §5.2 plays with zero console errors on desktop, tablet, phone.
+See Â§5. Pass: every scenario in Â§5.2 plays with zero console errors on desktop, tablet, phone.
 
 ---
 
@@ -58,52 +58,52 @@ See §5. Pass: every scenario in §5.2 plays with zero console errors on desktop
 
 Conventions: masters are PNG/MP4, kept in the art repo; game files go to
 `apps/coin-reel/static/assets/<folder>/`. Green screen = pure `#00FF00`, even light, no green on the
-subject. Stills: subject centred inside the middle 80%, 1024² master. Clips: 24 fps, first and last
+subject. Stills: subject centred inside the middle 80%, 1024Â² master. Clips: 24 fps, first and last
 frame match the still. "Tries" = generations budgeted including rejects.
 
 ### 2.1 Stills (AI images)
 
 | ID | Asset | Spec | Plugs into | Tries |
 |---|---|---|---|---|
-| S-01..04 | Low symbols L1–L4 | 1024², transparent, simple icons readable at 64 px | `SYMBOL_INFO_MAP.L*` static/land/postWin | 8 |
-| S-05..08 | High symbols H1–H4 | 1024², transparent, theme characters/objects, clear value order | `SYMBOL_INFO_MAP.H*` | 12 |
-| S-09 | Coin special (W) | 1024², transparent, loudest symbol on the board | `SYMBOL_INFO_MAP.W` | 4 |
-| S-10 | Free-spin special (S) | 1024², transparent | `SYMBOL_INFO_MAP.S` | 4 |
-| S-11..14 | Coin faces bronze/silver/gold/diamond (blank centre; value drawn in code) | 512², transparent | `CoinReels.svelte` (replace procedural circles) | 6 |
-| S-15 | Free-spin cell token (blank centre) | 512², transparent | `CoinReels.svelte` fs style | 2 |
-| S-16 | Mascot master + 3 poses | 1024×1536, transparent | `Mascot.svelte` (`MASCOT_TEXTURE`) + clip sources | (Test 2) |
-| S-17 | Logo | 2048×1024, transparent | loading screen, desktop top-left | 4 |
-| S-18 | Base background | 16:9 (1920×1080) + 9:16 (1080×1920), opaque | `Background.svelte` | 4 |
+| S-01..04 | Low symbols L1â€“L4 | 1024Â², transparent, simple icons readable at 64 px | `SYMBOL_INFO_MAP.L*` static/land/postWin | 8 |
+| S-05..08 | High symbols H1â€“H4 | 1024Â², transparent, theme characters/objects, clear value order | `SYMBOL_INFO_MAP.H*` | 12 |
+| S-09 | Coin special (W) | 1024Â², transparent, loudest symbol on the board | `SYMBOL_INFO_MAP.W` | 4 |
+| S-10 | Free-spin special (S) | 1024Â², transparent | `SYMBOL_INFO_MAP.S` | 4 |
+| S-11..14 | Coin faces bronze/silver/gold/diamond (blank centre; value drawn in code) | 512Â², transparent | `CoinReels.svelte` (replace procedural circles) | 6 |
+| S-15 | Free-spin cell token (blank centre) | 512Â², transparent | `CoinReels.svelte` fs style | 2 |
+| S-16 | Mascot master + 3 poses | 1024Ã—1536, transparent | `Mascot.svelte` (`MASCOT_TEXTURE`) + clip sources | (Test 2) |
+| S-17 | Logo | 2048Ã—1024, transparent | loading screen, desktop top-left | 4 |
+| S-18 | Base background | 16:9 (1920Ã—1080) + 9:16 (1080Ã—1920), opaque | `Background.svelte` | 4 |
 | S-19 | Bonus background | 16:9 + 9:16, opaque | `Background.svelte` (freeSpins) | 4 |
-| S-20 | Bonus intro panel art ×2 (one per bonus; title text in code) | 1536×1024, transparent | `FreeSpinIntro.svelte` | 4 |
-| S-21 | Buy-menu card icons ×4 | 512², transparent | `betModes.ts` `assets.icon` | 6 |
-| S-22 | Board frame / cell tile (optional; cells are code-drawn today) | 1024², transparent | `BoardCells.svelte` | 2 |
-| | **Total stills** | **≈ 31 finals** | | **≈ 60 + Test 2** |
+| S-20 | Bonus intro panel art Ã—2 (one per bonus; title text in code) | 1536Ã—1024, transparent | `FreeSpinIntro.svelte` | 4 |
+| S-21 | Buy-menu card icons Ã—4 | 512Â², transparent | `betModes.ts` `assets.icon` | 6 |
+| S-22 | Board frame / cell tile (optional; cells are code-drawn today) | 1024Â², transparent | `BoardCells.svelte` | 2 |
+| | **Total stills** | **â‰ˆ 31 finals** | | **â‰ˆ 60 + Test 2** |
 
-### 2.2 Clips (AI video → sprite sheet or video texture)
+### 2.2 Clips (AI video â†’ sprite sheet or video texture)
 
 | ID | Clip | Spec | Becomes | Tries |
 |---|---|---|---|---|
-| C-01..04 | H1–H4 win | 1:1, 1.5–2 s, green | sprite sheet → `SYMBOL_INFO_MAP.H*.win` | 8 |
+| C-01..04 | H1â€“H4 win | 1:1, 1.5â€“2 s, green | sprite sheet â†’ `SYMBOL_INFO_MAP.H*.win` | 8 |
 | C-05 | W land | 1:1, 0.5 s, green | `W.land` | 2 |
 | C-06 | W expand (grows up the reel) | 1:5 tall, 0.8 s, green | coin column grow in `CoinReels.svelte` | 3 |
 | C-07 | S land | 1:1, 0.5 s, green | `S.land` | 2 |
 | C-08 | S expand | 1:5 tall, 0.8 s, green | free-spin column grow | 2 |
 | C-09 | Coin flip/reveal (one clip, tinted per tier in code) | 1:1, 0.6 s, green | coin pop in `CoinReels.svelte` | 2 |
-| C-10..12 | Mascot idle loop, point, cheer | 3:4, 2–3 s, green, from S-16 master only | `Mascot.svelte` states | 6 |
-| C-13 | Big-win scene (text added by game) | 16:9 + 9:16, 3–4 s, alpha or black | video texture in `Win.svelte` | 2 |
-| C-14, C-15 | Background loops base + bonus | 16:9 + 9:16, 8–12 s seamless loop | video texture in `Background.svelte` | 4 |
+| C-10..12 | Mascot idle loop, point, cheer | 3:4, 2â€“3 s, green, from S-16 master only | `Mascot.svelte` states | 6 |
+| C-13 | Big-win scene (text added by game) | 16:9 + 9:16, 3â€“4 s, alpha or black | video texture in `Win.svelte` | 2 |
+| C-14, C-15 | Background loops base + bonus | 16:9 + 9:16, 8â€“12 s seamless loop | video texture in `Background.svelte` | 4 |
 | C-16 | Transition wipe | 16:9, 1 s, black-to-alpha | video texture in `Transition.svelte` | 2 |
-| | **Total clips** | **16 finals** | | **≈ 33** |
+| | **Total clips** | **16 finals** | | **â‰ˆ 33** |
 
 ### 2.3 Audio
 
 | ID | Asset | Spec | Tries |
 |---|---|---|---|
-| A-01 | Base music loop | 60–90 s instrumental, no fade in/out, loopable | 2 |
-| A-02 | Bonus music loop | 45–60 s, more intense | 2 |
-| A-03 | Big-win sting | 3–5 s | 1 |
-| A-04 | SFX set: spin start, symbol land (×3 weights), win small, tumble pop, coin special land, column grow, coin pop, collect, stash up, button click, buy confirm | short one-shots | from Artlist SFX library if included in the plan; otherwise AI sound; confirm in Test 0 |
+| A-01 | Base music loop | 60â€“90 s instrumental, no fade in/out, loopable | 2 |
+| A-02 | Bonus music loop | 45â€“60 s, more intense | 2 |
+| A-03 | Big-win sting | 3â€“5 s | 1 |
+| A-04 | SFX set: spin start, symbol land (Ã—3 weights), win small, tumble pop, coin special land, column grow, coin pop, collect, stash up, button click, buy confirm | short one-shots | from Artlist SFX library if included in the plan; otherwise AI sound; confirm in Test 0 |
 
 Pack into one Howler sprite (`static/assets/audio/sounds.{ogg,mp3,m4a}` + `sounds.json`) with the
 same sprite names the game already plays (see `src/game/sound.ts`), or rename them in one pass.
@@ -119,20 +119,20 @@ big hits, shine sweep on high symbols, number count-up styling with a web font (
 
 ## 3. Lean budget
 
-Credit assumptions (replace with Test 0 measurements): **image ≈ 10 credits, 5 s clip ≈ 80 credits
-(mid-tier model), song ≈ 150 credits.** AI Core: 40,000 credits for $39.99 → **$0.001 per credit**.
+Credit assumptions (replace with Test 0 measurements): **image â‰ˆ 10 credits, 5 s clip â‰ˆ 80 credits
+(mid-tier model), song â‰ˆ 150 credits.** AI Core: 40,000 credits for $39.99 â†’ **$0.001 per credit**.
 
 | Block | Generations | Credits |
 |---|---|---|
-| Tests 0–2 (pipeline, style board, mascot) | ~40 images, 1 clip | ~650 |
-| Stills (§2.1) | ~60 | ~600 |
-| Clips (§2.2) | ~33 | ~2,640 |
-| Music + sting (§2.3) | 5 | ~750 |
+| Tests 0â€“2 (pipeline, style board, mascot) | ~40 images, 1 clip | ~650 |
+| Stills (Â§2.1) | ~60 | ~600 |
+| Clips (Â§2.2) | ~33 | ~2,640 |
+| Music + sting (Â§2.3) | 5 | ~750 |
 | Contingency 15% | | ~700 |
-| **Total for this game** | | **≈ 5,300 (≈ $5.30)** |
+| **Total for this game** | | **â‰ˆ 5,300 (â‰ˆ $5.30)** |
 
 Later games reuse the shared library (coin faces, transition, big-win scene, SFX, frames) and skip
-Tests 0–2, so a follow-on game is **≈ 3,000–4,000 credits**: 8–10 games per AI Core month.
+Tests 0â€“2, so a follow-on game is **â‰ˆ 3,000â€“4,000 credits**: 8â€“10 games per AI Core month.
 
 Track actuals here after each batch:
 
@@ -163,17 +163,17 @@ Track actuals here after each batch:
 ### 5.1 Per asset
 - Still: transparent edges clean, readable at the in-game size (100 px desktop, ~60 px phone), no
   text baked in, consistent light direction and outline weight with the set.
-- Clip: keyed cleanly, first/last frame = still, ≤ 64 frames at 256 px (≤ one 2048² sheet), loops
+- Clip: keyed cleanly, first/last frame = still, â‰¤ 64 frames at 256 px (â‰¤ one 2048Â² sheet), loops
   without a visible jump where it loops.
-- Audio: loops seamlessly, peak ≤ −1 dBFS, music around −16 LUFS.
+- Audio: loops seamlessly, peak â‰¤ âˆ’1 dBFS, music around âˆ’16 LUFS.
 
 ### 5.2 Game scenarios (force each with `/mock/queue`)
-Base no-win · tumble chain (3+ steps) · coin reel on the trigger row · two coin reels in one spin ·
-free-spin reel → Multiplier Mine (stash goes up) · 2+ free-spin reels → Treasure Vault (pots fill
-and pay) · retrigger inside a bonus · win cap · reload mid-bonus (resume restores boxes) · buy each
-of the 4 cards · boost on/off · autoplay 10 spins · turbo · big-win tiers.
-For each: desktop 1920×1080, tablet 1024×1366, phone 375×812 portrait; zero console errors.
+Base no-win Â· tumble chain (3+ steps) Â· coin reel on the trigger row Â· two coin reels in one spin Â·
+free-spin reel â†’ Multiplier Mine (stash goes up) Â· 2+ free-spin reels â†’ Treasure Vault (pots fill
+and pay) Â· retrigger inside a bonus Â· win cap Â· reload mid-bonus (resume restores boxes) Â· buy each
+of the 4 cards Â· boost on/off Â· autoplay 10 spins Â· turbo Â· big-win tiers.
+For each: desktop 1920Ã—1080, tablet 1024Ã—1366, phone 375Ã—812 portrait; zero console errors.
 
 ### 5.3 Performance
-60 fps on a mid Android phone during a bonus; GPU textures ≤ 150 MB; first load ≤ 8 MB before
+60 fps on a mid Android phone during a bonus; GPU textures â‰¤ 150 MB; first load â‰¤ 8 MB before
 "press to continue"; symbol clips lazy-loaded after the loading screen.
