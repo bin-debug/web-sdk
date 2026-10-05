@@ -25,11 +25,11 @@ Maths is out of scope (separate pipeline); the game keeps using the event names 
 
 ## 1. Tests (run in order, each has a pass/fail)
 
-### Test 0: Pipeline proof (≈ 150 credits)
+### Test 0: Pipeline proof (≈ 150 credits) — **PASSED 2026-10-05** (free tier, H1 diamond, book 35)
 1. Connect the Artlist MCP; confirm generated files can be **downloaded to disk** (not only saved in the Artlist library).
 2. Generate one high symbol still (1024², transparent PNG; if transparency is not supported, `#00FF00` background).
 3. Generate a 2 s image-to-video win clip from that still on `#00FF00`, first and last frame = the still pose.
-4. `node tools/video-to-sprites/video-to-sprites.mjs H1_win.mp4 --name H1_win --key 00ff00 --cell 256 --fps 24`.
+4. `node tools/video-to-sprites/video-to-sprites.mjs H1_win.mp4 --name H1_win --key 00ff00 --cell 256 --fps 24 --duration 2 --crop 1240:1076` (crop only for 16:9 clips; Artlist I2V minimum is 5 s, so trim with `--duration`).
 5. Wire into `SYMBOL_INFO_MAP.H1.win` (type `spriteSheet`) and play a queued H1 win in the browser.
 
 Pass: files download; keyed edges clean at 2× zoom (no green fringe); loop seam not noticeable;

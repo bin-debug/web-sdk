@@ -89,6 +89,13 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 (later) — Test 0 PASSED
+- The "blocker" was the test, not the code: the books had been regenerated, so book 9 no longer had an H1 win. Find a book with a given win before forcing it, e.g. book 35 (H1 wins on the 2nd tumble). The spriteSheet branch was mounting and playing all 48 frames.
+- Fixed quality: `video-to-sprites` `despill` default turned gold to orange → new `--despill-mix` (default 1, keeps yellow/gold); new `--crop w:h` so 16:9 AI clips fill the square cell. H1 rebuilt with `--key 00ff00 --duration 2 --crop 1240:1076`.
+- Masters (mp4/png) moved out of the game to `C:source_studio-kitart-masterscoin-reel` (not in git, not shipped). Only the sheet json/webp/preview stay in `static/assets/symbols`.
+- How to verify a clip in the game: queue a book with that symbol's win, spin, and in the console pause sprite sheets with 48 textures at frame ~26 (see the session log tip) or just watch.
+- Next: product owner decisions D1–D4, then Test 1 (style board). Artlist free outputs are watermarked/unlicensed: buy AI Core before generating ship assets.
+
 ### 2026-10-05 — Test 0 pipeline (partial)
 
 **What was done:**

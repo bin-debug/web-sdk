@@ -17,6 +17,8 @@ video-to-sprites <video|frames-dir> --name <clip> --out <dir> [options]
   --key <colour|none>  chroma-key a solid background, e.g. 00ff00 (green screen), 000000 (black). default none
   --similarity <0-1>   chroma-key tolerance (default 0.12)
   --blend <0-1>        chroma-key edge softness (default 0.08)
+  --despill-mix <0-1>  1 = only remove green above red (keeps yellow/gold); 0.5 = ffmpeg default (default 1)
+  --crop <w:h[:x:y]>   ffmpeg crop before fitting, e.g. 1240:1076 to cut a 16:9 clip to its centre (default none)
   --black-to-alpha     treat brightness as alpha (for FX shot on black: fire, sparks, glows)
   --max-sheet <px>     max sheet width/height (default 2048 = 16 MB GPU; 4096 = 64 MB)
   --quality <0-100>    webp quality (default 90)
@@ -45,6 +47,8 @@ const duration = opt('duration');
 const key = opt('key', 'none');
 const similarity = Number(opt('similarity', 0.12));
 const blend = Number(opt('blend', 0.08));
+const despillMix = Number(opt('despill-mix', 1));
+const crop = opt('crop');
 const maxSheet = Number(opt('max-sheet', 2048));
 const quality = Number(opt('quality', 90));
 
@@ -55,13 +59,14 @@ fs.mkdirSync(outDir, { recursive: true });
 // 1. extract RGBA frames, fitted and centred in a transparent square cell
 const filters = [];
 if (fs.statSync(input).isFile()) filters.push(`fps=${fps}`);
+if (crop) filters.push(`crop=${crop}`);
 filters.push('format=rgba');
 if (key !== 'none') {
 	const hex = key.replace('#', '').toLowerCase();
 	filters.push(`colorkey=0x${hex}:${similarity}:${blend}`);
 	// remove the green/blue light bounce left on edges by the screen
-	if (hex === '00ff00') filters.push('despill=type=green');
-	if (hex === '0000ff') filters.push('despill=type=blue');
+	if (hex === '00ff00') filters.push(`despill=type=green:mix=${despillMix}`);
+	if (hex === '0000ff') filters.push(`despill=type=blue:mix=${despillMix}`);
 }
 if (flag('black-to-alpha')) filters.push('geq=r=r(X\\,Y):g=g(X\\,Y):b=b(X\\,Y):a=max(r(X\\,Y)\\,max(g(X\\,Y)\\,b(X\\,Y)))');
 const fitFilters = (c) => [
