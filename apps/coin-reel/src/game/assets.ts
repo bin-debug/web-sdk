@@ -272,6 +272,26 @@ export default {
 		type: 'spriteSheet',
 		src: new URL('../../assets/symbols/H1_win.json', import.meta.url).href,
 	},
+	H2_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/symbols/H2_win.json', import.meta.url).href,
+	},
+	H3_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/symbols/H3_win.json', import.meta.url).href,
+	},
+	H4_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/symbols/H4_win.json', import.meta.url).href,
+	},
+	W_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/symbols/W_land.json', import.meta.url).href,
+	},
+	S_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/symbols/S_land.json', import.meta.url).href,
+	},
 	captainKachink: {
 		type: 'sprite',
 		src: new URL('../../assets/mascot/captain_kachink.webp', import.meta.url).href,

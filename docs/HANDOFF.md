@@ -89,6 +89,20 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 (newest) — Step 4 win clips done
+- H1-H4 win + W/S land generated as image-to-video from the Step 3 stills on Seedance 2.0 Mini
+  (480p, 4s, no audio, 200cr each = 1,200 total; 15,970 -> 14,770). Picked after comparing costs:
+  Kling 2.5 Turbo Pro 750cr, Omni 1.1 350cr, Seedance Mini 200cr — cheapest capable option.
+  Prompts kept the still's pose as first/last frame with one small motion (pulse, bounce, flip,
+  fist clench, spin-flash) per the fixed-style rules (camera locked, green stays pure).
+  Sheeted with `video-to-sprites` (48 frames/256px, square so no `--crop` needed). Wired into
+  `SYMBOL_INFO_MAP`: H2/H3/H4 win and W/S land moved off the template's spine animations onto the
+  new spriteSheets (H1 win already done in Test 0). Verified across several spins in the browser
+  (books 35, 22, 23, 28, 40, 44) — all symbols animate, zero console errors.
+- Total spent so far this game: 1,730 credits (16,500 -> 14,770), well under the 5,300 budget even
+  before the "least credits" instruction.
+- Next: Step 5 backgrounds + logo, then the vertical-slice STOP for owner review.
+
 ### 2026-10-05 (latest) — Step 3 symbols done, switched to a cheaper model
 - Owner approved the mascot and said to finish the game on the least credits possible. Switched bulk
   image generation from Nano Banana 2 (90cr) to z-image Turbo (10cr/image at 2K) — ~90% cheaper, still

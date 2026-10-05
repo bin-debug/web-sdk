@@ -241,10 +241,10 @@ export const SYMBOL_INFO_MAP = {
 	H2: {
 		explosion,
 		win: {
-			type: 'spine',
-			assetKey: 'H2',
-			animationName: 'h2',
-			sizeRatios: { width: 0.5, height: HIGH_SYMBOL_SIZE * 0.57 },
+			type: 'spriteSheet',
+			assetKey: 'H2_win',
+			fps: 24,
+			sizeRatios: { width: 1, height: 1 },
 		},
 		postWinStatic: h2Static,
 		static: h2Static,
@@ -254,10 +254,10 @@ export const SYMBOL_INFO_MAP = {
 	H3: {
 		explosion,
 		win: {
-			type: 'spine',
-			assetKey: 'H3',
-			animationName: 'h3',
-			sizeRatios: { width: 0.5 * 0.9, height: HIGH_SYMBOL_SIZE * 0.53 },
+			type: 'spriteSheet',
+			assetKey: 'H3_win',
+			fps: 24,
+			sizeRatios: { width: 1, height: 1 },
 		},
 		postWinStatic: h3Static,
 		static: h3Static,
@@ -267,10 +267,10 @@ export const SYMBOL_INFO_MAP = {
 	H4: {
 		explosion,
 		win: {
-			type: 'spine',
-			assetKey: 'H4',
-			animationName: 'h4',
-			sizeRatios: { width: 0.5 * 0.9, height: HIGH_SYMBOL_SIZE * 0.53 },
+			type: 'spriteSheet',
+			assetKey: 'H4_win',
+			fps: 24,
+			sizeRatios: { width: 1, height: 1 },
 		},
 		postWinStatic: h4Static,
 		static: h4Static,
@@ -353,10 +353,10 @@ export const SYMBOL_INFO_MAP = {
 		spin: wStatic,
 		win: { type: 'spine', assetKey: 'W', animationName: 'wild_dynamite', sizeRatios: wSizeRatios },
 		land: {
-			type: 'spine',
-			assetKey: 'W',
-			animationName: 'wild_dynamite_land',
-			sizeRatios: wSizeRatios,
+			type: 'spriteSheet',
+			assetKey: 'W_land',
+			fps: 24,
+			sizeRatios: { width: 1, height: 1 },
 		},
 	},
 	S: {
@@ -371,10 +371,10 @@ export const SYMBOL_INFO_MAP = {
 		},
 		win: { type: 'spine', assetKey: 'S', animationName: 'scatter_win', sizeRatios: sSizeRatios },
 		land: {
-			type: 'spine',
-			assetKey: 'S',
-			animationName: 'scatter_land',
-			sizeRatios: sSizeRatios,
+			type: 'spriteSheet',
+			assetKey: 'S_land',
+			fps: 24,
+			sizeRatios: { width: 1, height: 1 },
 		},
 	},
 	M_2: {
