@@ -16,11 +16,15 @@ Maths is out of scope (separate pipeline); the game keeps using the event names 
 
 | # | Decision | Options / default |
 |---|---|---|
-| D1 | Theme | Must be clearly different from the reference game (no 1930s rubber-hose cartoon, no grinning skull, no black-and-white base). Proposals: **(a) Dwarven gold mine** (keeps the coin/mining logic, our own stout dwarf mascot), **(b) Pirate treasure vault** (parrot or captain mascot), **(c) Neon arcade robot** (coins = tokens). |
-| D2 | Final name | Working title "Coin Reel" until D1 is chosen. Bonus names follow the theme (current: *Multiplier Mine*, *Treasure Vault*). |
-| D3 | Art style | Default: bold comic/cel-shaded, thick dark outlines, saturated symbols on a darker scene (industry "punchy" look). |
-| D4 | Mascot design | Approved from a turnaround sheet (Test 2) before any mascot clips are generated. |
+| D1 | Theme | **DECIDED 2026-10-05: cartoon superhero.** A cheerful coin-powered hero guards the city's gold reserve. Original characters only: no Marvel/DC/Invincible/Incredibles look-alikes (no S/bat/spider emblems, no red-blue-yellow Superman palette). |
+| D2 | Final name | **Captain Kachink** (display name; app id stays `coin-reel`). Bonuses: *Power Surge* (was Multiplier Mine), *Vault Rescue* (was Treasure Vault). Do a quick web check for an existing slot with that name before Step 5; fall back to *Kachink Force*. |
+| D3 | Art style | Bold cel-shaded comic: thick dark outlines, flat colour + one shade + one highlight, light from top-left, subtle halftone dots on backgrounds only. Palette: teal + gold hero, magenta/orange accents, dusk-purple city. |
+| D4 | Mascot | **Captain Kachink**: short, stocky, big square chin, huge grin, gold-and-teal suit, round gold coin emblem with a lightning bolt on the chest, short red cape, teal domino mask, white gloves, chunky boots. Approved from Step 2 master before any mascot clip. |
 
+**Symbol set (superhero):** L1 teal bolt badge, L2 green star badge, L3 purple shield badge, L4 orange fist badge
+(simple round emblems, readable at 60 px) · H4 power glove · H3 hero mask · H2 sidekick "Sprocket" (round robot pup) ·
+H1 glowing gold Power Core gem · W Kachink coin (gold, bolt emblem; the loudest symbol) · S red hero alarm siren.
+Backgrounds: base = city rooftops at dusk; bonus = inside the gold vault with laser beams.
 ---
 
 ## 1. Tests (run in order, each has a pass/fail)
