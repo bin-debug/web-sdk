@@ -138,7 +138,7 @@ Track actuals here after each batch:
 
 | Date | Batch | Credits used | Notes |
 |---|---|---|---|
-| | Test 0 | | |
+| 2026-10-05 | Test 0 | 0 (free tier) | image: GPT Image 2.0 Low (free gen); video: Kling 2.5 Turbo Pro I2V 5 s (free gen, min duration is 5 s not 2 s); both may be watermarked |
 
 ---
 

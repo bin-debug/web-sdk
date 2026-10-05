@@ -22,7 +22,7 @@
 <SymbolWrap
 	x={getSymbolX(props.reelIndex)}
 	y={props.reelSymbol.symbolY.current}
-	animating={symbolInfo.type === 'spine' &&
+	animating={(symbolInfo.type === 'spine' || symbolInfo.type === 'spriteSheet') &&
 		(props.reelSymbol.symbolState === 'land' || props.reelSymbol.symbolState === 'win')}
 >
 	<Container y={squash.offsetY()} scale={{ x: squash.sx.current, y: squash.sy.current }}>

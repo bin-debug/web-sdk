@@ -228,10 +228,10 @@ export const SYMBOL_INFO_MAP = {
 	H1: {
 		explosion,
 		win: {
-			type: 'spine',
-			assetKey: 'H1',
-			animationName: 'h1',
-			sizeRatios: { width: 0.5 * 1.15, height: HIGH_SYMBOL_SIZE * 0.57 },
+			type: 'spriteSheet',
+			assetKey: 'H1_win',
+			fps: 24,
+			sizeRatios: { width: 1, height: 1 },
 		},
 		postWinStatic: h1Static,
 		static: h1Static,

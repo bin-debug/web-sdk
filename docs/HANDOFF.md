@@ -89,6 +89,25 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 — Test 0 pipeline (partial)
+
+**What was done:**
+- Generated H1 still via GPT Image 2.0 Low (free): gold diamond on `#00FF00`. File: `apps/coin-reel/static/assets/symbols/H1_win.png`.
+- Generated 5 s I2V clip via Kling 2.5 Turbo Pro I2V (free, only model available; min duration = 5 s, not 2 s). File: `apps/coin-reel/static/assets/symbols/H1_win.mp4`.
+- Ran `video-to-sprites` (`--duration 2` trims to first 2 s worth of frames). Output: `H1_win.json` (48 frames), `H1_win.webp` (texture atlas), `H1_win.preview.webp`.
+- Registered `H1_win` in `apps/coin-reel/src/game/assets.ts` as `type: 'spriteSheet'`.
+- Added `apps/coin-reel/src/components/SymbolSpriteSheet.svelte` (adapted from `apps/lines`).
+- Updated `apps/coin-reel/src/components/Symbol.svelte` to branch on `isSpriteSheet`.
+- Updated `apps/coin-reel/src/game/constants.ts`: `SYMBOL_INFO_MAP.H1.win` → `{ type: 'spriteSheet', assetKey: 'H1_win', fps: 24, sizeRatios: { width: 1, height: 1 } }`.
+- Fixed `apps/coin-reel/src/components/ReelSymbol.svelte`: `animating` condition now includes `symbolInfo.type === 'spriteSheet'` so SymbolWrap shows the animated layer.
+- Confirmed `H1_win.json` loads (200 OK) and no `SpriteSheet key not found` errors in console.
+
+**Blocker / next agent:**
+- `SymbolSpriteSheet` mounts but `Symbol.svelte`'s `$effect` debug log never fired during an H1 win (book 9, cascade 4). The `spriteSheet` branch in `Symbol.svelte` may not be reached — investigate whether `getSymbolInfo` returns the correct type at runtime, or whether `SymbolWrap.svelte`'s visibility logic is swallowing the component before Svelte mounts it.
+- Useful facts: H1 wins in book 9 cascade 4 (4th `winInfo` event); H1 positions reel/row = (0,4),(0,5),(2,3),(2,5),(3,5),(4,2). Queue with: `curl -XPOST localhost:5099/mock/queue -d '{"gameId":"coin-reel","mode":"BASE","id":[9]}'`.
+- Once the animation plays visually, Test 0 is done. Record pass/fail in `BUILD-PLAN.md §1` and move to Test 1.
+- Credit costs recorded in BUILD-PLAN §3: both gens were **free** (watermarked, not licensed for ship). Buy AI Core before Tests 1–3.
+
 ### 2026-10-05 — Artlist MCP
 - Artlist MCP added to the owner's Claude Code user config (`~/.claude.json` → `mcpServers.artlist`, http, `https://mcp.artlist.io/mcp`). The `claude` CLI is not installed; the desktop app is used. Owner signs in via `/mcp` in a new session.
 - Owner is on the Artlist **free** account first: use it for Test 0 (pipeline + quality). Free outputs may be watermarked and are not licensed for shipping; buy AI Core only after Test 0 passes.
