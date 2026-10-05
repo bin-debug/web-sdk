@@ -150,6 +150,7 @@ Track actuals here after each batch:
 |---|---|---|---|
 | 2026-10-05 | Test 0 | 0 (free tier) | image: GPT Image 2.0 Low (free gen); video: Kling 2.5 Turbo Pro I2V 5 s (free gen, min duration is 5 s not 2 s); both may be watermarked |
 | 2026-10-05 | Step 1 style board | 360 (16,500 → 16,140) | Nano Banana 2 (modelId 2250), 1K, 90 credits/image Ã— 4 (H1 Power Core gem, L1 bolt badge, base bg rooftops, mascot sketch). D1â€“D4 already decided (BUILD-PLAN Â§0 from a prior session); this batch confirms the locked style only (1 option, not per-theme). Fixed style prefix (log below) used for every image and will be reused for all future symbol/bg generations. |
+| 2026-10-05 | Step 2 mascot master (1/4) | 90 (16,140 → 16,050) | Nano Banana 2, 1K, 2:3. Generated master only (not poses yet) to get owner approval before spending on the 3 pose variants, per the runbook STOP. |
 
 ---
 
