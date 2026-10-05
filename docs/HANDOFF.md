@@ -89,6 +89,41 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 (even newer) — Owner feedback: mascot/mobile/bg/old-art fixes
+Owner review of the vertical slice flagged: free spins still shows old symbols/audio, backgrounds
+need to be better, mascot doesn't look like he's flying, mascot missing on mobile. Addressed:
+- **Mascot flying pose**: regenerated on Nano Banana 2. First attempt had a two-head AI glitch (90cr
+  wasted); simplified the prompt to force a single character and regenerated clean (90cr). Re-keyed,
+  overwrote `captain_kachink.webp` in place (no code change needed, same asset key).
+- **Mascot on mobile**: `Mascot.svelte` only showed on `desktop`/`landscape` layouts before. Now
+  always visible; portrait gets a smaller size (1.6x symbol vs 2.6x) positioned above the board
+  (previous side-of-board position would've been off-screen on a narrow phone, and the first
+  attempt at an above-board position was still half-hidden behind the board's own layer — fixed by
+  pushing it further up so it clears the board top edge).
+- **Background quality**: regenerated base + bonus on Nano Banana 2 2K (130cr each) instead of
+  z-image Turbo (10cr) â€” noticeably more detail, atmosphere and polish. 9:16 portraits re-cropped
+  from the new masters with ffmpeg, no extra credits.
+- **Old art removal (free spins)**: the "old symbols" the owner saw were the free-spin intro panel
+  (spine `fsIntro` background + `freespins_en.png`/`freespins.png` sprites) and the free-spin counter
+  badge (`Frame_FSCounter.png` + bitmap "gold" font) â€” both 100% template mining art. Rewrote
+  `FreeSpinAnimation.svelte`, `FreeSpinIntro.svelte` and `FreeSpinCounter.svelte` to use code-drawn
+  panels (Rectangle + proxima-nova Text) in our palette instead â€” zero new credits, fully removes
+  the old art from that screen.
+- **Loading screen**: also still showed the full "MINING MAYHEM" spine title card on every load â€”
+  very visible template branding the owner likely meant too. Swapped it for our new logo Sprite.
+  Logo's first keying pass failed silently (the "green screen" the AI produced was `#1ac95e`, a
+  muted sea-green, not pure `#00FF00` â€” re-keyed against the sampled colour, clean now).
+- Marked `logo` and all 4 background assets `preload: true` so they're ready before first paint
+  (was causing a `"not found in loadedAssets"` console warning on mount).
+- **Not fixed yet â€” flagged, not silently skipped**: the "old audio" the owner heard is real; none of
+  Step 9 has run (7 music tracks + ~38 SFX names in `sound.ts`, still 100% the template Howler
+  sprite). This is its own 800-credit step with real scope (generation + packing into a Howler
+  sprite) â€” didn't want to half-do it. Asked the owner whether to run it next.
+- **Reference game**: no visual reference exists or is used â€” only a structure-only teardown
+  (`docs/teardowns/coin-reel-5x5-teardown.md`, no images) per the project's no-copying rule. Told the
+  owner directly rather than silently ignoring the question.
+- Credits: 440 this round (14,740 -> 14,300). Total so far: 2,200 of the ~5,300 budget.
+
 ### 2026-10-05 (newest) — Step 5 backgrounds + logo, vertical slice ready — STOP
 - Base background (dusk rooftops) and bonus background (gold vault, laser beams) generated 16:9 on
   z-image Turbo, 10cr each; logo ("CAPTAIN KACHINK" wordmark) same model, keyed transparent. 9:16

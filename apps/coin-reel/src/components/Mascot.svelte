@@ -15,7 +15,6 @@
 
 	// Captain Kachink master still; idle/point/cheer video clips land in a later step.
 	const MASCOT_TEXTURE = 'captainKachink';
-	const SIZE = SYMBOL_SIZE * 2.6;
 
 	const context = getContext();
 	const bob = new Tween(0);
@@ -23,11 +22,26 @@
 	const tilt = new Tween(0);
 	const punch = new Tween(1);
 
-	const visible = $derived(['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()));
-	const position = $derived({
-		x: context.stateGameDerived.boardLayout().x - context.stateGameDerived.boardLayout().width * 0.5 - SIZE * 0.62,
-		y: context.stateGameDerived.boardLayout().y + SYMBOL_SIZE * 0.9,
-	});
+	const isPortrait = $derived(context.stateLayoutDerived.layoutType() === 'portrait');
+	const SIZE = $derived(isPortrait ? SYMBOL_SIZE * 1.6 : SYMBOL_SIZE * 2.6);
+	const visible = true;
+	const position = $derived(
+		isPortrait
+			? {
+					x:
+						context.stateGameDerived.boardLayout().x +
+						context.stateGameDerived.boardLayout().width * 0.5 -
+						SIZE * 0.55,
+					y: context.stateGameDerived.boardLayout().y - context.stateGameDerived.boardLayout().height * 0.5 - SIZE * 0.58,
+				}
+			: {
+					x:
+						context.stateGameDerived.boardLayout().x -
+						context.stateGameDerived.boardLayout().width * 0.5 -
+						SIZE * 0.62,
+					y: context.stateGameDerived.boardLayout().y + SYMBOL_SIZE * 0.9,
+				},
+	);
 
 	let busy = false;
 	const react = async (mood: MascotMood) => {

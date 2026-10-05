@@ -295,22 +295,27 @@ export default {
 	baseBackgroundLandscape: {
 		type: 'sprite',
 		src: new URL('../../assets/backgrounds/base_bg_16x9.webp', import.meta.url).href,
+		preload: true,
 	},
 	baseBackgroundPortrait: {
 		type: 'sprite',
 		src: new URL('../../assets/backgrounds/base_bg_9x16.webp', import.meta.url).href,
+		preload: true,
 	},
 	bonusBackgroundLandscape: {
 		type: 'sprite',
 		src: new URL('../../assets/backgrounds/bonus_bg_16x9.webp', import.meta.url).href,
+		preload: true,
 	},
 	bonusBackgroundPortrait: {
 		type: 'sprite',
 		src: new URL('../../assets/backgrounds/bonus_bg_9x16.webp', import.meta.url).href,
+		preload: true,
 	},
 	logo: {
 		type: 'sprite',
 		src: new URL('../../assets/logo/logo.webp', import.meta.url).href,
+		preload: true,
 	},
 	captainKachink: {
 		type: 'sprite',

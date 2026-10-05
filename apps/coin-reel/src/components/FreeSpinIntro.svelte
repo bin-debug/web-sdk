@@ -7,22 +7,17 @@
 
 <script lang="ts">
 	import { CanvasSizeRectangle } from 'components-layout';
-	import { stateUrlDerived } from 'state-shared';
 	import { FadeContainer } from 'components-pixi';
 	import { waitForResolve } from 'utils-shared/wait';
-	import { BitmapText, SpineProvider, SpineSlot, SpineTrack, Sprite } from 'pixi-svelte';
+	import { Circle, Text } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
 	import PressToContinue from './PressToContinue.svelte';
 	import FreeSpinAnimation from './FreeSpinAnimation.svelte';
 
-	type AnimationName = 'intro' | 'idle';
-
 	const context = getContext();
 
 	let show = $state(false);
-	let animationName = $state<AnimationName>('intro');
-	const playIdleLoop = $derived(stateUrlDerived.device() !== 'mobile');
 	let freeSpinsFromEvent = $state(0);
 	let oncomplete = $state(() => {});
 
@@ -45,36 +40,41 @@
 
 	<FreeSpinAnimation>
 		{#snippet children({ sizes })}
-			<Sprite
-				anchor={{ x: 0.5, y: 1.2 }}
-				width={500 * 2.2}
-				height={156 * 2.2}
-				key="freespins_{stateUrlDerived.lang()}.png"
+			<Text
+				anchor={{ x: 0.5, y: 0.5 }}
+				x={sizes.width * 0.5}
+				y={sizes.height * 0.22}
+				text="FREE SPINS"
+				style={{
+					fontFamily: 'proxima-nova',
+					fontWeight: '800',
+					fontSize: sizes.width * 0.11,
+					fill: 0xf5c542,
+					stroke: { color: 0x1a1038, width: 6 },
+				}}
 			/>
 
-			<SpineProvider key="fsIntroNumber" width={sizes.width * 0.4}>
-				<SpineTrack
-					trackIndex={0}
-					{animationName}
-					loop={animationName === 'idle' && playIdleLoop}
-					listener={{
-						complete: () => { if (playIdleLoop) animationName = 'idle'; },
-					}}
-				/>
-				<SpineSlot slotName="slot_number">
-					<BitmapText
-						anchor={{ x: 0.5, y: 0.5 }}
-						text={freeSpinsFromEvent}
-						style={{
-							fontFamily: 'gold',
-							fontSize: sizes.width * 0.15,
-							fontWeight: 'bold',
-						}}
-					/>
-				</SpineSlot>
-			</SpineProvider>
-
-			<Sprite anchor={{ x: 0.5, y: -3 }} width={183 * 2.2} height={42 * 2.2} key="freespins.png" />
+			<Circle
+				anchor={0.5}
+				x={sizes.width * 0.5}
+				y={sizes.height * 0.52}
+				diameter={sizes.width * 0.32}
+				backgroundColor={0x0e2f2b}
+				borderColor={0x13c4a3}
+				borderWidth={6}
+			/>
+			<Text
+				anchor={{ x: 0.5, y: 0.5 }}
+				x={sizes.width * 0.5}
+				y={sizes.height * 0.52}
+				text={freeSpinsFromEvent}
+				style={{
+					fontFamily: 'proxima-nova',
+					fontWeight: '800',
+					fontSize: sizes.width * 0.16,
+					fill: 0xffffff,
+				}}
+			/>
 		{/snippet}
 	</FreeSpinAnimation>
 

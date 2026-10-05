@@ -11,16 +11,13 @@
 
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE } from '../game/constants';
-	import { anchorToPivot, BitmapText, Container, Sprite, type Sizes } from 'pixi-svelte';
+	import { Rectangle, Text } from 'pixi-svelte';
 
 	const context = getContext();
-	const PANEL_KEY_DESKTOP = 'Frame_FSCounter.png';
-	const PANEL_RATIO_DESKTOP = 824 / 622;
-	const panelKey = PANEL_KEY_DESKTOP;
 	const panelWidth = $derived(SYMBOL_SIZE * 2);
 	const panelSizes = $derived({
 		width: panelWidth,
-		height: panelWidth / PANEL_RATIO_DESKTOP,
+		height: panelWidth * 0.46,
 	});
 	const scale = 1;
 	const position = $derived({
@@ -34,19 +31,9 @@
 			context.stateGameDerived.boardLayout().height * 0.5,
 	});
 
-	const fontSize = SYMBOL_SIZE * 0.275;
-
 	let show = $state(false);
 	let current = $state(0);
 	let total = $state(0);
-	let titleSizes: Sizes = $state({ width: 0, height: 0 });
-	let counterSizes: Sizes = $state({ width: 0, height: 0 });
-
-	const textContainerSizes = $derived({
-		width: titleSizes.width,
-		height: titleSizes.height + counterSizes.height,
-	});
-	const counterPosition = $derived({ x: titleSizes.width / 2, y: titleSizes.height });
 
 	context.eventEmitter.subscribeOnMount({
 		freeSpinCounterShow: () => (show = true),
@@ -60,34 +47,37 @@
 
 <MainContainer>
 	<FadeContainer {show} {...position} {scale}>
-		<Sprite key={panelKey} {...panelSizes} />
-		<Container
+		<Rectangle
+			{...panelSizes}
+			borderRadius={14}
+			backgroundColor={0x1a1038}
+			backgroundAlpha={0.92}
+			borderColor={0xf5c542}
+			borderWidth={3}
+		/>
+		<Text
+			anchor={{ x: 0.5, y: 0.5 }}
 			x={panelSizes.width * 0.5}
-			y={panelSizes.height * 0.48}
-			pivot={anchorToPivot({
-				sizes: textContainerSizes,
-				anchor: { x: 0.5, y: 0.5 },
-			})}
-		>
-			<BitmapText
-				text={'FREE SPIN'}
-				style={{
-					fontFamily: 'gold',
-					fontSize,
-					wordWrap: false,
-				}}
-				onresize={(sizes) => (titleSizes = sizes)}
-			/>
-			<BitmapText
-				text={`${current} OF ${total}`}
-				{...counterPosition}
-				anchor={{ x: 0.5, y: 0 }}
-				style={{
-					fontFamily: 'gold',
-					fontSize,
-				}}
-				onresize={(sizes) => (counterSizes = sizes)}
-			/>
-		</Container>
+			y={panelSizes.height * 0.32}
+			text="FREE SPIN"
+			style={{
+				fontFamily: 'proxima-nova',
+				fontWeight: '800',
+				fontSize: SYMBOL_SIZE * 0.2,
+				fill: 0xf5c542,
+			}}
+		/>
+		<Text
+			anchor={{ x: 0.5, y: 0.5 }}
+			x={panelSizes.width * 0.5}
+			y={panelSizes.height * 0.68}
+			text={`${current} OF ${total}`}
+			style={{
+				fontFamily: 'proxima-nova',
+				fontWeight: '800',
+				fontSize: SYMBOL_SIZE * 0.22,
+				fill: 0xffffff,
+			}}
+		/>
 	</FadeContainer>
 </MainContainer>
