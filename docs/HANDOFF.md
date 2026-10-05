@@ -89,6 +89,17 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 (later still) — Step 1 style board
+- Artlist MCP confirmed working on the paid plan ("AI Suite 16500", 16,500 credits/month). D1â€“D4 were
+  already decided (BUILD-PLAN Â§0), so this batch generated one confirmation style board (not
+  per-theme options): H1 Power Core gem, L1 bolt badge, base background (dusk rooftops), mascot
+  sketch, all via Nano Banana 2 (1K) at 90 credits each = 360 total (16,500 â†’ 16,140). Downloaded to
+  `C:\source\_studio-kit\art-masters\coin-reel\style-board\` and copied into the review page.
+- Recorded a fixed style prompt prefix in BUILD-PLAN Â§0 to reuse for every future symbol/bg/mascot
+  generation so the set stays consistent.
+- RUNBOOK Step 1 ticked. Next: STOP for owner to confirm the look, then Step 2 (mascot lock, needs
+  owner approval before any mascot clip).
+
 ### 2026-10-05 (later) — Test 0 PASSED
 - The "blocker" was the test, not the code: the books had been regenerated, so book 9 no longer had an H1 win. Find a book with a given win before forcing it, e.g. book 35 (H1 wins on the 2nd tumble). The spriteSheet branch was mounting and playing all 48 frames.
 - Fixed quality: `video-to-sprites` `despill` default turned gold to orange → new `--despill-mix` (default 1, keeps yellow/gold); new `--crop w:h` so 16:9 AI clips fill the square cell. H1 rebuilt with `--key 00ff00 --duration 2 --crop 1240:1076`.

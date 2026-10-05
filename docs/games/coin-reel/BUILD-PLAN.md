@@ -25,6 +25,12 @@ Maths is out of scope (separate pipeline); the game keeps using the event names 
 (simple round emblems, readable at 60 px) · H4 power glove · H3 hero mask · H2 sidekick "Sprocket" (round robot pup) ·
 H1 glowing gold Power Core gem · W Kachink coin (gold, bolt emblem; the loudest symbol) · S red hero alarm siren.
 Backgrounds: base = city rooftops at dusk; bonus = inside the gold vault with laser beams.
+
+**Fixed style prompt prefix** (use for every still/clip, keep the set consistent):
+"Bold cel-shaded comic book illustration style, thick dark ink outlines, flat colour fill with one
+shadow tone and one highlight tone, dramatic lighting from top-left, clean vector-like shapes,
+original non-licensed character design, no text, no watermark, no logos." Symbols/mascot add:
+"Pure solid #00FF00 green screen background, even flat lighting, no shadow on the background."
 ---
 
 ## 1. Tests (run in order, each has a pass/fail)
@@ -143,6 +149,7 @@ Track actuals here after each batch:
 | Date | Batch | Credits used | Notes |
 |---|---|---|---|
 | 2026-10-05 | Test 0 | 0 (free tier) | image: GPT Image 2.0 Low (free gen); video: Kling 2.5 Turbo Pro I2V 5 s (free gen, min duration is 5 s not 2 s); both may be watermarked |
+| 2026-10-05 | Step 1 style board | 360 (16,500 → 16,140) | Nano Banana 2 (modelId 2250), 1K, 90 credits/image Ã— 4 (H1 Power Core gem, L1 bolt badge, base bg rooftops, mascot sketch). D1â€“D4 already decided (BUILD-PLAN Â§0 from a prior session); this batch confirms the locked style only (1 option, not per-theme). Fixed style prefix (log below) used for every image and will be reused for all future symbol/bg generations. |
 
 ---
 
