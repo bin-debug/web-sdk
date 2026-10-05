@@ -89,6 +89,22 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 (latest) — Step 3 symbols done, switched to a cheaper model
+- Owner approved the mascot and said to finish the game on the least credits possible. Switched bulk
+  image generation from Nano Banana 2 (90cr) to z-image Turbo (10cr/image at 2K) — ~90% cheaper, still
+  matches the cel-shaded style fine at this size.
+- Generated L2 (star badge), L3 (shield badge), L4 (fist badge), H2 (Sprocket the robot pup), H3
+  (domino mask), H4 (power glove), W (Kachink coin), S (alarm siren) — 8 images, 80 credits total.
+  Reused L1 and H1 from the Step 1 style board instead of regenerating (already paid for).
+  16,050 -> 15,970.
+- Keyed all 10 to transparent 512px webp with ffmpeg (same colorkey/despill settings as H1, no fringe
+  needed a second pass). Registered each as its own `sprite` asset in `assets.ts`
+  (`H1_static`..`S_static`) and repointed `constants.ts`'s `h1Static`..`sStatic`/`wStatic` assetKeys
+  at them (was `symbolsStatic` sheet frames like `h1.webp`). H5 left untouched — it's not used in any
+  reel strip, template leftover, will be deleted in Step 10.
+- Verified in the browser: full board renders with new symbols, no console errors, no green fringe.
+- Next: Step 4 win clips (H1-H4 win, W/S land) via image-to-video on the cheapest capable model.
+
 ### 2026-10-05 (even later) — Step 2 mascot locked, owner approved
 - Owner approved the Captain Kachink master. Keyed it green→transparent with ffmpeg (no despill
   needed, clean edges) into `apps/coin-reel/static/assets/mascot/captain_kachink.webp` (62 KB).

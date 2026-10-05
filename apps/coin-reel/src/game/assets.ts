@@ -276,6 +276,46 @@ export default {
 		type: 'sprite',
 		src: new URL('../../assets/mascot/captain_kachink.webp', import.meta.url).href,
 	},
+	H1_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/H1_power_core.webp', import.meta.url).href,
+	},
+	H2_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/H2_sprocket.webp', import.meta.url).href,
+	},
+	H3_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/H3_mask.webp', import.meta.url).href,
+	},
+	H4_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/H4_glove.webp', import.meta.url).href,
+	},
+	L1_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/L1_bolt_badge.webp', import.meta.url).href,
+	},
+	L2_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/L2_star.webp', import.meta.url).href,
+	},
+	L3_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/L3_shield.webp', import.meta.url).href,
+	},
+	L4_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/L4_fist.webp', import.meta.url).href,
+	},
+	W_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/W_coin.webp', import.meta.url).href,
+	},
+	S_static: {
+		type: 'sprite',
+		src: new URL('../../assets/symbols/S_siren.webp', import.meta.url).href,
+	},
 	sound: {
 		type: 'audio',
 		src: new URL('../../assets/audio/sounds.json', import.meta.url).href,
