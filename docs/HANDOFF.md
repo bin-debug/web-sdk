@@ -89,6 +89,11 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 — Artlist MCP
+- Artlist MCP added to the owner's Claude Code user config (`~/.claude.json` → `mcpServers.artlist`, http, `https://mcp.artlist.io/mcp`). The `claude` CLI is not installed; the desktop app is used. Owner signs in via `/mcp` in a new session.
+- Owner is on the Artlist **free** account first: use it for Test 0 (pipeline + quality). Free outputs may be watermarked and are not licensed for shipping; buy AI Core only after Test 0 passes.
+- Next: confirm MCP tools load, check credit balance, run Test 0 (BUILD-PLAN §1), record real credit costs in BUILD-PLAN §3.
+
 ### 2026-10-04 (later) — coin-reel production plan
 - Wrote `docs/games/coin-reel/BUILD-PLAN.md`: all template art/audio/animation to be replaced by our
   own (Artlist AI Core via MCP), Tests 0–4, asset manifest (31 stills, 16 clips, music/SFX), lean
