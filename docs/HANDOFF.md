@@ -89,6 +89,20 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 (even later) — Step 2 mascot locked, owner approved
+- Owner approved the Captain Kachink master. Keyed it green→transparent with ffmpeg (no despill
+  needed, clean edges) into `apps/coin-reel/static/assets/mascot/captain_kachink.webp` (62 KB).
+- Skipped the 3 pose stills from the manifest: `Mascot.svelte` only ever shows one texture and
+  animates "point"/"cheer" reactions in code (tilt/bob/punch tweens), there's no pose-swap path to
+  wire them into. Registered `captainKachink` as a `sprite` asset in `assets.ts` and pointed
+  `MASCOT_TEXTURE` at it (was the `h1.webp` placeholder). Verified in the browser: mascot renders
+  correctly next to the board, no console errors. Saved ~150-270 credits; the point/cheer/idle clips
+  in Step 7 will source straight from this master instead.
+- Owner said to finish the game using the least credits possible — going forward: cheaper models by
+  default (GPT Image 2.0 Low/Medium instead of Nano Banana 2 unless quality demands it), one try per
+  asset instead of the manifest's budgeted retries, skip anything not actually wired into the code.
+- Next: Step 3 symbols (L1-L4, H1-H4, W, S stills) on a budget model, replacing `symbolsStatic`.
+
 ### 2026-10-05 (later still) — Step 1 style board
 - Artlist MCP confirmed working on the paid plan ("AI Suite 16500", 16,500 credits/month). D1â€“D4 were
   already decided (BUILD-PLAN Â§0), so this batch generated one confirmation style board (not

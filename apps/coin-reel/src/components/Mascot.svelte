@@ -13,8 +13,8 @@
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
 
-	// Placeholder until the art pack ships a mascot (still + idle/point/cheer clips).
-	const MASCOT_TEXTURE = 'h1.webp';
+	// Captain Kachink master still; idle/point/cheer video clips land in a later step.
+	const MASCOT_TEXTURE = 'captainKachink';
 	const SIZE = SYMBOL_SIZE * 2.6;
 
 	const context = getContext();

@@ -272,6 +272,10 @@ export default {
 		type: 'spriteSheet',
 		src: new URL('../../assets/symbols/H1_win.json', import.meta.url).href,
 	},
+	captainKachink: {
+		type: 'sprite',
+		src: new URL('../../assets/mascot/captain_kachink.webp', import.meta.url).href,
+	},
 	sound: {
 		type: 'audio',
 		src: new URL('../../assets/audio/sounds.json', import.meta.url).href,
