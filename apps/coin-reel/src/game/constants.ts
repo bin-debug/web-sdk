@@ -292,12 +292,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L1: {
 		explosion,
-		win: {
-			type: 'spine',
-			assetKey: 'L1',
-			animationName: 'l1',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.65 },
-		},
+		win: l1Static,
 		postWinStatic: l1Static,
 		static: l1Static,
 		spin: l1Static,
@@ -305,12 +300,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L2: {
 		explosion,
-		win: {
-			type: 'spine',
-			assetKey: 'L2',
-			animationName: 'l2',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.65 },
-		},
+		win: l2Static,
 		postWinStatic: l2Static,
 		static: l2Static,
 		spin: l2Static,
@@ -318,12 +308,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L3: {
 		explosion,
-		win: {
-			type: 'spine',
-			assetKey: 'L3',
-			animationName: 'l3',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.63 },
-		},
+		win: l3Static,
 		postWinStatic: l3Static,
 		static: l3Static,
 		spin: l3Static,
@@ -331,12 +316,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L4: {
 		explosion,
-		win: {
-			type: 'spine',
-			assetKey: 'L4',
-			animationName: 'l4',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.63 },
-		},
+		win: l4Static,
 		postWinStatic: l4Static,
 		static: l4Static,
 		spin: l4Static,
@@ -344,14 +324,10 @@ export const SYMBOL_INFO_MAP = {
 	},
 	W: {
 		explosion,
-		postWinStatic: {
-			type: 'sprite',
-			assetKey: 'explodedW.png',
-			sizeRatios: { width: 0.85, height: 0.85 },
-		},
+		postWinStatic: wStatic,
 		static: wStatic,
 		spin: wStatic,
-		win: { type: 'spine', assetKey: 'W', animationName: 'wild_dynamite', sizeRatios: wSizeRatios },
+		win: wStatic,
 		land: {
 			type: 'spriteSheet',
 			assetKey: 'W_land',
@@ -363,13 +339,8 @@ export const SYMBOL_INFO_MAP = {
 		explosion,
 		postWinStatic: sStatic,
 		static: sStatic,
-		spin: {
-			type: 'spine',
-			assetKey: 'S',
-			animationName: 'scatter_spin',
-			sizeRatios: sSizeRatios,
-		},
-		win: { type: 'spine', assetKey: 'S', animationName: 'scatter_win', sizeRatios: sSizeRatios },
+		spin: sStatic,
+		win: sStatic,
 		land: {
 			type: 'spriteSheet',
 			assetKey: 'S_land',

@@ -92,7 +92,7 @@ export const stateGame = $state({
 const boardScale = () => (stateLayoutDerived.layoutType() === 'portrait' ? 1.35 : 1);
 const boardLayout = () => ({
 	x: stateLayoutDerived.mainLayout().width * 0.5,
-	y: stateLayoutDerived.mainLayout().height * (stateLayoutDerived.layoutType() === 'portrait' ? 0.36 : 0.44),
+	y: stateLayoutDerived.mainLayout().height * (stateLayoutDerived.layoutType() === 'portrait' ? 0.42 : 0.47),
 	scale: boardScale(),
 	anchor: { x: 0.5, y: 0.5 },
 	pivot: { x: BOARD_SIZES.width / 2, y: BOARD_SIZES.height / 2 },

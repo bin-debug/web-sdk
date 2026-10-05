@@ -89,6 +89,47 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-05 (newest of all) — Owner feedback round 2: real template-art bug, mascot occlusion, FS rate
+Owner said: still old symbols/UI, free spins keep triggering, mascot too small/invisible, board too
+high. Found and fixed real bugs this time, not just polish:
+- **The actual "old symbols" bug**: `SYMBOL_INFO_MAP`'s `win` state for L1-L4 and W, and `spin`/`win`
+  for S, were *still wired to the original template spine assets* (old mining suit icons/wild/scatter
+  spines) — Steps 3-4 only ever replaced `static`/`land`/`postWinStatic` for those symbols, never
+  `win`/`spin`. So every single win flashed old template art for a frame before the code-level
+  explosion. Fixed: L1-L4/W/S `win` (and S `spin`) now point at their own new static sprite
+  (`constants.ts`). H1-H4 were already correct (Step 4 covered their win clips).
+- **Explosion effect was also 100% template art**: the shared `explosion` SYMBOL_INFO_MAP entry
+  (`assetKey: 'explosion'`) is a spine from the template's `symbols3.atlas` — never swapped, so
+  *every* tumble-clear across *every* symbol played old mining art. Added `SymbolExplode.svelte`
+  (code-drawn: the symbol's own static art, scale+fade out, ~260ms) and made `Symbol.svelte` use it
+  for `state === 'explosion'` regardless of symbol type, bypassing the old asset entirely.
+- **"TUMBLE WIN" banner** (`TumbleWinAmountFrame`/`TumbleWinAmountText`) was still the template's
+  wood-plaque sprites (`Frame_Tumble.png`, `Frame_TumbleWin.png`) + "gold" bitmap font + a spine
+  burst animation. Rewrote both as code-drawn (Rectangle + proxima-nova Text, matching the
+  free-spin-intro panel style), with a simple scale-punch tween replacing the spine explosion.
+- **Free spins triggering constantly**: two compounding causes. (1) Leftover test books from my own
+  earlier `/mock/queue` calls were still sitting in the shared mock-rgs queue — it's keyed by
+  `gameId/mode`, not by session, so the owner's real phone session was draining *my* test queue.
+  (2) Natural trigger rate in `base.json` was ~7% (S weight 0.35) even with an empty queue, too
+  frequent for casual testing. Lowered `basegame.S` weight 0.35 -> 0.08 in
+  `tools/book-gen/coin-reel.mjs` and regenerated (`base.json` natural rate now ~1%). Also discovered
+  the mock-rgs server process from earlier in the session had never actually restarted (old PID still
+  listening, serving the old books) — killed it and started clean. **Process note for next session**:
+  always `curl -XPOST :5109/mock/reset -d '{"gameId":"coin-reel"}'` before/after a testing round.
+- **Mascot occlusion**: the mascot wasn't actually invisible — the free-spin-trigger-adjacent
+  "TUMBLE WIN" banner (positioned above the board, same zone as the mascot) was painting over it
+  since neither had an explicit draw order. Gave `Mascot.svelte`'s container `zIndex={100}` and
+  moved the win banner's portrait x-position from board-centre to 36% (`TumbleWinAmountWrap.svelte`)
+  so they no longer fully overlap. Also bumped mascot size again (portrait 1.6x -> 2.2x -> no further
+  change this round, desktop 2.6x -> 3.0x) and board y (portrait 0.36 -> 0.42, desktop 0.44 -> 0.47)
+  for more headroom above the board.
+- Verified on both desktop and 375x812 mobile: multiple spins/tumbles/wins, correct new symbols and
+  mascot throughout, no old template art, free spins did not trigger once in ~8 spins post-fix.
+- 0 Artlist credits this round — all code fixes, still 14,300 of 16,500 (2,200 spent total).
+- **Known remaining gap, not fixed**: audio is still the full template Howler sprite (Step 9, not
+  started — flagged to the owner last round, still pending their go-ahead). H5 (unused symbol, not in
+  any reel strip) still points at old template art too but never renders — Step 10 cleanup.
+
 ### 2026-10-05 (even newer) — Owner feedback: mascot/mobile/bg/old-art fixes
 Owner review of the vertical slice flagged: free spins still shows old symbols/audio, backgrounds
 need to be better, mascot doesn't look like he's flying, mascot missing on mobile. Addressed:

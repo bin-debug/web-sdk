@@ -23,7 +23,7 @@
 	const punch = new Tween(1);
 
 	const isPortrait = $derived(context.stateLayoutDerived.layoutType() === 'portrait');
-	const SIZE = $derived(isPortrait ? SYMBOL_SIZE * 1.6 : SYMBOL_SIZE * 2.6);
+	const SIZE = $derived(isPortrait ? SYMBOL_SIZE * 2.2 : SYMBOL_SIZE * 3.0);
 	const visible = true;
 	const position = $derived(
 		isPortrait
@@ -88,6 +88,7 @@
 			y={position.y + bob.current + lift.current}
 			rotation={tilt.current}
 			scale={punch.current}
+			zIndex={100}
 		>
 			<Sprite key={MASCOT_TEXTURE} anchor={0.5} width={SIZE} height={SIZE} />
 		</Container>

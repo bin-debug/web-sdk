@@ -29,7 +29,7 @@ const TRIGGER_ROW = ROWS; // padded index of the bottom visible row
 const BOOK = 100; // 100 = 1x bet
 const WINCAP = 10_000 * BOOK;
 const WEIGHTS = {
-	basegame: { L1: 14, L2: 14, L3: 14, L4: 14, H4: 9, H3: 8, H2: 7, H1: 6, W: 0.6, S: 0.35 },
+	basegame: { L1: 14, L2: 14, L3: 14, L4: 14, H4: 9, H3: 8, H2: 7, H1: 6, W: 0.6, S: 0.08 },
 	freeSpins: { L1: 14, L2: 14, L3: 14, L4: 14, H4: 9, H3: 8, H2: 7, H1: 6, W: 1.4, S: 0.2 },
 };
 const SPECIALS = new Set(['W', 'S']);

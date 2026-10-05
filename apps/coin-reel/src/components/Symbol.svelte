@@ -2,6 +2,7 @@
 	import SymbolSpine from './SymbolSpine.svelte';
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolSpriteSheet from './SymbolSpriteSheet.svelte';
+	import SymbolExplode from './SymbolExplode.svelte';
 	import { getSymbolBackgroundInfo, getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
 	import { getContext } from '../game/context';
@@ -18,11 +19,14 @@
 	const props: Props = $props();
 	const context = getContext();
 	const symbolInfo = $derived(getSymbolInfo({ rawSymbol: props.rawSymbol, state: props.state }));
+	const isExplosion = $derived(props.state === 'explosion');
 	const isSprite = $derived(symbolInfo.type === 'sprite');
 	const isSpriteSheet = $derived(symbolInfo.type === 'spriteSheet');
 </script>
 
-{#if isSprite}
+{#if isExplosion}
+	<SymbolExplode rawSymbol={props.rawSymbol} x={props.x} y={props.y} oncomplete={props.oncomplete} />
+{:else if isSprite}
 	<SymbolSprite {symbolInfo} x={props.x} y={props.y} oncomplete={props.oncomplete} />
 {:else if isSpriteSheet}
 	<SymbolSpriteSheet {symbolInfo} x={props.x} y={props.y} loop={props.loop} oncomplete={props.oncomplete} />

@@ -24,10 +24,9 @@
 			: { x: context.stateGameDerived.boardLayout().width * 0.5, y: -SYMBOL_SIZE * 0.8 * 0.58 },
 	);
 
+	// Shifted left of board-centre so it doesn't fight the mascot (upper-right) for space.
 	const portraitPosition = $derived({
-		x:
-			context.stateGameDerived.boardLayout().width *
-			0.5,
+		x: context.stateGameDerived.boardLayout().width * 0.36,
 		y: inBonus ? -SYMBOL_SIZE * 1.15 : -SYMBOL_SIZE * 0.8 * 0.68,
 	});
 
