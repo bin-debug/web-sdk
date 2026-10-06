@@ -68,6 +68,8 @@ Not done / known gaps:
 
 ## Next up (in order)
 
+**Game Builder v1 is done (see log). Next: `tools/art-gen` to run the queued Artlist requests; then shells 1-4 and 9 feature by feature (each new shell goes into `tools/builder-server/shells.json` once verified).**
+
 **Shell engine phases 1–2 done (see log). Next: shells 1–4 and 9 per SHELL-PLAN §6, one feature module at a time (goldenSquares, rainbowReveal, coins, clovers, collectors, …), each with synthetic books, forced scenarios and a story; then the Game Builder (3b).**
 
 **Demo art library is done (2026-10-06, see session log).** Next for it: SHELL-PLAN phase 1 (slot loader + `lines` on the manifest), then the 8b check in the `lines` shell at desktop and 375x812. Optional polish list is in the log entry.
@@ -100,7 +102,15 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
-### 2026-10-06 (newest) — Shell engine: phases 1–2 (shells 5–8 run from specs)
+### 2026-10-06 (newest) — Game Builder v1
+- `apps/game-builder` (SvelteKit SPA, port 3230) + `tools/builder-server` (zero-dep Node, port 3231). Run: `node tools/builder-server/server.mjs` and `cd apps/game-builder && pnpm dev`. The server starts the demo RGS (5119) and one shell dev server per game (ports 3240+, remembered in `tools/builder-server/.state/ports.json`, git-ignored; detached, so they survive a server restart). The UI talks to the server on the same host, port 3231, so it works over LAN/Tailscale.
+- Features and decisions: see SHELL-PLAN 7b status. One page, state in the URL (`?view=list|edit|game&game=<id>&tab=play|art|export`); flat list UI, no tiles. Only shells marked `verified` in `tools/builder-server/shells.json` can be picked; features not `implemented` in `kit-spec` are greyed with the reason. Bonus 2/3 scenarios queue BONUS2/BONUS3 books and the user presses BUY BONUS (the iframe is cross-origin, so the builder cannot press it). Replacing a symbol still also swaps that symbol's demo clips for code juice presets so old art never plays over new art.
+- Verified this session with `tools/qa/shell-qa.js`: ways_classic (base, forced bonus with retrigger, max win, bought bonus) and scatter_tumble bought bonus: zero errors. `shells.json` now marks all four shells verified. Builder UI checked at 1600x900 and 375x812; export zip built for a throwaway game (only that game's spec in the bundle, no local URLs in it).
+- Export gotcha: `vite build` of the shell prints its last line and never exits; the server stops it after that line (`doneWhen` in `run()`). Export output goes to `apps/shell/build` (git-ignored) and the zip to `tools/builder-server/.state/exports/`.
+- Not done: "Generate with Artlist" only queues requests into `games/<id>/art-requests.json` (there is no `tools/art-gen`; Artlist MCP tools exist only in an agent session). Next agent: build `tools/art-gen --missing` that reads those requests, generates through Artlist, keys with `tools/demo-art/key_still.py`, and writes via the builder's art PUT endpoint. Hold and win / jackpot scenario buttons are greyed until those features exist. "Release games" workflow hook for export is not wired.
+- Ports now: builder UI 3230, builder server 3231, demo RGS 5119, shells 3240+ (builder-built) and 3222 (manual dev), demo art contact sheet 3221.
+
+### 2026-10-06 — Shell engine: phases 1–2 (shells 5–8 run from specs)
 - New packages: `kit-spec` (types, feature registry, validator), `kit-assets` (manifest loader + code-drawn fallbacks + Howler audio), `kit-symbols` (KitSymbol: clip or still+juice), `kit-layout` (`compose()`), `kit-ui` (KitBar = coin-reel bar promoted), `kit-fx` (NineSlice). `apps/shell` is the one engine app: the game is chosen at runtime by `?game_id=` from `games/*/game.spec.json` (4 specs: lines_classic, ways_classic, scatter_tumble, cluster_classic). `?art=none|game|demo` forces fallback-only / game art / demo art; art is merged demo manifest under `games/<id>/art`.
 - `node tools/spec-check/spec-check.mjs` validates specs in plain English. `node tools/book-gen/shell.mjs` writes synthetic books for every spec (BASE ids 1–300 natural, 301 forced bonus with retrigger, 302 max win, 303 bonus with extra scatter; BONUS buy mode ids 1+). Visual tests only.
 - Verified (hidden-pane rAF shim, in-page runner `tools/qa/shell-qa.js`, non-blocking, results in `window.__qa`): lines_classic base wins, forced bonus, bought bonus; scatter_tumble tumble rounds and retrigger bonus; cluster_classic with `?art=none` at 375x812 (all code fallbacks). Zero page errors in rounds. Missing game art manifests are expected 404s.

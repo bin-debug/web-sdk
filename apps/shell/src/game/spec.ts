@@ -10,7 +10,7 @@ export const SPECS: Record<string, ShellSpec> = {};
 for (const raw of Object.values(rawSpecs)) SPECS[raw.gameId] = normalizeSpec(raw);
 
 const params = typeof location !== 'undefined' ? new URLSearchParams(location.search) : new URLSearchParams();
-export const GAME_ID = params.get('game_id') && SPECS[params.get('game_id')!] ? params.get('game_id')! : 'lines_classic';
+export const GAME_ID = params.get('game_id') && SPECS[params.get('game_id')!] ? params.get('game_id')! : (SPECS.lines_classic ? 'lines_classic' : Object.keys(SPECS)[0]);
 export const SPEC: ShellSpec = SPECS[GAME_ID];
 
 // ?art=none  -> ignore every art file (proves the code fallbacks); ?art=game -> game art only, no demo art

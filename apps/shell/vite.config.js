@@ -35,6 +35,11 @@ const resolveArtFile = (url) => {
 
 const kitArt = () => ({
 	name: 'kit-art',
+	// Game Builder export: bundle only the chosen game's spec
+	transform(code, id) {
+		if (process.env.KIT_GAME && id.split(String.fromCharCode(92)).join('/').endsWith('src/game/spec.ts'))
+			return code.replace('games/*/game.spec.json', `games/${process.env.KIT_GAME}/game.spec.json`);
+	},
 	configureServer(server) {
 		server.middlewares.use((req, res, next) => {
 			const file = req.url && resolveArtFile(req.url);

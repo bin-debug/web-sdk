@@ -189,6 +189,15 @@ A web app where the owner defines a game, builds it and plays it, all in one pla
 | **Play** | The game in an iframe with device toggles (desktop 1600×900, phone 375×812, tablet), plus **scenario buttons** that queue books: base win, tumble chain, bonus 1/2/3, hold & win, jackpot, max win, retrigger. |
 | **Export** | Production build zip for Stake Engine; later, the "Release games" workflow. |
 
+**Status (2026-10-06):** built. UI `apps/game-builder` (port 3230), server `tools/builder-server` (3231), games on 3240+.
+- [x] New game form (shell radio list, board, reveal, pays, symbols, features with greyed reasons, bonuses with buys, boosts, layout, colours, art style) with live spec-check; writes `games/<id>/game.spec.json`.
+- [x] Build & Play (spec-check, book-gen for that game, start demo RGS 5119, start a shell dev server on its own port, streamed log); iframe with desktop/tablet/phone toggles; Copy phone link per game.
+- [x] Scenario buttons: base win, big win, tumble chain, bonus 1/2/3, retrigger, max win (queue synthetic books). Hold and win and jackpot are greyed (features not built).
+- [x] Art panel: every slot with thumbnail/video/audio, source badge (game / demo / code fallback), drag-and-drop or Replace (writes `games/<id>/art/uploads/` + `art/manifest.json`), Revert.
+- [ ] "Generate with Artlist" per slot and "Generate all missing" only QUEUE requests (`games/<id>/art-requests.json`, with prompts from the spec's art style). `tools/art-gen` does not exist yet; an agent session with the Artlist tools must run the queue and drop results through the Replace path.
+- [x] Export: `vite build` of the shell with only this game, demo + game art added, zip (served by the builder server). RGS url is never baked in.
+- Only verified shells are selectable (`tools/builder-server/shells.json`).
+
 Tech: `apps/game-builder` (SvelteKit, HTML only) + `tools/builder-server` (Node: writes specs,
 runs builds, manages mock-RGS queues, proxies Artlist generation). Runs locally first; it can
 later move into the backoffice console.
@@ -205,7 +214,7 @@ later move into the backoffice console.
    shells 5–8.
 3. [x] **Demo art library**: run `docs/DEMO-ART-SPEC.md` (can run in parallel with phases 1–2;
    only needs the Artlist MCP) + `tools/art-gen`. *Accept:* shells 5–8 render with it.
-3b. **Game Builder v1** (section 7b): form → spec → build → play with scenario buttons, for the
+3b. [x] **Game Builder v1** (built 2026-10-06; see 7b status) (section 7b): form → spec → build → play with scenario buttons, for the
    shells that exist so far. Grows as each shell lands.
 4. **Shell 1 `cluster-squares`** feature by feature (tumble → squares → reveal → coins → clovers →
    collectors → bonuses → upgrade/bar → boost/buy), each with book-gen scenarios.

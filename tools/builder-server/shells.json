@@ -1,0 +1,14 @@
+{
+	"_comment": "Shell catalogue for the builder. 'verified' means the shell was played end to end against the demo RGS (see docs/HANDOFF.md). Unverified or unbuilt shells are greyed out in the form.",
+	"shells": [
+		{ "id": "lines-classic", "title": "Lines classic", "pays": "lines", "reveal": "spin", "board": [5, 3], "implemented": true, "verified": true },
+		{ "id": "ways-classic", "title": "Ways classic", "pays": "ways", "reveal": "spin", "board": [5, 3], "implemented": true, "verified": true },
+		{ "id": "scatter-tumble", "title": "Scatter tumble", "pays": "scatter", "reveal": "drop", "board": [6, 5], "implemented": true, "verified": true },
+		{ "id": "cluster-classic", "title": "Cluster classic", "pays": "cluster", "reveal": "drop", "board": [7, 7], "implemented": true, "verified": true },
+		{ "id": "cluster-squares", "title": "Cluster squares", "implemented": false, "reason": "shell 1 is not built yet (golden squares, rainbow reveal, coins, clovers, collectors)" },
+		{ "id": "hold-and-win", "title": "Hold and win", "implemented": false, "reason": "shell 2 is not built yet" },
+		{ "id": "trigger-row", "title": "Trigger row", "implemented": false, "reason": "shell 3 is not built yet" },
+		{ "id": "lines-wilds", "title": "Lines with wilds", "implemented": false, "reason": "shell 4 is not built yet" },
+		{ "id": "layers-dynamite", "title": "Layers and dynamite", "implemented": false, "reason": "shell 9 is not built yet" }
+	]
+}

@@ -62,3 +62,7 @@ tools/mock-rgs/books/*/*.json
 !tools/mock-rgs/books/*/modes.json
 
 apps/*/static/review/
+
+.svelte-kit-export
+tools/builder-server/.state
+apps/shell/build

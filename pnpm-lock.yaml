@@ -1005,6 +1005,28 @@ importers:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
 
+  apps/game-builder:
+    dependencies:
+      '@sveltejs/kit':
+        specifier: 2.17.3
+        version: 2.17.3(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2))
+      svelte:
+        specifier: 5.20.5
+        version: 5.20.5
+      vite:
+        specifier: 6.2.0
+        version: 6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)
+    devDependencies:
+      '@sveltejs/adapter-static':
+        specifier: latest
+        version: 4.0.0(@sveltejs/kit@2.17.3(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))
+      '@sveltejs/vite-plugin-svelte':
+        specifier: 5.0.3
+        version: 5.0.3(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2))
+      config-ts:
+        specifier: workspace:*
+        version: link:../../packages/config-ts
+
   apps/gold-fever-dynamite:
     dependencies:
       '@lingui/core':
@@ -4612,6 +4634,11 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
+  '@sveltejs/adapter-static@4.0.0':
+    resolution: {integrity: sha512-aF1J23R1ebKqUxQ4/qLr/Lxu63NFmLAtg8UZl3HFLxaoA1D/nhTVGcD9lTqx65iUbjNR2iOL0TgOxSX82x6Paw==}
+    peerDependencies:
+      '@sveltejs/kit': ^3.0.0-next.0
+
   '@sveltejs/kit@2.17.3':
     resolution: {integrity: sha512-GcNaPDr0ti4O/TonPewkML2DG7UVXkSxPN3nPMlpmx0Rs4b2kVP4gymz98WEHlfzPXdd4uOOT1Js26DtieTNBQ==}
     engines: {node: '>=18.13'}
@@ -7222,6 +7249,10 @@ snapshots:
   '@sveltejs/adapter-static@3.0.10(@sveltejs/kit@2.22.2(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.35.1)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))(svelte@5.35.1)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))':
     dependencies:
       '@sveltejs/kit': 2.22.2(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.35.1)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))(svelte@5.35.1)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2))
+
+  '@sveltejs/adapter-static@4.0.0(@sveltejs/kit@2.17.3(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))':
+    dependencies:
+      '@sveltejs/kit': 2.17.3(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2))
 
   '@sveltejs/kit@2.17.3(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2)))(svelte@5.20.5)(vite@6.2.0(@types/node@26.4.1)(jiti@1.21.7)(sass-embedded@1.89.2))':
     dependencies:
