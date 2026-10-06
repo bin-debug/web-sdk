@@ -587,6 +587,69 @@
    "frames": 51,
    "loop": false
   },
+  "symbol.W.win": {
+   "type": "spriteSheet",
+   "file": "symbols/W_win.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.S.land": {
+   "type": "spriteSheet",
+   "file": "symbols/S_land.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.S2.land": {
+   "type": "spriteSheet",
+   "file": "symbols/S2_land.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.RB.activate": {
+   "type": "spriteSheet",
+   "file": "symbols/RB_activate.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.C.flip": {
+   "type": "spriteSheet",
+   "file": "symbols/C_flip.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.CL.burst": {
+   "type": "spriteSheet",
+   "file": "symbols/CL_burst.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.COL.collect": {
+   "type": "spriteSheet",
+   "file": "symbols/COL_collect.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.MW.open": {
+   "type": "spriteSheet",
+   "file": "symbols/MW_open.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.DW.explode": {
+   "type": "spriteSheet",
+   "file": "symbols/DW_explode.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
   "symbol.RB2.activate": {
    "type": "alias",
    "of": "symbol.RB.activate",
@@ -692,6 +755,30 @@
    "w": 554,
    "h": 1024
   },
+  "fx.poof": {
+   "type": "spriteSheet",
+   "file": "fx/poof.json",
+   "fps": 24,
+   "frames": 27,
+   "loop": false
+  },
+  "fx.upgrade": {
+   "type": "spriteSheet",
+   "file": "fx/upgrade.json",
+   "fps": 24,
+   "frames": 27,
+   "loop": false
+  },
+  "fx.bigwin": {
+   "type": "video",
+   "file": "fx/bigwin.webm",
+   "loop": false
+  },
+  "fx.transition": {
+   "type": "video",
+   "file": "fx/transition.webm",
+   "loop": false
+  },
   "bg.base.16x9": {
    "type": "sprite",
    "file": "bg/base_16x9.webp",
@@ -745,6 +832,106 @@
    "file": "logo/logo.webp",
    "w": 1024,
    "h": 877
+  },
+  "audio.base": {
+   "type": "audio",
+   "file": "audio/base.mp3",
+   "loop": true
+  },
+  "audio.bonus": {
+   "type": "audio",
+   "file": "audio/bonus.mp3",
+   "loop": true
+  },
+  "audio.sfx.bigwin_sting": {
+   "type": "audio",
+   "file": "audio/sfx/bigwin_sting.mp3",
+   "loop": false
+  },
+  "audio.sfx.bonus_trigger": {
+   "type": "audio",
+   "file": "audio/sfx/bonus_trigger.mp3",
+   "loop": false
+  },
+  "audio.sfx.button": {
+   "type": "audio",
+   "file": "audio/sfx/button.mp3",
+   "loop": false
+  },
+  "audio.sfx.buy_confirm": {
+   "type": "audio",
+   "file": "audio/sfx/buy_confirm.mp3",
+   "loop": false
+  },
+  "audio.sfx.clover": {
+   "type": "audio",
+   "file": "audio/sfx/clover.mp3",
+   "loop": false
+  },
+  "audio.sfx.coin_collect": {
+   "type": "audio",
+   "file": "audio/sfx/coin_collect.mp3",
+   "loop": false
+  },
+  "audio.sfx.coin_flip": {
+   "type": "audio",
+   "file": "audio/sfx/coin_flip.mp3",
+   "loop": false
+  },
+  "audio.sfx.dynamite": {
+   "type": "audio",
+   "file": "audio/sfx/dynamite.mp3",
+   "loop": false
+  },
+  "audio.sfx.jackpot": {
+   "type": "audio",
+   "file": "audio/sfx/jackpot.mp3",
+   "loop": false
+  },
+  "audio.sfx.land_high": {
+   "type": "audio",
+   "file": "audio/sfx/land_high.mp3",
+   "loop": false
+  },
+  "audio.sfx.land_low": {
+   "type": "audio",
+   "file": "audio/sfx/land_low.mp3",
+   "loop": false
+  },
+  "audio.sfx.land_special": {
+   "type": "audio",
+   "file": "audio/sfx/land_special.mp3",
+   "loop": false
+  },
+  "audio.sfx.rainbow": {
+   "type": "audio",
+   "file": "audio/sfx/rainbow.mp3",
+   "loop": false
+  },
+  "audio.sfx.reel_stop": {
+   "type": "audio",
+   "file": "audio/sfx/reel_stop.mp3",
+   "loop": false
+  },
+  "audio.sfx.spin_start": {
+   "type": "audio",
+   "file": "audio/sfx/spin_start.mp3",
+   "loop": false
+  },
+  "audio.sfx.tumble_pop": {
+   "type": "audio",
+   "file": "audio/sfx/tumble_pop.mp3",
+   "loop": false
+  },
+  "audio.sfx.win_medium": {
+   "type": "audio",
+   "file": "audio/sfx/win_medium.mp3",
+   "loop": false
+  },
+  "audio.sfx.win_small": {
+   "type": "audio",
+   "file": "audio/sfx/win_small.mp3",
+   "loop": false
   },
   "ui.buy.S": {
    "type": "alias",
