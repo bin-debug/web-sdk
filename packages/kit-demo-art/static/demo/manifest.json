@@ -1,0 +1,766 @@
+{
+ "version": 1,
+ "style": "demo-treasure",
+ "slots": {
+  "symbol.L1.static": {
+   "type": "sprite",
+   "file": "symbols/L1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.L1.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.L1.land": {
+   "type": "juice",
+   "preset": "squash"
+  },
+  "symbol.L1.win": {
+   "type": "juice",
+   "preset": "pulseGlow"
+  },
+  "symbol.L1.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.L1.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.L1.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.L2.static": {
+   "type": "sprite",
+   "file": "symbols/L2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.L2.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.L2.land": {
+   "type": "juice",
+   "preset": "squash"
+  },
+  "symbol.L2.win": {
+   "type": "juice",
+   "preset": "pulseGlow"
+  },
+  "symbol.L2.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.L2.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.L2.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.L3.static": {
+   "type": "sprite",
+   "file": "symbols/L3.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.L3.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.L3.land": {
+   "type": "juice",
+   "preset": "squash"
+  },
+  "symbol.L3.win": {
+   "type": "juice",
+   "preset": "pulseGlow"
+  },
+  "symbol.L3.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.L3.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.L3.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.L4.static": {
+   "type": "sprite",
+   "file": "symbols/L4.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.L4.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.L4.land": {
+   "type": "juice",
+   "preset": "squash"
+  },
+  "symbol.L4.win": {
+   "type": "juice",
+   "preset": "pulseGlow"
+  },
+  "symbol.L4.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.L4.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.L4.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.L5.static": {
+   "type": "sprite",
+   "file": "symbols/L5.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.L5.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.L5.land": {
+   "type": "juice",
+   "preset": "squash"
+  },
+  "symbol.L5.win": {
+   "type": "juice",
+   "preset": "pulseGlow"
+  },
+  "symbol.L5.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.L5.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.L5.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.L6.static": {
+   "type": "sprite",
+   "file": "symbols/L6.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.L6.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.L6.land": {
+   "type": "juice",
+   "preset": "squash"
+  },
+  "symbol.L6.win": {
+   "type": "juice",
+   "preset": "pulseGlow"
+  },
+  "symbol.L6.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.L6.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.L6.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.H1.static": {
+   "type": "sprite",
+   "file": "symbols/H1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.H1.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.H1.land": {
+   "type": "juice",
+   "preset": "squashShine"
+  },
+  "symbol.H1.win": {
+   "type": "spriteSheet",
+   "file": "symbols/H1_win.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.H1.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.H1.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.H1.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.H2.static": {
+   "type": "sprite",
+   "file": "symbols/H2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.H2.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.H2.land": {
+   "type": "juice",
+   "preset": "squashShine"
+  },
+  "symbol.H2.win": {
+   "type": "spriteSheet",
+   "file": "symbols/H2_win.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.H2.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.H2.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.H2.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.H3.static": {
+   "type": "sprite",
+   "file": "symbols/H3.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.H3.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.H3.land": {
+   "type": "juice",
+   "preset": "squashShine"
+  },
+  "symbol.H3.win": {
+   "type": "spriteSheet",
+   "file": "symbols/H3_win.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.H3.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.H3.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.H3.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.H4.static": {
+   "type": "sprite",
+   "file": "symbols/H4.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.H4.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.H4.land": {
+   "type": "juice",
+   "preset": "squashShine"
+  },
+  "symbol.H4.win": {
+   "type": "spriteSheet",
+   "file": "symbols/H4_win.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.H4.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.H4.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.H4.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.H5.static": {
+   "type": "sprite",
+   "file": "symbols/H5.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.H5.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.H5.land": {
+   "type": "juice",
+   "preset": "squashShine"
+  },
+  "symbol.H5.win": {
+   "type": "spriteSheet",
+   "file": "symbols/H5_win.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.H5.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.H5.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.H5.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.H6.static": {
+   "type": "sprite",
+   "file": "symbols/H6.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.H6.spin": {
+   "type": "juice",
+   "preset": "motionBlur"
+  },
+  "symbol.H6.land": {
+   "type": "juice",
+   "preset": "squashShine"
+  },
+  "symbol.H6.win": {
+   "type": "spriteSheet",
+   "file": "symbols/H6_win.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.H6.postWin": {
+   "type": "juice",
+   "preset": "settle"
+  },
+  "symbol.H6.explode": {
+   "type": "juice",
+   "preset": "poofShrink"
+  },
+  "symbol.H6.dim": {
+   "type": "juice",
+   "preset": "dim30"
+  },
+  "symbol.E1.static": {
+   "type": "sprite",
+   "file": "symbols/E1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.E1.win": {
+   "type": "alias",
+   "of": "symbol.H1.win",
+   "filter": "glow"
+  },
+  "symbol.E2.static": {
+   "type": "sprite",
+   "file": "symbols/E2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.E2.win": {
+   "type": "alias",
+   "of": "symbol.H2.win",
+   "filter": "glow"
+  },
+  "symbol.E3.static": {
+   "type": "sprite",
+   "file": "symbols/E3.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.E3.win": {
+   "type": "alias",
+   "of": "symbol.H3.win",
+   "filter": "glow"
+  },
+  "symbol.E4.static": {
+   "type": "sprite",
+   "file": "symbols/E4.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.E4.win": {
+   "type": "alias",
+   "of": "symbol.H4.win",
+   "filter": "glow"
+  },
+  "symbol.W.static": {
+   "type": "sprite",
+   "file": "symbols/W.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.S.static": {
+   "type": "sprite",
+   "file": "symbols/S.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.S2.static": {
+   "type": "sprite",
+   "file": "symbols/S2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.RB.static": {
+   "type": "sprite",
+   "file": "symbols/RB.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.RB2.static": {
+   "type": "sprite",
+   "file": "symbols/RB2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.CL1.static": {
+   "type": "sprite",
+   "file": "symbols/CL1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.CL2.static": {
+   "type": "sprite",
+   "file": "symbols/CL2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.COL1.static": {
+   "type": "sprite",
+   "file": "symbols/COL1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.COL2.static": {
+   "type": "sprite",
+   "file": "symbols/COL2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.J1.static": {
+   "type": "sprite",
+   "file": "symbols/J1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.J2.static": {
+   "type": "sprite",
+   "file": "symbols/J2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.J3.static": {
+   "type": "sprite",
+   "file": "symbols/J3.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.J4.static": {
+   "type": "sprite",
+   "file": "symbols/J4.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.MW1.static": {
+   "type": "sprite",
+   "file": "symbols/MW1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.MW2.static": {
+   "type": "sprite",
+   "file": "symbols/MW2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.MW3.static": {
+   "type": "sprite",
+   "file": "symbols/MW3.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.DW.static": {
+   "type": "sprite",
+   "file": "symbols/DW.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.T1.static": {
+   "type": "sprite",
+   "file": "symbols/T1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.T2.static": {
+   "type": "sprite",
+   "file": "symbols/T2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.T3.static": {
+   "type": "sprite",
+   "file": "symbols/T3.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.X.static": {
+   "type": "sprite",
+   "file": "symbols/X.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.M.static": {
+   "type": "sprite",
+   "file": "symbols/M.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.C1.static": {
+   "type": "sprite",
+   "file": "symbols/C1.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.C2.static": {
+   "type": "sprite",
+   "file": "symbols/C2.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.C3.static": {
+   "type": "sprite",
+   "file": "symbols/C3.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.C4.static": {
+   "type": "sprite",
+   "file": "symbols/C4.webp",
+   "w": 512,
+   "h": 512
+  },
+  "symbol.W.land": {
+   "type": "spriteSheet",
+   "file": "symbols/W_land.json",
+   "fps": 24,
+   "frames": 51,
+   "loop": false
+  },
+  "symbol.RB2.activate": {
+   "type": "alias",
+   "of": "symbol.RB.activate",
+   "filter": "tintDouble"
+  },
+  "symbol.COL2.collect": {
+   "type": "alias",
+   "of": "symbol.COL.collect"
+  },
+  "symbol.J1.land": {
+   "type": "juice",
+   "preset": "popShine"
+  },
+  "symbol.J2.land": {
+   "type": "juice",
+   "preset": "popShine"
+  },
+  "symbol.J3.land": {
+   "type": "juice",
+   "preset": "popShine"
+  },
+  "symbol.J4.land": {
+   "type": "juice",
+   "preset": "popShine"
+  },
+  "symbol.M.reveal": {
+   "type": "juice",
+   "preset": "shakeFlash"
+  },
+  "symbol.T.break": {
+   "type": "juice",
+   "preset": "crackPoof"
+  },
+  "mascot.idle": {
+   "type": "spriteSheet",
+   "file": "mascot/idle.json",
+   "fps": 15,
+   "frames": 47,
+   "loop": true,
+   "anchor": [
+    0.5,
+    1
+   ]
+  },
+  "mascot.anticipate": {
+   "type": "spriteSheet",
+   "file": "mascot/anticipate.json",
+   "fps": 15,
+   "frames": 24,
+   "loop": false,
+   "anchor": [
+    0.5,
+    1
+   ]
+  },
+  "mascot.win_small": {
+   "type": "spriteSheet",
+   "file": "mascot/win_small.json",
+   "fps": 15,
+   "frames": 24,
+   "loop": false,
+   "anchor": [
+    0.5,
+    1
+   ]
+  },
+  "mascot.win_big": {
+   "type": "spriteSheet",
+   "file": "mascot/win_big.json",
+   "fps": 15,
+   "frames": 39,
+   "loop": false,
+   "anchor": [
+    0.5,
+    1
+   ]
+  },
+  "mascot.bonus_trigger": {
+   "type": "spriteSheet",
+   "file": "mascot/bonus_trigger.json",
+   "fps": 15,
+   "frames": 32,
+   "loop": false,
+   "anchor": [
+    0.5,
+    1
+   ]
+  },
+  "mascot.throw": {
+   "type": "spriteSheet",
+   "file": "mascot/throw.json",
+   "fps": 15,
+   "frames": 24,
+   "loop": false,
+   "anchor": [
+    0.5,
+    1
+   ]
+  },
+  "mascot.master": {
+   "type": "sprite",
+   "file": "mascot/master.webp",
+   "w": 554,
+   "h": 1024
+  },
+  "bg.base.16x9": {
+   "type": "sprite",
+   "file": "bg/base_16x9.webp",
+   "w": 1920,
+   "h": 1080
+  },
+  "bg.base.9x16": {
+   "type": "sprite",
+   "file": "bg/base_9x16.webp",
+   "w": 1080,
+   "h": 1920
+  },
+  "bg.bonus.16x9": {
+   "type": "sprite",
+   "file": "bg/bonus_16x9.webp",
+   "w": 1920,
+   "h": 1080
+  },
+  "bg.bonus.9x16": {
+   "type": "sprite",
+   "file": "bg/bonus_9x16.webp",
+   "w": 1080,
+   "h": 1920
+  },
+  "board.frame": {
+   "type": "sprite",
+   "file": "board/frame.webp",
+   "w": 1024,
+   "h": 1024,
+   "slice": {
+    "left": 240,
+    "top": 240,
+    "right": 240,
+    "bottom": 240
+   }
+  },
+  "board.cell": {
+   "type": "sprite",
+   "file": "board/cell.webp",
+   "w": 512,
+   "h": 512
+  },
+  "board.cell_gold": {
+   "type": "sprite",
+   "file": "board/cell_gold.webp",
+   "w": 512,
+   "h": 512
+  },
+  "logo.demo": {
+   "type": "sprite",
+   "file": "logo/logo.webp",
+   "w": 1024,
+   "h": 877
+  },
+  "ui.buy.S": {
+   "type": "alias",
+   "of": "symbol.S.static"
+  },
+  "ui.buy.S2": {
+   "type": "alias",
+   "of": "symbol.S2.static"
+  },
+  "ui.buy.RB": {
+   "type": "alias",
+   "of": "symbol.RB.static"
+  },
+  "ui.buy.C3": {
+   "type": "alias",
+   "of": "symbol.C3.static"
+  }
+ }
+}

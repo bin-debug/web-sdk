@@ -1,0 +1,7 @@
+{
+  "name": "@studio-kit/demo-art",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared demo art library: keyed stills, sprite sheets, audio and manifest used by every game shell.",
+  "files": ["static"]
+}

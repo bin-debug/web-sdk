@@ -1,0 +1,692 @@
+{
+	"frames": {
+		"bonus_trigger_0000.png": {
+			"frame": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0001.png": {
+			"frame": {
+				"x": 320,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0002.png": {
+			"frame": {
+				"x": 640,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0003.png": {
+			"frame": {
+				"x": 960,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0004.png": {
+			"frame": {
+				"x": 1280,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0005.png": {
+			"frame": {
+				"x": 1600,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0006.png": {
+			"frame": {
+				"x": 0,
+				"y": 320,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0007.png": {
+			"frame": {
+				"x": 320,
+				"y": 320,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0008.png": {
+			"frame": {
+				"x": 640,
+				"y": 320,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0009.png": {
+			"frame": {
+				"x": 960,
+				"y": 320,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0010.png": {
+			"frame": {
+				"x": 1280,
+				"y": 320,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0011.png": {
+			"frame": {
+				"x": 1600,
+				"y": 320,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0012.png": {
+			"frame": {
+				"x": 0,
+				"y": 640,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0013.png": {
+			"frame": {
+				"x": 320,
+				"y": 640,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0014.png": {
+			"frame": {
+				"x": 640,
+				"y": 640,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0015.png": {
+			"frame": {
+				"x": 960,
+				"y": 640,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0016.png": {
+			"frame": {
+				"x": 1280,
+				"y": 640,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0017.png": {
+			"frame": {
+				"x": 1600,
+				"y": 640,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0018.png": {
+			"frame": {
+				"x": 0,
+				"y": 960,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0019.png": {
+			"frame": {
+				"x": 320,
+				"y": 960,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0020.png": {
+			"frame": {
+				"x": 640,
+				"y": 960,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0021.png": {
+			"frame": {
+				"x": 960,
+				"y": 960,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0022.png": {
+			"frame": {
+				"x": 1280,
+				"y": 960,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0023.png": {
+			"frame": {
+				"x": 1600,
+				"y": 960,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0024.png": {
+			"frame": {
+				"x": 0,
+				"y": 1280,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0025.png": {
+			"frame": {
+				"x": 320,
+				"y": 1280,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0026.png": {
+			"frame": {
+				"x": 640,
+				"y": 1280,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0027.png": {
+			"frame": {
+				"x": 960,
+				"y": 1280,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0028.png": {
+			"frame": {
+				"x": 1280,
+				"y": 1280,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0029.png": {
+			"frame": {
+				"x": 1600,
+				"y": 1280,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0030.png": {
+			"frame": {
+				"x": 0,
+				"y": 1600,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		},
+		"bonus_trigger_0031.png": {
+			"frame": {
+				"x": 320,
+				"y": 1600,
+				"w": 320,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 320,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 320,
+				"h": 320
+			}
+		}
+	},
+	"animations": {
+		"bonus_trigger": [
+			"bonus_trigger_0000.png",
+			"bonus_trigger_0001.png",
+			"bonus_trigger_0002.png",
+			"bonus_trigger_0003.png",
+			"bonus_trigger_0004.png",
+			"bonus_trigger_0005.png",
+			"bonus_trigger_0006.png",
+			"bonus_trigger_0007.png",
+			"bonus_trigger_0008.png",
+			"bonus_trigger_0009.png",
+			"bonus_trigger_0010.png",
+			"bonus_trigger_0011.png",
+			"bonus_trigger_0012.png",
+			"bonus_trigger_0013.png",
+			"bonus_trigger_0014.png",
+			"bonus_trigger_0015.png",
+			"bonus_trigger_0016.png",
+			"bonus_trigger_0017.png",
+			"bonus_trigger_0018.png",
+			"bonus_trigger_0019.png",
+			"bonus_trigger_0020.png",
+			"bonus_trigger_0021.png",
+			"bonus_trigger_0022.png",
+			"bonus_trigger_0023.png",
+			"bonus_trigger_0024.png",
+			"bonus_trigger_0025.png",
+			"bonus_trigger_0026.png",
+			"bonus_trigger_0027.png",
+			"bonus_trigger_0028.png",
+			"bonus_trigger_0029.png",
+			"bonus_trigger_0030.png",
+			"bonus_trigger_0031.png"
+		]
+	},
+	"meta": {
+		"app": "web-sdk/tools/video-to-sprites",
+		"image": "bonus_trigger.webp",
+		"format": "RGBA8888",
+		"size": {
+			"w": 1920,
+			"h": 1920
+		},
+		"scale": "1",
+		"fps": 15,
+		"frameCount": 32
+	}
+}
