@@ -1,0 +1,54 @@
+{
+	"gameId": "simple_test",
+	"name": "Simple Test",
+	"shell": "cluster-classic",
+	"board": {
+		"reels": 5,
+		"rows": 5,
+		"cell": 124,
+		"gap": 4
+	},
+	"reveal": "spin",
+	"pays": {
+		"type": "cluster",
+		"min": 5
+	},
+	"symbols": {
+		"low": 5,
+		"high": 4,
+		"wild": true,
+		"scatter": true
+	},
+	"features": [
+		"globalMultiplier"
+	],
+	"bonuses": [
+		{
+			"id": "BONUS",
+			"name": "Free Spins",
+			"trigger": "3 S",
+			"spins": 10
+		}
+	],
+	"boosts": [],
+	"buys": [
+		{
+			"mode": "BONUS",
+			"cost": 100
+		}
+	],
+	"layout": {
+		"preset": "stage",
+		"mascotSide": "left"
+	},
+	"ui": {
+		"accent": "#F5C400",
+		"bar": "kit"
+	},
+	"palette": [
+		"#12243a",
+		"#e0245e",
+		"#ffd23f"
+	],
+	"artStyle": "thick-outline cel-shaded cartoon, saturated, dark background"
+}
