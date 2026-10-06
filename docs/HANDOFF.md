@@ -68,6 +68,8 @@ Not done / known gaps:
 
 ## Next up (in order)
 
+**Shell engine phases 1–2 done (see log). Next: shells 1–4 and 9 per SHELL-PLAN §6, one feature module at a time (goldenSquares, rainbowReveal, coins, clovers, collectors, …), each with synthetic books, forced scenarios and a story; then the Game Builder (3b).**
+
 **Demo art library is done (2026-10-06, see session log).** Next for it: SHELL-PLAN phase 1 (slot loader + `lines` on the manifest), then the 8b check in the `lines` shell at desktop and 375x812. Optional polish list is in the log entry.
 
 **2026-10-06: the owner switched direction. coin-reel production is paused; build the game shells
@@ -98,7 +100,14 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
-### 2026-10-06 (newest) — Demo art library generated (179 slots)
+### 2026-10-06 (newest) — Shell engine: phases 1–2 (shells 5–8 run from specs)
+- New packages: `kit-spec` (types, feature registry, validator), `kit-assets` (manifest loader + code-drawn fallbacks + Howler audio), `kit-symbols` (KitSymbol: clip or still+juice), `kit-layout` (`compose()`), `kit-ui` (KitBar = coin-reel bar promoted), `kit-fx` (NineSlice). `apps/shell` is the one engine app: the game is chosen at runtime by `?game_id=` from `games/*/game.spec.json` (4 specs: lines_classic, ways_classic, scatter_tumble, cluster_classic). `?art=none|game|demo` forces fallback-only / game art / demo art; art is merged demo manifest under `games/<id>/art`.
+- `node tools/spec-check/spec-check.mjs` validates specs in plain English. `node tools/book-gen/shell.mjs` writes synthetic books for every spec (BASE ids 1–300 natural, 301 forced bonus with retrigger, 302 max win, 303 bonus with extra scatter; BONUS buy mode ids 1+). Visual tests only.
+- Verified (hidden-pane rAF shim, in-page runner `tools/qa/shell-qa.js`, non-blocking, results in `window.__qa`): lines_classic base wins, forced bonus, bought bonus; scatter_tumble tumble rounds and retrigger bonus; cluster_classic with `?art=none` at 375x812 (all code fallbacks). Zero page errors in rounds. Missing game art manifests are expected 404s.
+- Known gaps: logo overlaps frame top on desktop; BALANCE/WIN labels overlap in the phone bar when win is empty; ways_classic and the BONUS buy path in tumble shells only lightly checked; shells 1–4 and 9 (feature modules) not started; `window.__shell` dev handle is always on (gate it before release).
+- Ports: shell 3222 (all shells via game_id), demo RGS 5119 (`node tools/mock-rgs/server.mjs 5119`), demo art contact sheet 3221. Reset queues: `curl -XPOST localhost:5119/mock/reset -d '{"gameId":"<id>"}'` then use a new sessionID.
+
+### 2026-10-06 — Demo art library generated (179 slots)
 - `packages/kit-demo-art/static/demo/` is complete per DEMO-ART-SPEC sections 3-8a: 54 keyed stills (L1-L6, H1-H6, E1-E4, W, S, S2, RB, RB2, C1-C4, CL1-2, COL1-2, J1-4, MW1-3, DW, T1-3, X, M), 4 backgrounds (16:9 + 9:16), board frame/cell/cell_gold, logo, Rusty master + 6 mascot clips, H1-H6 win clips, 10 special clips (W land/win, S, S2, RB, C flip, CL, COL, MW, DW), FX poof/upgrade (sheets) and bigwin/transition (WebM), 2 music loops, 18 SFX. `manifest.json` (179 slots) and `contact-sheet.html` (24 sheets animate, no broken images in the browser check) come from `python tools/demo-art/build_manifest.py`.
 - Tools in `tools/demo-art/`: `key_still.py` (flood-fill key vs sampled bg, `--shadow` for hard ground shadows), `ingest.py`, `sheet.py` (`--speed 2` turns the 4 s clips into 2 s sheets that return exactly to the still), `framecheck.py`, `build_manifest.py`, `synth_sfx.py`. Masters are in `C:\source\shared\demo-art-library\masters\` (not in git); `ids.json`/`clips.json` there map slots to Artlist generation ids.
 - Known demo-quality gaps (cheap to redo): CL2 gold clover reads as 3 leaves; T1-T3 are centre crops of slab renders (not edge-to-edge slabs); board cells look like diamond-pattern flagstones; S still has a purple glow haze after keying; RB/RB2 and E1 have faint edge specks; bigwin/transition are on black (play with additive/screen blend); lows carry their rank in the art (no `rankOverlay` needed).

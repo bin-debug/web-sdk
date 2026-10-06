@@ -1,0 +1,12 @@
+{
+	"name": "kit-layout",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"type": "module",
+	"main": "index.ts",
+	"types": "index.ts",
+	"dependencies": {
+		"kit-spec": "workspace:*"
+	}
+}

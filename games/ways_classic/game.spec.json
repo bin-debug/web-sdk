@@ -1,0 +1,17 @@
+{
+	"gameId": "ways_classic",
+	"name": "Ways Classic",
+	"shell": "ways-classic",
+	"board": { "reels": 5, "rows": 3, "cell": 124, "gap": 4 },
+	"reveal": "spin",
+	"pays": { "type": "ways" },
+	"symbols": { "low": 5, "high": 4, "wild": true, "scatter": true },
+	"features": [],
+	"bonuses": [{ "id": "BONUS", "name": "Jungle Spins", "trigger": "3 S", "spins": 10 }],
+	"boosts": [],
+	"buys": [{ "mode": "BONUS", "cost": 100 }],
+	"layout": { "preset": "board-hero", "mascotSide": "left" },
+	"ui": { "accent": "#3ee0b0", "bar": "kit" },
+	"palette": ["#10303a", "#3ee0b0", "#ffd23f"],
+	"artStyle": "thick-outline cel-shaded cartoon, saturated"
+}

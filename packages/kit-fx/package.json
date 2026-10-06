@@ -1,0 +1,14 @@
+{
+	"name": "kit-fx",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"type": "module",
+	"main": "index.ts",
+	"types": "index.ts",
+	"dependencies": {
+		"svelte": "5.20.5",
+		"pixi.js": "8.8.1",
+		"pixi-svelte": "workspace:*"
+	}
+}

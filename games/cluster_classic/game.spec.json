@@ -1,0 +1,17 @@
+{
+	"gameId": "cluster_classic",
+	"name": "Cluster Classic",
+	"shell": "cluster-classic",
+	"board": { "reels": 7, "rows": 7, "cell": 90, "gap": 2 },
+	"reveal": "drop",
+	"pays": { "type": "cluster", "min": 5 },
+	"symbols": { "low": 4, "high": 4, "wild": false, "scatter": true },
+	"features": ["tumble", "globalMultiplier"],
+	"bonuses": [{ "id": "BONUS", "name": "Cluster Frenzy", "trigger": "3 S", "spins": 10 }],
+	"boosts": [],
+	"buys": [{ "mode": "BONUS", "cost": 100 }],
+	"layout": { "preset": "board-hero", "mascotSide": "left" },
+	"ui": { "accent": "#ff8a3d", "bar": "kit" },
+	"palette": ["#2a1810", "#ff8a3d", "#ffd23f"],
+	"artStyle": "thick-outline cel-shaded cartoon, saturated"
+}

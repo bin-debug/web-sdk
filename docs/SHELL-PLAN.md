@@ -4,7 +4,7 @@
 `docs/STUDIO-KIT-PLAN.md` first; this file narrows that plan into a concrete build order.
 **Reference teardown:** the "Hacksaw-Style Slot Teardown" doc (Le Vampire, Le Catcher, Le Digger,
 Le Bandit Hold & Win, Le Sortudo, Wicked Grin, Dork Show), with measured layouts, rules and timings.
-**Written:** 2026-10-06.
+**Written:** 2026-10-06. **Last checked:** 2026-10-06 (phases 1–3 done).
 
 ---
 
@@ -197,13 +197,13 @@ later move into the backoffice console.
 
 ## 8. Phases (agent-sized; each ends with mock-RGS play + desktop and 375×812 screenshots)
 
-1. **Slot system + fallbacks.** `kit-symbols`, art/audio slot loader, code fallbacks. *Accept:*
+1. [x] **Slot system + fallbacks.** `kit-symbols`, art/audio slot loader, code fallbacks. *Accept:*
    `lines` plays with an empty `art/` folder; then with demo art; zero template assets loaded
    (network log check).
-2. **`apps/shell` + spec + `kit-layout` + `kit-ui`.** Spec drives board size, reveal style, layout
+2. [x] **`apps/shell` + spec + `kit-layout` + `kit-ui`.** Spec drives board size, reveal style, layout
    preset, bar, info/paytable, buy menu. *Accept:* specs for lines/ways/scatter/cluster reproduce
    shells 5–8.
-3. **Demo art library**: run `docs/DEMO-ART-SPEC.md` (can run in parallel with phases 1–2;
+3. [x] **Demo art library**: run `docs/DEMO-ART-SPEC.md` (can run in parallel with phases 1–2;
    only needs the Artlist MCP) + `tools/art-gen`. *Accept:* shells 5–8 render with it.
 3b. **Game Builder v1** (section 7b): form → spec → build → play with scenario buttons, for the
    shells that exist so far. Grows as each shell lands.
