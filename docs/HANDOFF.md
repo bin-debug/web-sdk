@@ -68,6 +68,8 @@ Not done / known gaps:
 
 ## Next up (in order)
 
+**Demo art library is done (2026-10-06, see session log).** Next for it: SHELL-PLAN phase 1 (slot loader + `lines` on the manifest), then the 8b check in the `lines` shell at desktop and 375x812. Optional polish list is in the log entry.
+
 **2026-10-06: the owner switched direction. coin-reel production is paused; build the game shells
 + Game Builder instead.** Follow `docs/SHELL-PLAN.md` (phases 1–3b) and generate the shared demo
 art with `docs/DEMO-ART-SPEC.md` (decided: fox mascot "Rusty", treasure & gems symbols, clips for
