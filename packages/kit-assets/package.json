@@ -1,0 +1,16 @@
+{
+	"name": "kit-assets",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"type": "module",
+	"main": "index.ts",
+	"types": "index.ts",
+	"dependencies": {
+		"kit-spec": "workspace:*",
+		"pixi-svelte": "workspace:*",
+		"state-shared": "workspace:*",
+		"howler": "2.2.4",
+		"@types/howler": "2.2.12"
+	}
+}
