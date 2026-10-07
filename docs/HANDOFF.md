@@ -44,7 +44,7 @@ New `sessionID` = fresh 10,000 wallet. Force outcomes:
 
 ## Session log
 
-- 2026-10-07: clovers visual follow-up: coin cells now mask their reel symbols, coin/clover layers sort above the board, and clover demo books update the running win rather than opening the generic win scene.
+- 2026-10-07: clovers visual follow-up: coin/clover layers sort above the board, and clover demo books update the running win rather than opening the generic win scene. The reel-symbol masking attempt was reverted after it blanked the board.
 - 2026-10-07: clovers feature added: book-directed adjacent/global multiplier trails, coin value count-up, three cluster_classic forced scenarios; contract, build, desktop and mobile no-art QA passed.
 
 Done and checked in the browser:
