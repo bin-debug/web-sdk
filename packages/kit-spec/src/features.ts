@@ -38,7 +38,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		title: 'Golden squares',
 		needs: ['tumble'],
 		events: ['squaresAdd', 'squaresClear'],
-		implemented: false,
+		implemented: true,
 	}),
 	rainbowReveal: f({
 		id: 'rainbowReveal',
