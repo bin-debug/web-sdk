@@ -38,17 +38,21 @@ export const collectorLayer = $state<{ views: CollectorView[]; dimmed: boolean }
 });
 let nextId = 1;
 const t = (ms: number) => ms * (stateBet.isTurbo || stateBet.isSpaceHold ? 0.4 : 1);
+const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 export async function collect(collector: Collector, sources: Position[], total: number) {
 	const view = new CollectorView(nextId++, collector, total);
 	collectorLayer.views.push(view);
 	collectorLayer.dimmed = collector === 'global';
 	await view.squash.set(1.18, { duration: t(120), easing: cubicOut });
+	// Give the target a deliberate reveal beat before any source starts moving.
+	await wait(t(500));
 	await collectCoins(sources, { x: view.x, y: view.y });
 	await Promise.all([
 		view.squash.set(1, { duration: t(160), easing: backOut }),
 		view.totalPop.set(1, { duration: t(220), easing: backOut }),
 	]);
+	await wait(t(350));
 	collectorLayer.views = collectorLayer.views.filter((item) => item.id !== view.id);
 	collectorLayer.dimmed = false;
 }
