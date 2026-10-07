@@ -4,7 +4,7 @@
 	import { coinLayer } from './coinState.svelte';
 </script>
 
-<BoardContainer>
+<BoardContainer zIndex={100}>
 	{#each coinLayer.views as view (view.id)}
 		<Coin {view} />
 	{/each}

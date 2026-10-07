@@ -1,7 +1,7 @@
 // Visual-test books for clover choreography. Targets and multipliers are explicit book data; the client only
 // animates those changes and takes the round total from the final event.
 export function scenarios(ctx) {
-	const { spec, BOOK, winLevel, randomBoard } = ctx;
+	const { spec, BOOK, randomBoard } = ctx;
 	const { reels, rows } = spec.board;
 	let id = ctx.firstId;
 	const pos = (reel, row) => ({ reel, row });
@@ -32,7 +32,7 @@ export function scenarios(ctx) {
 				total: 0,
 			},
 			...clovers.map(({ initial: _initial, ...clover }) => ({ type: 'cloverApply', ...clover })),
-			{ type: 'setWin', amount: total, winLevel: winLevel(total) },
+			{ type: 'updateTumbleWin', amount: total },
 			{ type: 'setTotalWin', amount: total },
 			{ type: 'finalWin', amount: total },
 		];

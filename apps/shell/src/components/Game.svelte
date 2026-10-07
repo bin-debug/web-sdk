@@ -75,7 +75,7 @@
 		<Logo />
 		<Mascot />
 
-		<MainContainer>
+		<MainContainer sortableChildren={true}>
 			<BoardCells />
 		</MainContainer>
 
