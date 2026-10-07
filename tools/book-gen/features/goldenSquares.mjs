@@ -7,7 +7,6 @@ export function scenarios(ctx) {
 	const common = (criteria, additions) => {
 		const events = [{ type: 'reveal', board: randomBoard(), paddingPositions: Array(reels).fill(0), anticipation: Array(reels).fill(0), gameType: 'basegame' }];
 		for (const positions of additions) {
-			events.push({ type: 'winInfo', totalWin: BOOK, wins: [{ symbol: 'H1', win: BOOK, positions, meta: { overlay: positions[0] } }] });
 			events.push({ type: 'squaresAdd', positions });
 			events.push({ type: 'tumbleBoard', explodingSymbols: positions, newSymbols: randomBoard() });
 		}
