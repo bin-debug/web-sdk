@@ -158,6 +158,12 @@ export function buildArt(spec: ShellSpec, slotsIn: SlotMap): Art {
 	addSprite('mascot.master', () => drawMascotFallback(spec.ui.accent));
 	if (spriteSlot('board.frame')) assets['board.frame'] = { type: 'sprite', src: spriteSlot('board.frame')!.url! };
 
+	// coin stills (C1..C4, tier looks of the coins feature): only when the art has them; the feature draws discs otherwise
+	for (const n of [1, 2, 3, 4]) {
+		const id = `symbol.C${n}.static`;
+		if (spriteSlot(id)) assets[id] = { type: 'sprite', src: spriteSlot(id)!.url! };
+	}
+
 	// mascot clips (lazy)
 	for (const n of ['idle', 'anticipate', 'win_small', 'win_big', 'bonus_trigger', 'throw']) {
 		const id = `mascot.${n}`;

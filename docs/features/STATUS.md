@@ -7,7 +7,7 @@ and whose branch does not already exist on origin. The branch on origin IS the c
 | Wave | Item | Spec | Branch | Needs | Test game id | State | Notes |
 |---|---|---|---|---|---|---|---|
 | 0 | contract-check | contract-check | feature/contract-check | - | lines_classic | merged | tool built. Rules: `tools/book-gen/contract/rules/*.mjs` (one file per group, auto-loaded; add yours there). Bad-book cases: `tools/book-gen/contract-tests/*.json`, run `pnpm check:contract-tests`. Also runs in the Game Builder after book-gen. |
-| 1 | coins | coins | feature/coins | contract-check | cluster_classic | todo | |
+| 1 | coins | coins | feature/coins | contract-check | cluster_classic | merged | Renderer: `apps/shell/src/features/coins/` (`flipIn`, `payOut`, `clearCoins`). Plays via `squaresReveal` until rainbow-reveal takes it over. Scenarios `coins_basic`/`coins_big` in BASE ids after the generic books (cluster_classic: 304-311). |
 | 1 | tiered-bonuses-boost | tiered-bonuses-boost | feature/tiered-bonuses-boost | contract-check | scatter_tumble | todo | |
 | 1 | multiplier-wilds | multiplier-wilds | feature/multiplier-wilds | contract-check | lines_classic | todo | |
 | 2 | clovers | clovers | feature/clovers | coins | cluster_classic | todo | |
