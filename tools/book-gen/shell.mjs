@@ -286,9 +286,10 @@ function makeGame(spec) {
 
 		const needed = trigger(bonus);
 		if (base.scatters >= needed) {
-			const b = bonus ?? spec.bonuses.find((x) => triggerCount(x) <= base.scatters) ?? spec.bonuses[0];
+			// the tier is the highest bonus whose trigger count the scatters reach (3 / 4 / 5 scatters -> BONUS / BONUS2 / BONUS3)
+			const b = bonus ?? [...spec.bonuses].sort((x, y) => triggerCount(y) - triggerCount(x)).find((x) => triggerCount(x) <= base.scatters) ?? spec.bonuses[0];
 			let spinsTotal = (b?.spins ?? 10) + (base.scatters - triggerCount(b ?? { trigger: '3 S' })) * 2;
-			events.push({ type: 'freeSpinTrigger', totalFs: spinsTotal, positions: base.sPositions, bonusType: b?.id ?? 'BONUS', bonusName: b?.name });
+			events.push({ type: 'freeSpinTrigger', totalFs: spinsTotal, positions: base.sPositions, bonusType: b?.id ?? 'BONUS', bonusName: b?.name, ...(b?.hidden ? { hidden: true } : {}) });
 			const multState = { value: 1 };
 			if (hasGlobalMult) events.push({ type: 'updateGlobalMult', globalMult: 1 });
 			let bonusWin = 0;
@@ -301,6 +302,7 @@ function makeGame(spec) {
 				if (sp.scatters >= 3 && retriggers < 2) {
 					retriggers++;
 					spinsTotal += 5;
+					events.push({ type: 'freeSpinTrigger', totalFs: spinsTotal, positions: sp.sPositions, bonusType: b?.id ?? 'BONUS', bonusName: b?.name, retrigger: { extra: 5 } });
 					events.push({ type: 'updateFreeSpin', amount: spin, total: spinsTotal });
 				}
 				events.push({ type: 'setTotalWin', amount: Math.min(total, WINCAP) });
@@ -360,6 +362,15 @@ async function generate(id) {
 		base.push(...extra);
 		console.log(`[book-gen] ${id} ${featureId}: ${extra.length} scenario books in BASE (ids ${extra[0]?.id}-${extra[extra.length - 1]?.id})`);
 	}
+	// bonus-flow scenarios (tiered-bonuses-boost), after the feature scenarios so their ids stay put: one natural trigger per tier
+	const tierIds = {};
+	for (const bonus of spec.bonuses) {
+		if (triggerCount(bonus) > spec.board.reels) continue;
+		const book = makeBook(base.length + 1, 'BASE', { bonus, forceS: triggerCount(bonus) });
+		base.push(book);
+		tierIds[bonus.id] = book.id;
+	}
+	if (Object.keys(tierIds).length) console.log(`[book-gen] ${id} bonus tiers in BASE: ${Object.entries(tierIds).map(([k, v]) => `${k}=${v}`).join(' ')}`);
 	write('BASE', base);
 
 	for (const bonus of spec.bonuses) {

@@ -11,6 +11,7 @@ import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEv
 import type { Position } from './types';
 import config from './config';
 import { coinHandlers } from '../features/coins/register';
+import { bonusTier } from '../features/bonusTiers/tiers';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -78,6 +79,13 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'bonus_trigger' });
 		eventEmitter.broadcast({ type: 'mascotReact', mood: 'bonus' });
 		await animateSymbols({ positions: bookEvent.positions });
+		if (bookEvent.retrigger) {
+			// more spins inside a running bonus: banner and a longer counter, no intro, same music
+			await eventEmitter.broadcastAsync({ type: 'retriggerShow', extra: bookEvent.retrigger.extra });
+			eventEmitter.broadcast({ type: 'freeSpinCounterUpdate', current: undefined, total: bookEvent.totalFs });
+			return;
+		}
+		const tier = bonusTier(bookEvent.bonusType, bookEvent.bonusName, bookEvent.hidden);
 		await eventEmitter.broadcastAsync({ type: 'uiHide' });
 		await eventEmitter.broadcastAsync({ type: 'transition' });
 		eventEmitter.broadcast({ type: 'freeSpinIntroShow' });
@@ -85,7 +93,9 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		await eventEmitter.broadcastAsync({
 			type: 'freeSpinIntroUpdate',
 			totalFreeSpins: bookEvent.totalFs,
-			title: bookEvent.bonusName,
+			title: tier.name,
+			kicker: tier.hidden ? 'Secret bonus unlocked' : tier.trigger ? `${tier.trigger.replace(' S', '')} scatters` : undefined,
+			colour: tier.colour,
 		});
 		stateGame.gameType = 'freegame';
 		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
@@ -165,7 +175,10 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		const { bookEvents } = bookEvent;
 		const last = <T extends BookEvent['type']>(type: T) => _.findLast(bookEvents, (e) => e.type === type) as BookEventOfType<T> | undefined;
 
-		const trigger = last('freeSpinTrigger');
+		// resume: rebuild from the first trigger (the intro) but with the latest spin total (retriggers add spins)
+		const triggers = bookEvents.filter((e) => e.type === 'freeSpinTrigger') as BookEventOfType<'freeSpinTrigger'>[];
+		const first = triggers.find((e) => !e.retrigger);
+		const trigger = first && { ...first, totalFs: triggers[triggers.length - 1].totalFs };
 		const update = last('updateFreeSpin');
 		const total = last('setTotalWin');
 		const mult = last('updateGlobalMult');

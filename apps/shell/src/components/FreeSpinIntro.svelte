@@ -2,7 +2,7 @@
 	export type EmitterEventFreeSpinIntro =
 		| { type: 'freeSpinIntroShow' }
 		| { type: 'freeSpinIntroHide' }
-		| { type: 'freeSpinIntroUpdate'; totalFreeSpins: number; title?: string };
+		| { type: 'freeSpinIntroUpdate'; totalFreeSpins: number; title?: string; kicker?: string; colour?: number };
 </script>
 
 <script lang="ts">
@@ -22,6 +22,8 @@
 	let show = $state(false);
 	let total = $state(0);
 	let title = $state(SPEC.bonuses[0]?.name ?? 'FREE SPINS');
+	let kicker = $state('');
+	let colour = $state(ACCENT);
 	let oncomplete = $state(() => {});
 
 	context.eventEmitter.subscribeOnMount({
@@ -30,6 +32,8 @@
 		freeSpinIntroUpdate: async (e) => {
 			total = e.totalFreeSpins;
 			if (e.title) title = e.title;
+			kicker = e.kicker ?? '';
+			colour = e.colour ?? ACCENT;
 			await waitForResolve((resolve) => (oncomplete = resolve));
 		},
 	});
@@ -38,10 +42,13 @@
 <FadeContainer {show}>
 	<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.55} />
 
-	<FreeSpinAnimation>
+	<FreeSpinAnimation accent={colour}>
 		{#snippet children({ sizes })}
-			<Text anchor={0.5} x={sizes.width * 0.5} y={sizes.height * 0.2} text={title.toUpperCase()} style={textStyle(sizes.width * 0.085, ACCENT)} />
-			<Circle anchor={0.5} x={sizes.width * 0.5} y={sizes.height * 0.52} diameter={sizes.width * 0.3} backgroundColor={0x14233a} borderColor={ACCENT} borderWidth={6} />
+			<Text anchor={0.5} x={sizes.width * 0.5} y={sizes.height * 0.2} text={title.toUpperCase()} style={textStyle(sizes.width * 0.085, colour)} />
+			{#if kicker}
+				<Text anchor={0.5} x={sizes.width * 0.5} y={sizes.height * 0.09} text={kicker.toUpperCase()} style={textStyle(sizes.width * 0.05, 0xffffff)} />
+			{/if}
+			<Circle anchor={0.5} x={sizes.width * 0.5} y={sizes.height * 0.52} diameter={sizes.width * 0.3} backgroundColor={0x14233a} borderColor={colour} borderWidth={6} />
 			<Text anchor={0.5} x={sizes.width * 0.5} y={sizes.height * 0.52} text={total} style={textStyle(sizes.width * 0.17)} />
 			<Text anchor={0.5} x={sizes.width * 0.5} y={sizes.height * 0.82} text="FREE SPINS" style={textStyle(sizes.width * 0.07, 0xffffff)} />
 		{/snippet}
