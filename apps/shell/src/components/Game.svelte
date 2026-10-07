@@ -33,6 +33,7 @@
 	import Transition from './Transition.svelte';
 	import CoinLayer from '../features/coins/CoinLayer.svelte';
 	import WildLayer from '../features/wilds/WildLayer.svelte';
+	import CloverLayer from '../features/clovers/CloverLayer.svelte';
 	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
 
 	const context = getContext();
@@ -40,7 +41,14 @@
 	onMount(() => {
 		context.stateLayout.showLoadingScreen = true;
 		// dev handle for the QA scripts (tools/qa): the shell's emitter and xstate state
-		(window as any).__shell = { eventEmitter: context.eventEmitter, stateXstate: context.stateXstate, stateGame: context.stateGame, gameActor, stateApp: context.stateApp, stateBet };
+		(window as any).__shell = {
+			eventEmitter: context.eventEmitter,
+			stateXstate: context.stateXstate,
+			stateGame: context.stateGame,
+			gameActor,
+			stateApp: context.stateApp,
+			stateBet,
+		};
 	});
 
 	context.eventEmitter.subscribeOnMount({
@@ -76,6 +84,7 @@
 			<Anticipations />
 			<RunningWin />
 			<CoinLayer />
+			<CloverLayer />
 			<WildLayer />
 			{#if SPEC.features.includes('globalMultiplier')}
 				<GlobalMultiplier />
@@ -99,7 +108,13 @@
 </App>
 
 {#if !context.stateLayout.showLoadingScreen}
-	<KitBar context={{ eventEmitter: context.eventEmitter as never, stateXstateDerived: context.stateXstateDerived }} accent={SPEC.ui.accent} />
+	<KitBar
+		context={{
+			eventEmitter: context.eventEmitter as never,
+			stateXstateDerived: context.stateXstateDerived,
+		}}
+		accent={SPEC.ui.accent}
+	/>
 {/if}
 
 <Modals>

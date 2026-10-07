@@ -15,7 +15,7 @@
 	// the art slot when it loaded; otherwise a coloured disc drawn here (?art=none)
 	const hasArt = $derived(Boolean(context.stateApp.loadedAssets?.[tier.slot]));
 	const D = SYMBOL_SIZE * 0.82;
-	const text = $derived(formatCoinValue(view.coin.value));
+	const text = $derived(formatCoinValue(view.value.current));
 	const fontSize = $derived(D * (text.length > 5 ? 0.26 : text.length > 4 ? 0.3 : 0.36));
 </script>
 
@@ -29,8 +29,21 @@
 	{#if hasArt}
 		<Sprite key={tier.slot} anchor={0.5} width={D} height={D} />
 	{:else}
-		<Circle anchor={0.5} diameter={D} backgroundColor={tier.face} borderColor={tier.rim} borderWidth={D * 0.07} />
-		<Circle anchor={0.5} diameter={D * 0.72} backgroundAlpha={0} borderColor={tier.rim} borderWidth={D * 0.03} borderAlpha={0.6} />
+		<Circle
+			anchor={0.5}
+			diameter={D}
+			backgroundColor={tier.face}
+			borderColor={tier.rim}
+			borderWidth={D * 0.07}
+		/>
+		<Circle
+			anchor={0.5}
+			diameter={D * 0.72}
+			backgroundAlpha={0}
+			borderColor={tier.rim}
+			borderWidth={D * 0.03}
+			borderAlpha={0.6}
+		/>
 	{/if}
 	<!-- glint sweeps once across the face when the coin lands -->
 	<Circle

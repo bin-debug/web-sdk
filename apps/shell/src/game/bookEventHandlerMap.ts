@@ -14,6 +14,7 @@ import { coinHandlers } from '../features/coins/register';
 import { bonusTier } from '../features/bonusTiers/tiers';
 import { wildHandlers } from '../features/wilds/register';
 import { clearWilds, openWilds } from '../features/wilds/wildState.svelte';
+import { cloverHandlers } from '../features/clovers/register';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -22,11 +23,15 @@ const winLevelSoundsPlay = (winLevel: number) => {
 	const data = winLevelMap[winLevel as WinLevel];
 	if (data?.alias === 'max') eventEmitter.broadcastAsync({ type: 'uiHide' });
 	if (data?.type === 'big') eventEmitter.broadcast({ type: 'soundOnce', name: 'bigwin_sting' });
-	else if (data?.type === 'medium') eventEmitter.broadcast({ type: 'soundOnce', name: 'win_medium' });
+	else if (data?.type === 'medium')
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'win_medium' });
 };
 
 const winLevelSoundsStop = () => {
-	eventEmitter.broadcast({ type: 'soundMusic', name: stateGame.gameType === 'freegame' ? 'bonus' : 'base' });
+	eventEmitter.broadcast({
+		type: 'soundMusic',
+		name: stateGame.gameType === 'freegame' ? 'bonus' : 'base',
+	});
 	eventEmitter.broadcastAsync({ type: 'uiShow' });
 };
 
@@ -65,7 +70,13 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 				wins: bookEvent.wins.map((win) => {
 					const overlay = win.meta?.overlay ?? win.positions[Math.floor(win.positions.length / 2)];
 					const mult = win.meta?.globalMult ?? 1;
-					return { win: win.meta?.winWithoutMult ?? win.win, mult, result: win.win, reel: overlay.reel, row: overlay.row };
+					return {
+						win: win.meta?.winWithoutMult ?? win.win,
+						mult,
+						result: win.win,
+						reel: overlay.reel,
+						row: overlay.row,
+					};
 				}),
 			}),
 		]);
@@ -73,7 +84,11 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	updateTumbleWin: async (bookEvent: BookEventOfType<'updateTumbleWin'>) => {
 		if (bookEvent.amount > 0) {
 			eventEmitter.broadcast({ type: 'tumbleWinAmountShow' });
-			eventEmitter.broadcast({ type: 'tumbleWinAmountUpdate', amount: bookEvent.amount, animate: false });
+			eventEmitter.broadcast({
+				type: 'tumbleWinAmountUpdate',
+				amount: bookEvent.amount,
+				animate: false,
+			});
 		}
 	},
 	setTotalWin: async (bookEvent: BookEventOfType<'setTotalWin'>) => {
@@ -85,8 +100,15 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		await animateSymbols({ positions: bookEvent.positions });
 		if (bookEvent.retrigger) {
 			// more spins inside a running bonus: banner and a longer counter, no intro, same music
-			await eventEmitter.broadcastAsync({ type: 'retriggerShow', extra: bookEvent.retrigger.extra });
-			eventEmitter.broadcast({ type: 'freeSpinCounterUpdate', current: undefined, total: bookEvent.totalFs });
+			await eventEmitter.broadcastAsync({
+				type: 'retriggerShow',
+				extra: bookEvent.retrigger.extra,
+			});
+			eventEmitter.broadcast({
+				type: 'freeSpinCounterUpdate',
+				current: undefined,
+				total: bookEvent.totalFs,
+			});
 			return;
 		}
 		const tier = bonusTier(bookEvent.bonusType, bookEvent.bonusName, bookEvent.hidden);
@@ -98,26 +120,41 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 			type: 'freeSpinIntroUpdate',
 			totalFreeSpins: bookEvent.totalFs,
 			title: tier.name,
-			kicker: tier.hidden ? 'Secret bonus unlocked' : tier.trigger ? `${tier.trigger.replace(' S', '')} scatters` : undefined,
+			kicker: tier.hidden
+				? 'Secret bonus unlocked'
+				: tier.trigger
+					? `${tier.trigger.replace(' S', '')} scatters`
+					: undefined,
 			colour: tier.colour,
 		});
 		stateGame.gameType = 'freegame';
 		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
 		eventEmitter.broadcast({ type: 'boardFrameGlowShow' });
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
-		eventEmitter.broadcast({ type: 'freeSpinCounterUpdate', current: undefined, total: bookEvent.totalFs });
+		eventEmitter.broadcast({
+			type: 'freeSpinCounterUpdate',
+			current: undefined,
+			total: bookEvent.totalFs,
+		});
 		await eventEmitter.broadcastAsync({ type: 'uiShow' });
 		await eventEmitter.broadcastAsync({ type: 'drawerButtonShow' });
 		eventEmitter.broadcast({ type: 'drawerFold' });
 	},
 	updateFreeSpin: async (bookEvent: BookEventOfType<'updateFreeSpin'>) => {
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
-		eventEmitter.broadcast({ type: 'freeSpinCounterUpdate', current: bookEvent.amount, total: bookEvent.total });
+		eventEmitter.broadcast({
+			type: 'freeSpinCounterUpdate',
+			current: bookEvent.amount,
+			total: bookEvent.total,
+		});
 	},
 	updateGlobalMult: async (bookEvent: BookEventOfType<'updateGlobalMult'>) => {
 		eventEmitter.broadcast({ type: 'globalMultiplierShow' });
 		if (bookEvent.globalMult === 1) eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
-		await eventEmitter.broadcastAsync({ type: 'globalMultiplierUpdate', multiplier: bookEvent.globalMult });
+		await eventEmitter.broadcastAsync({
+			type: 'globalMultiplierUpdate',
+			multiplier: bookEvent.globalMult,
+		});
 	},
 	freeSpinEnd: async (bookEvent: BookEventOfType<'freeSpinEnd'>) => {
 		await eventEmitter.broadcastAsync({ type: 'uiHide' });
@@ -146,12 +183,17 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		eventEmitter.broadcast({ type: 'tumbleBoardShow' });
 		eventEmitter.broadcast({ type: 'tumbleBoardInit', addingBoard: bookEvent.newSymbols });
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'tumble_pop' });
-		await eventEmitter.broadcastAsync({ type: 'tumbleBoardExplode', explodingPositions: bookEvent.explodingSymbols });
+		await eventEmitter.broadcastAsync({
+			type: 'tumbleBoardExplode',
+			explodingPositions: bookEvent.explodingSymbols,
+		});
 		eventEmitter.broadcast({ type: 'tumbleBoardRemoveExploded' });
 		await eventEmitter.broadcastAsync({ type: 'tumbleBoardSlideDown' });
 		eventEmitter.broadcast({
 			type: 'boardSettle',
-			board: stateGameDerived.tumbleBoardCombined().map((tumbleReel) => tumbleReel.map((tumbleSymbol) => tumbleSymbol.rawSymbol)),
+			board: stateGameDerived
+				.tumbleBoardCombined()
+				.map((tumbleReel) => tumbleReel.map((tumbleSymbol) => tumbleSymbol.rawSymbol)),
 		});
 		eventEmitter.broadcast({ type: 'tumbleBoardReset' });
 		eventEmitter.broadcast({ type: 'tumbleBoardHide' });
@@ -163,7 +205,11 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		if (bookEvent.winLevel >= 6) eventEmitter.broadcast({ type: 'mascotReact', mood: 'bigwin' });
 		else if (bookEvent.winLevel >= 3) eventEmitter.broadcast({ type: 'mascotReact', mood: 'win' });
 		winLevelSoundsPlay(bookEvent.winLevel);
-		await eventEmitter.broadcastAsync({ type: 'winUpdate', amount: bookEvent.amount, winLevelData });
+		await eventEmitter.broadcastAsync({
+			type: 'winUpdate',
+			amount: bookEvent.amount,
+			winLevelData,
+		});
 		winLevelSoundsStop();
 		eventEmitter.broadcast({ type: 'winHide' });
 	},
@@ -177,10 +223,13 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	// customised
 	createBonusSnapshot: async (bookEvent: BookEventOfType<'createBonusSnapshot'>) => {
 		const { bookEvents } = bookEvent;
-		const last = <T extends BookEvent['type']>(type: T) => _.findLast(bookEvents, (e) => e.type === type) as BookEventOfType<T> | undefined;
+		const last = <T extends BookEvent['type']>(type: T) =>
+			_.findLast(bookEvents, (e) => e.type === type) as BookEventOfType<T> | undefined;
 
 		// resume: rebuild from the first trigger (the intro) but with the latest spin total (retriggers add spins)
-		const triggers = bookEvents.filter((e) => e.type === 'freeSpinTrigger') as BookEventOfType<'freeSpinTrigger'>[];
+		const triggers = bookEvents.filter(
+			(e) => e.type === 'freeSpinTrigger',
+		) as BookEventOfType<'freeSpinTrigger'>[];
 		const first = triggers.find((e) => !e.retrigger);
 		const trigger = first && { ...first, totalFs: triggers[triggers.length - 1].totalFs };
 		const update = last('updateFreeSpin');
@@ -197,13 +246,19 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 // feature modules add their handlers here (one line each)
 Object.assign(handlers, coinHandlers);
 Object.assign(handlers, wildHandlers);
+Object.assign(handlers, cloverHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
-export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = { ...handlers };
+export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {
+	...handlers,
+};
 if (import.meta.env.DEV) {
 	for (const key of Object.keys(handlers) as BookEvent['type'][]) {
 		const fn = handlers[key] as (e: BookEvent, c: BookEventContext) => Promise<void>;
-		(bookEventHandlerMap as Record<string, unknown>)[key] = async (e: BookEvent, c: BookEventContext) => {
+		(bookEventHandlerMap as Record<string, unknown>)[key] = async (
+			e: BookEvent,
+			c: BookEventContext,
+		) => {
 			console.debug('[shell] >', key);
 			await fn(e, c);
 			console.debug('[shell] <', key);

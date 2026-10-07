@@ -45,9 +45,19 @@ type BookEventFreeSpinTrigger = {
 	hidden?: boolean;
 	retrigger?: { extra: number };
 };
-type BookEventUpdateFreeSpin = { index: number; type: 'updateFreeSpin'; amount: number; total: number };
+type BookEventUpdateFreeSpin = {
+	index: number;
+	type: 'updateFreeSpin';
+	amount: number;
+	total: number;
+};
 type BookEventUpdateGlobalMult = { index: number; type: 'updateGlobalMult'; globalMult: number };
-type BookEventFreeSpinEnd = { index: number; type: 'freeSpinEnd'; amount: number; winLevel: number };
+type BookEventFreeSpinEnd = {
+	index: number;
+	type: 'freeSpinEnd';
+	amount: number;
+	winLevel: number;
+};
 type BookEventTumbleBoard = {
 	index: number;
 	type: 'tumbleBoard';
@@ -59,12 +69,35 @@ type BookEventSetWin = { index: number; type: 'setWin'; amount: number; winLevel
 type BookEventWincap = { index: number; type: 'wincap'; amount: number };
 
 // feature events (docs/features/BOOK-EVENTS.md)
-type BookEventSquaresReveal = { index: number; type: 'squaresReveal'; cells: Coin[]; total: number };
+type BookEventSquaresReveal = {
+	index: number;
+	type: 'squaresReveal';
+	cells: Coin[];
+	total: number;
+};
+type BookEventCloverApply = {
+	index: number;
+	type: 'cloverApply';
+	pos: Position;
+	scope: 'adjacent' | 'global';
+	mult: number;
+	targets: Position[];
+};
 
-type BookEventWildMults = { index: number; type: 'wildMults'; positions: Position[]; values: number[]; hidden?: boolean[] };
+type BookEventWildMults = {
+	index: number;
+	type: 'wildMults';
+	positions: Position[];
+	values: number[];
+	hidden?: boolean[];
+};
 
 // customised
-type BookEventCreateBonusSnapshot = { index: number; type: 'createBonusSnapshot'; bookEvents: BookEvent[] };
+type BookEventCreateBonusSnapshot = {
+	index: number;
+	type: 'createBonusSnapshot';
+	bookEvents: BookEvent[];
+};
 
 export type BookEvent =
 	| BookEventReveal
@@ -80,6 +113,7 @@ export type BookEvent =
 	| BookEventSetWin
 	| BookEventWincap
 	| BookEventSquaresReveal
+	| BookEventCloverApply
 	| BookEventWildMults
 	| BookEventCreateBonusSnapshot;
 
