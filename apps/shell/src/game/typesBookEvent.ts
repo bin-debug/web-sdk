@@ -90,6 +90,8 @@ type BookEventCollect = {
 	sources: Position[];
 	total: number;
 };
+type BookEventSquaresAdd = { index: number; type: 'squaresAdd'; positions: Position[] };
+type BookEventSquaresClear = { index: number; type: 'squaresClear'; positions?: Position[] };
 
 type BookEventWildMults = {
 	index: number;
@@ -122,6 +124,8 @@ export type BookEvent =
 	| BookEventSquaresReveal
 	| BookEventCloverApply
 	| BookEventCollect
+	| BookEventSquaresAdd
+	| BookEventSquaresClear
 	| BookEventWildMults
 	| BookEventCreateBonusSnapshot;
 

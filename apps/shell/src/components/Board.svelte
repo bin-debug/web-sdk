@@ -16,6 +16,7 @@
 	import BoardContainer from './BoardContainer.svelte';
 	import BoardMask from './BoardMask.svelte';
 	import BoardBase from './BoardBase.svelte';
+	import SquaresLayer from '../features/squares/SquaresLayer.svelte';
 
 	const context = getContext();
 
@@ -46,6 +47,7 @@
 	<BoardContext animate={false}>
 		<BoardContainer>
 			<BoardMask />
+			<SquaresLayer />
 			<BoardBase />
 		</BoardContainer>
 	</BoardContext>

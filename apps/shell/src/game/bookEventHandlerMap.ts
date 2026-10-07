@@ -16,6 +16,8 @@ import { wildHandlers } from '../features/wilds/register';
 import { clearWilds, openWilds } from '../features/wilds/wildState.svelte';
 import { cloverHandlers } from '../features/clovers/register';
 import { collectorHandlers } from '../features/collectors/register';
+import { squareHandlers } from '../features/squares/register';
+import { restoreSquares } from '../features/squares/squaresState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -236,6 +238,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		const update = last('updateFreeSpin');
 		const total = last('setTotalWin');
 		const mult = last('updateGlobalMult');
+		restoreSquares(bookEvents);
 
 		if (trigger) await playBookEvent(trigger, { bookEvents });
 		if (update) playBookEvent(update, { bookEvents });
@@ -249,6 +252,7 @@ Object.assign(handlers, coinHandlers);
 Object.assign(handlers, wildHandlers);
 Object.assign(handlers, cloverHandlers);
 Object.assign(handlers, collectorHandlers);
+Object.assign(handlers, squareHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {
