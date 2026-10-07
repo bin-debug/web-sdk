@@ -6,7 +6,7 @@
 	"reveal": "drop",
 	"pays": { "type": "cluster", "min": 5 },
 	"symbols": { "low": 4, "high": 4, "wild": false, "scatter": true },
-	"features": ["tumble", "globalMultiplier", "coins", "clovers"],
+	"features": ["tumble", "globalMultiplier", "coins", "clovers", "collectors"],
 	"bonuses": [{ "id": "BONUS", "name": "Cluster Frenzy", "trigger": "3 S", "spins": 10 }],
 	"boosts": [],
 	"buys": [{ "mode": "BONUS", "cost": 100 }],

@@ -23,16 +23,28 @@ export class CoinView {
 	readonly glint = new Tween(0); // 0..1 sweep of the gold glint
 	readonly fade = new Tween(1);
 	readonly rise = new Tween(0); // payout: how far the coin has flown up (in cells)
+	readonly collect = new Tween(0); // collector flight progress (the destination is supplied by the book event)
+	collectTarget?: { x: number; y: number };
 	constructor(id: number, coin: Coin) {
 		this.id = id;
 		this.coin = coin;
 		this.value = new Tween(coin.value ?? 0);
 	}
 	get x() {
-		return SYMBOL_SIZE * (this.coin.pos.reel + 0.5);
+		const start = SYMBOL_SIZE * (this.coin.pos.reel + 0.5);
+		return this.collectTarget
+			? start + (this.collectTarget.x - start) * this.collect.current
+			: start;
 	}
 	get y() {
-		return SYMBOL_SIZE * (this.coin.pos.row + 0.5);
+		const start = SYMBOL_SIZE * (this.coin.pos.row + 0.5);
+		if (!this.collectTarget) return start;
+		// A simple bezier arc makes the supplied source visibly travel to its collector.
+		return (
+			start +
+			(this.collectTarget.y - start) * this.collect.current -
+			Math.sin(this.collect.current * Math.PI) * SYMBOL_SIZE * 0.55
+		);
 	}
 }
 
@@ -43,7 +55,6 @@ let nextId = 1;
 const t = (ms: number) => ms * (stateBet.isTurbo || stateBet.isSpaceHold ? 0.4 : 1);
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const key = (p: Position) => `${p.reel}:${p.row}`;
-
 
 const FLIP_MS = 250;
 const STAGGER_MS = 80;
@@ -98,6 +109,27 @@ export async function payOut(coins?: Coin[]) {
 	);
 	const gone = new Set(targets.map((v) => v.id));
 	coinLayer.views = coinLayer.views.filter((v) => !gone.has(v.id));
+}
+
+// Move only the book-listed source cells to a collector and remove exactly those cells afterwards.
+// `sources` remains in book order; no client-side ordering or summing happens here.
+export async function collectCoins(sources: Position[], target: { x: number; y: number }) {
+	const views = sources
+		.map((source) => coinLayer.views.find((view) => key(view.coin.pos) === key(source)))
+		.filter((view): view is CoinView => Boolean(view));
+	for (let i = 0; i < views.length; i++) {
+		const view = views[i];
+		view.collectTarget = target;
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'coin_collect' });
+		await Promise.all([
+			view.collect.set(1, { duration: t(320), easing: cubicIn }),
+			view.pop.set(0.35, { duration: t(320), easing: cubicIn }),
+			view.fade.set(0, { duration: t(320), easing: cubicIn }),
+		]);
+		await wait(t(70));
+	}
+	const removed = new Set(views.map((view) => view.id));
+	coinLayer.views = coinLayer.views.filter((view) => !removed.has(view.id));
 }
 
 // Animate supplied target coin values in place. A missing target is harmless: a later feature may own

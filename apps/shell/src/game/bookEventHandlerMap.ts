@@ -15,6 +15,7 @@ import { bonusTier } from '../features/bonusTiers/tiers';
 import { wildHandlers } from '../features/wilds/register';
 import { clearWilds, openWilds } from '../features/wilds/wildState.svelte';
 import { cloverHandlers } from '../features/clovers/register';
+import { collectorHandlers } from '../features/collectors/register';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -247,6 +248,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 Object.assign(handlers, coinHandlers);
 Object.assign(handlers, wildHandlers);
 Object.assign(handlers, cloverHandlers);
+Object.assign(handlers, collectorHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {

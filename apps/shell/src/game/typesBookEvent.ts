@@ -83,6 +83,13 @@ type BookEventCloverApply = {
 	mult: number;
 	targets: Position[];
 };
+type BookEventCollect = {
+	index: number;
+	type: 'collect';
+	collector: Position | 'global' | 'pot';
+	sources: Position[];
+	total: number;
+};
 
 type BookEventWildMults = {
 	index: number;
@@ -114,6 +121,7 @@ export type BookEvent =
 	| BookEventWincap
 	| BookEventSquaresReveal
 	| BookEventCloverApply
+	| BookEventCollect
 	| BookEventWildMults
 	| BookEventCreateBonusSnapshot;
 

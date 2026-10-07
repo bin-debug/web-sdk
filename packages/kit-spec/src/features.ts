@@ -60,7 +60,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		title: 'Collectors',
 		needs: ['coins'],
 		events: ['collect'],
-		implemented: false,
+		implemented: true,
 	}),
 	layers: f({ id: 'layers', title: 'Layers', events: ['layerBreak'], implemented: false }),
 	dynamite: f({
