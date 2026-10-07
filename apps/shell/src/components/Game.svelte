@@ -34,6 +34,7 @@
 	import CoinLayer from '../features/coins/CoinLayer.svelte';
 	import WildLayer from '../features/wilds/WildLayer.svelte';
 	import CloverLayer from '../features/clovers/CloverLayer.svelte';
+	import CollectorLayer from '../features/collectors/CollectorLayer.svelte';
 	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
 
 	const context = getContext();
@@ -85,6 +86,7 @@
 			<RunningWin />
 			<CoinLayer />
 			<CloverLayer />
+			<CollectorLayer />
 			<WildLayer />
 			{#if SPEC.features.includes('globalMultiplier')}
 				<GlobalMultiplier />
