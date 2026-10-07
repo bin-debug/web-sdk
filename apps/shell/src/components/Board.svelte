@@ -16,7 +16,6 @@
 	import BoardContainer from './BoardContainer.svelte';
 	import BoardMask from './BoardMask.svelte';
 	import BoardBase from './BoardBase.svelte';
-	import SquaresLayer from '../features/squares/SquaresLayer.svelte';
 
 	const context = getContext();
 
@@ -54,8 +53,6 @@
 	<BoardContext animate={true}>
 		<BoardContainer>
 			<BoardBase />
-			<!-- Symbols are opaque, so the square marker must be drawn as a visible overlay. -->
-			<SquaresLayer />
 		</BoardContainer>
 	</BoardContext>
 {/if}

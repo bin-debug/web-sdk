@@ -35,6 +35,7 @@
 	import WildLayer from '../features/wilds/WildLayer.svelte';
 	import CloverLayer from '../features/clovers/CloverLayer.svelte';
 	import CollectorLayer from '../features/collectors/CollectorLayer.svelte';
+	import SquaresLayer from '../features/squares/SquaresLayer.svelte';
 	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
 
 	const context = getContext();
@@ -95,6 +96,8 @@
 
 		<MainContainer>
 			<TumbleBoard />
+			<!-- Persistent overlay: tumble events hide <Board />, but golden cells must remain visible. -->
+			<SquaresLayer />
 			<WinAmounts />
 		</MainContainer>
 
