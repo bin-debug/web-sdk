@@ -47,7 +47,6 @@
 	<BoardContext animate={false}>
 		<BoardContainer>
 			<BoardMask />
-			<SquaresLayer />
 			<BoardBase />
 		</BoardContainer>
 	</BoardContext>
@@ -55,6 +54,8 @@
 	<BoardContext animate={true}>
 		<BoardContainer>
 			<BoardBase />
+			<!-- Symbols are opaque, so the square marker must be drawn as a visible overlay. -->
+			<SquaresLayer />
 		</BoardContainer>
 	</BoardContext>
 {/if}
