@@ -1,0 +1,37 @@
+{
+ "expect": "outside the 5x3 board",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "winInfo",
+     "totalWin": 20,
+     "wins": [
+      {
+       "symbol": "L1",
+       "win": 20,
+       "positions": [
+        {
+         "reel": 9,
+         "row": 0
+        },
+        {
+         "reel": 1,
+         "row": 0
+        },
+        {
+         "reel": 2,
+         "row": 0
+        }
+       ]
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

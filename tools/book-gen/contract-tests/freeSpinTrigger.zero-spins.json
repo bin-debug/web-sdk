@@ -1,0 +1,31 @@
+{
+ "expect": "totalFs must be >= 1",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "freeSpinTrigger",
+     "totalFs": 0,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 0
+      },
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 2
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

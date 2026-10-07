@@ -1,0 +1,27 @@
+{
+ "expect": "cells[0].kind must be one of",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "squaresReveal",
+     "cells": [
+      {
+       "pos": {
+        "reel": 1,
+        "row": 1
+       },
+       "kind": "ruby",
+       "value": 1
+      }
+     ],
+     "total": 5,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

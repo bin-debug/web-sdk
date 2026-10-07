@@ -1,0 +1,23 @@
+{
+ "expect": "collector is missing",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "collect",
+     "sources": [
+      {
+       "reel": 0,
+       "row": 0
+      }
+     ],
+     "total": 5,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

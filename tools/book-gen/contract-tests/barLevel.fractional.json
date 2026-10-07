@@ -1,0 +1,18 @@
+{
+ "expect": "level must be an integer",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "barLevel",
+     "level": 1.5,
+     "spinsAdded": 2,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

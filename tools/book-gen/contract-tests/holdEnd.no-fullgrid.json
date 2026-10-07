@@ -1,0 +1,17 @@
+{
+ "expect": "fullGrid is missing",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "holdEnd",
+     "total": 30,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

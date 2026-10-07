@@ -1,0 +1,18 @@
+{
+ "expect": "winLevel must be >= 1",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "setWin",
+     "amount": 20,
+     "winLevel": 0,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

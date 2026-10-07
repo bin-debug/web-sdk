@@ -1,0 +1,484 @@
+{
+ "expect": null,
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "reveal",
+     "board": [
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ]
+     ],
+     "paddingPositions": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "anticipation": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "gameType": "basegame",
+     "index": 0
+    },
+    {
+     "type": "winInfo",
+     "totalWin": 20,
+     "wins": [
+      {
+       "symbol": "L1",
+       "win": 20,
+       "positions": [
+        {
+         "reel": 0,
+         "row": 0
+        },
+        {
+         "reel": 1,
+         "row": 0
+        },
+        {
+         "reel": 2,
+         "row": 0
+        }
+       ]
+      }
+     ],
+     "index": 1
+    },
+    {
+     "type": "updateTumbleWin",
+     "amount": 20,
+     "index": 2
+    },
+    {
+     "type": "setTotalWin",
+     "amount": 20,
+     "index": 3
+    },
+    {
+     "type": "finalWin",
+     "amount": 20,
+     "index": 4
+    },
+    {
+     "type": "wincap",
+     "amount": 500000,
+     "index": 5
+    },
+    {
+     "type": "setWin",
+     "amount": 20,
+     "winLevel": 2,
+     "index": 6
+    },
+    {
+     "type": "freeSpinTrigger",
+     "totalFs": 10,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 0
+      },
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 2
+      }
+     ],
+     "index": 7
+    },
+    {
+     "type": "updateFreeSpin",
+     "amount": 1,
+     "total": 10,
+     "index": 8
+    },
+    {
+     "type": "updateGlobalMult",
+     "globalMult": 2,
+     "index": 9
+    },
+    {
+     "type": "freeSpinEnd",
+     "amount": 100,
+     "winLevel": 3,
+     "index": 10
+    },
+    {
+     "type": "tumbleBoard",
+     "explodingSymbols": [
+      {
+       "reel": 0,
+       "row": 1
+      }
+     ],
+     "newSymbols": [
+      [
+       {
+        "name": "L1"
+       }
+      ],
+      [],
+      [],
+      [],
+      []
+     ],
+     "index": 11
+    },
+    {
+     "type": "createBonusSnapshot",
+     "bookEvents": [
+      {
+       "type": "setTotalWin",
+       "amount": 5,
+       "index": 0
+      }
+     ],
+     "index": 12
+    },
+    {
+     "type": "squaresAdd",
+     "positions": [
+      {
+       "reel": 1,
+       "row": 1
+      }
+     ],
+     "index": 13
+    },
+    {
+     "type": "squaresClear",
+     "index": 14
+    },
+    {
+     "type": "squaresReveal",
+     "cells": [
+      {
+       "pos": {
+        "reel": 1,
+        "row": 1
+       },
+       "kind": "gold",
+       "value": 1
+      }
+     ],
+     "total": 5,
+     "index": 15
+    },
+    {
+     "type": "cloverApply",
+     "pos": {
+      "reel": 1,
+      "row": 1
+     },
+     "scope": "adjacent",
+     "mult": 2,
+     "targets": [
+      {
+       "reel": 1,
+       "row": 2
+      }
+     ],
+     "index": 16
+    },
+    {
+     "type": "collect",
+     "collector": "global",
+     "sources": [
+      {
+       "reel": 0,
+       "row": 0
+      }
+     ],
+     "total": 5,
+     "index": 17
+    },
+    {
+     "type": "upgradeSymbol",
+     "symbol": "H2",
+     "index": 18
+    },
+    {
+     "type": "barLevel",
+     "level": 1,
+     "spinsAdded": 2,
+     "index": 19
+    },
+    {
+     "type": "holdStart",
+     "board": [
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ]
+     ],
+     "coins": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 3,
+     "mode": "hold",
+     "index": 20
+    },
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 1,
+        "row": 1
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 3,
+     "index": 21
+    },
+    {
+     "type": "holdEnd",
+     "total": 30,
+     "fullGrid": false,
+     "index": 22
+    },
+    {
+     "type": "jackpotWin",
+     "tier": "mini",
+     "amount": 1000,
+     "index": 23
+    },
+    {
+     "type": "respinCounter",
+     "remaining": 3,
+     "reset": true,
+     "index": 24
+    },
+    {
+     "type": "layerBreak",
+     "positions": [
+      {
+       "reel": 0,
+       "row": 0
+      }
+     ],
+     "layer": 1,
+     "index": 25
+    },
+    {
+     "type": "dynamite",
+     "throws": [
+      {
+       "target": {
+        "reel": 1,
+        "row": 1
+       },
+       "area": [
+        {
+         "reel": 1,
+         "row": 1
+        },
+        {
+         "reel": 1,
+         "row": 2
+        }
+       ]
+      }
+     ],
+     "index": 26
+    },
+    {
+     "type": "layerReveal",
+     "cells": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "index": 27
+    },
+    {
+     "type": "expandReel",
+     "reel": 2,
+     "kind": "coin",
+     "cells": [
+      {
+       "pos": {
+        "reel": 2,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "index": 28
+    },
+    {
+     "type": "stashUpdate",
+     "reel": 2,
+     "value": 5,
+     "index": 29
+    },
+    {
+     "type": "wildMults",
+     "positions": [
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 1
+      }
+     ],
+     "values": [
+      2,
+      3
+     ],
+     "index": 30
+    },
+    {
+     "type": "addStickyWilds",
+     "positions": [
+      {
+       "reel": 1,
+       "row": 1
+      }
+     ],
+     "index": 31
+    },
+    {
+     "type": "expandingWildReel",
+     "reel": 2,
+     "mult": 2,
+     "index": 32
+    }
+   ]
+  }
+ ]
+}

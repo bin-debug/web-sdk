@@ -1,0 +1,84 @@
+{
+ "expect": "anticipation has 1 items",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "reveal",
+     "board": [
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ]
+     ],
+     "paddingPositions": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "anticipation": [
+      0
+     ],
+     "gameType": "basegame",
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

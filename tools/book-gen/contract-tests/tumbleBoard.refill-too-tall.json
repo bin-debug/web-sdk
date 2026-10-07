@@ -1,0 +1,48 @@
+{
+ "expect": "more than the 3 rows",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "tumbleBoard",
+     "explodingSymbols": [
+      {
+       "reel": 0,
+       "row": 1
+      }
+     ],
+     "newSymbols": [
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [],
+      [],
+      [],
+      []
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

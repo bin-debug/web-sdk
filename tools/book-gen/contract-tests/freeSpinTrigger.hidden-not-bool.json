@@ -1,0 +1,32 @@
+{
+ "expect": "hidden must be a boolean",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "freeSpinTrigger",
+     "totalFs": 10,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 0
+      },
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 2
+      }
+     ],
+     "hidden": 1,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

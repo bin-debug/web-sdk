@@ -1,0 +1,28 @@
+{
+ "expect": "explodingSymbols must not be empty",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "tumbleBoard",
+     "explodingSymbols": [],
+     "newSymbols": [
+      [
+       {
+        "name": "L1"
+       }
+      ],
+      [],
+      [],
+      [],
+      []
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

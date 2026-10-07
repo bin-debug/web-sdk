@@ -1,0 +1,17 @@
+{
+ "expect": "reset is missing",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "respinCounter",
+     "remaining": 3,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

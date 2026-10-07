@@ -1,0 +1,17 @@
+{
+ "expect": "value is missing",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "stashUpdate",
+     "reel": 2,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

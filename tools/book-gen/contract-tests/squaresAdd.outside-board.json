@@ -1,0 +1,22 @@
+{
+ "expect": "outside the 5x3 board",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "squaresAdd",
+     "positions": [
+      {
+       "reel": 1,
+       "row": 3
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

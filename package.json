@@ -14,7 +14,9 @@
     "publish-packages": "turbo run build lint test && changeset version && changeset publish",
     "e2e": "turbo run e2e",
     "e2e-smoke": "turbo run e2e-smoke",
-    "e2e-mobile": "turbo run e2e-mobile"
+    "e2e-mobile": "turbo run e2e-mobile",
+    "check:contract": "node tools/book-gen/check-contract.mjs",
+    "check:contract-tests": "node tools/book-gen/contract-tests/run.mjs"
   },
   "dependencies": {
     "eslint": "9.21.0",

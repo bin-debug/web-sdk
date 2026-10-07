@@ -1,0 +1,17 @@
+{
+ "expect": "positions must not be empty",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "squaresAdd",
+     "positions": [],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

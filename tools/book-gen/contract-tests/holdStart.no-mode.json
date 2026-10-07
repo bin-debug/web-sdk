@@ -1,0 +1,84 @@
+{
+ "expect": "mode is missing",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "holdStart",
+     "board": [
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L1"
+       }
+      ]
+     ],
+     "coins": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 3,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}
