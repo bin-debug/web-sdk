@@ -105,6 +105,11 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-07: multiplier-wilds built (feature/multiplier-wilds)
+- `apps/shell/src/features/wilds/`: `wildState.svelte.ts` (`placeWilds(positions, values, hidden)`, `openWilds(winPositions)`, `clearWilds()`), `MultiplierWild.svelte`, `WildLayer.svelte` (in `Game.svelte`), `register.ts`. Tier by value: <5 wood, <25 iron, else gold; art `symbol.MW1..MW3.static` when present, else a code crate with "xN"; closed hidden crate shows "?".
+- Flow: `wildMults` (after `reveal`, visible rows) places the crates; the core `winInfo` handler calls `openWilds(positions)` (winInfo rows are padded: row-1 = visible) so crates inside a win open left to right (80 ms stagger, 350 ms open); `reveal` calls `clearWilds()`. The client never adds multipliers: amounts come from `winInfo`. Other wild features (sticky, expanding) can reuse the layer/pattern; sticky-wilds should keep its own state, not `wildLayer`, so `clearWilds` on reveal doesn't wipe it.
+- Not done: the `MW.open` clip (the open burst is code), multiplier text on the win amount pill (it shows the line total only). book-gen: `features/multiplierWilds.mjs` (spec feature id `multiplierWilds`, enabled on lines_classic). Reload mid-round resumes at the unfinished event, wins are credited; hidden crates in a resumed round are not re-shown (board is not rebuilt either). Verified 1600x900 (art) and 375x812 (`?art=none`), turbo, reload, contract check clean.
+
 ### 2026-10-07: tiered-bonuses-boost built (feature/tiered-bonuses-boost)
 - Most of the flow already existed (spec-driven `betModes.ts`, SDK buy/boost modal: one card per `spec.buys` + one per boost, boost = RGS mode `activate`). Added: `features/bonusTiers/tiers.ts` (tier colour/name/hidden from `spec.bonuses`), intro kicker + tier colour on `FreeSpinIntro` ("3 scatters" / "Secret bonus unlocked"), `RetriggerBanner.svelte` (`retriggerShow`), volatility line on buy cards.
 - Retrigger is now an event: `freeSpinTrigger { retrigger: { extra }, totalFs: <new total> }` followed by `updateFreeSpin`; the handler shows the banner and lengthens the counter, no intro. Resume rebuilds from the FIRST non-retrigger trigger with the LAST `totalFs` (verified: intro shows 15 after a +5 retrigger).

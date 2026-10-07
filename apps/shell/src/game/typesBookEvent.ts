@@ -61,6 +61,8 @@ type BookEventWincap = { index: number; type: 'wincap'; amount: number };
 // feature events (docs/features/BOOK-EVENTS.md)
 type BookEventSquaresReveal = { index: number; type: 'squaresReveal'; cells: Coin[]; total: number };
 
+type BookEventWildMults = { index: number; type: 'wildMults'; positions: Position[]; values: number[]; hidden?: boolean[] };
+
 // customised
 type BookEventCreateBonusSnapshot = { index: number; type: 'createBonusSnapshot'; bookEvents: BookEvent[] };
 
@@ -78,6 +80,7 @@ export type BookEvent =
 	| BookEventSetWin
 	| BookEventWincap
 	| BookEventSquaresReveal
+	| BookEventWildMults
 	| BookEventCreateBonusSnapshot;
 
 export type Bet = BetType<BookEvent>;
