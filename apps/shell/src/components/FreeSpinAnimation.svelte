@@ -8,7 +8,7 @@
 	import { SYMBOL_SIZE, BOARD_DIMENSIONS } from '../game/constants';
 	import { ACCENT, DARK } from '../game/ui';
 
-	type Props = { children: Snippet<[{ sizes: Sizes }]> };
+	type Props = { children: Snippet<[{ sizes: Sizes }]>; accent?: number };
 
 	const props: Props = $props();
 	const context = getContext();
@@ -22,7 +22,7 @@
 		y={context.stateLayoutDerived.mainLayout().height * 0.46}
 		pivot={anchorToPivot({ anchor: 0.5, sizes: SIZES })}
 	>
-		<Rectangle {...SIZES} borderRadius={24} backgroundColor={DARK} backgroundAlpha={0.96} borderColor={ACCENT} borderWidth={5} />
+		<Rectangle {...SIZES} borderRadius={24} backgroundColor={DARK} backgroundAlpha={0.96} borderColor={props.accent ?? ACCENT} borderWidth={5} />
 		{@render props.children({ sizes: SIZES })}
 	</Container>
 </MainContainer>

@@ -6,6 +6,9 @@ import { SPEC } from './spec';
 // Prices come from the RGS (config.betModes costMultiplier); these are display defaults.
 const NO_ASSETS = { icon: '', volatility: '', button: '', dialogImage: '', dialogVolatility: '' };
 
+// shown on the card: a rough volatility read from the price (the real maths decides the actual risk)
+const volatility = (cost: number) => (cost >= 400 ? 'Very high' : cost >= 200 ? 'High' : 'Medium');
+
 const mode = (data: Omit<BetModeData, 'parent' | 'children' | 'assets'>): BetModeData => ({
 	parent: '',
 	children: '',
@@ -31,7 +34,7 @@ for (const buy of SPEC.buys) {
 		type: 'buy',
 		text: {
 			title: bonus.name.toUpperCase(),
-			description: `Buy the ${bonus.name} bonus (${bonus.spins ?? 10} free spins).`,
+			description: `Buy the ${bonus.name} bonus (${bonus.spins ?? 10} free spins). Volatility: ${volatility(buy.cost)}.`,
 			dialog: `Buy the ${bonus.name} bonus. The cost is taken from your balance.`,
 			button: 'BUY',
 			tickerIdle: '',
@@ -47,7 +50,7 @@ for (const boost of SPEC.boosts) {
 		type: 'activate',
 		text: {
 			title: boost.name.toUpperCase(),
-			description: `${boost.name}: bonuses are more likely. Stays on until you turn it off.`,
+			description: `${boost.name}: bonuses are more likely (${boost.cost}x bet per spin). Stays on until you turn it off.`,
 			dialog: `${boost.name} stays on until you turn it off.`,
 			button: 'ACTIVATE',
 			betAmountLabel: boost.name.toUpperCase(),

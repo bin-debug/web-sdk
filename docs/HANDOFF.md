@@ -105,6 +105,12 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-07: tiered-bonuses-boost built (feature/tiered-bonuses-boost)
+- Most of the flow already existed (spec-driven `betModes.ts`, SDK buy/boost modal: one card per `spec.buys` + one per boost, boost = RGS mode `activate`). Added: `features/bonusTiers/tiers.ts` (tier colour/name/hidden from `spec.bonuses`), intro kicker + tier colour on `FreeSpinIntro` ("3 scatters" / "Secret bonus unlocked"), `RetriggerBanner.svelte` (`retriggerShow`), volatility line on buy cards.
+- Retrigger is now an event: `freeSpinTrigger { retrigger: { extra }, totalFs: <new total> }` followed by `updateFreeSpin`; the handler shows the banner and lengthens the counter, no intro. Resume rebuilds from the FIRST non-retrigger trigger with the LAST `totalFs` (verified: intro shows 15 after a +5 retrigger).
+- book-gen: tier = highest bonus whose trigger count the scatters reach; hidden flag copied from the spec; one natural-trigger book per tier appended to BASE after the feature scenarios (ids printed by the generator). scatter_tumble spec changed to 3 tiers + `BOOST` (hidden BONUS3 has no buy card by design).
+- Not done: card art slots (`S`,`S2`,`RB`,`C3`) in the SDK buy cards (HTML modal has no slot hook; cards are text/colour); per-tier outro. Verified 1600x900 (art) and 375x812 (`?art=none`), turbo, reload mid-bonus, contract check clean (792 books), contract tests 56/56.
+
 ### 2026-10-07: coins built (feature/coins)
 - `apps/shell/src/features/coins/`: `coinState.svelte.ts` (`flipIn(coins)`, `payOut(coins?)`, `clearCoins()`; other features call these), `Coin.svelte` (art `symbol.C1..C4.static`, else a coloured disc; value text always code), `CoinLayer.svelte` (in `Game.svelte`), `register.ts` (handler map). Turbo/skip = 0.4x time (stop button turns turbo on).
 - Coins add no event. Until rainbow-reveal exists, the coin module plays `squaresReveal` itself: flip in, show `total` in the running-win pill, pay out. **rainbow-reveal: take over the handler and call `flipIn`/`payOut` from here.** Kinds clover/collector/jackpot are skipped by this layer (their features draw them); bag/pot use the gold look.

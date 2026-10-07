@@ -11,6 +11,7 @@ import type { EmitterEventWin } from '../components/Win.svelte';
 import type { EmitterEventSound } from '../components/Sound.svelte';
 import type { EmitterEventTransition } from '../components/Transition.svelte';
 import type { EmitterEventMascot } from '../components/Mascot.svelte';
+import type { EmitterEventRetrigger } from '../features/bonusTiers/RetriggerBanner.svelte';
 
 export type EmitterEventGame =
 	| EmitterEventBoard
@@ -25,4 +26,5 @@ export type EmitterEventGame =
 	| EmitterEventFreeSpinOutro
 	| EmitterEventSound
 	| EmitterEventTransition
-	| EmitterEventMascot;
+	| EmitterEventMascot
+	| EmitterEventRetrigger;

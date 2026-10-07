@@ -2,16 +2,77 @@
 	"gameId": "scatter_tumble",
 	"name": "Scatter Tumble",
 	"shell": "scatter-tumble",
-	"board": { "reels": 6, "rows": 5, "cell": 104, "gap": 4 },
+	"board": {
+		"reels": 6,
+		"rows": 5,
+		"cell": 104,
+		"gap": 4
+	},
 	"reveal": "drop",
-	"pays": { "type": "scatter", "min": 8 },
-	"symbols": { "low": 4, "high": 4, "wild": false, "scatter": true },
-	"features": ["tumble", "globalMultiplier"],
-	"bonuses": [{ "id": "BONUS", "name": "Gem Rush", "trigger": "4 S", "spins": 10 }],
-	"boosts": [],
-	"buys": [{ "mode": "BONUS", "cost": 100 }],
-	"layout": { "preset": "board-hero", "mascotSide": "right" },
-	"ui": { "accent": "#c06bff", "bar": "kit" },
-	"palette": ["#1b1030", "#c06bff", "#ffd23f"],
+	"pays": {
+		"type": "scatter",
+		"min": 8
+	},
+	"symbols": {
+		"low": 4,
+		"high": 4,
+		"wild": false,
+		"scatter": true
+	},
+	"features": [
+		"tumble",
+		"globalMultiplier"
+	],
+	"bonuses": [
+		{
+			"id": "BONUS",
+			"name": "Gem Rush",
+			"trigger": "3 S",
+			"spins": 10
+		},
+		{
+			"id": "BONUS2",
+			"name": "Gem Storm",
+			"trigger": "4 S",
+			"spins": 12
+		},
+		{
+			"id": "BONUS3",
+			"name": "Crystal Vault",
+			"trigger": "5 S",
+			"spins": 15,
+			"hidden": true
+		}
+	],
+	"boosts": [
+		{
+			"id": "BOOST",
+			"name": "Gem Boost",
+			"cost": 3
+		}
+	],
+	"buys": [
+		{
+			"mode": "BONUS",
+			"cost": 100
+		},
+		{
+			"mode": "BONUS2",
+			"cost": 250
+		}
+	],
+	"layout": {
+		"preset": "board-hero",
+		"mascotSide": "right"
+	},
+	"ui": {
+		"accent": "#c06bff",
+		"bar": "kit"
+	},
+	"palette": [
+		"#1b1030",
+		"#c06bff",
+		"#ffd23f"
+	],
 	"artStyle": "thick-outline cel-shaded cartoon, saturated jewel colours"
 }

@@ -32,6 +32,7 @@
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
 	import CoinLayer from '../features/coins/CoinLayer.svelte';
+	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
 
 	const context = getContext();
 
@@ -90,6 +91,7 @@
 			<FreeSpinCounter />
 		{/if}
 		<FreeSpinOutro />
+		<RetriggerBanner />
 		<Transition />
 	{/if}
 </App>

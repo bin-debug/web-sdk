@@ -42,6 +42,8 @@ type BookEventFreeSpinTrigger = {
 	positions: Position[];
 	bonusType?: string;
 	bonusName?: string;
+	hidden?: boolean;
+	retrigger?: { extra: number };
 };
 type BookEventUpdateFreeSpin = { index: number; type: 'updateFreeSpin'; amount: number; total: number };
 type BookEventUpdateGlobalMult = { index: number; type: 'updateGlobalMult'; globalMult: number };
