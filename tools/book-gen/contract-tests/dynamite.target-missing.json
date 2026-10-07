@@ -1,0 +1,30 @@
+{
+ "expect": "target must be { reel, row }",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "dynamite",
+     "throws": [
+      {
+       "area": [
+        {
+         "reel": 1,
+         "row": 1
+        },
+        {
+         "reel": 1,
+         "row": 2
+        }
+       ]
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

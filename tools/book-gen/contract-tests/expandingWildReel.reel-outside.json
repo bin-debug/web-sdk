@@ -1,0 +1,18 @@
+{
+ "expect": "reel 9 is outside",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "expandingWildReel",
+     "reel": 9,
+     "mult": 2,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

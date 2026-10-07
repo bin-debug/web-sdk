@@ -353,6 +353,7 @@ const buildGame = async (id) => {
 			if (!shell?.implemented) throw new Error(`the shell "${spec.shell}" is not built yet`);
 			log(job, 'generating synthetic demo books (visual tests only, not maths)');
 			if (!(await run(job, process.execPath, [path.join(SDK, 'tools/book-gen/shell.mjs'), id]))) throw new Error('book generation failed');
+			if (!(await run(job, process.execPath, [path.join(SDK, 'tools/book-gen/check-contract.mjs'), id]))) throw new Error('the generated books break the event contract (see the lines above)');
 			if (!(await ensureRgs(job))) throw new Error(`the demo RGS did not start on ${RGS_PORT}`);
 			await rgs('/mock/reset', { method: 'POST', body: '{}' }); // pick up the new books; wallets reset, so each play gets a new sessionID
 			const port = await ensureShell(job, id);

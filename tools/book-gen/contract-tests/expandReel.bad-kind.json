@@ -1,0 +1,28 @@
+{
+ "expect": "kind must be one of",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "expandReel",
+     "reel": 2,
+     "kind": "wild",
+     "cells": [
+      {
+       "pos": {
+        "reel": 2,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

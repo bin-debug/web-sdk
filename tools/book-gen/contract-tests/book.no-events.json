@@ -1,0 +1,11 @@
+{
+ "expect": "events must be a non-empty array",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": []
+  }
+ ]
+}

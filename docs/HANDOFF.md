@@ -105,6 +105,12 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-07: contract-check built (feature/contract-check)
+- `tools/book-gen/check-contract.mjs <gameId> [--books=file|dir] [--board=RxC]` validates books against BOOK-EVENTS.md (`.json`, `.jsonl`, `.jsonl.zst`; zst needs Node 22.15+). Exit 1 and one line per problem (book id + event index).
+- Rules are auto-loaded from `tools/book-gen/contract/rules/*.mjs` (core SDK events plus every event in BOOK-EVENTS.md, one file per group; helpers in `contract/helpers.mjs`). Feature sessions edit only their group file and add one bad book per rule to `contract-tests/` (`pnpm check:contract-tests`).
+- Decisions: SDK events may use padding rows (row up to rows+1, tumble/win positions do); NEW events must sit on the visible board (row < rows). `index` is checked sequential at top level only; events nested in `createBonusSnapshot` are validated but not index-ordered. Unknown event types are errors. Game Builder now runs the check after book-gen.
+- All current shell books (lines/ways/cluster/scatter_tumble/simple_test) pass; 56 test cases pass.
+
 ### 2026-10-07: feature specs and git workflow (planning session)
 - Wrote `docs/features/` (README, BOOK-EVENTS contract, STATUS, PROMPTS, shells, 19 feature/tool specs). Added `DEMO-ART-SPEC` section 11 (art requests from feature sessions). SHELL-PLAN section 5 points to it.
 - No code changed. `check-contract` tool is the first item to build (nothing validates books against the contract yet).

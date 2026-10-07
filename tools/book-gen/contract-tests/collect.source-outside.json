@@ -1,0 +1,24 @@
+{
+ "expect": "outside the 5x3 board",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "collect",
+     "collector": "global",
+     "sources": [
+      {
+       "reel": 0,
+       "row": 7
+      }
+     ],
+     "total": 5,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

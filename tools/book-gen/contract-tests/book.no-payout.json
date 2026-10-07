@@ -1,0 +1,16 @@
+{
+ "expect": "payoutMultiplier must be a number",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "events": [
+    {
+     "type": "setTotalWin",
+     "amount": 20,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

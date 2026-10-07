@@ -1,0 +1,27 @@
+{
+ "expect": "lives must reset",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 1,
+        "row": 1
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 0,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

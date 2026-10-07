@@ -76,5 +76,6 @@ Conventions
 `node tools/book-gen/check-contract.mjs <gameId> [--books=path]` loads every book for the game,
 walks each event and validates it against the shapes above (field present, type, positions inside
 the board, `index` sequential, parallel arrays equal length, sources/targets inside the board).
-A real math-sdk book file can be passed with `--books`. Each feature session extends the checker for
-its own events and adds one failing example book per rule to `tools/book-gen/contract-tests/`.
+A real math-sdk book file can be passed with `--books`. Rules live in `tools/book-gen/contract/rules/*.mjs` (auto-loaded, one file per group). Each feature session
+edits the rules for its own events and adds one failing example book per rule to `tools/book-gen/contract-tests/`
+(`{ expect, board, books }`; `pnpm check:contract-tests`). SDK events may use padding rows; new events must sit on the visible board.

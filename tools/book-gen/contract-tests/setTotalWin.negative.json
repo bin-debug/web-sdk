@@ -1,0 +1,17 @@
+{
+ "expect": "amount must be >= 0",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "setTotalWin",
+     "amount": -1,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

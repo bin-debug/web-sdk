@@ -1,0 +1,23 @@
+{
+ "expect": "(in snapshot) amount must be a number",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "createBonusSnapshot",
+     "bookEvents": [
+      {
+       "type": "setTotalWin",
+       "amount": "x",
+       "index": 0
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

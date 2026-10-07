@@ -1,0 +1,27 @@
+{
+ "expect": "outside the 5x3 board",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 8,
+        "row": 8
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 3,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

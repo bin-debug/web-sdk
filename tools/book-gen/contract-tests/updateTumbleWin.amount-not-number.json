@@ -1,0 +1,17 @@
+{
+ "expect": "amount must be a number",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "updateTumbleWin",
+     "amount": "5",
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

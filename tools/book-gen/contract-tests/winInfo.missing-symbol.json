@@ -1,0 +1,36 @@
+{
+ "expect": "symbol is missing",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "winInfo",
+     "totalWin": 20,
+     "wins": [
+      {
+       "win": 20,
+       "positions": [
+        {
+         "reel": 0,
+         "row": 0
+        },
+        {
+         "reel": 1,
+         "row": 0
+        },
+        {
+         "reel": 2,
+         "row": 0
+        }
+       ]
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

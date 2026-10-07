@@ -1,0 +1,23 @@
+{
+ "expect": "layer must be 1, 2 or 3",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "layerBreak",
+     "positions": [
+      {
+       "reel": 0,
+       "row": 0
+      }
+     ],
+     "layer": 4,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

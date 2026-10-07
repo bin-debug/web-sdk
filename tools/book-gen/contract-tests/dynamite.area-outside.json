@@ -1,0 +1,30 @@
+{
+ "expect": "outside the 5x3 board",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "dynamite",
+     "throws": [
+      {
+       "target": {
+        "reel": 1,
+        "row": 1
+       },
+       "area": [
+        {
+         "reel": 9,
+         "row": 9
+        }
+       ]
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

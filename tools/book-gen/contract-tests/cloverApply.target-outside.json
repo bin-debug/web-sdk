@@ -1,0 +1,28 @@
+{
+ "expect": "outside the 5x3 board",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "cloverApply",
+     "pos": {
+      "reel": 1,
+      "row": 1
+     },
+     "scope": "adjacent",
+     "mult": 2,
+     "targets": [
+      {
+       "reel": 5,
+       "row": 0
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

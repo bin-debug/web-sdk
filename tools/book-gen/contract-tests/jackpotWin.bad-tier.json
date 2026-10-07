@@ -1,0 +1,18 @@
+{
+ "expect": "tier must be one of",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "jackpotWin",
+     "tier": "huge",
+     "amount": 1000,
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

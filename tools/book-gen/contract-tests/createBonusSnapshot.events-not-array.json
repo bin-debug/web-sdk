@@ -1,0 +1,17 @@
+{
+ "expect": "bookEvents must be an array",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "createBonusSnapshot",
+     "bookEvents": "x",
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

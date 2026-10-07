@@ -1,0 +1,26 @@
+{
+ "expect": "mults has 2 items, expected 1",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "addStickyWilds",
+     "positions": [
+      {
+       "reel": 1,
+       "row": 1
+      }
+     ],
+     "mults": [
+      2,
+      3
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}

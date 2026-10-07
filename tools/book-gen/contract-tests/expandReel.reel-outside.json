@@ -1,0 +1,28 @@
+{
+ "expect": "reel 5 is outside",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    {
+     "type": "expandReel",
+     "reel": 5,
+     "kind": "coin",
+     "cells": [
+      {
+       "pos": {
+        "reel": 2,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "index": 0
+    }
+   ]
+  }
+ ]
+}
