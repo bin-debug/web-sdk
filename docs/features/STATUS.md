@@ -1,31 +1,33 @@
-# Feature and shell status (one line per row; update in your PR)
+# Feature and shell status (the work queue; update your row in your PR)
 
-States: `todo` · `in progress (branch)` · `PR open (#)` · `merged` · `verified` (whole definition of done met).
+States: `todo` · `claimed` (branch pushed, in progress) · `PR open` · `merged` · `verified` (whole definition of done met).
+A session picks the first `todo` row (lowest wave, then top to bottom) whose **Needs** are all `merged`/`verified`
+and whose branch does not already exist on origin. The branch on origin IS the claim.
 
-| Item | Kind | State | Branch / PR | Notes |
-|---|---|---|---|---|
-| contract-check | tool | todo | | build first |
-| coins | feature | todo | | |
-| clovers | feature | todo | | |
-| collectors | feature | todo | | |
-| golden-squares | feature | todo | | |
-| rainbow-reveal | feature | todo | | |
-| persist-squares | feature | todo | | |
-| tumble-super | feature | todo | | |
-| symbol-upgrade-bar | feature | todo | | |
-| hold-and-win | feature | todo | | |
-| jackpot-ladder | feature | todo | | |
-| refill-respins | feature | todo | | |
-| bottom-row-expand | feature | todo | | |
-| reel-stash | feature | todo | | |
-| multiplier-wilds | feature | todo | | |
-| sticky-wilds | feature | todo | | |
-| expanding-reel-wild | feature | todo | | |
-| layers-dynamite | feature | todo | | |
-| tiered-bonuses-boost | feature | todo | | |
-| shell 1 cluster-squares | shell | todo | | needs features above |
-| shell 2 hold-and-win | shell | todo | | |
-| shell 3 trigger-row | shell | todo | | |
-| shell 4 lines-wilds | shell | todo | | |
-| shell 9 layers-dynamite | shell | todo | | |
-| real-books check (math-sdk) | check | todo | | run `check-contract --books=` on real math-sdk output for every shell that has a math game |
+| Wave | Item | Spec | Branch | Needs | Test game id | State | Notes |
+|---|---|---|---|---|---|---|---|
+| 0 | contract-check | contract-check | feature/contract-check | - | lines_classic | todo | tool, build first |
+| 1 | coins | coins | feature/coins | contract-check | cluster_classic | todo | |
+| 1 | tiered-bonuses-boost | tiered-bonuses-boost | feature/tiered-bonuses-boost | contract-check | scatter_tumble | todo | |
+| 1 | multiplier-wilds | multiplier-wilds | feature/multiplier-wilds | contract-check | lines_classic | todo | |
+| 2 | clovers | clovers | feature/clovers | coins | cluster_classic | todo | |
+| 2 | collectors | collectors | feature/collectors | coins | cluster_classic | todo | |
+| 2 | golden-squares | golden-squares | feature/golden-squares | coins | cluster_classic | todo | |
+| 2 | hold-and-win | hold-and-win | feature/hold-and-win | coins | lines_classic | todo | |
+| 2 | sticky-wilds | sticky-wilds | feature/sticky-wilds | multiplier-wilds | lines_classic | todo | needs refill-respins for the counter; use a stub counter until it merges |
+| 2 | expanding-reel-wild | expanding-reel-wild | feature/expanding-reel-wild | multiplier-wilds | lines_classic | todo | |
+| 2 | bottom-row-expand | bottom-row-expand | feature/bottom-row-expand | coins | scatter_tumble | todo | |
+| 3 | rainbow-reveal | rainbow-reveal | feature/rainbow-reveal | golden-squares, clovers, collectors | cluster_classic | todo | |
+| 3 | jackpot-ladder | jackpot-ladder | feature/jackpot-ladder | hold-and-win | lines_classic | todo | |
+| 3 | refill-respins | refill-respins | feature/refill-respins | hold-and-win | lines_classic | todo | |
+| 3 | tumble-super | tumble-super | feature/tumble-super | golden-squares | scatter_tumble | todo | |
+| 3 | reel-stash | reel-stash | feature/reel-stash | bottom-row-expand | scatter_tumble | todo | |
+| 4 | persist-squares | persist-squares | feature/persist-squares | rainbow-reveal | cluster_classic | todo | |
+| 4 | symbol-upgrade-bar | symbol-upgrade-bar | feature/symbol-upgrade-bar | tumble-super | cluster_classic | todo | |
+| 4 | layers-dynamite | layers-dynamite | feature/layers-dynamite | clovers, collectors, tumble-super | cluster_classic | todo | |
+| 5 | shell-2-hold-and-win | shells (row 2) | shell/hold-and-win | jackpot-ladder, refill-respins, collectors | hold_and_win_demo | todo | |
+| 5 | shell-4-lines-wilds | shells (row 4) | shell/lines-wilds | sticky-wilds, expanding-reel-wild, refill-respins, tiered-bonuses-boost | lines_wilds_demo | todo | |
+| 5 | shell-3-trigger-row | shells (row 3) | shell/trigger-row | reel-stash, tiered-bonuses-boost | trigger_row_demo | todo | |
+| 5 | shell-1-cluster-squares | shells (row 1) | shell/cluster-squares | persist-squares, symbol-upgrade-bar, tiered-bonuses-boost, rainbow-reveal | cluster_squares_demo | todo | |
+| 5 | shell-9-layers-dynamite | shells (row 9) | shell/layers-dynamite | layers-dynamite, tiered-bonuses-boost | layers_dynamite_demo | todo | |
+| 6 | real-books-check | (see PROMPTS.md, bottom) | check/real-books | all shells | each shell | todo | run `check-contract --books=` on real math-sdk output |

@@ -27,6 +27,8 @@ Context for the shells: `docs/SHELL-PLAN.md` sections 3 (art slots) and 5 (featu
 | Wilds | [multiplier-wilds](multiplier-wilds.md), [sticky-wilds](sticky-wilds.md), [expanding-reel-wild](expanding-reel-wild.md) | 4 |
 | Bonus flow | [tiered-bonuses-boost](tiered-bonuses-boost.md) (3/4/5 scatters, boost, buy menu) | all |
 
+The queue and the claim rule live in `STATUS.md`; the owner pastes ONE prompt (`PROMPTS.md`, Prompt 1) into each new window and the session picks the next ready item itself.
+
 ## Recommended build order (shared first)
 
 0. `contract-check` (small; do it first so every later PR is checked)
