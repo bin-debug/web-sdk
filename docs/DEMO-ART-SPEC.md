@@ -259,3 +259,14 @@ dynamite, jackpot, bonus_trigger, bigwin_sting, button, buy_confirm. Normalise m
 | 2026-10-06 | 4 mascot clips x6, S/S2/RB/C/CL/COL clips | 12,910 -> 9,310 (3,600 incl. next batch) | mascot from padded 3:4 master (uploaded asset), cell 320 fps 15, crop 480:752:40:0; sim 0.36 for glowing clips |
 | 2026-10-06 | 5 MW/DW/W-win clips + 4 FX (poof, upgrade, bigwin, transition), 2 music tracks | 9,310 -> 7,310 | FX via Seedance Mini text-to-video (modelId 2468, 200cr) on black; poof/upgrade sheeted with --black-to-alpha, bigwin/transition kept as 854px WebM (play additive). Music: Lyria 3 Pro instrumental (2285, 300cr each), trimmed to 78 s / 53 s with a 2 s loop crossfade, loudnorm -16 LUFS / -1.2 dBTP. SFX: 18 sounds synthesised in tools/demo-art/synth_sfx.py (search_sfx cannot download). |
 | | **Total** | **14,300 -> 7,310 = 6,990** | Under the 8,500 plan. 3 clip batches (6x200) + 2 FX batches were confirmed under the owner's standing pre-authorisation. |
+
+---
+
+## 11. Art requests from feature sessions
+
+Feature sessions never generate art. If a slot they need is missing from `manifest.json`, they add one
+line here (slot id, what it is, which feature) and use the code fallback. Session A (demo art) works
+through this list.
+
+| Slot | What | Requested by | Done |
+|---|---|---|---|

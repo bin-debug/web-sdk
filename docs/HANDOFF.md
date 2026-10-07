@@ -15,6 +15,7 @@ Newest log entry on top. Keep it short and factual.
 |---|---|
 | Master plan (architecture, every layout, mechanics catalogue, animation strategy, roadmap) | `docs/STUDIO-KIT-PLAN.md` |
 | **Game shells plan (spec + art slots + feature library, build order) — current direction** | `docs/SHELL-PLAN.md` |
+| **Per-feature specs, book-event contract, status, git workflow, session prompts** | `docs/features/` (start at `README.md`; `STATUS.md`, `PROMPTS.md`) |
 | Teardown of the reference game (structure only, no assets) | `docs/teardowns/coin-reel-5x5-teardown.md` |
 | **coin-reel build plan: art/audio/animation manifest, tests, budget** | `docs/games/coin-reel/BUILD-PLAN.md` |
 | POC game | `apps/coin-reel` (+ its `README.md`) |
@@ -68,6 +69,8 @@ Not done / known gaps:
 
 ## Next up (in order)
 
+**2026-10-07: remaining shells/features are built one per session from `docs/features/` (one spec each, `BOOK-EVENTS.md` is the contract, `PROMPTS.md` has the copy-paste prompt and wave order). Every session works on its own branch/worktree, opens a PR into `studio-kit` and squash-merges it. Track progress in `docs/features/STATUS.md`.**
+
 **Game Builder v1 is done (see log). Next: `tools/art-gen` to run the queued Artlist requests; then shells 1-4 and 9 feature by feature (each new shell goes into `tools/builder-server/shells.json` once verified).**
 
 **Shell engine phases 1–2 done (see log). Next: shells 1–4 and 9 per SHELL-PLAN §6, one feature module at a time (goldenSquares, rainbowReveal, coins, clovers, collectors, …), each with synthetic books, forced scenarios and a story; then the Game Builder (3b).**
@@ -101,6 +104,12 @@ and reuse the shared library across games. Flag anything that looks patented or 
 (e.g. Megaways) instead of copying it.
 
 ## Session log
+
+### 2026-10-07: feature specs and git workflow (planning session)
+- Wrote `docs/features/` (README, BOOK-EVENTS contract, STATUS, PROMPTS, shells, 19 feature/tool specs). Added `DEMO-ART-SPEC` section 11 (art requests from feature sessions). SHELL-PLAN section 5 points to it.
+- No code changed. `check-contract` tool is the first item to build (nothing validates books against the contract yet).
+- Not yet proven: shells against real math-sdk books (last row in STATUS.md).
+
 
 ### 2026-10-06 (newest) — Game Builder v1
 - `apps/game-builder` (SvelteKit SPA, port 3230) + `tools/builder-server` (zero-dep Node, port 3231). Run: `node tools/builder-server/server.mjs` and `cd apps/game-builder && pnpm dev`. The server starts the demo RGS (5119) and one shell dev server per game (ports 3240+, remembered in `tools/builder-server/.state/ports.json`, git-ignored; detached, so they survive a server restart). The UI talks to the server on the same host, port 3231, so it works over LAN/Tailscale.

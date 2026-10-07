@@ -144,6 +144,8 @@ the behaviour reproduces.
 
 Gamble (the Digger "bonus gamble") is out: stateless books can't do it.
 
+**Per-feature specs, the book-event contract and the git workflow live in `docs/features/`** (start at `docs/features/README.md`; status in `docs/features/STATUS.md`). One session builds one feature; features and shells are tracked there, not in section 8.
+
 ---
 
 ## 6. Shell catalogue (build order)
