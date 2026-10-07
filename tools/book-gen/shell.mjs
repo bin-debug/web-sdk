@@ -5,7 +5,7 @@
 // Usage: node tools/book-gen/shell.mjs [gameId ...] [--count=300] [--bonus=60] [--seed=7]
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SDK = path.resolve(HERE, '..', '..');
@@ -325,7 +325,7 @@ function makeGame(spec) {
 	return { makeBook };
 }
 
-function generate(id) {
+async function generate(id) {
 	seed = SEED >>> 0;
 	const spec = loadSpec(id);
 	const { makeBook } = makeGame(spec);
@@ -349,6 +349,17 @@ function generate(id) {
 		base.push(makeBook(COUNT + 2, 'BASE', { bonus: first, forceS: triggerCount(first), forceMax: true }));
 		base.push(makeBook(COUNT + 3, 'BASE', { bonus: first, forceS: triggerCount(first) + 1 }));
 	}
+	// feature scenario books (tools/book-gen/features/<featureId>.mjs, `export function scenarios(ctx)`): appended to BASE after the generic books
+	const lowHigh = Array.from({ length: spec.symbols.low }, (_, i) => `L${i + 1}`).concat(Array.from({ length: spec.symbols.high }, (_, i) => `H${i + 1}`));
+	const randomBoard = () => Array.from({ length: spec.board.reels }, () => Array.from({ length: spec.board.rows + 2 }, () => ({ name: lowHigh[int(0, lowHigh.length - 1)] })));
+	for (const featureId of spec.features) {
+		const file = path.join(HERE, 'features', `${featureId}.mjs`);
+		if (!fs.existsSync(file)) continue;
+		const { scenarios } = await import(pathToFileURL(file).href);
+		const extra = scenarios({ spec, rand, int, pick, BOOK, winLevel, WINCAP, randomBoard, firstId: base.length + 1 });
+		base.push(...extra);
+		console.log(`[book-gen] ${id} ${featureId}: ${extra.length} scenario books in BASE (ids ${extra[0]?.id}-${extra[extra.length - 1]?.id})`);
+	}
 	write('BASE', base);
 
 	for (const bonus of spec.bonuses) {
@@ -367,4 +378,4 @@ function generate(id) {
 }
 
 const all = fs.readdirSync(path.join(SDK, 'games')).filter((d) => fs.existsSync(path.join(SDK, 'games', d, 'game.spec.json')));
-for (const id of gameIds.length ? gameIds : all) generate(id);
+for (const id of gameIds.length ? gameIds : all) await generate(id);

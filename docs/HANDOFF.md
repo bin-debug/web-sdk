@@ -105,6 +105,13 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-07: coins built (feature/coins)
+- `apps/shell/src/features/coins/`: `coinState.svelte.ts` (`flipIn(coins)`, `payOut(coins?)`, `clearCoins()`; other features call these), `Coin.svelte` (art `symbol.C1..C4.static`, else a coloured disc; value text always code), `CoinLayer.svelte` (in `Game.svelte`), `register.ts` (handler map). Turbo/skip = 0.4x time (stop button turns turbo on).
+- Coins add no event. Until rainbow-reveal exists, the coin module plays `squaresReveal` itself: flip in, show `total` in the running-win pill, pay out. **rainbow-reveal: take over the handler and call `flipIn`/`payOut` from here.** Kinds clover/collector/jackpot are skipped by this layer (their features draw them); bag/pot use the gold look.
+- New shared pattern: `shell.mjs` loads `tools/book-gen/features/<featureId>.mjs` (`export function scenarios(ctx)`) for every feature in a spec and appends the books to BASE. `buildArt` registers `symbol.C1..C4.static` when present. Not used: the `C.flip` clip (the flip is code).
+- Resume: coins are transient inside one event, so a reload mid-reveal restarts at the unfinished event (verified: round completes and pays). Verified 1600x900 (art) and 375x812 (`?art=none`), turbo, zero errors, contract check clean.
+- Dev-server note: a file named `coinLayer.svelte.ts` next to `CoinLayer.svelte` collides on Windows (case-insensitive); keep state files named differently.
+
 ### 2026-10-07: contract-check built (feature/contract-check)
 - `tools/book-gen/check-contract.mjs <gameId> [--books=file|dir] [--board=RxC]` validates books against BOOK-EVENTS.md (`.json`, `.jsonl`, `.jsonl.zst`; zst needs Node 22.15+). Exit 1 and one line per problem (book id + event index).
 - Rules are auto-loaded from `tools/book-gen/contract/rules/*.mjs` (core SDK events plus every event in BOOK-EVENTS.md, one file per group; helpers in `contract/helpers.mjs`). Feature sessions edit only their group file and add one bad book per rule to `contract-tests/` (`pnpm check:contract-tests`).

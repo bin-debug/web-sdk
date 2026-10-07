@@ -18,7 +18,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 	globalMultiplier: f({ id: 'globalMultiplier', title: 'Global multiplier', events: ['updateGlobalMult'], implemented: true }),
 	goldenSquares: f({ id: 'goldenSquares', title: 'Golden squares', needs: ['tumble'], events: ['squaresAdd', 'squaresClear'], implemented: false }),
 	rainbowReveal: f({ id: 'rainbowReveal', title: 'Rainbow reveal', needs: ['goldenSquares'], events: ['squaresReveal'], implemented: false }),
-	coins: f({ id: 'coins', title: 'Coins', events: ['squaresReveal', 'reveal'], implemented: false }),
+	coins: f({ id: 'coins', title: 'Coins', events: ['squaresReveal', 'reveal'], implemented: true }),
 	clovers: f({ id: 'clovers', title: 'Clovers', needs: ['coins'], events: ['cloverApply'], implemented: false }),
 	collectors: f({ id: 'collectors', title: 'Collectors', needs: ['coins'], events: ['collect'], implemented: false }),
 	layers: f({ id: 'layers', title: 'Layers', events: ['layerBreak'], implemented: false }),

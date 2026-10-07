@@ -10,6 +10,7 @@ import { stateGame, stateGameDerived } from './stateGame.svelte';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
 import config from './config';
+import { coinHandlers } from '../features/coins/register';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -175,6 +176,9 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		if (mult) playBookEvent(mult, { bookEvents });
 	},
 };
+
+// feature modules add their handlers here (one line each)
+Object.assign(handlers, coinHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = { ...handlers };

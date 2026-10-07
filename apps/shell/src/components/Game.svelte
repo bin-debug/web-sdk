@@ -31,6 +31,7 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
+	import CoinLayer from '../features/coins/CoinLayer.svelte';
 
 	const context = getContext();
 
@@ -72,6 +73,7 @@
 			<Board />
 			<Anticipations />
 			<RunningWin />
+			<CoinLayer />
 			{#if SPEC.features.includes('globalMultiplier')}
 				<GlobalMultiplier />
 			{/if}

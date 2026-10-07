@@ -1,6 +1,7 @@
 import type { BetType } from 'rgs-requests';
 
 import type { RawSymbol, GameType, Position } from './types';
+import type { Coin } from '../features/coins/tiers';
 
 // The shell's book events. Names follow math-sdk (reveal, winInfo, tumbleBoard, freeSpin*, ...).
 // A visual that needs data must have it in the event: the client never decides outcomes.
@@ -55,6 +56,9 @@ type BookEventFinalWin = { index: number; type: 'finalWin'; amount: number };
 type BookEventSetWin = { index: number; type: 'setWin'; amount: number; winLevel: number };
 type BookEventWincap = { index: number; type: 'wincap'; amount: number };
 
+// feature events (docs/features/BOOK-EVENTS.md)
+type BookEventSquaresReveal = { index: number; type: 'squaresReveal'; cells: Coin[]; total: number };
+
 // customised
 type BookEventCreateBonusSnapshot = { index: number; type: 'createBonusSnapshot'; bookEvents: BookEvent[] };
 
@@ -71,6 +75,7 @@ export type BookEvent =
 	| BookEventFinalWin
 	| BookEventSetWin
 	| BookEventWincap
+	| BookEventSquaresReveal
 	| BookEventCreateBonusSnapshot;
 
 export type Bet = BetType<BookEvent>;
