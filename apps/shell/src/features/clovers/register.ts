@@ -12,7 +12,8 @@ export const cloverHandlers: BookEventHandlerMap<BookEvent, BookEventContext> = 
 	) => {
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'clover' });
 		await applyClover(bookEvent.pos, bookEvent.scope, bookEvent.mult, bookEvent.targets);
-		if (!bookEvents.slice(bookEvent.index + 1).some((event) => event.type === 'cloverApply'))
-			await payOut();
+		// a later clover or a collector takes the coins on from here; otherwise they pay out now
+		const later = bookEvents.slice(bookEvent.index + 1);
+		if (!later.some((event) => event.type === 'cloverApply' || event.type === 'collect')) await payOut();
 	},
 };

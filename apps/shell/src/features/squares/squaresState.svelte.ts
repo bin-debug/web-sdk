@@ -51,3 +51,8 @@ export function restoreSquares(bookEvents: { type: string; positions?: Position[
 		return view;
 	});
 }
+
+// a base-game spin starts with no tiles (a bonus keeps them until the book clears them)
+export function resetSquares() {
+	squaresState.views = [];
+}

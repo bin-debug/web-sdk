@@ -13,6 +13,7 @@
   full-screen win scene.
 - **Timing:** burst 300 ms, trails 250 ms (stagger 60 ms), count-up 250 ms.
 - **Art slots:** `CL1` (green) `CL2` (gold) stills, `CL.burst` clip. Fallback: green/gold disc with "x2".
-- **Mock scenarios:** `clover_adjacent`, `clover_global`, `clover_chain` (two clovers, then a collector).
+- **Mock scenarios:** `clover_adjacent`, `clover_global`, `clover_chain` (two clovers, then a global collector; books 312-314 on cluster_classic).
+- **Chained clovers:** a coin hit twice shows value x mult x mult (the tween multiplies its current target, not the original value); coins stay on the board until the last clover/collector has run.
 - **Acceptance:** an edge clover only hits in-board neighbours (the book lists them); global hits all
   coins; shown target values equal book values; turbo and reload ok.
