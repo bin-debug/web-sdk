@@ -4,7 +4,7 @@
 	import { cloverLayer } from './cloverState.svelte';
 </script>
 
-<BoardContainer>
+<BoardContainer zIndex={110}>
 	{#each cloverLayer.views as view (view.id)}
 		<Clover {view} />
 	{/each}

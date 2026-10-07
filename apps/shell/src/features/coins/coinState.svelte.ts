@@ -37,12 +37,16 @@ export class CoinView {
 }
 
 export const coinLayer = $state<{ views: CoinView[] }>({ views: [] });
+// A revealed coin replaces its base reel symbol until it pays out.
+export const coveredCoinPositions = $state<{ keys: string[] }>({ keys: [] });
 let nextId = 1;
 
 // turbo and skip (the stop button turns turbo on, holding space does too) run the same steps at 0.4x time
 const t = (ms: number) => ms * (stateBet.isTurbo || stateBet.isSpaceHold ? 0.4 : 1);
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const key = (p: Position) => `${p.reel}:${p.row}`;
+
+export const isCoinCovered = (pos: Position) => coveredCoinPositions.keys.includes(key(pos));
 
 const FLIP_MS = 250;
 const STAGGER_MS = 80;
@@ -60,6 +64,7 @@ const spawn = (coin: Coin) => {
 // Flip the coins in one after another (book order). Resolves when the last coin has landed.
 export async function flipIn(coins: Coin[], { stagger = STAGGER_MS }: { stagger?: number } = {}) {
 	const list = coins.filter((c) => isCoinKind(c.kind));
+	coveredCoinPositions.keys = [...new Set([...coveredCoinPositions.keys, ...list.map((coin) => key(coin.pos))])];
 	const jobs: Promise<void>[] = [];
 	for (let i = 0; i < list.length; i++) {
 		const view = spawn(list[i]);
@@ -97,6 +102,7 @@ export async function payOut(coins?: Coin[]) {
 	);
 	const gone = new Set(targets.map((v) => v.id));
 	coinLayer.views = coinLayer.views.filter((v) => !gone.has(v.id));
+	coveredCoinPositions.keys = coveredCoinPositions.keys.filter((position) => !targets.some((view) => key(view.coin.pos) === position));
 }
 
 // Animate supplied target coin values in place. A missing target is harmless: a later feature may own
@@ -122,4 +128,5 @@ export async function multiplyCoins(
 
 export function clearCoins() {
 	coinLayer.views = [];
+	coveredCoinPositions.keys = [];
 }
