@@ -44,7 +44,7 @@ export function scenarios(ctx) {
 	];
 	const potCoins = [coin(1, 1, 'bronze', 1), coin(1, 2, 'gold', 4), coin(5, 5, 'diamond', 12)];
 	return [
-		make('collect_local', pos(3, 3), localCoins, [pos(2, 2), pos(3, 2), pos(2, 3)]),
+		make('collect_local', pos(3, 3), localCoins, [pos(2, 2), pos(3, 2), pos(2, 3), pos(4, 4)]),
 		make(
 			'collect_global',
 			'global',

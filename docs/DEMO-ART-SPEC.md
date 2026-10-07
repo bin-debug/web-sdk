@@ -264,6 +264,8 @@ dynamite, jackpot, bonus_trigger, bigwin_sting, button, buy_confirm. Normalise m
 
 ## 11. Art requests from feature sessions
 
+- `COL1` / `COL2`: collector sack and chest stills are requested for the demo manifest; code fallbacks are active until these slots are delivered.
+
 Feature sessions never generate art. If a slot they need is missing from `manifest.json`, they add one
 line here (slot id, what it is, which feature) and use the code fallback. Session A (demo art) works
 through this list.
