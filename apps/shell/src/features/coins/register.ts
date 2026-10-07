@@ -11,9 +11,14 @@ export const coinHandlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		{ bookEvents }: BookEventContext,
 	) => {
 		await flipIn(bookEvent.cells);
-		// Clover events need the revealed coins to remain on the layer. Their final clover handler pays them
-		// out after each book-supplied multiplier has been shown.
-		if (bookEvents.slice(bookEvent.index + 1).some((event) => event.type === 'cloverApply')) return;
+		// Clover and collector events own the revealed coins. Do not run the generic payout first: those
+		// later book events animate the same cells in their supplied order and remove them themselves.
+		if (
+			bookEvents
+				.slice(bookEvent.index + 1)
+				.some((event) => event.type === 'cloverApply' || event.type === 'collect')
+		)
+			return;
 		await new Promise((r) => setTimeout(r, 350));
 		eventEmitter.broadcast({ type: 'tumbleWinAmountShow' });
 		eventEmitter.broadcast({
