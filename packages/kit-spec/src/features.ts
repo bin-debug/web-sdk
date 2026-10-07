@@ -27,7 +27,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 	jackpotLadder: f({ id: 'jackpotLadder', title: 'Jackpot ladder', events: ['jackpotWin'], implemented: false }),
 	bottomRowExpand: f({ id: 'bottomRowExpand', title: 'Bottom row expand', needs: ['coins'], reveal: ['drop'], events: ['expandReel'], implemented: false }),
 	reelStash: f({ id: 'reelStash', title: 'Reel stash', events: ['stashUpdate'], implemented: false }),
-	multiplierWilds: f({ id: 'multiplierWilds', title: 'Multiplier wilds', pays: ['lines', 'ways'], events: ['wildMults'], implemented: false }),
+	multiplierWilds: f({ id: 'multiplierWilds', title: 'Multiplier wilds', pays: ['lines', 'ways'], events: ['wildMults'], implemented: true }),
 	stickyWilds: f({ id: 'stickyWilds', title: 'Sticky wilds', events: ['addStickyWilds'], implemented: false }),
 	expandingReelWild: f({ id: 'expandingReelWild', title: 'Expanding reel wild', reveal: ['spin'], events: ['expandingWildReel'], implemented: false }),
 	symbolUpgrade: f({ id: 'symbolUpgrade', title: 'Symbol upgrade', events: ['upgradeSymbol'], implemented: false }),

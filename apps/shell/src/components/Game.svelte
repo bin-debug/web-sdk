@@ -32,6 +32,7 @@
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
 	import CoinLayer from '../features/coins/CoinLayer.svelte';
+	import WildLayer from '../features/wilds/WildLayer.svelte';
 	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
 
 	const context = getContext();
@@ -75,6 +76,7 @@
 			<Anticipations />
 			<RunningWin />
 			<CoinLayer />
+			<WildLayer />
 			{#if SPEC.features.includes('globalMultiplier')}
 				<GlobalMultiplier />
 			{/if}

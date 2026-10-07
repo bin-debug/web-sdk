@@ -12,6 +12,8 @@ import type { Position } from './types';
 import config from './config';
 import { coinHandlers } from '../features/coins/register';
 import { bonusTier } from '../features/bonusTiers/tiers';
+import { wildHandlers } from '../features/wilds/register';
+import { clearWilds, openWilds } from '../features/wilds/wildState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -38,6 +40,7 @@ const animateSymbols = async ({ positions }: { positions: Position[] }) => {
 const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	reveal: async (bookEvent: BookEventOfType<'reveal'>, { bookEvents }: BookEventContext) => {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
+		clearWilds();
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'spin_start' });
 		const isBonusGame = checkIsMultipleRevealEvents({ bookEvents });
 		if (isBonusGame) {
@@ -55,6 +58,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'win_small' });
 		const positions = _.flatten(bookEvent.wins.map((win) => win.positions));
 		await Promise.all([
+			openWilds(positions),
 			animateSymbols({ positions }),
 			eventEmitter.broadcastAsync({
 				type: 'showWinAmounts',
@@ -192,6 +196,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 
 // feature modules add their handlers here (one line each)
 Object.assign(handlers, coinHandlers);
+Object.assign(handlers, wildHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = { ...handlers };

@@ -164,6 +164,12 @@ export function buildArt(spec: ShellSpec, slotsIn: SlotMap): Art {
 		if (spriteSlot(id)) assets[id] = { type: 'sprite', src: spriteSlot(id)!.url! };
 	}
 
+	// multiplier-wild crate stills (MW1..MW3): only when the art has them; the feature draws crates otherwise
+	for (const n of [1, 2, 3]) {
+		const id = `symbol.MW${n}.static`;
+		if (spriteSlot(id)) assets[id] = { type: 'sprite', src: spriteSlot(id)!.url! };
+	}
+
 	// mascot clips (lazy)
 	for (const n of ['idle', 'anticipate', 'win_small', 'win_big', 'bonus_trigger', 'throw']) {
 		const id = `mascot.${n}`;
