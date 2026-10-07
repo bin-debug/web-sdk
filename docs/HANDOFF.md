@@ -11,19 +11,19 @@ Newest log entry on top. Keep it short and factual.
 
 ## Where things are
 
-| What | Path |
-|---|---|
-| Master plan (architecture, every layout, mechanics catalogue, animation strategy, roadmap) | `docs/STUDIO-KIT-PLAN.md` |
-| **Game shells plan (spec + art slots + feature library, build order) — current direction** | `docs/SHELL-PLAN.md` |
-| **Per-feature specs, book-event contract, status, git workflow, session prompts** | `docs/features/` (start at `README.md`; `STATUS.md`, `PROMPTS.md`) |
-| Teardown of the reference game (structure only, no assets) | `docs/teardowns/coin-reel-5x5-teardown.md` |
-| **coin-reel build plan: art/audio/animation manifest, tests, budget** | `docs/games/coin-reel/BUILD-PLAN.md` |
-| POC game | `apps/coin-reel` (+ its `README.md`) |
-| Mock RGS (any books, forced outcomes) | `tools/mock-rgs` |
-| Synthetic book generator for coin-reel | `tools/book-gen/coin-reel.mjs` |
-| Video → sprite sheet | `tools/video-to-sprites` |
-| Hidden-browser-pane animation fix | `tools/qa/hidden-pane-raf-shim.js` |
-| Sprite-sheet symbol states (pattern) | `apps/lines/src/components/SymbolSpriteSheet.svelte` |
+| What                                                                                       | Path                                                               |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| Master plan (architecture, every layout, mechanics catalogue, animation strategy, roadmap) | `docs/STUDIO-KIT-PLAN.md`                                          |
+| **Game shells plan (spec + art slots + feature library, build order) — current direction** | `docs/SHELL-PLAN.md`                                               |
+| **Per-feature specs, book-event contract, status, git workflow, session prompts**          | `docs/features/` (start at `README.md`; `STATUS.md`, `PROMPTS.md`) |
+| Teardown of the reference game (structure only, no assets)                                 | `docs/teardowns/coin-reel-5x5-teardown.md`                         |
+| **coin-reel build plan: art/audio/animation manifest, tests, budget**                      | `docs/games/coin-reel/BUILD-PLAN.md`                               |
+| POC game                                                                                   | `apps/coin-reel` (+ its `README.md`)                               |
+| Mock RGS (any books, forced outcomes)                                                      | `tools/mock-rgs`                                                   |
+| Synthetic book generator for coin-reel                                                     | `tools/book-gen/coin-reel.mjs`                                     |
+| Video → sprite sheet                                                                       | `tools/video-to-sprites`                                           |
+| Hidden-browser-pane animation fix                                                          | `tools/qa/hidden-pane-raf-shim.js`                                 |
+| Sprite-sheet symbol states (pattern)                                                       | `apps/lines/src/components/SymbolSpriteSheet.svelte`               |
 
 ## Run the POC
 
@@ -42,11 +42,16 @@ New `sessionID` = fresh 10,000 wallet. Force outcomes:
 
 ## Status (2026-10-04)
 
+## Session log
+
+- 2026-10-07: clovers feature added: book-directed adjacent/global multiplier trails, coin value count-up, three cluster_classic forced scenarios; contract, build, desktop and mobile no-art QA passed.
+
 Done and checked in the browser:
+
 - Mock RGS serves all five templates and generated books; resume of an open bonus works.
 - coin-reel: 5×5 pays-anywhere + tumbles, teal trigger row, coin reel (tiered coins, collect with
-  board dim), free-spin reel, **two bonuses**: *Multiplier Mine* (per-reel ×N stash) and
-  *Treasure Vault* (per-reel coin pot that pays again), resume restores the boxes.
+  board dim), free-spin reel, **two bonuses**: _Multiplier Mine_ (per-reel ×N stash) and
+  _Treasure Vault_ (per-reel coin pot that pays again), resume restores the boxes.
 - **Four-card buy menu** (BONUS HUNT 3×, COIN RUSH 50× = boosts; MULTIPLIER MINE 80×, TREASURE VAULT
   200× = buys) via `src/game/betModes.ts` + mock modes; bought Treasure Vault end to end.
 - Placeholder **mascot** with code-driven reactions (idle bob, point on collect, jump on bonus/big win).
@@ -63,6 +68,7 @@ Done and checked in the browser:
   1.12 while falling, squash 0.76 on impact, elastic spring back) on spins and tumbles.
 
 Not done / known gaps:
+
 - **All art is placeholder** (template mining symbols, procedural coins, symbol-as-mascot).
 - `I18nTest` overlay is commented out in coin-reel; template header text "ADD YOUR LOGO" still shows.
 - No automated tests; verification is manual in the browser.
@@ -77,11 +83,12 @@ Not done / known gaps:
 
 **Demo art library is done (2026-10-06, see session log).** Next for it: SHELL-PLAN phase 1 (slot loader + `lines` on the manifest), then the 8b check in the `lines` shell at desktop and 375x812. Optional polish list is in the log entry.
 
-**2026-10-06: the owner switched direction. coin-reel production is paused; build the game shells
-+ Game Builder instead.** Follow `docs/SHELL-PLAN.md` (phases 1–3b) and generate the shared demo
-art with `docs/DEMO-ART-SPEC.md` (decided: fox mascot "Rusty", treasure & gems symbols, clips for
-highs/specials/mascot). The two can run in parallel sessions. The coin-reel task below is paused
-and kept for reference only.
+\*\*2026-10-06: the owner switched direction. coin-reel production is paused; build the game shells
+
+- Game Builder instead.\*\* Follow `docs/SHELL-PLAN.md` (phases 1–3b) and generate the shared demo
+  art with `docs/DEMO-ART-SPEC.md` (decided: fox mascot "Rusty", treasure & gems symbols, clips for
+  highs/specials/mascot). The two can run in parallel sessions. The coin-reel task below is paused
+  and kept for reference only.
 
 **Current task: build our own version of the Hacksaw 5×5 coin game as a production-quality
 `apps/coin-reel`, with 100% our own art, audio and animation.**
@@ -106,17 +113,20 @@ and reuse the shared library across games. Flag anything that looks patented or 
 ## Session log
 
 ### 2026-10-07: multiplier-wilds built (feature/multiplier-wilds)
+
 - `apps/shell/src/features/wilds/`: `wildState.svelte.ts` (`placeWilds(positions, values, hidden)`, `openWilds(winPositions)`, `clearWilds()`), `MultiplierWild.svelte`, `WildLayer.svelte` (in `Game.svelte`), `register.ts`. Tier by value: <5 wood, <25 iron, else gold; art `symbol.MW1..MW3.static` when present, else a code crate with "xN"; closed hidden crate shows "?".
 - Flow: `wildMults` (after `reveal`, visible rows) places the crates; the core `winInfo` handler calls `openWilds(positions)` (winInfo rows are padded: row-1 = visible) so crates inside a win open left to right (80 ms stagger, 350 ms open); `reveal` calls `clearWilds()`. The client never adds multipliers: amounts come from `winInfo`. Other wild features (sticky, expanding) can reuse the layer/pattern; sticky-wilds should keep its own state, not `wildLayer`, so `clearWilds` on reveal doesn't wipe it.
 - Not done: the `MW.open` clip (the open burst is code), multiplier text on the win amount pill (it shows the line total only). book-gen: `features/multiplierWilds.mjs` (spec feature id `multiplierWilds`, enabled on lines_classic). Reload mid-round resumes at the unfinished event, wins are credited; hidden crates in a resumed round are not re-shown (board is not rebuilt either). Verified 1600x900 (art) and 375x812 (`?art=none`), turbo, reload, contract check clean.
 
 ### 2026-10-07: tiered-bonuses-boost built (feature/tiered-bonuses-boost)
+
 - Most of the flow already existed (spec-driven `betModes.ts`, SDK buy/boost modal: one card per `spec.buys` + one per boost, boost = RGS mode `activate`). Added: `features/bonusTiers/tiers.ts` (tier colour/name/hidden from `spec.bonuses`), intro kicker + tier colour on `FreeSpinIntro` ("3 scatters" / "Secret bonus unlocked"), `RetriggerBanner.svelte` (`retriggerShow`), volatility line on buy cards.
 - Retrigger is now an event: `freeSpinTrigger { retrigger: { extra }, totalFs: <new total> }` followed by `updateFreeSpin`; the handler shows the banner and lengthens the counter, no intro. Resume rebuilds from the FIRST non-retrigger trigger with the LAST `totalFs` (verified: intro shows 15 after a +5 retrigger).
 - book-gen: tier = highest bonus whose trigger count the scatters reach; hidden flag copied from the spec; one natural-trigger book per tier appended to BASE after the feature scenarios (ids printed by the generator). scatter_tumble spec changed to 3 tiers + `BOOST` (hidden BONUS3 has no buy card by design).
 - Not done: card art slots (`S`,`S2`,`RB`,`C3`) in the SDK buy cards (HTML modal has no slot hook; cards are text/colour); per-tier outro. Verified 1600x900 (art) and 375x812 (`?art=none`), turbo, reload mid-bonus, contract check clean (792 books), contract tests 56/56.
 
 ### 2026-10-07: coins built (feature/coins)
+
 - `apps/shell/src/features/coins/`: `coinState.svelte.ts` (`flipIn(coins)`, `payOut(coins?)`, `clearCoins()`; other features call these), `Coin.svelte` (art `symbol.C1..C4.static`, else a coloured disc; value text always code), `CoinLayer.svelte` (in `Game.svelte`), `register.ts` (handler map). Turbo/skip = 0.4x time (stop button turns turbo on).
 - Coins add no event. Until rainbow-reveal exists, the coin module plays `squaresReveal` itself: flip in, show `total` in the running-win pill, pay out. **rainbow-reveal: take over the handler and call `flipIn`/`payOut` from here.** Kinds clover/collector/jackpot are skipped by this layer (their features draw them); bag/pot use the gold look.
 - New shared pattern: `shell.mjs` loads `tools/book-gen/features/<featureId>.mjs` (`export function scenarios(ctx)`) for every feature in a spec and appends the books to BASE. `buildArt` registers `symbol.C1..C4.static` when present. Not used: the `C.flip` clip (the flip is code).
@@ -124,18 +134,20 @@ and reuse the shared library across games. Flag anything that looks patented or 
 - Dev-server note: a file named `coinLayer.svelte.ts` next to `CoinLayer.svelte` collides on Windows (case-insensitive); keep state files named differently.
 
 ### 2026-10-07: contract-check built (feature/contract-check)
+
 - `tools/book-gen/check-contract.mjs <gameId> [--books=file|dir] [--board=RxC]` validates books against BOOK-EVENTS.md (`.json`, `.jsonl`, `.jsonl.zst`; zst needs Node 22.15+). Exit 1 and one line per problem (book id + event index).
 - Rules are auto-loaded from `tools/book-gen/contract/rules/*.mjs` (core SDK events plus every event in BOOK-EVENTS.md, one file per group; helpers in `contract/helpers.mjs`). Feature sessions edit only their group file and add one bad book per rule to `contract-tests/` (`pnpm check:contract-tests`).
 - Decisions: SDK events may use padding rows (row up to rows+1, tumble/win positions do); NEW events must sit on the visible board (row < rows). `index` is checked sequential at top level only; events nested in `createBonusSnapshot` are validated but not index-ordered. Unknown event types are errors. Game Builder now runs the check after book-gen.
 - All current shell books (lines/ways/cluster/scatter_tumble/simple_test) pass; 56 test cases pass.
 
 ### 2026-10-07: feature specs and git workflow (planning session)
+
 - Wrote `docs/features/` (README, BOOK-EVENTS contract, STATUS, PROMPTS, shells, 19 feature/tool specs). Added `DEMO-ART-SPEC` section 11 (art requests from feature sessions). SHELL-PLAN section 5 points to it.
 - No code changed. `check-contract` tool is the first item to build (nothing validates books against the contract yet).
 - Not yet proven: shells against real math-sdk books (last row in STATUS.md).
 
-
 ### 2026-10-06 (newest) — Game Builder v1
+
 - `apps/game-builder` (SvelteKit SPA, port 3230) + `tools/builder-server` (zero-dep Node, port 3231). Run: `node tools/builder-server/server.mjs` and `cd apps/game-builder && pnpm dev`. The server starts the demo RGS (5119) and one shell dev server per game (ports 3240+, remembered in `tools/builder-server/.state/ports.json`, git-ignored; detached, so they survive a server restart). The UI talks to the server on the same host, port 3231, so it works over LAN/Tailscale.
 - Features and decisions: see SHELL-PLAN 7b status. One page, state in the URL (`?view=list|edit|game&game=<id>&tab=play|art|export`); flat list UI, no tiles. Only shells marked `verified` in `tools/builder-server/shells.json` can be picked; features not `implemented` in `kit-spec` are greyed with the reason. Bonus 2/3 scenarios queue BONUS2/BONUS3 books and the user presses BUY BONUS (the iframe is cross-origin, so the builder cannot press it). Replacing a symbol still also swaps that symbol's demo clips for code juice presets so old art never plays over new art.
 - Verified this session with `tools/qa/shell-qa.js`: ways_classic (base, forced bonus with retrigger, max win, bought bonus) and scatter_tumble bought bonus: zero errors. `shells.json` now marks all four shells verified. Builder UI checked at 1600x900 and 375x812; export zip built for a throwaway game (only that game's spec in the bundle, no local URLs in it).
@@ -144,6 +156,7 @@ and reuse the shared library across games. Flag anything that looks patented or 
 - Ports now: builder UI 3230, builder server 3231, demo RGS 5119, shells 3240+ (builder-built) and 3222 (manual dev), demo art contact sheet 3221.
 
 ### 2026-10-06 — Shell engine: phases 1–2 (shells 5–8 run from specs)
+
 - New packages: `kit-spec` (types, feature registry, validator), `kit-assets` (manifest loader + code-drawn fallbacks + Howler audio), `kit-symbols` (KitSymbol: clip or still+juice), `kit-layout` (`compose()`), `kit-ui` (KitBar = coin-reel bar promoted), `kit-fx` (NineSlice). `apps/shell` is the one engine app: the game is chosen at runtime by `?game_id=` from `games/*/game.spec.json` (4 specs: lines_classic, ways_classic, scatter_tumble, cluster_classic). `?art=none|game|demo` forces fallback-only / game art / demo art; art is merged demo manifest under `games/<id>/art`.
 - `node tools/spec-check/spec-check.mjs` validates specs in plain English. `node tools/book-gen/shell.mjs` writes synthetic books for every spec (BASE ids 1–300 natural, 301 forced bonus with retrigger, 302 max win, 303 bonus with extra scatter; BONUS buy mode ids 1+). Visual tests only.
 - Verified (hidden-pane rAF shim, in-page runner `tools/qa/shell-qa.js`, non-blocking, results in `window.__qa`): lines_classic base wins, forced bonus, bought bonus; scatter_tumble tumble rounds and retrigger bonus; cluster_classic with `?art=none` at 375x812 (all code fallbacks). Zero page errors in rounds. Missing game art manifests are expected 404s.
@@ -151,6 +164,7 @@ and reuse the shared library across games. Flag anything that looks patented or 
 - Ports: shell 3222 (all shells via game_id), demo RGS 5119 (`node tools/mock-rgs/server.mjs 5119`), demo art contact sheet 3221. Reset queues: `curl -XPOST localhost:5119/mock/reset -d '{"gameId":"<id>"}'` then use a new sessionID.
 
 ### 2026-10-06 — Demo art library generated (179 slots)
+
 - `packages/kit-demo-art/static/demo/` is complete per DEMO-ART-SPEC sections 3-8a: 54 keyed stills (L1-L6, H1-H6, E1-E4, W, S, S2, RB, RB2, C1-C4, CL1-2, COL1-2, J1-4, MW1-3, DW, T1-3, X, M), 4 backgrounds (16:9 + 9:16), board frame/cell/cell_gold, logo, Rusty master + 6 mascot clips, H1-H6 win clips, 10 special clips (W land/win, S, S2, RB, C flip, CL, COL, MW, DW), FX poof/upgrade (sheets) and bigwin/transition (WebM), 2 music loops, 18 SFX. `manifest.json` (179 slots) and `contact-sheet.html` (24 sheets animate, no broken images in the browser check) come from `python tools/demo-art/build_manifest.py`.
 - Tools in `tools/demo-art/`: `key_still.py` (flood-fill key vs sampled bg, `--shadow` for hard ground shadows), `ingest.py`, `sheet.py` (`--speed 2` turns the 4 s clips into 2 s sheets that return exactly to the still), `framecheck.py`, `build_manifest.py`, `synth_sfx.py`. Masters are in `C:\source\shared\demo-art-library\masters\` (not in git); `ids.json`/`clips.json` there map slots to Artlist generation ids.
 - Known demo-quality gaps (cheap to redo): CL2 gold clover reads as 3 leaves; T1-T3 are centre crops of slab renders (not edge-to-edge slabs); board cells look like diamond-pattern flagstones; S still has a purple glow haze after keying; RB/RB2 and E1 have faint edge specks; bigwin/transition are on black (play with additive/screen blend); lows carry their rank in the art (no `rankOverlay` needed).
@@ -159,17 +173,19 @@ and reuse the shared library across games. Flag anything that looks patented or 
 - Credits: 14,300 -> 7,310 (6,990 spent of the 8,500 plan).
 
 ### 2026-10-05 — Owner feedback round 2: real template-art bug, mascot occlusion, FS rate
+
 Owner said: still old symbols/UI, free spins keep triggering, mascot too small/invisible, board too
 high. Found and fixed real bugs this time, not just polish:
+
 - **The actual "old symbols" bug**: `SYMBOL_INFO_MAP`'s `win` state for L1-L4 and W, and `spin`/`win`
-  for S, were *still wired to the original template spine assets* (old mining suit icons/wild/scatter
+  for S, were _still wired to the original template spine assets_ (old mining suit icons/wild/scatter
   spines) — Steps 3-4 only ever replaced `static`/`land`/`postWinStatic` for those symbols, never
   `win`/`spin`. So every single win flashed old template art for a frame before the code-level
   explosion. Fixed: L1-L4/W/S `win` (and S `spin`) now point at their own new static sprite
   (`constants.ts`). H1-H4 were already correct (Step 4 covered their win clips).
 - **Explosion effect was also 100% template art**: the shared `explosion` SYMBOL_INFO_MAP entry
   (`assetKey: 'explosion'`) is a spine from the template's `symbols3.atlas` — never swapped, so
-  *every* tumble-clear across *every* symbol played old mining art. Added `SymbolExplode.svelte`
+  _every_ tumble-clear across _every_ symbol played old mining art. Added `SymbolExplode.svelte`
   (code-drawn: the symbol's own static art, scale+fade out, ~260ms) and made `Symbol.svelte` use it
   for `state === 'explosion'` regardless of symbol type, bypassing the old asset entirely.
 - **"TUMBLE WIN" banner** (`TumbleWinAmountFrame`/`TumbleWinAmountText`) was still the template's
@@ -178,7 +194,7 @@ high. Found and fixed real bugs this time, not just polish:
   free-spin-intro panel style), with a simple scale-punch tween replacing the spine explosion.
 - **Free spins triggering constantly**: two compounding causes. (1) Leftover test books from my own
   earlier `/mock/queue` calls were still sitting in the shared mock-rgs queue — it's keyed by
-  `gameId/mode`, not by session, so the owner's real phone session was draining *my* test queue.
+  `gameId/mode`, not by session, so the owner's real phone session was draining _my_ test queue.
   (2) Natural trigger rate in `base.json` was ~7% (S weight 0.35) even with an empty queue, too
   frequent for casual testing. Lowered `basegame.S` weight 0.35 -> 0.08 in
   `tools/book-gen/coin-reel.mjs` and regenerated (`base.json` natural rate now ~1%). Also discovered
@@ -200,8 +216,10 @@ high. Found and fixed real bugs this time, not just polish:
   any reel strip) still points at old template art too but never renders — Step 10 cleanup.
 
 ### 2026-10-05 (even newer) — Owner feedback: mascot/mobile/bg/old-art fixes
+
 Owner review of the vertical slice flagged: free spins still shows old symbols/audio, backgrounds
 need to be better, mascot doesn't look like he's flying, mascot missing on mobile. Addressed:
+
 - **Mascot flying pose**: regenerated on Nano Banana 2. First attempt had a two-head AI glitch (90cr
   wasted); simplified the prompt to force a single character and regenerated clean (90cr). Re-keyed,
   overwrote `captain_kachink.webp` in place (no code change needed, same asset key).
@@ -235,6 +253,7 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
 - Credits: 440 this round (14,740 -> 14,300). Total so far: 2,200 of the ~5,300 budget.
 
 ### 2026-10-05 (newest) — Step 5 backgrounds + logo, vertical slice ready — STOP
+
 - Base background (dusk rooftops) and bonus background (gold vault, laser beams) generated 16:9 on
   z-image Turbo, 10cr each; logo ("CAPTAIN KACHINK" wordmark) same model, keyed transparent. 9:16
   portrait versions made by ffmpeg-cropping the 16:9 masters instead of a second generation — 0 extra
@@ -255,6 +274,7 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
   template removal, QA).
 
 ### 2026-10-05 (latest) — Step 4 win clips done
+
 - H1-H4 win + W/S land generated as image-to-video from the Step 3 stills on Seedance 2.0 Mini
   (480p, 4s, no audio, 200cr each = 1,200 total; 15,970 -> 14,770). Picked after comparing costs:
   Kling 2.5 Turbo Pro 750cr, Omni 1.1 350cr, Seedance Mini 200cr — cheapest capable option.
@@ -269,6 +289,7 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
 - Next: Step 5 backgrounds + logo, then the vertical-slice STOP for owner review.
 
 ### 2026-10-05 (latest) — Step 3 symbols done, switched to a cheaper model
+
 - Owner approved the mascot and said to finish the game on the least credits possible. Switched bulk
   image generation from Nano Banana 2 (90cr) to z-image Turbo (10cr/image at 2K) — ~90% cheaper, still
   matches the cel-shaded style fine at this size.
@@ -285,6 +306,7 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
 - Next: Step 4 win clips (H1-H4 win, W/S land) via image-to-video on the cheapest capable model.
 
 ### 2026-10-05 (even later) — Step 2 mascot locked, owner approved
+
 - Owner approved the Captain Kachink master. Keyed it green→transparent with ffmpeg (no despill
   needed, clean edges) into `apps/coin-reel/static/assets/mascot/captain_kachink.webp` (62 KB).
 - Skipped the 3 pose stills from the manifest: `Mascot.svelte` only ever shows one texture and
@@ -299,6 +321,7 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
 - Next: Step 3 symbols (L1-L4, H1-H4, W, S stills) on a budget model, replacing `symbolsStatic`.
 
 ### 2026-10-05 (later still) — Step 1 style board
+
 - Artlist MCP confirmed working on the paid plan ("AI Suite 16500", 16,500 credits/month). D1â€“D4 were
   already decided (BUILD-PLAN Â§0), so this batch generated one confirmation style board (not
   per-theme options): H1 Power Core gem, L1 bolt badge, base background (dusk rooftops), mascot
@@ -310,6 +333,7 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
   owner approval before any mascot clip).
 
 ### 2026-10-05 (later) — Test 0 PASSED
+
 - The "blocker" was the test, not the code: the books had been regenerated, so book 9 no longer had an H1 win. Find a book with a given win before forcing it, e.g. book 35 (H1 wins on the 2nd tumble). The spriteSheet branch was mounting and playing all 48 frames.
 - Fixed quality: `video-to-sprites` `despill` default turned gold to orange → new `--despill-mix` (default 1, keeps yellow/gold); new `--crop w:h` so 16:9 AI clips fill the square cell. H1 rebuilt with `--key 00ff00 --duration 2 --crop 1240:1076`.
 - Masters (mp4/png) moved out of the game to `C:source_studio-kitart-masterscoin-reel` (not in git, not shipped). Only the sheet json/webp/preview stay in `static/assets/symbols`.
@@ -319,6 +343,7 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
 ### 2026-10-05 — Test 0 pipeline (partial)
 
 **What was done:**
+
 - Generated H1 still via GPT Image 2.0 Low (free): gold diamond on `#00FF00`. File: `apps/coin-reel/static/assets/symbols/H1_win.png`.
 - Generated 5 s I2V clip via Kling 2.5 Turbo Pro I2V (free, only model available; min duration = 5 s, not 2 s). File: `apps/coin-reel/static/assets/symbols/H1_win.mp4`.
 - Ran `video-to-sprites` (`--duration 2` trims to first 2 s worth of frames). Output: `H1_win.json` (48 frames), `H1_win.webp` (texture atlas), `H1_win.preview.webp`.
@@ -330,32 +355,38 @@ need to be better, mascot doesn't look like he's flying, mascot missing on mobil
 - Confirmed `H1_win.json` loads (200 OK) and no `SpriteSheet key not found` errors in console.
 
 **Blocker / next agent:**
+
 - `SymbolSpriteSheet` mounts but `Symbol.svelte`'s `$effect` debug log never fired during an H1 win (book 9, cascade 4). The `spriteSheet` branch in `Symbol.svelte` may not be reached — investigate whether `getSymbolInfo` returns the correct type at runtime, or whether `SymbolWrap.svelte`'s visibility logic is swallowing the component before Svelte mounts it.
 - Useful facts: H1 wins in book 9 cascade 4 (4th `winInfo` event); H1 positions reel/row = (0,4),(0,5),(2,3),(2,5),(3,5),(4,2). Queue with: `curl -XPOST localhost:5099/mock/queue -d '{"gameId":"coin-reel","mode":"BASE","id":[9]}'`.
 - Once the animation plays visually, Test 0 is done. Record pass/fail in `BUILD-PLAN.md §1` and move to Test 1.
 - Credit costs recorded in BUILD-PLAN §3: both gens were **free** (watermarked, not licensed for ship). Buy AI Core before Tests 1–3.
 
 ### 2026-10-05 — Artlist MCP
+
 - Artlist MCP added to the owner's Claude Code user config (`~/.claude.json` → `mcpServers.artlist`, http, `https://mcp.artlist.io/mcp`). The `claude` CLI is not installed; the desktop app is used. Owner signs in via `/mcp` in a new session.
 - Owner is on the Artlist **free** account first: use it for Test 0 (pipeline + quality). Free outputs may be watermarked and are not licensed for shipping; buy AI Core only after Test 0 passes.
 - Next: confirm MCP tools load, check credit balance, run Test 0 (BUILD-PLAN §1), record real credit costs in BUILD-PLAN §3.
 
 ### 2026-10-04 (later) — coin-reel production plan
+
 - Wrote `docs/games/coin-reel/BUILD-PLAN.md`: all template art/audio/animation to be replaced by our
   own (Artlist AI Core via MCP), Tests 0–4, asset manifest (31 stills, 16 clips, music/SFX), lean
   budget ≈ 5,300 credits (follow-on games ≈ 3,000–4,000), template-removal checklist, QA scenarios.
   Waiting on owner decisions D1–D4 and the Artlist MCP connection.
 
 ### 2026-10-04 (later) — symbol drop
+
 - Added fall easing to the cascading reel engine (opt-in) and squash-and-stretch in coin-reel;
   measured in the browser (sx/sy ranges above). Cost estimate for AI art discussed with the owner.
 
 ### 2026-10-04 (later) — Hacksaw-style bar
+
 - Replaced the template Pixi UI in coin-reel with `HacksawBar.svelte`; checked desktop, narrow and
   bonus states in the browser. Mascot now shows only on desktop/landscape; win meter uses the stacked
   position on tablet. Product owner approved a non-standard bar for kit games (POC).
 
 ### 2026-10-04 — Studio Kit kickoff + coin-reel POC
+
 - Wrote the plan, mock RGS, video-to-sprites, sprite-sheet symbols in `lines`.
 - Studied a Hacksaw 5×5 demo on Stake (structure only), built `apps/coin-reel` from the `scatter`
   template: trigger row, coin/free-spin reels, stash + collector bonuses, buy menu, mascot,

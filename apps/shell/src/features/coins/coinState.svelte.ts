@@ -15,6 +15,9 @@ import { isCoinKind, type Coin } from './tiers';
 export class CoinView {
 	readonly id: number;
 	readonly coin: Coin;
+	// The book's cloverApply event tells us which coins change and by which multiplier. This tween
+	// only animates that supplied change; totals continue to come from the following book event.
+	readonly value: Tween<number>;
 	readonly flip = new Tween(0); // 0 = hidden (edge on), 1 = fully shown
 	readonly pop = new Tween(1); // value text pop and payout pop
 	readonly glint = new Tween(0); // 0..1 sweep of the gold glint
@@ -23,6 +26,7 @@ export class CoinView {
 	constructor(id: number, coin: Coin) {
 		this.id = id;
 		this.coin = coin;
+		this.value = new Tween(coin.value ?? 0);
 	}
 	get x() {
 		return SYMBOL_SIZE * (this.coin.pos.reel + 0.5);
@@ -75,7 +79,9 @@ export async function flipIn(coins: Coin[], { stagger = STAGGER_MS }: { stagger?
 
 // Pop the coins up to the win meter and remove them. No arguments = every coin on the layer.
 export async function payOut(coins?: Coin[]) {
-	const targets = coins ? coinLayer.views.filter((v) => coins.some((c) => key(c.pos) === key(v.coin.pos))) : [...coinLayer.views];
+	const targets = coins
+		? coinLayer.views.filter((v) => coins.some((c) => key(c.pos) === key(v.coin.pos)))
+		: [...coinLayer.views];
 	if (!targets.length) return;
 	eventEmitter.broadcast({ type: 'soundOnce', name: 'coin_collect' });
 	await Promise.all(
@@ -91,6 +97,27 @@ export async function payOut(coins?: Coin[]) {
 	);
 	const gone = new Set(targets.map((v) => v.id));
 	coinLayer.views = coinLayer.views.filter((v) => !gone.has(v.id));
+}
+
+// Animate supplied target coin values in place. A missing target is harmless: a later feature may own
+// that cell, while this shared layer only has value coins to draw.
+export async function multiplyCoins(
+	targets: Position[],
+	mult: number,
+	{ stagger = 60 }: { stagger?: number } = {},
+) {
+	const wanted = new Set(targets.map(key));
+	const views = coinLayer.views.filter((view) => wanted.has(key(view.coin.pos)));
+	await Promise.all(
+		views.map(async (view, i) => {
+			await wait(t(stagger) * i);
+			await view.pop.set(1.18, { duration: t(90), easing: cubicOut });
+			await Promise.all([
+				view.value.set((view.coin.value ?? 0) * mult, { duration: t(250), easing: cubicOut }),
+				view.pop.set(1, { duration: t(160), easing: backOut }),
+			]);
+		}),
+	);
 }
 
 export function clearCoins() {
