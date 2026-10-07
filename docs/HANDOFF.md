@@ -44,6 +44,7 @@ New `sessionID` = fresh 10,000 wallet. Force outcomes:
 
 ## Session log
 
+- 2026-10-07: golden-squares feature added: book-directed gold tiles persist beneath symbols across tumbles, restore from snapshots, and clear only on `squaresClear`; cluster_classic golden_basic/overlap scenarios added.
 - 2026-10-07: collectors feature added: local/global/pot book-directed coin collection, fallback collector art, source removal, win update, and three cluster_classic scenarios; contract, desktop/mobile no-art/art, turbo and reload QA passed.
 - 2026-10-07: clovers visual follow-up: coin/clover layers sort above the board, and clover demo books update the running win rather than opening the generic win scene. The reel-symbol masking attempt was reverted after it blanked the board.
 - 2026-10-07: clovers feature added: book-directed adjacent/global multiplier trails, coin value count-up, three cluster_classic forced scenarios; contract, build, desktop and mobile no-art QA passed.
