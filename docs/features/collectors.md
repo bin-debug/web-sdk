@@ -11,6 +11,7 @@
   cells are removed from `coinLayer`.
 - **Timing:** 250-400 ms per step, chained; the board dims to 40% during a global collect.
 - **Art slots:** `COL1` (sack) `COL2` (chest), `COL.collect` clip. Fallback: brown/gold box with "$".
-- **Mock scenarios:** `collect_local`, `collect_global`, `collect_pot` (no stale cells left).
+- **Mock scenarios:** `collect_local`, `collect_global`, `collect_pot` (books 315-317; the pot takes every coin so none is left).
+- **Running win:** each `collect.total` is ADDED to the running win shown (two collectors in a round add up); the sum resets on the next `reveal`.
 - **Acceptance:** shown total == `collect.total`; cells in `sources` are empty afterwards; order is
   top-to-bottom, left-to-right as the book lists; turbo/skip ends with the same board.

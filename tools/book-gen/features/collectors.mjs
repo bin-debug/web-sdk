@@ -51,6 +51,7 @@ export function scenarios(ctx) {
 			globalCoins,
 			globalCoins.map((item) => item.pos),
 		),
-		make('collect_pot', 'pot', potCoins, [pos(1, 1), pos(1, 2)]),
+		// the pot takes every coin on the board, so no coin is left behind once the round is paid
+		make('collect_pot', 'pot', potCoins, [pos(1, 1), pos(1, 2), pos(5, 5)]),
 	];
 }

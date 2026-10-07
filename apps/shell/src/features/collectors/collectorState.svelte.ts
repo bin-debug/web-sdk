@@ -40,6 +40,17 @@ let nextId = 1;
 const t = (ms: number) => ms * (stateBet.isTurbo || stateBet.isSpaceHold ? 0.4 : 1);
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
+// what collectors have paid so far this round (each collect event's total is added to the win)
+let collected = 0;
+export const addCollected = (amount: number) => (collected += amount);
+
+// a new spin starts clean
+export function clearCollectors() {
+	collected = 0;
+	collectorLayer.views = [];
+	collectorLayer.dimmed = false;
+}
+
 export async function collect(collector: Collector, sources: Position[], total: number) {
 	const view = new CollectorView(nextId++, collector, total);
 	collectorLayer.views.push(view);

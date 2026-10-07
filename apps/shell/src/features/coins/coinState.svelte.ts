@@ -146,7 +146,7 @@ export async function multiplyCoins(
 			await wait(t(stagger) * i);
 			await view.pop.set(1.18, { duration: t(90), easing: cubicOut });
 			await Promise.all([
-				view.value.set((view.coin.value ?? 0) * mult, { duration: t(250), easing: cubicOut }),
+				view.value.set(view.value.target * mult, { duration: t(250), easing: cubicOut }),
 				view.pop.set(1, { duration: t(160), easing: backOut }),
 			]);
 		}),

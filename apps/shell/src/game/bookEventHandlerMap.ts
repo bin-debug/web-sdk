@@ -15,9 +15,12 @@ import { bonusTier } from '../features/bonusTiers/tiers';
 import { wildHandlers } from '../features/wilds/register';
 import { clearWilds, openWilds } from '../features/wilds/wildState.svelte';
 import { cloverHandlers } from '../features/clovers/register';
+import { clearClovers } from '../features/clovers/cloverState.svelte';
 import { collectorHandlers } from '../features/collectors/register';
+import { clearCollectors } from '../features/collectors/collectorState.svelte';
+import { clearCoins } from '../features/coins/coinState.svelte';
 import { squareHandlers } from '../features/squares/register';
-import { restoreSquares } from '../features/squares/squaresState.svelte';
+import { restoreSquares, resetSquares } from '../features/squares/squaresState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -49,6 +52,10 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	reveal: async (bookEvent: BookEventOfType<'reveal'>, { bookEvents }: BookEventContext) => {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
 		clearWilds();
+		clearCoins();
+		clearClovers();
+		clearCollectors();
+		if (bookEvent.gameType === 'basegame') resetSquares();
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'spin_start' });
 		const isBonusGame = checkIsMultipleRevealEvents({ bookEvents });
 		if (isBonusGame) {

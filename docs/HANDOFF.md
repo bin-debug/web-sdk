@@ -116,6 +116,13 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-07: review pass on clovers, collectors, golden-squares (fix/clovers-collectors-golden-review)
+
+- Fixed: chained clovers multiplied from the original coin value (x2 then x2 showed x2); `multiplyCoins` now multiplies the tween's current target. A clover followed by a collector no longer pays out the coins early. Collector win meter now accumulates each `collect.total` (was set to the latest). `reveal` now clears coins, clovers, collectors and (base game only) golden tiles so a skipped or interrupted round never leaves stale cells.
+- book-gen: `goldenSquares.mjs` rewritten as real tumble rounds with padded winInfo/tumbleBoard (the old books pushed a full board into `newSymbols`); `clovers.mjs` chain ends with a global collector; `collectors.mjs` pot takes every coin. Ids unchanged (312-319).
+- Checked on cluster_classic: desktop with art and 375x812 `?art=none`, turbo, 0 console errors, contract check 0 problems.
+- Not done: card/clip art slots (`CL.burst`, `COL.collect`), persistence of golden tiles across free spins (persist-squares feature).
+
 ### 2026-10-07: multiplier-wilds built (feature/multiplier-wilds)
 
 - `apps/shell/src/features/wilds/`: `wildState.svelte.ts` (`placeWilds(positions, values, hidden)`, `openWilds(winPositions)`, `clearWilds()`), `MultiplierWild.svelte`, `WildLayer.svelte` (in `Game.svelte`), `register.ts`. Tier by value: <5 wood, <25 iron, else gold; art `symbol.MW1..MW3.static` when present, else a code crate with "xN"; closed hidden crate shows "?".

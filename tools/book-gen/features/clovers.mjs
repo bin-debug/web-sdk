@@ -5,7 +5,7 @@ export function scenarios(ctx) {
 	const { reels, rows } = spec.board;
 	let id = ctx.firstId;
 	const pos = (reel, row) => ({ reel, row });
-	const make = (criteria, coins, clovers) => {
+	const make = (criteria, coins, clovers, collect = false) => {
 		let running = coins.reduce((sum, coin) => sum + coin.value, 0);
 		for (const clover of clovers) {
 			const targetValues = clover.targets.map((target) =>
@@ -32,6 +32,8 @@ export function scenarios(ctx) {
 				total: 0,
 			},
 			...clovers.map(({ initial: _initial, ...clover }) => ({ type: 'cloverApply', ...clover })),
+			// a collector after the clovers pays the multiplied values (clovers always resolve first)
+			...(collect ? [{ type: 'collect', collector: 'global', sources: coins.map((item) => item.pos), total }] : []),
 			{ type: 'updateTumbleWin', amount: total },
 			{ type: 'setTotalWin', amount: total },
 			{ type: 'finalWin', amount: total },
@@ -83,6 +85,6 @@ export function scenarios(ctx) {
 	return [
 		make('clover_adjacent', adjacentCoins, [adjacent]),
 		make('clover_global', globalCoins, [global]),
-		make('clover_chain', chainCoins, chain),
+		make('clover_chain', chainCoins, chain, true),
 	];
 }

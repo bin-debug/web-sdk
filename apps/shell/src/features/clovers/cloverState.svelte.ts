@@ -58,3 +58,8 @@ export async function applyClover(
 	await view.burst.set(0, { duration: t(120) });
 	cloverLayer.views = cloverLayer.views.filter((item) => item.id !== view.id);
 }
+
+// a new spin starts clean: nothing from an interrupted or skipped round stays on screen
+export function clearClovers() {
+	cloverLayer.views = [];
+}
