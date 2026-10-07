@@ -14,7 +14,6 @@ import { coinHandlers } from '../features/coins/register';
 import { bonusTier } from '../features/bonusTiers/tiers';
 import { wildHandlers } from '../features/wilds/register';
 import { clearWilds, openWilds } from '../features/wilds/wildState.svelte';
-import { clearCoins } from '../features/coins/coinState.svelte';
 import { cloverHandlers } from '../features/clovers/register';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
@@ -47,7 +46,6 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	reveal: async (bookEvent: BookEventOfType<'reveal'>, { bookEvents }: BookEventContext) => {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
 		clearWilds();
-		clearCoins();
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'spin_start' });
 		const isBonusGame = checkIsMultipleRevealEvents({ bookEvents });
 		if (isBonusGame) {
