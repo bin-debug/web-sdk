@@ -76,7 +76,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		needs: ['coins'],
 		reveal: ['spin', 'respin'],
 		events: ['holdStart', 'respin', 'holdEnd'],
-		implemented: false,
+		implemented: true,
 	}),
 	jackpotLadder: f({
 		id: 'jackpotLadder',

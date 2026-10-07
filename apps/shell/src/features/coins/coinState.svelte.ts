@@ -153,6 +153,15 @@ export async function multiplyCoins(
 	);
 }
 
+// Put coins on the layer already landed (no flip), for resuming a round after a reload.
+export function placeCoins(coins: Coin[]) {
+	for (const coin of coins.filter((c) => isCoinKind(c.kind))) {
+		const view = spawn(coin);
+		view.flip.set(1, { duration: 0 });
+		view.glint.set(1, { duration: 0 });
+	}
+}
+
 export function clearCoins() {
 	coinLayer.views = [];
 }

@@ -20,6 +20,8 @@ import { collectorHandlers } from '../features/collectors/register';
 import { clearCollectors } from '../features/collectors/collectorState.svelte';
 import { clearCoins } from '../features/coins/coinState.svelte';
 import { squareHandlers } from '../features/squares/register';
+import { holdHandlers } from '../features/holdAndWin/register';
+import { restoreHold, clearHold } from '../features/holdAndWin/holdState.svelte';
 import { restoreSquares, resetSquares } from '../features/squares/squaresState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
@@ -53,6 +55,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
 		clearWilds();
 		clearCoins();
+		clearHold();
 		clearClovers();
 		clearCollectors();
 		if (bookEvent.gameType === 'basegame') resetSquares();
@@ -246,6 +249,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		const total = last('setTotalWin');
 		const mult = last('updateGlobalMult');
 		restoreSquares(bookEvents);
+		restoreHold(bookEvents);
 
 		if (trigger) await playBookEvent(trigger, { bookEvents });
 		if (update) playBookEvent(update, { bookEvents });
@@ -260,6 +264,7 @@ Object.assign(handlers, wildHandlers);
 Object.assign(handlers, cloverHandlers);
 Object.assign(handlers, collectorHandlers);
 Object.assign(handlers, squareHandlers);
+Object.assign(handlers, holdHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {
