@@ -6,7 +6,7 @@
 	"reveal": "spin",
 	"pays": { "type": "lines", "lines": 20 },
 	"symbols": { "low": 5, "high": 4, "wild": true, "scatter": true },
-	"features": ["globalMultiplier", "multiplierWilds"],
+	"features": ["globalMultiplier", "multiplierWilds", "coins", "holdAndWin"],
 	"bonuses": [{ "id": "BONUS", "name": "Temple Spins", "trigger": "3 S", "spins": 10 }],
 	"boosts": [],
 	"buys": [{ "mode": "BONUS", "cost": 100 }],

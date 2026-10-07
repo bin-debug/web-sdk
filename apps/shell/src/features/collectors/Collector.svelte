@@ -14,7 +14,8 @@
 	const slot = $derived(global ? 'symbol.COL2.static' : 'symbol.COL1.static');
 	const hasArt = $derived(Boolean(context.stateApp.loadedAssets?.[slot]));
 	const D = SYMBOL_SIZE * 0.8;
-	const total = $derived(`${view.total}x`);
+	// collect.total is in book units (100 = 1x bet)
+	const total = $derived(`${Math.round(view.total) / 100}x`);
 	const label = $derived(global ? 'CHEST' : pot ? 'POT' : 'SACK');
 </script>
 

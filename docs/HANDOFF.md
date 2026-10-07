@@ -116,6 +116,15 @@ and reuse the shared library across games. Flag anything that looks patented or 
 
 ## Session log
 
+### 2026-10-07: hold-and-win built (feature/hold-and-win)
+
+- `apps/shell/src/features/holdAndWin/`: `holdState.svelte.ts`, `HoldLayer.svelte` (empty tiles + shimmer + hearts, in `Game.svelte` before `CoinLayer`), `HoldBanner.svelte` (after `RetriggerBanner`), `register.ts` (`holdStart`, `respin`, `holdEnd`). It reuses `coinLayer` (`flipIn`, `payOut`, new `placeCoins` for resume); empty cells are derived from the coin layer so a pot collector that frees cells just works. The client never computes lives or totals.
+- Resume: single-reveal win books are closed by the SDK right after the bet (`createPrimaryMachines` `singleRoundWin`), so a reload mid-hold had nothing to resume. `actor.ts` `checkIsBonusGame` now also returns true for a book with `holdStart`; each `respin` calls `recordBookEvent`; `utils.ts` reserves `holdStart/respin/holdEnd/squaresAdd/squaresClear` for the snapshot (the golden-squares snapshot restore was getting nothing before). Checked: reload at lives 2 continues with the held coins and pays 19x.
+- book-gen: `features/holdAndWin.mjs` (lines_classic now lists `coins` and `holdAndWin`): BASE ids 317-321. Contract rules for `holdStart/respin/holdEnd` already existed; 384 books, 0 problems.
+- Also fixed: the collector's total label showed book units (1700x for 17x); it now divides by 100.
+- Dev handle: `window.__hold = { hold, holdFx }` (dev only) so QA scripts can stop on a frame (used by `tools/qa/frame-catch.js`).
+- Not done: hold-and-win art slots (`X` blank cell, `bg.bonus`, mascot cheer), jackpot markers (jackpot-ladder), respin counter (refill-respins).
+
 ### 2026-10-07: review pass on clovers, collectors, golden-squares (fix/clovers-collectors-golden-review)
 
 - Fixed: chained clovers multiplied from the original coin value (x2 then x2 showed x2); `multiplyCoins` now multiplies the tween's current target. A clover followed by a collector no longer pays out the coins early. Collector win meter now accumulates each `collect.total` (was set to the latest). `reveal` now clears coins, clovers, collectors and (base game only) golden tiles so a skipped or interrupted round never leaves stale cells.

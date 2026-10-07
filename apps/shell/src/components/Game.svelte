@@ -35,6 +35,8 @@
 	import WildLayer from '../features/wilds/WildLayer.svelte';
 	import CloverLayer from '../features/clovers/CloverLayer.svelte';
 	import CollectorLayer from '../features/collectors/CollectorLayer.svelte';
+	import HoldLayer from '../features/holdAndWin/HoldLayer.svelte';
+	import HoldBanner from '../features/holdAndWin/HoldBanner.svelte';
 	import SquaresLayer from '../features/squares/SquaresLayer.svelte';
 	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
 
@@ -85,6 +87,7 @@
 			<Board />
 			<Anticipations />
 			<RunningWin />
+			<HoldLayer />
 			<CoinLayer />
 			<CloverLayer />
 			<CollectorLayer />
@@ -108,6 +111,7 @@
 		{/if}
 		<FreeSpinOutro />
 		<RetriggerBanner />
+		<HoldBanner />
 		<Transition />
 	{/if}
 </App>

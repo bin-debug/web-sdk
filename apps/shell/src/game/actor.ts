@@ -36,7 +36,10 @@ const primaryMachines = createPrimaryMachines<Bet>({
 			throw e;
 		}
 	},
-	checkIsBonusGame: (bet) => checkIsMultipleRevealEvents({ bookEvents: bet.state }),
+	// a bonus book keeps its round open until the last event (so a reload resumes it): free spins have several reveals,
+	// hold and win has respins (each one is recorded as a resume point)
+	checkIsBonusGame: (bet) =>
+		checkIsMultipleRevealEvents({ bookEvents: bet.state }) || bet.state.some((bookEvent) => bookEvent.type === 'holdStart'),
 });
 
 const intermediateMachines = createIntermediateMachines(primaryMachines);
