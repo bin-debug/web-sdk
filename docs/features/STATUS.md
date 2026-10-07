@@ -6,7 +6,7 @@ and whose branch does not already exist on origin. The branch on origin IS the c
 
 | Wave | Item | Spec | Branch | Needs | Test game id | State | Notes |
 |---|---|---|---|---|---|---|---|
-| 0 | contract-check | contract-check | feature/contract-check | - | lines_classic | todo | tool, build first |
+| 0 | contract-check | contract-check | feature/contract-check | - | lines_classic | claimed | tool, build first |
 | 1 | coins | coins | feature/coins | contract-check | cluster_classic | todo | |
 | 1 | tiered-bonuses-boost | tiered-bonuses-boost | feature/tiered-bonuses-boost | contract-check | scatter_tumble | todo | |
 | 1 | multiplier-wilds | multiplier-wilds | feature/multiplier-wilds | contract-check | lines_classic | todo | |
