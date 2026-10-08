@@ -12,7 +12,7 @@
 - **Standard flow (researched, matches the usual hold and win):** see BOOK-EVENTS.md "Hold and win". The bonus screen (bonus background, dark grid
   of cells) replaces the base reels; the trigger coins stick; a number counter ("RESPINS 3") sits under the board and pops when it resets; every
   empty cell spins on a respin (a scrolling symbol strip per cell, stopped left to right); special coins (multiplier, collect, plus-spin);
-  jackpot coins carry their tier name and pay that tier; at the end every coin is collected one by one into the running win.
+  jackpot coins carry their tier name, and a tier is won only with 3 or more coins of it on the grid when the hold ends; at the end every coin is collected one by one into the running win.
 - **Build:** `features/holdAndWin/`: state machine (`idle -> intro -> respin loop -> outro`), life meter,
   sticky coin layer (reuses `coinLayer`), respin spin that only spins EMPTY cells (the rest stay),
   intro banner, full-grid celebration, total fly-up. Works with `reveal: spin|respin`. Resume from

@@ -3,10 +3,12 @@
 //   reveal (a base spin that lands the trigger coins as `C` symbols) -> holdStart (those coins stick, 3 respins)
 //   -> respin x N (empty cells spin; new coins stick; lives back to 3 when any lands, +1 per plus coin)
 //      each landing multiplier coin is followed by holdMultiply, each collect coin by holdCollectAll
-//   -> the end-of-round collect: every held coin, reel by reel / row by row: holdCollect (cash) or jackpotWin (jackpot coin pays its tier)
+//   -> the end-of-round collect: every held coin, reel by reel / row by row: holdCollect (cash), or jackpotWin when 3+ coins of one jackpot tier
+//      are held (all of that tier collected together; fewer than 3 pay nothing)
 //      each with the book's running total; a full grid adds a grand jackpotWin (reason fullGrid)
 //   -> holdEnd -> setWin / setTotalWin / finalWin.
 // Amounts: 100 = 1x bet. reveal rows are PADDED (visible row + 1); every hold event uses visible rows.
+export const JACKPOT_COINS_NEEDED = 3; // 3 coins of one tier held when the hold ends win that tier
 const CASH = ['bronze', 'silver', 'gold', 'diamond', 'bag'];
 
 export function holdBook(ctx, id, criteria, mode, start, steps, { fullGrid = false, lives = 3 } = {}) {
@@ -43,13 +45,18 @@ export function holdBook(ctx, id, criteria, mode, start, steps, { fullGrid = fal
 	}
 	let running = 0;
 	const finalCoins = [...held.values()].sort((a, b) => a.pos.reel - b.pos.reel || a.pos.row - b.pos.row);
+	const tierCoins = (tier) => finalCoins.filter((c) => c.kind === 'jackpot' && c.tier === tier);
+	const paidTiers = new Set();
 	for (const c of finalCoins) {
-		if (c.kind === 'jackpot') {
+		if (c.kind === 'jackpot' && tierCoins(c.tier).length >= JACKPOT_COINS_NEEDED) {
+			if (paidTiers.has(c.tier)) continue; // collected together with the first coin of its tier
+			paidTiers.add(c.tier);
 			const amount = spec.jackpots[c.tier].mult * BOOK;
 			running += amount;
-			events.push({ type: 'jackpotWin', tier: c.tier, amount, positions: [c.pos], running, reason: 'coin' });
+			events.push({ type: 'jackpotWin', tier: c.tier, amount, positions: tierCoins(c.tier).map((x) => x.pos), running, reason: 'coin' });
 		} else {
-			const amount = Math.round((c.value ?? 0) * BOOK);
+			// cash coins pay their value; a jackpot coin without 3 of its tier pays nothing
+			const amount = c.kind === 'jackpot' ? 0 : Math.round((c.value ?? 0) * BOOK);
 			running += amount;
 			events.push({ type: 'holdCollect', pos: c.pos, amount, running });
 		}

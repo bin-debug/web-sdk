@@ -54,9 +54,10 @@ Hold and win follows the usual industry flow and is ONE real round, in this orde
 4. Special coins, right after the respin that landed them: `holdMultiply` (a `multiplier` coin multiplies the listed coins), `holdCollectAll`
    (a `collect` coin takes the listed cash coins into itself, their cells free up and respin, it shows `total`). A `plus` coin only
    raises `lives`. Coin kinds: bronze|silver|gold|diamond (cash), jackpot (+ `tier`), multiplier (+ `mult`), plus, collect.
-5. The end collect, one event per held coin in reel order, row by row: `holdCollect` (cash coin, `amount`) or `jackpotWin` (a jackpot coin
-   pays ITS OWN tier: `amount` = the spec's `jackpots.<tier>.mult` x bet, `positions` = that coin), each with the book's `running` total.
-6. A full grid adds `jackpotWin { tier: 'grand', reason: 'fullGrid', positions: every cell }`.
+5. The end collect, one event per held coin in reel order, row by row: `holdCollect` (cash coin, `amount`; a jackpot coin whose tier has
+   fewer than 3 coins held pays `amount: 0`) or `jackpotWin`. A jackpot tier is WON only when 3 or more coins of that tier are held when the hold
+   ends: ONE `jackpotWin` per won tier, `positions` = every coin of that tier, `amount` = the spec's `jackpots.<tier>.mult` x bet. Each event
+   carries the book's `running` total.
 7. `holdEnd { total }` (= the last running total, includes coins and jackpots, `fullGrid`), then `setWin` / `setTotalWin` / `finalWin`.
 The contract check enforces all of this (tools/book-gen/contract/rules/holdwin.mjs).
 

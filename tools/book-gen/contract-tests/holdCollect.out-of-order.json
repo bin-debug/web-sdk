@@ -4,7 +4,7 @@
  "books": [
   {
    "id": 1,
-   "payoutMultiplier": 288,
+   "payoutMultiplier": 31,
    "events": [
     {
      "type": "reveal",
@@ -215,8 +215,8 @@
         "reel": 1,
         "row": 0
        },
-       "kind": "bronze",
-       "value": 1
+       "kind": "jackpot",
+       "tier": "mini"
       },
       {
        "pos": {
@@ -231,16 +231,16 @@
         "reel": 3,
         "row": 0
        },
-       "kind": "silver",
-       "value": 2
+       "kind": "jackpot",
+       "tier": "minor"
       },
       {
        "pos": {
         "reel": 4,
         "row": 0
        },
-       "kind": "gold",
-       "value": 3
+       "kind": "jackpot",
+       "tier": "major"
       },
       {
        "pos": {
@@ -264,7 +264,7 @@
         "row": 1
        },
        "kind": "jackpot",
-       "tier": "major"
+       "tier": "minor"
       }
      ],
      "lives": 3,
@@ -279,8 +279,8 @@
         "reel": 1,
         "row": 1
        },
-       "kind": "bronze",
-       "value": 1
+       "kind": "jackpot",
+       "tier": "mini"
       }
      ],
      "lives": 3,
@@ -316,6 +316,14 @@
       {
        "reel": 0,
        "row": 0
+      },
+      {
+       "reel": 1,
+       "row": 0
+      },
+      {
+       "reel": 1,
+       "row": 1
       }
      ],
      "running": 500,
@@ -324,71 +332,25 @@
     },
     {
      "type": "jackpotWin",
-     "tier": "major",
-     "amount": 25000,
-     "positions": [
-      {
-       "reel": 0,
-       "row": 1
-      }
-     ],
-     "running": 25500,
-     "reason": "coin",
-     "index": 8
-    },
-    {
-     "type": "holdCollect",
-     "pos": {
-      "reel": 1,
-      "row": 1
-     },
-     "amount": 100,
-     "running": 25700,
-     "index": 9
-    },
-    {
-     "type": "holdCollect",
-     "pos": {
-      "reel": 1,
-      "row": 0
-     },
-     "amount": 100,
-     "running": 25600,
-     "index": 10
-    },
-    {
-     "type": "jackpotWin",
      "tier": "minor",
      "amount": 2500,
      "positions": [
       {
+       "reel": 0,
+       "row": 1
+      },
+      {
        "reel": 2,
+       "row": 0
+      },
+      {
+       "reel": 3,
        "row": 0
       }
      ],
-     "running": 28200,
+     "running": 3000,
      "reason": "coin",
-     "index": 11
-    },
-    {
-     "type": "holdCollect",
-     "pos": {
-      "reel": 3,
-      "row": 0
-     },
-     "amount": 200,
-     "running": 28400,
-     "index": 12
-    },
-    {
-     "type": "holdCollect",
-     "pos": {
-      "reel": 4,
-      "row": 0
-     },
-     "amount": 300,
-     "running": 28700,
-     "index": 13
+     "index": 8
     },
     {
      "type": "holdCollect",
@@ -397,30 +359,40 @@
       "row": 2
      },
      "amount": 100,
-     "running": 28800,
-     "index": 14
+     "running": 3100,
+     "index": 9
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 4,
+      "row": 0
+     },
+     "amount": 0,
+     "running": 3000,
+     "index": 10
     },
     {
      "type": "holdEnd",
-     "total": 28800,
+     "total": 3100,
      "fullGrid": false,
-     "index": 15
+     "index": 11
     },
     {
      "type": "setWin",
-     "amount": 28800,
-     "winLevel": 9,
-     "index": 16
+     "amount": 3100,
+     "winLevel": 7,
+     "index": 12
     },
     {
      "type": "setTotalWin",
-     "amount": 28800,
-     "index": 17
+     "amount": 3100,
+     "index": 13
     },
     {
      "type": "finalWin",
-     "amount": 28800,
-     "index": 18
+     "amount": 3100,
+     "index": 14
     }
    ],
    "criteria": "jackpot_two_tiers"

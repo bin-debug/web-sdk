@@ -1,5 +1,5 @@
 {
- "expect": "running total must be",
+ "expect": "pays with every",
  "board": "5x3",
  "books": [
   {
@@ -320,10 +320,6 @@
       {
        "reel": 1,
        "row": 0
-      },
-      {
-       "reel": 1,
-       "row": 1
       }
      ],
      "running": 500,
@@ -369,7 +365,7 @@
       "row": 2
      },
      "amount": 100,
-     "running": 3105,
+     "running": 3100,
      "index": 10
     },
     {

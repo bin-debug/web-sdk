@@ -4,7 +4,7 @@
 - **Player view:** four jackpot tiers keyed `mini` (5x), `minor` (25x), `major` (250x), `grand` (2,500x).
   The keys are fixed in the contract; the display names and multipliers come from the game spec
   (e.g. MINI / MAJOR / MEGA / GRAND). Pills show the values (x current bet) with an idle light sweep.
-  Jackpot markers land inside hold and win like coins. Each pill shows three pips (one per held marker of its tier); when the hold ends, 3 markers of one tier win that tier (2 pay nothing).
+  Jackpot coins land inside hold and win like coins, each showing its tier name. A tier is won only when 3 or more coins of that tier are on the grid when the hold ends (one `jackpotWin`, amount = spec mult x bet); fewer than 3 of a tier pay nothing. Each pill shows a progress badge (n/3) and glows at 3.
 - **Events:** `jackpotWin { tier, amount, positions }` (amount in book units; `positions` = marker cells).
   The pill values shown are `spec.jackpots[tier].mult x bet`, from the spec (display only).
 - **Build:** `features/jackpots/JackpotLadder.svelte` (desktop: left column; mobile: two rows above the

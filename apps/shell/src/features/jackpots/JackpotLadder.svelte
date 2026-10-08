@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Container, Graphics, Sprite, Text } from 'pixi-svelte';
+	import { Circle, Container, Graphics, Sprite, Text } from 'pixi-svelte';
 	import { bookEventAmountToCurrencyString } from 'utils-shared/amount';
 
 	import { MainContainer } from 'components-layout';
@@ -27,7 +27,8 @@
 		: { x: board.x - boardW * 0.5 - D * 1.45, y: boardTop + D * 0.1 });
 	const tierSpec = (tier: JackpotTier) => SPEC.jackpots?.[tier] ?? { name: tier.toUpperCase(), mult: 0 };
 	const pillText = (tier: JackpotTier) => bookEventAmountToCurrencyString(tierSpec(tier).mult * 100);
-	// a pill glows while a coin of its tier sits in the hold (it pays that tier when the round ends); xN when there are several
+	// 3 coins of a tier held when the hold ends win that tier: the pill shows the progress n/3 and glows from the first coin
+	const NEEDED = 3;
 	const held = (tier: JackpotTier) => coinLayer.views.filter((view) => view.coin.kind === 'jackpot' && view.coin.tier === tier).length;
 	const draw = (tier: JackpotTier, lit: boolean, w: number) => (g: any) => {
 		const look = JACKPOT_LOOK[tier];
@@ -41,7 +42,7 @@
 	<Container {...position} zIndex={115}>
 		{#each tiers as tier, i (tier)}
 			{@const count = held(tier)}
-			{@const lit = jackpot.active === tier || count > 0}
+			{@const lit = jackpot.active === tier || count >= NEEDED}
 			{@const hasArt = Boolean(context.stateApp.loadedAssets?.[slots[tier]])}
 			<Container x={portrait ? (i - 1.5) * (boardW / 4) : 0} y={portrait ? 0 : i * D * 0.72} scale={jackpot.active === tier ? jackpotFx.pop.current : 1}>
 				{#if hasArt}
@@ -51,8 +52,12 @@
 				{/if}
 				<Text anchor={0.5} y={-D * 0.1} text={tierSpec(tier).name} style={textStyle(D * 0.16, 0xffffff, JACKPOT_LOOK[tier].rim)} />
 				<Text anchor={0.5} y={D * 0.12} text={pillText(tier)} style={textStyle(D * 0.15, 0xfff5cf, JACKPOT_LOOK[tier].rim)} />
-				{#if count > 1}
-					<Text anchor={0.5} x={W * 0.38} y={-D * 0.1} text={`x${count}`} style={textStyle(D * 0.17, 0xffffff, JACKPOT_LOOK[tier].rim)} />
+				{#if count > 0}
+					<!-- progress badge on the pill corner: coins of this tier held / 3 -->
+					<Container x={W * 0.5} y={-D * 0.3}>
+						<Circle anchor={0.5} diameter={D * 0.4} backgroundColor={0x14233a} borderColor={0xffffff} borderWidth={D * 0.025} />
+						<Text anchor={0.5} text={`${Math.min(count, NEEDED)}/${NEEDED}`} style={textStyle(D * 0.15, count >= NEEDED ? 0xffe887 : 0xffffff)} />
+					</Container>
 				{/if}
 			</Container>
 		{/each}

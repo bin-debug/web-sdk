@@ -52,6 +52,7 @@ export const rules = {
 // reel and row by row, as holdCollect (cash) or jackpotWin (a jackpot coin pays its own tier), with a correct running total
 // -> a full grid adds a grand jackpotWin -> holdEnd (total = the last running total).
 const key = (p) => `${p.reel}:${p.row}`;
+const MARKERS_NEEDED = 3; // 3 coins of one jackpot tier held when the hold ends win that tier; fewer pay nothing
 const CASH = ['bronze', 'silver', 'gold', 'diamond', 'bag'];
 export const bookRules = [
 	(book, c) => {
@@ -75,6 +76,7 @@ export const bookRules = [
 		let lastKey = '';
 		const remaining = new Set();
 		let fullGridPaid = false;
+		const paidTiers = new Set();
 		events.forEach((e, i) => {
 			if (i <= startAt || !e) return;
 			const phaseFail = (m) => c.fail(i, e.type, m);
@@ -119,20 +121,25 @@ export const bookRules = [
 					if (lives !== 0 && !full) phaseFail(`the hold ended with ${lives} respins left and the grid not full`);
 					[...held.keys()].forEach((k) => remaining.add(k));
 				}
-				const pos = e.type === 'holdCollect' ? e.pos : e.positions?.[0];
-				const k = pos && key(pos);
-				const coin = k && held.get(k);
-				if (!coin || !remaining.has(k)) return phaseFail(`${k} is not a held coin that is still to be collected`);
-				const [reel, row] = k.split(':').map(Number);
-				const order = reel * 1000 + row;
-				if (lastKey !== '' && order <= lastKey) phaseFail('coins are collected in reel order, row by row, each once');
-				lastKey = order;
-				remaining.delete(k);
+				const group = e.type === 'holdCollect' ? [e.pos] : (e.positions ?? []);
+				const keys = group.map((p) => key(p));
+				const coins = keys.map((k) => held.get(k));
+				if (!keys.length || coins.some((coin, i) => !coin || !remaining.has(keys[i]))) return phaseFail(`${keys.join(', ')}: not held coins that are still to be collected`);
+				const first = Math.min(...keys.map((k) => k.split(':').map(Number)).map(([reel, row]) => reel * 1000 + row));
+				if (lastKey !== '' && first <= lastKey) phaseFail('coins are collected in reel order, row by row, each once');
+				lastKey = first;
+				keys.forEach((k) => remaining.delete(k));
+				const tierHeld = (tier) => [...held.values()].filter((h) => h.kind === 'jackpot' && h.tier === tier).length;
 				if (e.type === 'jackpotWin') {
-					if (coin.kind !== 'jackpot' || coin.tier !== e.tier) phaseFail(`${k} is not a ${e.tier} jackpot coin`);
-					if (e.positions.length !== 1) phaseFail('a jackpot coin pays on its own: positions lists just that coin');
-				} else if (coin.kind === 'jackpot') phaseFail(`${k} is a jackpot coin: it pays with jackpotWin`);
-				else if (Math.abs(Math.round((coin.value ?? 0) * 100) - e.amount) > 1) phaseFail(`amount ${e.amount} is not the coin's value (${Math.round((coin.value ?? 0) * 100)})`);
+					if (coins.some((coin) => coin.kind !== 'jackpot' || coin.tier !== e.tier)) phaseFail(`positions must all be held ${e.tier} jackpot coins`);
+					if (tierHeld(e.tier) < MARKERS_NEEDED) phaseFail(`${e.tier} needs ${MARKERS_NEEDED} coins held, the hold has ${tierHeld(e.tier)}`);
+					if (keys.length !== tierHeld(e.tier)) phaseFail(`${e.tier} pays with every ${e.tier} coin held (${tierHeld(e.tier)}), positions lists ${keys.length}`);
+					if (paidTiers.has(e.tier)) phaseFail(`${e.tier} is paid twice`);
+					paidTiers.add(e.tier);
+				} else if (coins[0].kind === 'jackpot') {
+					if (tierHeld(coins[0].tier) >= MARKERS_NEEDED) phaseFail(`${coins[0].tier} has ${tierHeld(coins[0].tier)} coins held: it pays with jackpotWin`);
+					else if (e.amount !== 0) phaseFail(`a ${coins[0].tier} coin without ${MARKERS_NEEDED} of its tier pays nothing`);
+				} else if (Math.abs(Math.round((coins[0].value ?? 0) * 100) - e.amount) > 1) phaseFail(`amount ${e.amount} is not the coin's value (${Math.round((coins[0].value ?? 0) * 100)})`);
 				running += e.amount;
 				if (e.running !== undefined && e.running !== running) phaseFail(`running total must be ${running}, got ${e.running}`);
 			}
