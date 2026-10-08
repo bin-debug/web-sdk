@@ -1,12 +1,12 @@
 # Prompt for Codex (copy everything inside the box, paste into Codex, send)
 
-Trial run: one feature, `reel-stash`. Codex builds and opens the PR but does NOT merge; a Claude session reviews it.
+Second run: one feature, `jackpot-ladder` (the first, `reel-stash`, merged after one review round). Codex builds and opens the PR but does NOT merge; a Claude session reviews it.
 After the review the owner decides whether to keep this split.
 
 ```
 You are building ONE item for a slot game-shell engine. Repo https://github.com/bin-debug/web-sdk (origin),
 integration branch `studio-kit`, main checkout C:\source\_studio-kit\web-sdk (Windows, Git Bash / PowerShell).
-Item: `reel-stash` (row in docs/features/STATUS.md). Do it end to end yourself; the owner only tests on a phone.
+Item: `jackpot-ladder` (row in docs/features/STATUS.md). Do it end to end yourself; the owner only tests on a phone.
 
 HARD RULES (a previous review found bugs from every one of these)
 - PUBLIC repo: no IPs, hostnames, tokens, emails or client names in code, docs, commits, branch names or PRs.
@@ -22,17 +22,17 @@ HARD RULES (a previous review found bugs from every one of these)
 
 STEPS
 1. cd C:\source\_studio-kit\web-sdk ; git fetch origin ; git checkout studio-kit ; git pull --ff-only
-   Read docs/features/STATUS.md. Confirm `reel-stash` is `todo`, its Needs are `merged`, and
-   `git ls-remote --heads origin feature/reel-stash` is empty. Then claim it first:
-   git worktree add ..\_feat-reel-stash -b feature/reel-stash origin/studio-kit ; cd ..\_feat-reel-stash
-   set the row to `claimed`, commit "claim reel-stash", git push -u origin feature/reel-stash
+   Read docs/features/STATUS.md. Confirm `jackpot-ladder` is `todo`, its Needs are `merged`, and
+   `git ls-remote --heads origin feature/jackpot-ladder` is empty. Then claim it first:
+   git worktree add ..\_feat-jackpot-ladder -b feature/jackpot-ladder origin/studio-kit ; cd ..\_feat-jackpot-ladder
+   set the row to `claimed`, commit "claim jackpot-ladder", git push -u origin feature/jackpot-ladder
    pnpm install ; pnpm run build --filter=pixi-svelte
-2. Read ONLY: docs/HANDOFF.md (Status + top 6 log entries), docs/features/README.md, docs/features/reel-stash.md,
-   docs/features/bottom-row-expand.md and coins.md (what it builds on), docs/features/BOOK-EVENTS.md.
+2. Read ONLY: docs/HANDOFF.md (Status + top 6 log entries), docs/features/README.md, docs/features/jackpot-ladder.md,
+   docs/features/hold-and-win.md and coins.md (what it builds on), docs/features/BOOK-EVENTS.md.
    Study these merged features as the pattern to copy (state file + layer component + register.ts + book generator):
-   apps/shell/src/features/triggerRow/, features/holdAndWin/, features/collectors/, tools/book-gen/features/bottomRowExpand.mjs.
-3. Build `reel-stash` as the spec says (both variants `multiply` and `bank`, chosen in game.spec.json). Test game:
-   scatter_tumble. Wire: handler map (apps/shell/src/game/bookEventHandlerMap.ts), Game.svelte, typesBookEvent.ts,
+   apps/shell/src/features/holdAndWin/, features/stash/, features/collectors/, tools/book-gen/features/holdAndWin.mjs, tools/book-gen/features/reelStash.mjs.
+3. Build `jackpot-ladder` as the spec says (jackpot tiers and their names/multipliers come from game.spec.json). Test game:
+   lines_classic (it has hold-and-win; jackpot markers land in the hold). Use its scenario books, not scatter_tumble. Wire: handler map (apps/shell/src/game/bookEventHandlerMap.ts), Game.svelte, typesBookEvent.ts,
    tools/book-gen/features/<featureId>.mjs, the game spec features list, packages/kit-spec/src/features.ts
    (`implemented: true` only when it all works).
 
@@ -55,7 +55,12 @@ LESSONS FROM THE LAST REVIEWS (apply every one)
    PR instead of claiming resume works. Restore must not animate.
 6. Turbo and skip: use the `t()` time helper pattern (0.4x when stateBet.isTurbo || isSpaceHold) in every wait/tween.
 7. Layering: new layers/banners must not hide behind coins or the board; check z-order at both sizes.
-8. Do not "fix" unrelated pre-existing failures (svelte-check errors on textStyle `align` and i18n messagesMap are known
+8. Scenario numbers must be CONSISTENT, never invented: every banked/shown value traces to a coin or marker in the book.
+9. Before QA, check which dev server and RGS port you are really using (a port may be taken by another session or a
+   server running an old worktree): start your own on a free port from the YOUR worktree and use that rgs_url. A board
+   that stays black or a "reveal" that never ends is usually that, or the known flake where the first bet does nothing: click spin again.
+10. Check the new UI against the win pill, multiplier badge and betting bar at 375x812 and 1600x900 (screenshot both).
+11. Do not "fix" unrelated pre-existing failures (svelte-check errors on textStyle `align` and i18n messagesMap are known
    and not yours). Do not touch other features' files beyond the small wiring lines.
 
 VERIFY (definition of done is in docs/features/README.md; do all of it, paste the evidence in the PR)
@@ -78,9 +83,9 @@ VERIFY (definition of done is in docs/features/README.md; do all of it, paste th
 
 SHIP (do NOT merge)
 - Update the STATUS.md row to `PR open` with a short note, add ONE log entry on top of the Session log in
-  docs/HANDOFF.md, add a "Shipped as" line to docs/features/reel-stash.md.
+  docs/HANDOFF.md, add a "Shipped as" line to docs/features/jackpot-ladder.md.
 - Small clean commits in plain English. Trailer on each commit: Co-Authored-By: Codex <noreply@openai.com>
-- git fetch ; git rebase origin/studio-kit ; git push -u origin feature/reel-stash
+- git fetch ; git rebase origin/studio-kit ; git push -u origin feature/jackpot-ladder
 - gh pr create --base studio-kit with a body that has: what changed, files touched, the scenario book ids and what
   each shows, the verification evidence, known gaps. End the body with: "Built by Codex, review requested."
 - Leave the PR open and stop. Do not start another item.
