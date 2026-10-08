@@ -32,7 +32,7 @@
 			{/if}
 		{/if}
 		<Symbol
-		state={props.tumbleSymbol.symbolState === 'sympathy' ? 'static' : props.tumbleSymbol.symbolState}
+			state={props.tumbleSymbol.symbolState === 'sympathy' ? 'static' : props.tumbleSymbol.symbolState}
 			rawSymbol={props.tumbleSymbol.rawSymbol}
 			oncomplete={() => {
 				if (props.tumbleSymbol.symbolState === 'land') squash.squash();

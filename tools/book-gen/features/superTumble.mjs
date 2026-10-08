@@ -23,7 +23,8 @@ export function scenarios(ctx) {
 			total += step.amount;
 			events.push({ type: 'winInfo', totalWin: step.amount, wins: [{ symbol: step.symbol, win: step.amount, positions: paid }] });
 			events.push({ type: 'updateTumbleWin', amount: total });
-			const newSymbols = board.map((_, reel) => all.filter((pos) => pos.reel === reel).map(() => ({ name: step.next })));
+			// the top new symbol lands in the hidden padding row and drops into view next tumble: keep it off the winning symbol
+			const newSymbols = board.map((_, reel) => all.filter((pos) => pos.reel === reel).map((_, i) => ({ name: i === 0 ? 'L1' : step.next })));
 			events.push({ type: 'tumbleBoard', explodingSymbols: all, sympathyPositions, newSymbols });
 			board = tumble(board, all, newSymbols);
 		}
