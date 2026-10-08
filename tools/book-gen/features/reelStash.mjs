@@ -46,9 +46,9 @@ export function scenarios(ctx) {
 		multiplyTotal,
 	);
 
-	// A bank starts at 0x. The second expansion applies a neighbour multiplier: the three stashUpdate
-	// events carry the resulting bank totals directly, and the final bank total is the bonus payout.
-	const bankTotal = 1000;
+	// A bank starts at 0x. The second expansion applies a x2 to its neighbours: reel 2 (300) doubles to 600, reel 0
+	// has no bank to hit; the two stashUpdate events carry the resulting bank totals directly, and the final bank total is the bonus payout.
+	const bankTotal = 800;
 	const bank = finish(
 		'stash_bank',
 		[
@@ -58,7 +58,7 @@ export function scenarios(ctx) {
 			{ type: 'stashUpdate', reel: 2, value: 1, banked: 300 }, { type: 'updateTumbleWin', amount: 300 }, { type: 'setTotalWin', amount: 300 },
 			{ type: 'updateFreeSpin', amount: 2, total: 3 }, reveal(),
 			{ type: 'expandReel', reel: 1, kind: 'coin', cells: cells(1, [2]) },
-			{ type: 'stashUpdate', reel: 1, value: 2, banked: 200 }, { type: 'stashUpdate', reel: 2, value: 2, banked: 600 }, { type: 'stashUpdate', reel: 3, value: 2, banked: 200 },
+			{ type: 'stashUpdate', reel: 1, value: 2, banked: 200 }, { type: 'stashUpdate', reel: 2, value: 2, banked: 600 },
 			{ type: 'updateTumbleWin', amount: bankTotal }, { type: 'setTotalWin', amount: bankTotal },
 			{ type: 'updateFreeSpin', amount: 3, total: 3 }, reveal(), { type: 'setTotalWin', amount: bankTotal },
 			{ type: 'freeSpinEnd', amount: bankTotal, winLevel: winLevel(bankTotal) }, { type: 'finalWin', amount: bankTotal },
