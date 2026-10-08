@@ -6,6 +6,7 @@ import { stateBet } from 'state-shared';
 import { eventEmitter } from '../../game/eventEmitter';
 import type { Coin } from '../coins/tiers';
 import { flipIn, payOut, placeCoins, clearCoins } from '../coins/coinState.svelte';
+import { addJackpotMarkers } from '../jackpots/jackpotState.svelte';
 
 // Hold and win: the board turns into coin cells that stick. This module only stages what the book says
 // (holdStart / respin / holdEnd): lives, coins and totals all come from the events, never from the client.
@@ -60,6 +61,7 @@ const pulseMeter = async () => {
 
 export async function startHold(coins: Coin[], lives: number, mode: string) {
 	clearCoins();
+	addJackpotMarkers(coins);
 	hold.active = true;
 	hold.lives = lives;
 	hold.maxLives = Math.max(lives, 1);
@@ -75,6 +77,7 @@ export async function respin(landed: Coin[], lives: number) {
 	await wait(t(SPIN_MS));
 	spinStop();
 	if (landed.length) await flipIn(landed);
+	addJackpotMarkers(landed);
 	hold.lives = lives;
 	await pulseMeter();
 }
@@ -113,6 +116,7 @@ export function restoreHold(bookEvents: SnapshotEvent[]) {
 		for (const coin of landed ?? []) held.set(`${coin.pos.reel}:${coin.pos.row}`, coin);
 	}
 	clearCoins();
+	addJackpotMarkers([...held.values()]);
 	placeCoins([...held.values()]);
 	hold.lives = lives;
 	hold.active = true;

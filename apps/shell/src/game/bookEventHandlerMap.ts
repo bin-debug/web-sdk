@@ -29,6 +29,8 @@ import { clearExpanding, restoreExpanding } from '../features/wilds/expandState.
 import { restoreSquares, resetSquares } from '../features/squares/squaresState.svelte';
 import { stashHandlers } from '../features/stash/register';
 import { clearStash, payOutStash, restoreStash, startStash } from '../features/stash/stashState.svelte';
+import { jackpotHandlers } from '../features/jackpots/register';
+import { clearJackpots } from '../features/jackpots/jackpotState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -62,6 +64,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		clearWilds();
 		if (bookEvent.index === 0) (clearSticky(), clearExpanding()); // sticky boxes last for the whole round, not past it
 		clearCoins();
+		clearJackpots();
 		clearHold();
 		clearTrigger();
 		clearClovers();
@@ -281,6 +284,7 @@ Object.assign(handlers, squareHandlers);
 Object.assign(handlers, holdHandlers);
 Object.assign(handlers, triggerHandlers);
 Object.assign(handlers, stashHandlers);
+Object.assign(handlers, jackpotHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {

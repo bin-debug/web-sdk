@@ -14,3 +14,5 @@
 - **Mock scenarios:** `jackpot_mini`, `jackpot_grand`, `jackpot_two_tiers` (two markers in one hold).
 - **Acceptance:** pill value tracks bet changes; amount paid == book `amount`; names come from the spec (rename test);
   mobile layout shows all four pills without covering the board.
+
+Shipped as `feature/jackpot-ladder`: spec-driven ladder and marker layers, `jackpotWin` handler, resume snapshot reservation, and lines_classic scenario books 322-324.

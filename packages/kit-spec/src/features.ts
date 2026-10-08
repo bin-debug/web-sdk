@@ -81,8 +81,9 @@ export const FEATURES: Record<string, FeatureInfo> = {
 	jackpotLadder: f({
 		id: 'jackpotLadder',
 		title: 'Jackpot ladder',
+		needs: ['holdAndWin'],
 		events: ['jackpotWin'],
-		implemented: false,
+		implemented: true,
 	}),
 	bottomRowExpand: f({
 		id: 'bottomRowExpand',

@@ -43,6 +43,8 @@
 	import HoldBanner from '../features/holdAndWin/HoldBanner.svelte';
 	import SquaresLayer from '../features/squares/SquaresLayer.svelte';
 	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
+	import JackpotLadder from '../features/jackpots/JackpotLadder.svelte';
+	import JackpotMarkers from '../features/jackpots/JackpotMarkers.svelte';
 
 	const context = getContext();
 
@@ -98,6 +100,9 @@
 				<StashRow />
 			{/if}
 			<HoldLayer />
+			{#if SPEC.features.includes('jackpotLadder')}
+				<JackpotMarkers />
+			{/if}
 			<CoinLayer />
 			<CloverLayer />
 			<CollectorLayer />
@@ -123,6 +128,9 @@
 		{/if}
 		<FreeSpinOutro />
 		<RetriggerBanner />
+		{#if SPEC.features.includes('jackpotLadder')}
+			<JackpotLadder />
+		{/if}
 		<HoldBanner />
 		<Transition />
 	{/if}

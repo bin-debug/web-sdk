@@ -15,6 +15,8 @@ export type BonusSpec = {
 export type BoostSpec = { id: string; name: string; cost: number };
 export type BuySpec = { mode: string; cost: number };
 export type ReelStashSpec = { variants: ('multiply' | 'bank')[] };
+export type JackpotTier = 'mini' | 'minor' | 'major' | 'grand';
+export type JackpotSpec = Partial<Record<JackpotTier, { name: string; mult: number }>>;
 
 export type ShellSpec = {
 	gameId: string;
@@ -29,6 +31,7 @@ export type ShellSpec = {
 	boosts: BoostSpec[];
 	buys: BuySpec[];
 	reelStash?: ReelStashSpec;
+	jackpots?: JackpotSpec;
 	layout: { preset: LayoutPreset; mascotSide: 'left' | 'right'; widget?: string };
 	ui: { accent: string; bar: 'kit' };
 	palette: string[];

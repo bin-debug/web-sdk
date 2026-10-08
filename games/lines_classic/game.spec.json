@@ -6,7 +6,13 @@
 	"reveal": "spin",
 	"pays": { "type": "lines", "lines": 20 },
 	"symbols": { "low": 5, "high": 4, "wild": true, "scatter": true },
-	"features": ["globalMultiplier", "multiplierWilds", "coins", "holdAndWin", "stickyWilds", "expandingReelWild"],
+	"features": ["globalMultiplier", "multiplierWilds", "coins", "holdAndWin", "jackpotLadder", "stickyWilds", "expandingReelWild"],
+	"jackpots": {
+		"mini": { "name": "MINI", "mult": 5 },
+		"minor": { "name": "MINOR", "mult": 25 },
+		"major": { "name": "MAJOR", "mult": 250 },
+		"grand": { "name": "GRAND", "mult": 2500 }
+	},
 	"bonuses": [{ "id": "BONUS", "name": "Temple Spins", "trigger": "3 S", "spins": 10 }],
 	"boosts": [],
 	"buys": [{ "mode": "BONUS", "cost": 100 }],

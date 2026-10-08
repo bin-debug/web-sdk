@@ -93,6 +93,7 @@ type BookEventCollect = {
 type BookEventHoldStart = { index: number; type: 'holdStart'; board: RawSymbol[][]; coins: Coin[]; lives: number; mode: string };
 type BookEventRespin = { index: number; type: 'respin'; new: Coin[]; lives: number; remaining?: number };
 type BookEventHoldEnd = { index: number; type: 'holdEnd'; total: number; fullGrid: boolean };
+type BookEventJackpotWin = { index: number; type: 'jackpotWin'; tier: 'mini' | 'minor' | 'major' | 'grand'; amount: number; positions?: Position[] };
 type BookEventSquaresAdd = { index: number; type: 'squaresAdd'; positions: Position[] };
 type BookEventSquaresClear = { index: number; type: 'squaresClear'; positions?: Position[] };
 
@@ -146,6 +147,7 @@ export type BookEvent =
 	| BookEventHoldStart
 	| BookEventRespin
 	| BookEventHoldEnd
+	| BookEventJackpotWin
 	| BookEventCreateBonusSnapshot;
 
 export type Bet = BetType<BookEvent>;
