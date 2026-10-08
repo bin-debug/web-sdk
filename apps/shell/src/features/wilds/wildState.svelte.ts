@@ -27,7 +27,10 @@ export class WildView {
 	readonly appear = new Tween(0); // crate drops in
 	readonly open = new Tween(0); // 0 closed, 1 open (visible ones start open)
 	readonly pop = new Tween(1); // number pop on open
-	constructor(id: number, pos: Position, value: number, hidden: boolean) {
+	readonly slam = new Tween(1); // landing shockwave ring (sticky boxes), 0 -> 1
+	readonly sticky: boolean;
+	constructor(id: number, pos: Position, value: number, hidden: boolean, sticky = false) {
+		this.sticky = sticky;
 		this.id = id;
 		this.pos = pos;
 		this.value = value;
@@ -41,7 +44,7 @@ export class WildView {
 	}
 }
 
-export const wildLayer = $state<{ views: WildView[] }>({ views: [] });
+export const wildLayer = $state<{ views: WildView[]; sticky: WildView[] }>({ views: [], sticky: [] });
 let nextId = 1;
 
 const t = (ms: number) => ms * (stateBet.isTurbo || stateBet.isSpaceHold ? 0.4 : 1);
@@ -52,6 +55,7 @@ const APPEAR_MS = 220;
 const OPEN_MS = 350;
 const STAGGER_MS = 80;
 
+// clears the crates of the current spin; sticky boxes stay until the round ends (clearSticky)
 export function clearWilds() {
 	wildLayer.views = [];
 }
@@ -61,6 +65,7 @@ export async function placeWilds(positions: Position[], values: number[], hidden
 	clearWilds();
 	const jobs: Promise<unknown>[] = [];
 	positions.forEach((pos, i) => {
+		if (wildLayer.sticky.some((v) => key(v.pos) === key(pos))) return; // a stuck box already shows this cell
 		const view = new WildView(nextId++, pos, values[i], Boolean(hidden[i]));
 		wildLayer.views.push(view);
 		const live = wildLayer.views[wildLayer.views.length - 1];
@@ -73,9 +78,10 @@ export async function placeWilds(positions: Position[], values: number[], hidden
 // A win line includes these cells (winInfo rows are padded: visible row + 1). Opens the wild crates on them, left to
 // right: hidden ones burst open, visible ones pop their number. Resolves when the last one is open.
 export async function openWilds(winPositions: Position[]) {
-	if (!wildLayer.views.length) return;
+	const all = [...wildLayer.views, ...wildLayer.sticky];
+	if (!all.length) return;
 	const hit = new Set(winPositions.map((p) => key({ reel: p.reel, row: p.row - 1 })));
-	const views = wildLayer.views.filter((v) => hit.has(key(v.pos))).sort((a, b) => a.pos.reel - b.pos.reel || a.pos.row - b.pos.row);
+	const views = all.filter((v) => hit.has(key(v.pos))).sort((a, b) => a.pos.reel - b.pos.reel || a.pos.row - b.pos.row);
 	const jobs = views.map((v, i) =>
 		wait(t(i * STAGGER_MS)).then(async () => {
 			if (v.hidden && v.open.current < 1) await v.open.set(1, { duration: t(OPEN_MS), easing: cubicOut });
@@ -85,3 +91,77 @@ export async function openWilds(winPositions: Position[]) {
 	);
 	await Promise.all(jobs);
 }
+
+// ---- sticky wilds (bonus): boxes that stay on their cells across respins ----
+// The book lists each landing (addStickyWilds) and the counter (respinCounter); nothing here decides what sticks.
+export const stickyCounter = $state({ active: false, remaining: 0, max: 3 });
+export const stickyFx = $state({ phase: 0, flash: 0 });
+let glowTimer: ReturnType<typeof setInterval> | undefined;
+const glowStart = () => {
+	if (glowTimer) return;
+	glowTimer = setInterval(() => {
+		stickyFx.phase++;
+		if (stickyFx.flash > 0) stickyFx.flash = Math.max(0, stickyFx.flash - 0.12);
+	}, 90);
+};
+
+// New boxes land and stick. mults is optional (0 = plain wild). Cells that already hold a box are skipped.
+export async function addStickyWilds(positions: Position[], mults: number[] = [], animate = true) {
+	const jobs: Promise<unknown>[] = [];
+	let n = 0;
+	positions.forEach((pos, i) => {
+		if (wildLayer.sticky.some((v) => key(v.pos) === key(pos))) return;
+		const view = new WildView(nextId++, pos, mults[i] ?? 0, false, true);
+		view.open.set(1, { duration: 0 });
+		if (!animate) {
+			view.appear.set(1, { duration: 0 });
+			view.slam.set(1, { duration: 0 });
+		} else view.slam.set(0, { duration: 0 });
+		wildLayer.sticky.push(view);
+		if (!animate) return;
+		const live = wildLayer.sticky[wildLayer.sticky.length - 1];
+		jobs.push(
+			wait(t(n++ * STAGGER_MS)).then(async () => {
+				live.slam.set(1, { duration: t(450), easing: cubicOut });
+				await live.appear.set(1, { duration: t(250), easing: backOut });
+			}),
+		);
+	});
+	if (wildLayer.sticky.length) glowStart();
+	await Promise.all(jobs);
+}
+
+export function clearSticky() {
+	wildLayer.sticky = [];
+	stickyCounter.active = false;
+	clearInterval(glowTimer);
+	glowTimer = undefined;
+}
+
+export async function setStickyCounter(remaining: number, reset: boolean) {
+	stickyCounter.active = true;
+	stickyCounter.max = Math.max(stickyCounter.max, remaining);
+	stickyCounter.remaining = remaining;
+	if (reset) {
+		stickyFx.flash = 1;
+		await wait(t(450));
+	}
+}
+
+type StickySnapshotEvent = { type: string; positions?: Position[]; mults?: number[]; remaining?: number };
+
+// Resume after a reload: put back every box that already stuck and the counter, with no animation.
+export function restoreSticky(bookEvents: StickySnapshotEvent[]) {
+	clearSticky();
+	for (const e of bookEvents) {
+		if (e.type === 'addStickyWilds' && e.positions) addStickyWilds(e.positions, e.mults, false);
+		if (e.type === 'respinCounter' && e.remaining !== undefined) {
+			stickyCounter.active = true;
+			stickyCounter.max = Math.max(stickyCounter.max, e.remaining);
+			stickyCounter.remaining = e.remaining;
+		}
+	}
+}
+
+// dev handle for the QA scripts (tools/qa): poll wildLayer / stickyCounter to stop on a frame
+if (import.meta.env.DEV && typeof window !== 'undefined') (window as unknown as { __sticky: unknown }).__sticky = { wildLayer, stickyCounter };

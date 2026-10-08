@@ -96,6 +96,9 @@ type BookEventHoldEnd = { index: number; type: 'holdEnd'; total: number; fullGri
 type BookEventSquaresAdd = { index: number; type: 'squaresAdd'; positions: Position[] };
 type BookEventSquaresClear = { index: number; type: 'squaresClear'; positions?: Position[] };
 
+type BookEventAddStickyWilds = { index: number; type: 'addStickyWilds'; positions: Position[]; mults?: number[] };
+type BookEventRespinCounter = { index: number; type: 'respinCounter'; remaining: number; reset: boolean };
+
 type BookEventWildMults = {
 	index: number;
 	type: 'wildMults';
@@ -130,6 +133,8 @@ export type BookEvent =
 	| BookEventSquaresAdd
 	| BookEventSquaresClear
 	| BookEventWildMults
+	| BookEventAddStickyWilds
+	| BookEventRespinCounter
 	| BookEventHoldStart
 	| BookEventRespin
 	| BookEventHoldEnd
