@@ -34,6 +34,7 @@
 	import CoinLayer from '../features/coins/CoinLayer.svelte';
 	import WildLayer from '../features/wilds/WildLayer.svelte';
 	import StickyCounter from '../features/wilds/StickyCounter.svelte';
+	import ExpandedReels from '../features/wilds/ExpandedReels.svelte';
 	import CloverLayer from '../features/clovers/CloverLayer.svelte';
 	import CollectorLayer from '../features/collectors/CollectorLayer.svelte';
 	import HoldLayer from '../features/holdAndWin/HoldLayer.svelte';
@@ -92,6 +93,7 @@
 			<CoinLayer />
 			<CloverLayer />
 			<CollectorLayer />
+			<ExpandedReels />
 			<WildLayer />
 			<StickyCounter />
 			{#if SPEC.features.includes('globalMultiplier')}

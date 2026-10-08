@@ -10,4 +10,5 @@
   character pop-up + number tween each spin, state in the snapshot.
 - **Art slots:** `W` + `W.win`, mascot clips; a character still per tier (re-use `MW1`-`MW3` as a stand-in). Fallback: code overlay.
 - **Mock scenarios:** `expwild_bonus` (reels 2 and 4 expand, re-roll for 10 spins), `expwild_adjacent` (shared line adds).
+- **Shipped as:** `expandState.svelte.ts` + `ExpandedReels.svelte`; the first event per reel expands, later ones re-roll. Test books: lines_classic 324 (`expwild_bonus`) and 325 (`expwild_adjacent`).
 - **Acceptance:** overlay stays until the bonus ends; shown multiplier == latest event per reel; reload restores it.

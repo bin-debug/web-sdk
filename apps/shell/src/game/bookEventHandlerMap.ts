@@ -22,6 +22,7 @@ import { clearCoins } from '../features/coins/coinState.svelte';
 import { squareHandlers } from '../features/squares/register';
 import { holdHandlers } from '../features/holdAndWin/register';
 import { restoreHold, clearHold } from '../features/holdAndWin/holdState.svelte';
+import { clearExpanding, restoreExpanding } from '../features/wilds/expandState.svelte';
 import { restoreSquares, resetSquares } from '../features/squares/squaresState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
@@ -54,7 +55,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	reveal: async (bookEvent: BookEventOfType<'reveal'>, { bookEvents }: BookEventContext) => {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
 		clearWilds();
-		if (bookEvent.index === 0) clearSticky(); // sticky boxes last for the whole round, not past it
+		if (bookEvent.index === 0) (clearSticky(), clearExpanding()); // sticky boxes last for the whole round, not past it
 		clearCoins();
 		clearHold();
 		clearClovers();
@@ -252,6 +253,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		restoreSquares(bookEvents);
 		restoreHold(bookEvents);
 		restoreSticky(bookEvents);
+		restoreExpanding(bookEvents);
 
 		if (trigger) await playBookEvent(trigger, { bookEvents });
 		if (update) playBookEvent(update, { bookEvents });
