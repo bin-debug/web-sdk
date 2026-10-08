@@ -1,12 +1,12 @@
 # Prompt for Codex (copy everything inside the box, paste into Codex, send)
 
-Fourth run: one feature, `refill-respins`. reel-stash and refill-respins merged after one review round; the review always finds bugs that only show with ART ON
+Fifth run: one feature, `rainbow-reveal`. reel-stash and rainbow-reveal merged after one review round; the review always finds bugs that only show with ART ON
 (not `?art=none`) and on mobile, so test those first. Codex builds and opens the PR but does NOT merge; a Claude session reviews it.
 
 ```
 You are building ONE item for a slot game-shell engine. Repo https://github.com/bin-debug/web-sdk (origin),
 integration branch `studio-kit`, main checkout C:\source\_studio-kit\web-sdk (Windows, Git Bash / PowerShell).
-Item: `refill-respins` (row in docs/features/STATUS.md). Do it end to end yourself; the owner only tests on a phone.
+Item: `rainbow-reveal` (row in docs/features/STATUS.md). Do it end to end yourself; the owner only tests on a phone.
 
 HARD RULES
 - PUBLIC repo: no IPs, hostnames, tokens, emails or client names in code, docs, commits, branch names or PRs.
@@ -23,23 +23,22 @@ HARD RULES
 
 STEPS
 1. cd C:\source\_studio-kit\web-sdk ; git fetch origin ; git checkout studio-kit ; git pull --ff-only
-   Read docs/features/STATUS.md. Confirm `refill-respins` is `todo`, its Needs are `merged`, and
-   `git ls-remote --heads origin feature/refill-respins` is empty. Claim it first:
-   git worktree add ..\_feat-refill-respins -b feature/refill-respins origin/studio-kit ; cd ..\_feat-refill-respins
-   set the row to `claimed`, commit "claim refill-respins", git push -u origin feature/refill-respins
+   Read docs/features/STATUS.md. Confirm `rainbow-reveal` is `todo`, its Needs are `merged`, and
+   `git ls-remote --heads origin feature/rainbow-reveal` is empty. Claim it first:
+   git worktree add ..\_feat-rainbow-reveal -b feature/rainbow-reveal origin/studio-kit ; cd ..\_feat-rainbow-reveal
+   set the row to `claimed`, commit "claim rainbow-reveal", git push -u origin feature/rainbow-reveal
    pnpm install ; pnpm run build --filter=pixi-svelte
-2. RESEARCH FIRST: before writing code, look up how a refilling respin counter works in real slots (respins that reset to 3 when a new
-   symbol lands, shown as a number outside the board) and write 5-8 lines in the PR on the standard and where you follow or deviate.
-   NOTE: hold-and-win already shows a RESPINS number pill (apps/shell/src/features/holdAndWin/HoldLayer.svelte) fed by `respin.lives`.
-   Build `respinCounter` as a shared component the hold bonus and other respin bonuses (e.g. sticky wilds respins) can use, and make
-   hold-and-win use it instead of its own pill, without changing how hold plays. If the spec differs from the standard, build the spec and say so.
-3. Read ONLY: docs/HANDOFF.md (Status + top 6 log entries), docs/features/README.md, docs/features/refill-respins.md,
-   docs/features/hold-and-win.md, docs/features/sticky-wilds.md, docs/features/BOOK-EVENTS.md.
-   Study as the pattern: apps/shell/src/features/holdAndWin/ (holdState, HoldLayer, register.ts), apps/shell/src/features/stickyWilds/,
-   tools/book-gen/features/holdAndWin.mjs and _holdRound.mjs, tools/book-gen/contract/rules/holdwin.mjs (respinCounter rule exists).
-4. Build `refill-respins` as the spec says. Test game: lines_classic (feature id `refillRespins`, books `refill_basic` and one
-   hold-and-win book still playing with the shared counter). Wire: handler/register, typesBookEvent.ts, tools/book-gen/features/refillRespins.mjs,
-   the game spec features list (append at the END so earlier book ids do not shift), packages/kit-spec/src/features.ts.
+2. RESEARCH FIRST: before writing code, look up how a rainbow / gold-square reveal works in real cluster slots (a special symbol lands and every
+   marked square flips into its prize in a fixed order, then the total is paid and the squares clear) and write 5-8 lines in the PR on the
+   standard and where you follow or deviate. If the spec differs from the standard, build the spec and say so.
+3. Read ONLY: docs/HANDOFF.md (Status + top 6 log entries), docs/features/README.md, docs/features/rainbow-reveal.md,
+   docs/features/golden-squares.md, docs/features/clovers.md, docs/features/collectors.md, docs/features/BOOK-EVENTS.md.
+   Study as the pattern: apps/shell/src/features/squares/, features/clovers/, features/collectors/, features/coins/ (flipIn, payOut),
+   tools/book-gen/features/goldenSquares.mjs and the clovers/collectors book generators, tools/book-gen/contract/rules/.
+4. Build `rainbow-reveal` as the spec says. Test game: cluster_classic (feature id `rainbowReveal`; books rainbow_basic, rainbow_chain,
+   rainbow_epic). Wire: handler/register, typesBookEvent.ts, tools/book-gen/features/rainbowReveal.mjs (+ a contract rule: reveal cells are
+   exactly the gold squares, in resolve order, total == sum), the game spec features list (append at the END so earlier book ids do not
+   shift), packages/kit-spec/src/features.ts.
 
 LESSONS FROM THE LAST REVIEWS (apply every one)
 1. Every layer/state you add must be cleared by the `reveal` handler of a new spin and by a skipped or interrupted round.
@@ -66,16 +65,16 @@ LESSONS FROM THE LAST REVIEWS (apply every one)
    overlapping BALANCE/WIN labels in the bar). Do not touch other features' files beyond small wiring lines.
 
 VERIFY (do all of it, paste the evidence in the PR)
-- node tools/book-gen/shell.mjs lines_classic ; node tools/book-gen/check-contract.mjs <each of: lines_classic
+- node tools/book-gen/shell.mjs cluster_classic ; node tools/book-gen/check-contract.mjs <each of: cluster_classic
   cluster_classic scatter_tumble ways_classic> all `0 problems` ; node tools/book-gen/contract-tests/run.mjs all pass.
 - Demo RGS: `node tools/mock-rgs/server.mjs <free port>` from your worktree; after regenerating books call
-  curl -XPOST localhost:<port>/mock/reset -d '{"gameId":"lines_classic"}' and reload the page. Dev server:
+  curl -XPOST localhost:<port>/mock/reset -d '{"gameId":"cluster_classic"}' and reload the page. Dev server:
   `cd apps/shell ; npx vite dev --host --port <free port> --strictPort`.
 - Play your scenario books (force one with
-  curl -XPOST localhost:<rgs>/mock/queue -d '{"gameId":"lines_classic","mode":"BASE","id":[<book id>]}')
+  curl -XPOST localhost:<rgs>/mock/queue -d '{"gameId":"cluster_classic","mode":"BASE","id":[<book id>]}')
   at 1600x900 and 375x812, with `?art=none` and with art, turbo on, and a reload mid-feature. Use
   tools/qa/hidden-pane-raf-shim.js if the browser is hidden. Zero console errors. URL form:
-  http://localhost:<dev>/?sessionID=qa-1&game_id=lines_classic&currency=ZAR&lang=en&device=desktop&rgs_url=http://localhost:<rgs>  (add &art=none for the code-only view, but ALSO test without it)
+  http://localhost:<dev>/?sessionID=qa-1&game_id=cluster_classic&currency=ZAR&lang=en&device=desktop&rgs_url=http://localhost:<rgs>  (add &art=none for the code-only view, but ALSO test without it)
   (click "press anywhere to continue" before the first bet; use a new sessionID after a reset).
 - If you cannot drive a browser, say so plainly in the PR and list exactly which checks you did and did not run.
   Do not claim a visual check you did not do.
@@ -83,9 +82,9 @@ VERIFY (do all of it, paste the evidence in the PR)
 
 SHIP (do NOT merge)
 - STATUS.md row to `PR open` with a short note, ONE log entry on top of the Session log in docs/HANDOFF.md,
-  a "Shipped as" line in docs/features/refill-respins.md.
+  a "Shipped as" line in docs/features/rainbow-reveal.md.
 - Small clean commits in plain English. Trailer on each: Co-Authored-By: Codex <noreply@openai.com>
-- git fetch ; git rebase origin/studio-kit ; git push -u origin feature/refill-respins
+- git fetch ; git rebase origin/studio-kit ; git push -u origin feature/rainbow-reveal
 - gh pr create --base studio-kit with a body: what changed, the industry research notes, files touched, scenario book ids
   and what each shows, verification evidence, known gaps. End with: "Built by Codex, review requested."
 - Leave the PR open and stop. Do not start another item.
