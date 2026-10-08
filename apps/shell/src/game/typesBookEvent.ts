@@ -99,6 +99,8 @@ type BookEventSquaresClear = { index: number; type: 'squaresClear'; positions?: 
 type BookEventAddStickyWilds = { index: number; type: 'addStickyWilds'; positions: Position[]; mults?: number[] };
 type BookEventRespinCounter = { index: number; type: 'respinCounter'; remaining: number; reset: boolean };
 
+type BookEventExpandingWildReel = { index: number; type: 'expandingWildReel'; reel: number; mult: number; who?: string };
+
 type BookEventWildMults = {
 	index: number;
 	type: 'wildMults';
@@ -133,6 +135,7 @@ export type BookEvent =
 	| BookEventSquaresAdd
 	| BookEventSquaresClear
 	| BookEventWildMults
+	| BookEventExpandingWildReel
 	| BookEventAddStickyWilds
 	| BookEventRespinCounter
 	| BookEventHoldStart

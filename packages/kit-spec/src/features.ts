@@ -116,7 +116,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		title: 'Expanding reel wild',
 		reveal: ['spin'],
 		events: ['expandingWildReel'],
-		implemented: false,
+		implemented: true,
 	}),
 	symbolUpgrade: f({
 		id: 'symbolUpgrade',
