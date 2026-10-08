@@ -25,7 +25,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		title: 'Super tumble',
 		needs: ['tumble'],
 		events: ['tumbleBoard'],
-		implemented: false,
+		implemented: true,
 	}),
 	globalMultiplier: f({
 		id: 'globalMultiplier',

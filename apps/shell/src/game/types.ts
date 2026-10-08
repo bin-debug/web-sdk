@@ -4,7 +4,7 @@ export type SymbolName = string;
 export type RawSymbol = { name: SymbolName; multiplier?: number; scatter?: boolean };
 export type GameType = 'basegame' | 'freegame';
 
-export const SYMBOL_STATES = ['static', 'spin', 'land', 'win', 'postWinStatic', 'explosion'] as const;
+export const SYMBOL_STATES = ['static', 'spin', 'land', 'win', 'postWinStatic', 'explosion', 'sympathy'] as const;
 
 export type SymbolState = CascadingReelSymbolState | (typeof SYMBOL_STATES)[number];
 

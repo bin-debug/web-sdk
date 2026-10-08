@@ -61,6 +61,7 @@ const animateSymbols = async ({ positions }: { positions: Position[] }) => {
 const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	reveal: async (bookEvent: BookEventOfType<'reveal'>, { bookEvents }: BookEventContext) => {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
+		eventEmitter.broadcast({ type: 'tumbleBoardReset' });
 		clearWilds();
 		if (bookEvent.index === 0) (clearSticky(), clearExpanding()); // sticky boxes last for the whole round, not past it
 		clearCoins();
@@ -213,6 +214,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		await eventEmitter.broadcastAsync({
 			type: 'tumbleBoardExplode',
 			explodingPositions: bookEvent.explodingSymbols,
+			sympathyPositions: bookEvent.sympathyPositions,
 		});
 		eventEmitter.broadcast({ type: 'tumbleBoardRemoveExploded' });
 		await eventEmitter.broadcastAsync({ type: 'tumbleBoardSlideDown' });

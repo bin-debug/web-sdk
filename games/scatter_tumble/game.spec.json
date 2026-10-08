@@ -21,6 +21,7 @@
 	},
 	"features": [
 		"tumble",
+		"superTumble",
 		"globalMultiplier",
 		"bottomRowExpand",
 		"reelStash"

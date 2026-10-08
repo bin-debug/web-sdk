@@ -1,0 +1,15 @@
+{
+	"expect": "super tumble must remove every matching paid symbol",
+	"board": "2x4",
+	"books": [{
+		"id": 1,
+		"payoutMultiplier": 1,
+		"events": [
+			{"index": 0, "type": "reveal", "board": [[{"name":"L2"},{"name":"L1"},{"name":"L1"},{"name":"L1"},{"name":"L1"},{"name":"L2"}],[{"name":"L2"},{"name":"L1"},{"name":"L1"},{"name":"L1"},{"name":"L1"},{"name":"L2"}]], "paddingPositions": [0,0], "anticipation": [0,0], "gameType": "basegame"},
+			{"index": 1, "type": "winInfo", "totalWin": 100, "wins": [{"symbol":"L1", "win":100, "positions":[{"reel":0,"row":1},{"reel":0,"row":2},{"reel":0,"row":3},{"reel":0,"row":4},{"reel":1,"row":1}]}]},
+			{"index": 2, "type": "tumbleBoard", "explodingSymbols":[{"reel":0,"row":1},{"reel":0,"row":2},{"reel":0,"row":3},{"reel":0,"row":4},{"reel":1,"row":1},{"reel":1,"row":2},{"reel":1,"row":3}], "sympathyPositions":[{"reel":1,"row":2},{"reel":1,"row":3}], "newSymbols":[[{"name":"L2"},{"name":"L2"},{"name":"L2"},{"name":"L2"}],[{"name":"L2"},{"name":"L2"},{"name":"L2"}]]},
+			{"index": 3, "type": "setTotalWin", "amount": 100},
+			{"index": 4, "type": "finalWin", "amount": 100}
+		]
+	}]
+}
