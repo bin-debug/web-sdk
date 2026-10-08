@@ -10,5 +10,6 @@
 - **Timing:** pillar 600-800 ms, flips 80 ms stagger.
 - **Art slots:** `C1`-`C4`, `S` for fs tiles, `fx.poof`, `board.cell`. Fallback: code pillar + coloured cells.
 - **Mock scenarios:** `expand_coin`, `expand_fs`, `expand_two_reels`.
+- **Shipped as:** `features/triggerRow/` (`triggerState.svelte.ts`, `TriggerRow.svelte`, `register.ts`). Coins are paid by a `collect { collector: 'global' }` after the `expandReel`; the trigger symbol in the demo books is `S`. Test books: scatter_tumble 304-307.
 - **Acceptance:** each expanded cell shows the book value; pillar only on the listed reel; tumble works after the
   expansion; reload mid-expansion ends in the final state.
