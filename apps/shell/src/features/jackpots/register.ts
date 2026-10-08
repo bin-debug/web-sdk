@@ -5,6 +5,6 @@ import { winJackpot } from './jackpotState.svelte';
 
 export const jackpotHandlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	jackpotWin: async (bookEvent: BookEventOfType<'jackpotWin'>) => {
-		await winJackpot(bookEvent.tier, bookEvent.amount, bookEvent.positions);
+		await winJackpot(bookEvent.tier, bookEvent.amount, bookEvent.positions, bookEvent.running);
 	},
 };

@@ -17,7 +17,7 @@ export const playBet = async (bet: Bet) => {
 };
 
 // resume bet: replay only the events that rebuild the bonus state
-const BOOK_EVENT_TYPES_TO_RESERVE_FOR_SNAPSHOT = ['updateGlobalMult', 'freeSpinTrigger', 'updateFreeSpin', 'setTotalWin', 'squaresAdd', 'squaresClear', 'holdStart', 'respin', 'holdEnd', 'jackpotWin', 'addStickyWilds', 'respinCounter', 'expandingWildReel', 'stashUpdate'];
+const BOOK_EVENT_TYPES_TO_RESERVE_FOR_SNAPSHOT = ['updateGlobalMult', 'freeSpinTrigger', 'updateFreeSpin', 'setTotalWin', 'squaresAdd', 'squaresClear', 'holdStart', 'respin', 'holdEnd', 'holdMultiply', 'holdCollectAll', 'holdCollect', 'jackpotWin', 'addStickyWilds', 'respinCounter', 'expandingWildReel', 'stashUpdate'];
 
 export const convertTorResumableBet = (betToResume: Bet) => {
 	const resumingIndex = Number(betToResume.event);

@@ -38,18 +38,27 @@ Conventions
 ```ts
 { type: 'holdStart',   board: RawSymbol[][], coins: coin[], lives: number, mode: string }
 { type: 'respin',      new: coin[], lives: number, remaining?: number }   // lives resets when new.length > 0
+{ type: 'holdMultiply', pos: Position, mult: number, targets: Position[] }
+{ type: 'holdCollectAll', pos: Position, sources: Position[], total: number }
+{ type: 'holdCollect', pos: Position, amount: number, running: number }
 { type: 'holdEnd',     total: number, fullGrid: boolean }
-{ type: 'jackpotWin',  tier: 'mini'|'minor'|'major'|'grand', amount: number, positions: Position[] }
+{ type: 'jackpotWin',  tier: 'mini'|'minor'|'major'|'grand', amount: number, positions: Position[], running?: number, reason?: 'coin'|'fullGrid' }
 { type: 'respinCounter', remaining: number, reset: boolean } // refillRespins
 ```
 
-A hold and win round is ONE real round, in this order: `reveal` (a base spin; the trigger coins land as `C` symbols, reveal rows
-are padded) -> `holdStart` (`coins` sit exactly on those `C` cells, visible rows) -> `respin` x N (the client spins every cell that
-holds no coin or marker, the reels stop left to right, `new` lists what lands; `lives` is 3 again whenever something lands) ->
-`collect {collector:'pot'}` (optional) -> `jackpotWin` per tier -> `holdEnd` -> `setWin` / `setTotalWin` / `finalWin`.
-Jackpots: a coin of `kind: 'jackpot'` + `tier` is a marker (no value). When the hold ends, 3 or more held markers of one tier win that
-tier: one `jackpotWin` per tier after the last respin and before `holdEnd`, `positions` = the held markers, `amount` = the spec's
-`jackpots.<tier>.mult` x bet. `holdEnd.total` includes coin values and jackpots. The contract check enforces all of this.
+Hold and win follows the usual industry flow and is ONE real round, in this order:
+1. `reveal`: a base spin; 6 or more coin symbols `C` land (reveal rows are padded: visible row + 1).
+2. `holdStart`: the bonus screen replaces the base reels; `coins` sit exactly on those `C` cells (visible rows), `lives` = respins (3).
+3. `respin` x N: the client spins every cell with no coin (reels stop left to right); `new` lists what lands. `lives` drops by 1 on a
+   miss and is back to the start value on a landing (+1 per `plus` coin that landed). Ends at 0 respins or a full grid.
+4. Special coins, right after the respin that landed them: `holdMultiply` (a `multiplier` coin multiplies the listed coins), `holdCollectAll`
+   (a `collect` coin takes the listed cash coins into itself, their cells free up and respin, it shows `total`). A `plus` coin only
+   raises `lives`. Coin kinds: bronze|silver|gold|diamond (cash), jackpot (+ `tier`), multiplier (+ `mult`), plus, collect.
+5. The end collect, one event per held coin in reel order, row by row: `holdCollect` (cash coin, `amount`) or `jackpotWin` (a jackpot coin
+   pays ITS OWN tier: `amount` = the spec's `jackpots.<tier>.mult` x bet, `positions` = that coin), each with the book's `running` total.
+6. A full grid adds `jackpotWin { tier: 'grand', reason: 'fullGrid', positions: every cell }`.
+7. `holdEnd { total }` (= the last running total, includes coins and jackpots, `fullGrid`), then `setWin` / `setTotalWin` / `finalWin`.
+The contract check enforces all of this (tools/book-gen/contract/rules/holdwin.mjs).
 
 ## Layers and dynamite
 

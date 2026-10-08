@@ -274,57 +274,87 @@
      "board": [
       [
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
        }
       ],
       [
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
        }
       ],
       [
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
        }
       ],
       [
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
        }
       ],
       [
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
        },
        {
-        "name": "L1"
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
        }
       ]
      ],
@@ -340,31 +370,120 @@
       {
        "pos": {
         "reel": 0,
-        "row": 0
+        "row": 1
        },
-       "kind": "jackpot",
-       "tier": "mini"
+       "kind": "silver",
+       "value": 2
       },
       {
        "pos": {
-        "reel": 2,
+        "reel": 1,
+        "row": 2
+       },
+       "kind": "gold",
+       "value": 4
+      },
+      {
+       "pos": {
+        "reel": 3,
         "row": 0
        },
-       "kind": "jackpot",
-       "tier": "mini"
+       "kind": "bronze",
+       "value": 1
       },
       {
        "pos": {
         "reel": 4,
         "row": 0
        },
-       "kind": "jackpot",
-       "tier": "mini"
+       "kind": "silver",
+       "value": 2
+      },
+      {
+       "pos": {
+        "reel": 4,
+        "row": 2
+       },
+       "kind": "bronze",
+       "value": 1
       }
      ],
      "lives": 3,
-     "mode": "hold",
+     "mode": "standard",
      "index": 20
+    },
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 2
+       },
+       "kind": "plus"
+      }
+     ],
+     "lives": 4,
+     "remaining": 4,
+     "index": 21
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 3,
+     "remaining": 3,
+     "index": 22
+    },
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 1,
+        "row": 0
+       },
+       "kind": "multiplier",
+       "mult": 2
+      }
+     ],
+     "lives": 3,
+     "remaining": 3,
+     "index": 23
+    },
+    {
+     "type": "holdMultiply",
+     "pos": {
+      "reel": 1,
+      "row": 0
+     },
+     "mult": 2,
+     "targets": [
+      {
+       "reel": 0,
+       "row": 0
+      },
+      {
+       "reel": 0,
+       "row": 1
+      },
+      {
+       "reel": 1,
+       "row": 2
+      },
+      {
+       "reel": 3,
+       "row": 0
+      },
+      {
+       "reel": 4,
+       "row": 0
+      },
+      {
+       "reel": 4,
+       "row": 2
+      }
+     ],
+     "index": 24
     },
     {
      "type": "respin",
@@ -374,44 +493,136 @@
         "reel": 1,
         "row": 1
        },
-       "kind": "bronze",
-       "value": 1
+       "kind": "collect"
       }
      ],
      "lives": 3,
-     "index": 21
+     "remaining": 3,
+     "index": 25
     },
     {
-     "type": "jackpotWin",
-     "tier": "mini",
-     "amount": 1000,
-     "index": 22,
-     "positions": [
+     "type": "holdCollectAll",
+     "pos": {
+      "reel": 1,
+      "row": 1
+     },
+     "sources": [
       {
        "reel": 0,
        "row": 0
       },
       {
-       "reel": 2,
+       "reel": 0,
+       "row": 1
+      },
+      {
+       "reel": 1,
+       "row": 2
+      },
+      {
+       "reel": 3,
        "row": 0
       },
       {
        "reel": 4,
        "row": 0
+      },
+      {
+       "reel": 4,
+       "row": 2
       }
-     ]
+     ],
+     "total": 2200,
+     "index": 26
+    },
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 0
+       },
+       "kind": "gold",
+       "value": 5
+      }
+     ],
+     "lives": 3,
+     "remaining": 3,
+     "index": 27
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 2,
+     "remaining": 2,
+     "index": 28
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 1,
+     "remaining": 1,
+     "index": 29
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 0,
+     "remaining": 0,
+     "index": 30
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 0,
+      "row": 0
+     },
+     "amount": 500,
+     "running": 500,
+     "index": 31
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 0,
+      "row": 2
+     },
+     "amount": 0,
+     "running": 500,
+     "index": 32
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 1,
+      "row": 0
+     },
+     "amount": 0,
+     "running": 500,
+     "index": 33
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 1,
+      "row": 1
+     },
+     "amount": 2200,
+     "running": 2700,
+     "index": 34
     },
     {
      "type": "holdEnd",
-     "total": 30,
+     "total": 2700,
      "fullGrid": false,
-     "index": 23
+     "index": 35
     },
     {
      "type": "respinCounter",
      "remaining": 3,
      "reset": true,
-     "index": 24
+     "index": 36
     },
     {
      "type": "layerBreak",
@@ -422,7 +633,7 @@
       }
      ],
      "layer": 1,
-     "index": 25
+     "index": 37
     },
     {
      "type": "dynamite",
@@ -444,7 +655,7 @@
        ]
       }
      ],
-     "index": 26
+     "index": 38
     },
     {
      "type": "layerReveal",
@@ -458,7 +669,7 @@
        "value": 1
       }
      ],
-     "index": 27
+     "index": 39
     },
     {
      "type": "expandReel",
@@ -474,13 +685,13 @@
        "value": 1
       }
      ],
-     "index": 28
+     "index": 40
     },
     {
      "type": "stashUpdate",
      "reel": 2,
      "value": 5,
-     "index": 29
+     "index": 41
     },
     {
      "type": "wildMults",
@@ -498,7 +709,7 @@
       2,
       3
      ],
-     "index": 30
+     "index": 42
     },
     {
      "type": "addStickyWilds",
@@ -508,15 +719,438 @@
        "row": 1
       }
      ],
-     "index": 31
+     "index": 43
     },
     {
      "type": "expandingWildReel",
      "reel": 2,
      "mult": 2,
-     "index": 32
+     "index": 44
     }
    ]
+  },
+  {
+   "id": 2,
+   "payoutMultiplier": 288,
+   "events": [
+    {
+     "type": "reveal",
+     "board": [
+      [
+       {
+        "name": "H3"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H4"
+       },
+       {
+        "name": "H3"
+       },
+       {
+        "name": "L5"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "H2"
+       },
+       {
+        "name": "L4"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "H1"
+       },
+       {
+        "name": "H2"
+       }
+      ],
+      [
+       {
+        "name": "L3"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L4"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L4"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H1"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H2"
+       }
+      ]
+     ],
+     "paddingPositions": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "anticipation": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "gameType": "basegame",
+     "index": 0
+    },
+    {
+     "type": "holdStart",
+     "board": [
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ]
+     ],
+     "coins": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 0
+       },
+       "kind": "jackpot",
+       "tier": "mini"
+      },
+      {
+       "pos": {
+        "reel": 1,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      },
+      {
+       "pos": {
+        "reel": 2,
+        "row": 0
+       },
+       "kind": "jackpot",
+       "tier": "minor"
+      },
+      {
+       "pos": {
+        "reel": 3,
+        "row": 0
+       },
+       "kind": "silver",
+       "value": 2
+      },
+      {
+       "pos": {
+        "reel": 4,
+        "row": 0
+       },
+       "kind": "gold",
+       "value": 3
+      },
+      {
+       "pos": {
+        "reel": 4,
+        "row": 2
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 3,
+     "mode": "standard",
+     "index": 1
+    },
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 1
+       },
+       "kind": "jackpot",
+       "tier": "major"
+      }
+     ],
+     "lives": 3,
+     "remaining": 3,
+     "index": 2
+    },
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 1,
+        "row": 1
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 3,
+     "remaining": 3,
+     "index": 3
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 2,
+     "remaining": 2,
+     "index": 4
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 1,
+     "remaining": 1,
+     "index": 5
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 0,
+     "remaining": 0,
+     "index": 6
+    },
+    {
+     "type": "jackpotWin",
+     "tier": "mini",
+     "amount": 500,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 0
+      }
+     ],
+     "running": 500,
+     "reason": "coin",
+     "index": 7
+    },
+    {
+     "type": "jackpotWin",
+     "tier": "major",
+     "amount": 25000,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 1
+      }
+     ],
+     "running": 25500,
+     "reason": "coin",
+     "index": 8
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 1,
+      "row": 0
+     },
+     "amount": 100,
+     "running": 25600,
+     "index": 9
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 1,
+      "row": 1
+     },
+     "amount": 100,
+     "running": 25700,
+     "index": 10
+    },
+    {
+     "type": "jackpotWin",
+     "tier": "minor",
+     "amount": 2500,
+     "positions": [
+      {
+       "reel": 2,
+       "row": 0
+      }
+     ],
+     "running": 28200,
+     "reason": "coin",
+     "index": 11
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 3,
+      "row": 0
+     },
+     "amount": 200,
+     "running": 28400,
+     "index": 12
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 4,
+      "row": 0
+     },
+     "amount": 300,
+     "running": 28700,
+     "index": 13
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 4,
+      "row": 2
+     },
+     "amount": 100,
+     "running": 28800,
+     "index": 14
+    },
+    {
+     "type": "holdEnd",
+     "total": 28800,
+     "fullGrid": false,
+     "index": 15
+    },
+    {
+     "type": "setWin",
+     "amount": 28800,
+     "winLevel": 9,
+     "index": 16
+    },
+    {
+     "type": "setTotalWin",
+     "amount": 28800,
+     "index": 17
+    },
+    {
+     "type": "finalWin",
+     "amount": 28800,
+     "index": 18
+    }
+   ],
+   "criteria": "jackpot_two_tiers"
   }
  ]
 }

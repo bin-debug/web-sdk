@@ -1,5 +1,5 @@
 {
- "expect": "exactly on the C symbols",
+ "expect": "is not a major jackpot coin",
  "board": "5x3",
  "books": [
   {
@@ -204,8 +204,8 @@
      "coins": [
       {
        "pos": {
-        "reel": 3,
-        "row": 2
+        "reel": 0,
+        "row": 0
        },
        "kind": "jackpot",
        "tier": "mini"
@@ -310,7 +310,7 @@
     },
     {
      "type": "jackpotWin",
-     "tier": "mini",
+     "tier": "major",
      "amount": 500,
      "positions": [
       {

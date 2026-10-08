@@ -7,57 +7,53 @@
 	import { BOARD_SIZES, SYMBOL_SIZE } from '../../game/constants';
 	import { SPEC } from '../../game/spec';
 	import { textStyle } from '../../game/ui';
+	import { coinLayer } from '../coins/coinState.svelte';
+	import { JACKPOT_LOOK } from '../coins/tiers';
 	import { jackpot, jackpotFx, type JackpotTier } from './jackpotState.svelte';
 
 	const context = getContext();
 	const tiers: JackpotTier[] = ['mini', 'minor', 'major', 'grand'];
-	const looks = {
-		mini: { face: 0x35be76, rim: 0x0f643b, slot: 'symbol.J1.static' },
-		minor: { face: 0x4298e8, rim: 0x19558c, slot: 'symbol.J2.static' },
-		major: { face: 0xdf4f9b, rim: 0x8b2158, slot: 'symbol.J3.static' },
-		grand: { face: 0xee8b35, rim: 0x9a4612, slot: 'symbol.J4.static' },
-	} as const;
+	const slots = { mini: 'symbol.J1.static', minor: 'symbol.J2.static', major: 'symbol.J3.static', grand: 'symbol.J4.static' } as const;
 	const D = SYMBOL_SIZE * 0.76;
 	const portrait = $derived(context.stateLayoutDerived.layoutType() === 'portrait');
 	const board = $derived(context.stateGameDerived.boardLayout());
 	const boardW = $derived(BOARD_SIZES.width * board.scale);
 	const boardTop = $derived(board.y - BOARD_SIZES.height * board.scale * 0.5);
-	// portrait: one row of four pills centred above the board; landscape: a column left of it
+	const boardBottom = $derived(board.y + BOARD_SIZES.height * board.scale * 0.5);
+	// portrait: one row of four pills centred BELOW the board (above it sit the logo and the running win pill); landscape: a column left of it
 	const W = $derived(portrait ? (boardW / 4) * 0.94 : D);
 	const position = $derived(portrait
-		? { x: board.x, y: boardTop - D * 0.45 }
+		? { x: board.x, y: boardBottom + D * 0.5 }
 		: { x: board.x - boardW * 0.5 - D * 1.45, y: boardTop + D * 0.1 });
 	const tierSpec = (tier: JackpotTier) => SPEC.jackpots?.[tier] ?? { name: tier.toUpperCase(), mult: 0 };
 	const pillText = (tier: JackpotTier) => bookEventAmountToCurrencyString(tierSpec(tier).mult * 100);
-	// three pips under each pill: one lights per held marker of that tier (3 win the jackpot)
-	const held = (tier: JackpotTier) => jackpot.markers.filter((marker) => marker.tier === tier).length;
-	const pips = (count: number) => (g: any) => {
-		g.clear();
-		for (let i = 0; i < 3; i++) g.circle((i - 1) * D * 0.16, D * 0.215, D * 0.045).fill({ color: i < count ? 0xffffff : 0x000000, alpha: i < count ? 1 : 0.35 });
-	};
-	const draw = (tier: JackpotTier, active: boolean, w: number) => (g: any) => {
-		const look = looks[tier];
+	// a pill glows while a coin of its tier sits in the hold (it pays that tier when the round ends); xN when there are several
+	const held = (tier: JackpotTier) => coinLayer.views.filter((view) => view.coin.kind === 'jackpot' && view.coin.tier === tier).length;
+	const draw = (tier: JackpotTier, lit: boolean, w: number) => (g: any) => {
+		const look = JACKPOT_LOOK[tier];
 		g.clear().roundRect(-w * 0.5, -D * 0.3, w, D * 0.6, D * 0.18)
-			.fill({ color: look.face, alpha: active ? 1 : 0.8 })
-			.stroke({ color: active ? 0xfff3aa : look.rim, width: D * (active ? 0.08 : 0.05) });
+			.fill({ color: look.face, alpha: lit ? 1 : 0.8 })
+			.stroke({ color: lit ? 0xfff3aa : look.rim, width: D * (lit ? 0.08 : 0.05) });
 	};
 </script>
 
 <MainContainer>
 	<Container {...position} zIndex={115}>
 		{#each tiers as tier, i (tier)}
-			{@const active = jackpot.active === tier}
-			{@const look = looks[tier]}
-			{@const hasArt = Boolean(context.stateApp.loadedAssets?.[look.slot])}
-			<Container x={portrait ? (i - 1.5) * (boardW / 4) : 0} y={portrait ? 0 : i * D * 0.72} scale={active ? jackpotFx.pop.current : 1}>
+			{@const count = held(tier)}
+			{@const lit = jackpot.active === tier || count > 0}
+			{@const hasArt = Boolean(context.stateApp.loadedAssets?.[slots[tier]])}
+			<Container x={portrait ? (i - 1.5) * (boardW / 4) : 0} y={portrait ? 0 : i * D * 0.72} scale={jackpot.active === tier ? jackpotFx.pop.current : 1}>
 				{#if hasArt}
-					<Sprite key={look.slot} anchor={0.5} width={W} height={D * 0.6} alpha={active ? 1 : 0.85} />
+					<Sprite key={slots[tier]} anchor={0.5} width={W} height={D * 0.6} alpha={lit ? 1 : 0.85} />
 				{:else}
-					<Graphics draw={draw(tier, active, W)} />
+					<Graphics draw={draw(tier, lit, W)} />
 				{/if}
-				<Text anchor={0.5} y={-D * 0.1} text={tierSpec(tier).name} style={textStyle(D * 0.16, 0xffffff, look.rim)} />
-				<Graphics draw={pips(held(tier))} />
-				<Text anchor={0.5} y={D * 0.08} text={pillText(tier)} style={textStyle(D * 0.15, 0xfff5cf, look.rim)} />
+				<Text anchor={0.5} y={-D * 0.1} text={tierSpec(tier).name} style={textStyle(D * 0.16, 0xffffff, JACKPOT_LOOK[tier].rim)} />
+				<Text anchor={0.5} y={D * 0.12} text={pillText(tier)} style={textStyle(D * 0.15, 0xfff5cf, JACKPOT_LOOK[tier].rim)} />
+				{#if count > 1}
+					<Text anchor={0.5} x={W * 0.38} y={-D * 0.1} text={`x${count}`} style={textStyle(D * 0.17, 0xffffff, JACKPOT_LOOK[tier].rim)} />
+				{/if}
 			</Container>
 		{/each}
 	</Container>

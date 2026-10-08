@@ -1,37 +1,17 @@
 {
- "expect": "needs 3 markers held",
+ "expect": "a miss must take one respin off",
  "board": "5x3",
  "books": [
   {
    "id": 1,
-   "payoutMultiplier": 15.5,
+   "payoutMultiplier": 288,
    "events": [
     {
      "type": "reveal",
      "board": [
       [
        {
-        "name": "H2"
-       },
-       {
-        "name": "L2"
-       },
-       {
-        "name": "C"
-       },
-       {
         "name": "H3"
-       },
-       {
-        "name": "H3"
-       }
-      ],
-      [
-       {
-        "name": "H2"
-       },
-       {
-        "name": "L1"
        },
        {
         "name": "C"
@@ -41,6 +21,9 @@
        },
        {
         "name": "H3"
+       },
+       {
+        "name": "L5"
        }
       ],
       [
@@ -51,10 +34,10 @@
         "name": "C"
        },
        {
-        "name": "H4"
+        "name": "L1"
        },
        {
-        "name": "C"
+        "name": "H2"
        },
        {
         "name": "L4"
@@ -62,36 +45,53 @@
       ],
       [
        {
-        "name": "H4"
-       },
-       {
-        "name": "H4"
-       },
-       {
-        "name": "L3"
-       },
-       {
-        "name": "C"
-       },
-       {
-        "name": "H4"
-       }
-      ],
-      [
-       {
-        "name": "L5"
-       },
-       {
         "name": "L1"
        },
        {
         "name": "C"
        },
        {
+        "name": "L1"
+       },
+       {
+        "name": "H1"
+       },
+       {
+        "name": "H2"
+       }
+      ],
+      [
+       {
         "name": "L3"
        },
        {
-        "name": "L2"
+        "name": "C"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "L4"
+       },
+       {
+        "name": "L1"
+       }
+      ],
+      [
+       {
+        "name": "L4"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H1"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H2"
        }
       ]
      ],
@@ -205,7 +205,7 @@
       {
        "pos": {
         "reel": 0,
-        "row": 1
+        "row": 0
        },
        "kind": "jackpot",
        "tier": "mini"
@@ -213,14 +213,6 @@
       {
        "pos": {
         "reel": 1,
-        "row": 1
-       },
-       "kind": "jackpot",
-       "tier": "mini"
-      },
-      {
-       "pos": {
-        "reel": 2,
         "row": 0
        },
        "kind": "bronze",
@@ -229,26 +221,34 @@
       {
        "pos": {
         "reel": 2,
-        "row": 2
+        "row": 0
        },
-       "kind": "gold",
-       "value": 5
+       "kind": "jackpot",
+       "tier": "minor"
       },
       {
        "pos": {
         "reel": 3,
-        "row": 2
+        "row": 0
        },
        "kind": "silver",
+       "value": 2
+      },
+      {
+       "pos": {
+        "reel": 4,
+        "row": 0
+       },
+       "kind": "gold",
        "value": 3
       },
       {
        "pos": {
         "reel": 4,
-        "row": 1
+        "row": 2
        },
        "kind": "bronze",
-       "value": 0.5
+       "value": 1
       }
      ],
      "lives": 3,
@@ -257,9 +257,18 @@
     },
     {
      "type": "respin",
-     "new": [],
-     "lives": 2,
-     "remaining": 2,
+     "new": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 1
+       },
+       "kind": "jackpot",
+       "tier": "major"
+      }
+     ],
+     "lives": 3,
+     "remaining": 3,
      "index": 2
     },
     {
@@ -267,16 +276,8 @@
      "new": [
       {
        "pos": {
-        "reel": 0,
-        "row": 2
-       },
-       "kind": "jackpot",
-       "tier": "mini"
-      },
-      {
-       "pos": {
-        "reel": 3,
-        "row": 0
+        "reel": 1,
+        "row": 1
        },
        "kind": "bronze",
        "value": 1
@@ -289,7 +290,7 @@
     {
      "type": "respin",
      "new": [],
-     "lives": 2,
+     "lives": 3,
      "remaining": 2,
      "index": 4
     },
@@ -309,48 +310,120 @@
     },
     {
      "type": "jackpotWin",
-     "tier": "minor",
+     "tier": "mini",
      "amount": 500,
      "positions": [
       {
        "reel": 0,
-       "row": 1
-      },
-      {
-       "reel": 0,
-       "row": 2
-      },
-      {
-       "reel": 1,
-       "row": 1
+       "row": 0
       }
      ],
+     "running": 500,
+     "reason": "coin",
      "index": 7
     },
     {
-     "type": "holdEnd",
-     "total": 1550,
-     "fullGrid": false,
+     "type": "jackpotWin",
+     "tier": "major",
+     "amount": 25000,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 1
+      }
+     ],
+     "running": 25500,
+     "reason": "coin",
      "index": 8
     },
     {
-     "type": "setWin",
-     "amount": 1550,
-     "winLevel": 6,
+     "type": "holdCollect",
+     "pos": {
+      "reel": 1,
+      "row": 0
+     },
+     "amount": 100,
+     "running": 25600,
      "index": 9
     },
     {
-     "type": "setTotalWin",
-     "amount": 1550,
+     "type": "holdCollect",
+     "pos": {
+      "reel": 1,
+      "row": 1
+     },
+     "amount": 100,
+     "running": 25700,
      "index": 10
     },
     {
-     "type": "finalWin",
-     "amount": 1550,
+     "type": "jackpotWin",
+     "tier": "minor",
+     "amount": 2500,
+     "positions": [
+      {
+       "reel": 2,
+       "row": 0
+      }
+     ],
+     "running": 28200,
+     "reason": "coin",
      "index": 11
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 3,
+      "row": 0
+     },
+     "amount": 200,
+     "running": 28400,
+     "index": 12
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 4,
+      "row": 0
+     },
+     "amount": 300,
+     "running": 28700,
+     "index": 13
+    },
+    {
+     "type": "holdCollect",
+     "pos": {
+      "reel": 4,
+      "row": 2
+     },
+     "amount": 100,
+     "running": 28800,
+     "index": 14
+    },
+    {
+     "type": "holdEnd",
+     "total": 28800,
+     "fullGrid": false,
+     "index": 15
+    },
+    {
+     "type": "setWin",
+     "amount": 28800,
+     "winLevel": 9,
+     "index": 16
+    },
+    {
+     "type": "setTotalWin",
+     "amount": 28800,
+     "index": 17
+    },
+    {
+     "type": "finalWin",
+     "amount": 28800,
+     "index": 18
     }
    ],
-   "criteria": "jackpot_mini"
+   "criteria": "jackpot_two_tiers"
   }
  ]
 }

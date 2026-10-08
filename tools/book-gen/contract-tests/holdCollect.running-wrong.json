@@ -1,5 +1,5 @@
 {
- "expect": "exactly on the C symbols",
+ "expect": "running total must be",
  "board": "5x3",
  "books": [
   {
@@ -204,8 +204,8 @@
      "coins": [
       {
        "pos": {
-        "reel": 3,
-        "row": 2
+        "reel": 0,
+        "row": 0
        },
        "kind": "jackpot",
        "tier": "mini"
@@ -353,7 +353,7 @@
       "row": 1
      },
      "amount": 100,
-     "running": 25700,
+     "running": 25705,
      "index": 10
     },
     {

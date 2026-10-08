@@ -93,7 +93,10 @@ type BookEventCollect = {
 type BookEventHoldStart = { index: number; type: 'holdStart'; board: RawSymbol[][]; coins: Coin[]; lives: number; mode: string };
 type BookEventRespin = { index: number; type: 'respin'; new: Coin[]; lives: number; remaining?: number };
 type BookEventHoldEnd = { index: number; type: 'holdEnd'; total: number; fullGrid: boolean };
-type BookEventJackpotWin = { index: number; type: 'jackpotWin'; tier: 'mini' | 'minor' | 'major' | 'grand'; amount: number; positions?: Position[] };
+type BookEventJackpotWin = { index: number; type: 'jackpotWin'; tier: 'mini' | 'minor' | 'major' | 'grand'; amount: number; positions: Position[]; running?: number; reason?: 'coin' | 'fullGrid' };
+type BookEventHoldCollect = { index: number; type: 'holdCollect'; pos: Position; amount: number; running: number };
+type BookEventHoldCollectAll = { index: number; type: 'holdCollectAll'; pos: Position; sources: Position[]; total: number };
+type BookEventHoldMultiply = { index: number; type: 'holdMultiply'; pos: Position; mult: number; targets: Position[] };
 type BookEventSquaresAdd = { index: number; type: 'squaresAdd'; positions: Position[] };
 type BookEventSquaresClear = { index: number; type: 'squaresClear'; positions?: Position[] };
 
@@ -148,6 +151,9 @@ export type BookEvent =
 	| BookEventRespin
 	| BookEventHoldEnd
 	| BookEventJackpotWin
+	| BookEventHoldCollect
+	| BookEventHoldMultiply
+	| BookEventHoldCollectAll
 	| BookEventCreateBonusSnapshot;
 
 export type Bet = BetType<BookEvent>;

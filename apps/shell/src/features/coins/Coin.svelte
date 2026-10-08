@@ -5,17 +5,17 @@
 	import { SYMBOL_SIZE } from '../../game/constants';
 	import { textStyle } from '../../game/ui';
 	import type { CoinView } from './coinState.svelte';
-	import { TIERS, tierOf, formatCoinValue } from './tiers';
+	import { coinFace, coinLabel, formatCoinValue } from './tiers';
 
 	type Props = { view: CoinView };
 	const { view }: Props = $props();
 	const context = getContext();
 
-	const tier = $derived(TIERS[tierOf(view.coin.kind)]);
+	const tier = $derived(coinFace(view.coin));
 	// the art slot when it loaded; otherwise a coloured disc drawn here (?art=none)
-	const hasArt = $derived(Boolean(context.stateApp.loadedAssets?.[tier.slot]));
+	const hasArt = $derived(Boolean(tier.slot && context.stateApp.loadedAssets?.[tier.slot]));
 	const D = SYMBOL_SIZE * 0.82;
-	const text = $derived(formatCoinValue(view.value.current));
+	const text = $derived(coinLabel(view.coin, view.value.current) ?? formatCoinValue(view.value.current));
 	const fontSize = $derived(D * (text.length > 5 ? 0.26 : text.length > 4 ? 0.3 : 0.36));
 </script>
 
@@ -27,7 +27,7 @@
 	zIndex={30}
 >
 	{#if hasArt}
-		<Sprite key={tier.slot} anchor={0.5} width={D} height={D} />
+		<Sprite key={tier.slot ?? ""} anchor={0.5} width={D} height={D} />
 	{:else}
 		<Circle
 			anchor={0.5}
