@@ -31,6 +31,8 @@ import { stashHandlers } from '../features/stash/register';
 import { clearStash, payOutStash, restoreStash, startStash } from '../features/stash/stashState.svelte';
 import { jackpotHandlers } from '../features/jackpots/register';
 import { clearJackpots } from '../features/jackpots/jackpotState.svelte';
+import { respinHandlers } from '../features/respins/register';
+import { clearRespinCounter, restoreRespinCounter } from '../features/respins/respinCounterState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -64,6 +66,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		eventEmitter.broadcast({ type: 'tumbleBoardReset' });
 		clearWilds();
 		if (bookEvent.index === 0) (clearSticky(), clearExpanding()); // sticky boxes last for the whole round, not past it
+		if (bookEvent.index === 0) clearRespinCounter();
 		clearCoins();
 		clearJackpots();
 		clearHold();
@@ -267,6 +270,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		restoreSquares(bookEvents);
 		restoreHold(bookEvents);
 		restoreSticky(bookEvents);
+		restoreRespinCounter(bookEvents);
 		restoreExpanding(bookEvents);
 
 		if (trigger) await playBookEvent(trigger, { bookEvents });
@@ -287,6 +291,7 @@ Object.assign(handlers, holdHandlers);
 Object.assign(handlers, triggerHandlers);
 Object.assign(handlers, stashHandlers);
 Object.assign(handlers, jackpotHandlers);
+Object.assign(handlers, respinHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {

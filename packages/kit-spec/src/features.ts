@@ -138,7 +138,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		title: 'Refill respins',
 		needs: ['holdAndWin'],
 		events: ['respinCounter'],
-		implemented: false,
+		implemented: true,
 	}),
 	persistSquares: f({
 		id: 'persistSquares',

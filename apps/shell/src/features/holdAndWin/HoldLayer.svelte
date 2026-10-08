@@ -1,18 +1,13 @@
 <script lang="ts">
-	import { Container, Rectangle, Text } from 'pixi-svelte';
+	import { Container, Rectangle } from 'pixi-svelte';
 
 	import BoardContainer from '../../components/BoardContainer.svelte';
-	import { getContext } from '../../game/context';
 	import Symbol from '../../components/Symbol.svelte';
 	import { BOARD_DIMENSIONS, BOARD_SIZES, SYMBOL_SIZE } from '../../game/constants';
 	import { SYMBOL_NAMES } from '../../game/spec';
-	import { ACCENT, textStyle } from '../../game/ui';
 	import { hold, holdFx, heldKeys } from './holdState.svelte';
 
 	const S = SYMBOL_SIZE;
-	const context = getContext();
-	// on a phone the jackpot pills sit under the board, so the respin counter drops below them
-	const portrait = $derived(context.stateLayoutDerived.layoutType() === 'portrait');
 	const cells = Array.from({ length: BOARD_DIMENSIONS.x * BOARD_DIMENSIONS.y }, (_, i) => ({
 		reel: Math.floor(i / BOARD_DIMENSIONS.y),
 		row: i % BOARD_DIMENSIONS.y,
@@ -51,12 +46,6 @@
 				{/if}
 			</Container>
 		{/each}
-		<!-- respin counter under the board, centred: a number, pops when it resets -->
-		<Container x={BOARD_SIZES.width * 0.5} y={BOARD_SIZES.height + S * (portrait ? 1.3 : 0.42)} scale={holdFx.pulse.current}>
-			<Rectangle x={-S * 1.05} y={-S * 0.3} width={S * 2.1} height={S * 0.6} borderRadius={S * 0.3} backgroundColor={0x14233a} backgroundAlpha={0.95} borderColor={ACCENT} borderWidth={S * 0.03} />
-			<Text anchor={0.5} x={-S * 0.45} text="RESPINS" style={textStyle(S * 0.17, 0xffffff)} />
-			<Text anchor={0.5} x={S * 0.62} text={`${hold.lives}`} style={textStyle(S * 0.42, hold.lives <= 1 ? 0xff7a7a : ACCENT)} />
-		</Container>
 		{#if holdFx.flash.current > 0}
 			<Rectangle width={BOARD_SIZES.width} height={BOARD_SIZES.height} backgroundColor={0xffe887} backgroundAlpha={holdFx.flash.current * 0.35} />
 		{/if}

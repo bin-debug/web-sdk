@@ -33,7 +33,7 @@
 	import Transition from './Transition.svelte';
 	import CoinLayer from '../features/coins/CoinLayer.svelte';
 	import WildLayer from '../features/wilds/WildLayer.svelte';
-	import StickyCounter from '../features/wilds/StickyCounter.svelte';
+	import RespinCounter from '../features/respins/RespinCounter.svelte';
 	import TriggerRow from '../features/triggerRow/TriggerRow.svelte';
 	import StashRow from '../features/stash/StashRow.svelte';
 	import ExpandedReels from '../features/wilds/ExpandedReels.svelte';
@@ -104,7 +104,8 @@
 			<CollectorLayer />
 			<ExpandedReels />
 			<WildLayer />
-			<StickyCounter />
+			<RespinCounter />
+			<RespinCounter placement="hold" />
 			{#if SPEC.features.includes('globalMultiplier')}
 				<GlobalMultiplier />
 			{/if}
