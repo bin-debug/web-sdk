@@ -17,13 +17,17 @@ const SDK = path.resolve(HERE, '..', '..');
 export async function loadRules() {
 	const dir = path.join(HERE, 'contract', 'rules');
 	const all = {};
+	const bookRules = []; // whole-book checks a rules file may export next to its per-event rules
 	for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.mjs')).sort()) {
-		const { rules } = await import(pathToFileURL(path.join(dir, f)).href);
+		const mod = await import(pathToFileURL(path.join(dir, f)).href);
+		const { rules } = mod;
+		bookRules.push(...(mod.bookRules ?? []));
 		for (const [type, fn] of Object.entries(rules)) {
 			if (all[type]) throw new Error(`contract rule "${type}" is defined twice (${f})`);
 			all[type] = fn;
 		}
 	}
+	Object.defineProperty(all, '__bookRules', { value: bookRules, enumerable: false });
 	return all;
 }
 
@@ -82,7 +86,10 @@ export function checkBooks(books, { rules, board, file = '' }) {
 				if (e.type === 'createBonusSnapshot' && Array.isArray(e.bookEvents)) walk(e.bookEvents, true);
 			});
 		};
-		if (Array.isArray(book.events)) walk(book.events, false);
+		if (Array.isArray(book.events)) {
+			walk(book.events, false);
+			for (const check of rules.__bookRules ?? []) check(book, { board, fail: add });
+		}
 	});
 	return problems;
 }

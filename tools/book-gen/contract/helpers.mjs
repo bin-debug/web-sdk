@@ -5,7 +5,7 @@ export const isInt = (v) => Number.isInteger(v);
 export const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 
 export const TIERS = ['mini', 'minor', 'major', 'grand'];
-export const COIN_KINDS = ['bronze', 'silver', 'gold', 'diamond', 'bag', 'pot', 'clover', 'collector', 'jackpot'];
+export const COIN_KINDS = ['bronze', 'silver', 'gold', 'diamond', 'bag', 'pot', 'clover', 'collector', 'jackpot', 'multiplier', 'plus', 'collect'];
 
 // a context whose messages get a prefix (used for items inside arrays)
 export const sub = (c, prefix) => ({ ...c, fail: (m) => c.fail(`${prefix}${m}`) });

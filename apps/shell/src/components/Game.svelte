@@ -43,6 +43,7 @@
 	import HoldBanner from '../features/holdAndWin/HoldBanner.svelte';
 	import SquaresLayer from '../features/squares/SquaresLayer.svelte';
 	import RetriggerBanner from '../features/bonusTiers/RetriggerBanner.svelte';
+	import JackpotLadder from '../features/jackpots/JackpotLadder.svelte';
 
 	const context = getContext();
 
@@ -123,6 +124,9 @@
 		{/if}
 		<FreeSpinOutro />
 		<RetriggerBanner />
+		{#if SPEC.features.includes('jackpotLadder')}
+			<JackpotLadder />
+		{/if}
 		<HoldBanner />
 		<Transition />
 	{/if}
