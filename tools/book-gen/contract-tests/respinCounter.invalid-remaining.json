@@ -1,0 +1,13 @@
+{
+ "expect": "remaining must be >= 0",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 0,
+   "events": [
+    { "type": "respinCounter", "remaining": -1, "reset": false, "index": 0 }
+   ]
+  }
+ ]
+}

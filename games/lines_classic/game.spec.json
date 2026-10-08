@@ -6,7 +6,7 @@
 	"reveal": "spin",
 	"pays": { "type": "lines", "lines": 20 },
 	"symbols": { "low": 5, "high": 4, "wild": true, "scatter": true },
-	"features": ["globalMultiplier", "multiplierWilds", "coins", "holdAndWin", "stickyWilds", "expandingReelWild", "jackpotLadder"],
+	"features": ["globalMultiplier", "multiplierWilds", "coins", "holdAndWin", "stickyWilds", "expandingReelWild", "jackpotLadder", "refillRespins"],
 	"jackpots": {
 		"mini": { "name": "MINI", "mult": 5 },
 		"minor": { "name": "MINOR", "mult": 25 },

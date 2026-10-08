@@ -10,3 +10,5 @@
 - **Art slots:** none (code). **Timing:** pulse 300 ms.
 - **Mock scenarios:** `refill_basic` (3 -> 2 -> reset 3 -> 2 -> 1 -> 0).
 - **Acceptance:** shown value == `remaining` every step; reset flash only when `reset`; reload restores it.
+
+- **Shipped as:** `features/respins/RespinCounter.svelte` with its event-driven state and snapshot restore. Hold and win now uses the shared component while continuing to source its display from the book's `lives`; sticky wilds uses the same shared `respinCounter` event handler. Test book: lines_classic BASE 329 (`refill_basic`).

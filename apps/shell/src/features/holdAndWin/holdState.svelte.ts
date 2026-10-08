@@ -11,6 +11,7 @@ import type { Coin } from '../coins/tiers';
 import { flipIn, payOut, placeCoins, clearCoins, coinLayer, multiplyCoins, collectCoins } from '../coins/coinState.svelte';
 import { SYMBOL_SIZE } from '../../game/constants';
 import { clearJackpots } from '../jackpots/jackpotState.svelte';
+import { clearRespinCounter, setRespinCounter } from '../respins/respinCounterState.svelte';
 
 // Hold and win: a base spin lands coin symbols, the board swaps to the bonus grid, the coins stick and the empty cells
 // respin (3 respins, back to 3 whenever a coin lands). When the respins run out every coin is collected one by one
@@ -28,7 +29,6 @@ export const hold = $state({
 });
 export const holdFx = {
 	banner: new Tween(0), // banner pop 0..1
-	pulse: new Tween(1), // respin counter pop
 	flash: new Tween(0), // full-grid flash
 };
 
@@ -69,11 +69,6 @@ const showBanner = async (title: string, sub: string, ms: number) => {
 	await holdFx.banner.set(0, { duration: t(200), easing: cubicOut });
 };
 
-const pulseCounter = async () => {
-	await holdFx.pulse.set(1.3, { duration: t(120), easing: cubicOut });
-	await holdFx.pulse.set(1, { duration: t(180), easing: backOut });
-};
-
 const showWin = (amount: number, animate: boolean) => {
 	eventEmitter.broadcast({ type: 'tumbleWinAmountShow' });
 	eventEmitter.broadcast({ type: 'tumbleWinAmountUpdate', amount, animate });
@@ -94,6 +89,7 @@ const leaveBonus = () => {
 export async function startHold(coins: Coin[], lives: number, mode: string) {
 	clearCoins();
 	hold.lives = lives;
+	await setRespinCounter(lives, false, 'hold');
 	hold.mode = mode;
 	enterBonus();
 	await showBanner(mode === 'epic' ? 'EPIC HOLD & WIN' : 'HOLD & WIN', `${lives} respins`, INTRO_MS);
@@ -116,7 +112,7 @@ export async function respin(landed: Coin[], lives: number) {
 	await Promise.all(jobs);
 	spinStop();
 	hold.lives = lives;
-	await pulseCounter();
+	await setRespinCounter(lives, landed.length > 0, 'hold');
 }
 
 // A multiplier coin landed: the book lists the coins it multiplies.
@@ -154,6 +150,7 @@ export async function endHold(total: number, fullGrid: boolean) {
 	leaveBonus();
 	clearCoins();
 	clearJackpots();
+	clearRespinCounter();
 }
 
 type SnapshotEvent = {
@@ -203,6 +200,7 @@ export function restoreHold(bookEvents: SnapshotEvent[]) {
 	clearCoins();
 	placeCoins([...held.values()]);
 	hold.lives = lives;
+	setRespinCounter(lives, false, 'hold');
 	enterBonus();
 	if (running) showWin(running, false);
 }
@@ -213,4 +211,5 @@ export function clearHold() {
 	hold.active = false;
 	hold.banner = '';
 	holdFx.banner.set(0, { duration: 0 });
+	clearRespinCounter();
 }
