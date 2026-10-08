@@ -1,0 +1,356 @@
+{
+ "expect": "needs 3 markers held",
+ "board": "5x3",
+ "books": [
+  {
+   "id": 1,
+   "payoutMultiplier": 15.5,
+   "events": [
+    {
+     "type": "reveal",
+     "board": [
+      [
+       {
+        "name": "H2"
+       },
+       {
+        "name": "L2"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H3"
+       },
+       {
+        "name": "H3"
+       }
+      ],
+      [
+       {
+        "name": "H2"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H4"
+       },
+       {
+        "name": "H3"
+       }
+      ],
+      [
+       {
+        "name": "L1"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H4"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "L4"
+       }
+      ],
+      [
+       {
+        "name": "H4"
+       },
+       {
+        "name": "H4"
+       },
+       {
+        "name": "L3"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "H4"
+       }
+      ],
+      [
+       {
+        "name": "L5"
+       },
+       {
+        "name": "L1"
+       },
+       {
+        "name": "C"
+       },
+       {
+        "name": "L3"
+       },
+       {
+        "name": "L2"
+       }
+      ]
+     ],
+     "paddingPositions": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "anticipation": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "gameType": "basegame",
+     "index": 0
+    },
+    {
+     "type": "holdStart",
+     "board": [
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ],
+      [
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       },
+       {
+        "name": "X"
+       }
+      ]
+     ],
+     "coins": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 1
+       },
+       "kind": "jackpot",
+       "tier": "mini"
+      },
+      {
+       "pos": {
+        "reel": 1,
+        "row": 1
+       },
+       "kind": "jackpot",
+       "tier": "mini"
+      },
+      {
+       "pos": {
+        "reel": 2,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      },
+      {
+       "pos": {
+        "reel": 2,
+        "row": 2
+       },
+       "kind": "gold",
+       "value": 5
+      },
+      {
+       "pos": {
+        "reel": 3,
+        "row": 2
+       },
+       "kind": "silver",
+       "value": 3
+      },
+      {
+       "pos": {
+        "reel": 4,
+        "row": 1
+       },
+       "kind": "bronze",
+       "value": 0.5
+      }
+     ],
+     "lives": 3,
+     "mode": "standard",
+     "index": 1
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 2,
+     "remaining": 2,
+     "index": 2
+    },
+    {
+     "type": "respin",
+     "new": [
+      {
+       "pos": {
+        "reel": 0,
+        "row": 2
+       },
+       "kind": "jackpot",
+       "tier": "mini"
+      },
+      {
+       "pos": {
+        "reel": 3,
+        "row": 0
+       },
+       "kind": "bronze",
+       "value": 1
+      }
+     ],
+     "lives": 3,
+     "remaining": 3,
+     "index": 3
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 2,
+     "remaining": 2,
+     "index": 4
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 1,
+     "remaining": 1,
+     "index": 5
+    },
+    {
+     "type": "respin",
+     "new": [],
+     "lives": 0,
+     "remaining": 0,
+     "index": 6
+    },
+    {
+     "type": "jackpotWin",
+     "tier": "minor",
+     "amount": 500,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 1
+      },
+      {
+       "reel": 0,
+       "row": 2
+      },
+      {
+       "reel": 1,
+       "row": 1
+      }
+     ],
+     "index": 7
+    },
+    {
+     "type": "holdEnd",
+     "total": 1550,
+     "fullGrid": false,
+     "index": 8
+    },
+    {
+     "type": "setWin",
+     "amount": 1550,
+     "winLevel": 6,
+     "index": 9
+    },
+    {
+     "type": "setTotalWin",
+     "amount": 1550,
+     "index": 10
+    },
+    {
+     "type": "finalWin",
+     "amount": 1550,
+     "index": 11
+    }
+   ],
+   "criteria": "jackpot_mini"
+  }
+ ]
+}

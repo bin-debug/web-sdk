@@ -27,6 +27,7 @@ export function symbolColour(name: string): string {
 	if (name[0] === 'H') return HIGH_COLOURS[(n - 1) % HIGH_COLOURS.length];
 	if (name === 'W') return '#ffc83d';
 	if (name === 'S') return '#a54cff';
+	if (name === 'C') return '#d9a21b'; // the hold-and-win coin symbol that triggers the feature
 	return '#7a8499';
 }
 

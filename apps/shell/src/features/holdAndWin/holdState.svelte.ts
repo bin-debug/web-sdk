@@ -5,8 +5,9 @@ import { stateBet } from 'state-shared';
 
 import { eventEmitter } from '../../game/eventEmitter';
 import type { Coin } from '../coins/tiers';
-import { flipIn, payOut, placeCoins, clearCoins } from '../coins/coinState.svelte';
-import { addJackpotMarkers, clearJackpots } from '../jackpots/jackpotState.svelte';
+import { flipIn, payOut, placeCoins, clearCoins, coinLayer } from '../coins/coinState.svelte';
+import { BOARD_DIMENSIONS } from '../../game/constants';
+import { addJackpotMarkers, clearJackpots, jackpot } from '../jackpots/jackpotState.svelte';
 
 // Hold and win: the board turns into coin cells that stick. This module only stages what the book says
 // (holdStart / respin / holdEnd): lives, coins and totals all come from the events, never from the client.
@@ -16,8 +17,8 @@ export const hold = $state({
 	lives: 0,
 	maxLives: 3,
 	mode: 'standard',
-	spinning: false,
-	phase: 0, // ticks while empty cells spin (drives the ghost shimmer)
+	spinCols: [] as boolean[], // reels whose empty cells are spinning right now
+	phase: 0, // ticks while empty cells spin (drives the strip scroll)
 	banner: '',
 	bannerSub: '',
 });
@@ -33,16 +34,27 @@ if (import.meta.env.DEV && typeof window !== 'undefined') (window as unknown as 
 const t = (ms: number) => ms * (stateBet.isTurbo || stateBet.isSpaceHold ? 0.4 : 1);
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const INTRO_MS = 800;
-const SPIN_MS = 650;
+const SPIN_MS = 700; // every empty reel spins this long before the first one stops
+const STOP_MS = 220; // then they stop one after another, left to right
 
 let timer: ReturnType<typeof setInterval> | undefined;
-const spinStart = () => {
-	hold.spinning = true;
+const key = (reel: number, row: number) => `${reel}:${row}`;
+// a cell is held when a coin or a jackpot marker sits on it; every other cell is empty and spins on a respin
+export const heldKeys = () =>
+	new Set([...coinLayer.views.map((v) => key(v.coin.pos.reel, v.coin.pos.row)), ...jackpot.markers.map((m) => key(m.pos.reel, m.pos.row))]);
+const emptyReels = () => {
+	const held = heldKeys();
+	return Array.from({ length: BOARD_DIMENSIONS.x }, (_, reel) => reel).filter((reel) =>
+		Array.from({ length: BOARD_DIMENSIONS.y }, (_, row) => row).some((row) => !held.has(key(reel, row))),
+	);
+};
+const spinStart = (reels: number[]) => {
+	hold.spinCols = Array.from({ length: BOARD_DIMENSIONS.x }, (_, reel) => reels.includes(reel));
 	clearInterval(timer);
-	timer = setInterval(() => hold.phase++, 90);
+	timer = setInterval(() => hold.phase++, 33);
 };
 const spinStop = () => {
-	hold.spinning = false;
+	hold.spinCols = [];
 	clearInterval(timer);
 };
 
@@ -66,18 +78,28 @@ export async function startHold(coins: Coin[], lives: number, mode: string) {
 	hold.lives = lives;
 	hold.maxLives = Math.max(lives, 1);
 	hold.mode = mode;
-	eventEmitter.broadcast({ type: 'boardHide' });
 	await showBanner(mode === 'epic' ? 'EPIC HOLD & WIN' : 'HOLD & WIN', `${lives} respins`, INTRO_MS);
 	await flipIn(coins);
 }
 
-// One respin: only the empty cells spin (the coins already held stay put), then the coins in `landed` stick.
+// One respin: only the empty cells spin (the coins already held stay put). The reels stop left to right and the
+// coins / markers in `landed` stick as their reel stops. Which cells land is the book's call, never ours.
 export async function respin(landed: Coin[], lives: number) {
-	spinStart();
+	const reels = emptyReels();
+	if (reels.length) spinStart(reels);
 	await wait(t(SPIN_MS));
+	const jobs: Promise<void>[] = [];
+	for (const reel of reels) {
+		await wait(t(STOP_MS));
+		hold.spinCols = hold.spinCols.map((spinning, i) => spinning && i !== reel);
+		const here = landed.filter((coin) => coin.pos.reel === reel);
+		if (here.length) {
+			jobs.push(flipIn(here));
+			addJackpotMarkers(here);
+		}
+	}
+	await Promise.all(jobs);
 	spinStop();
-	if (landed.length) await flipIn(landed);
-	addJackpotMarkers(landed);
 	hold.lives = lives;
 	await pulseMeter();
 }
@@ -95,7 +117,6 @@ export async function endHold(total: number, fullGrid: boolean) {
 	hold.active = false;
 	hold.banner = '';
 	clearJackpots();
-	eventEmitter.broadcast({ type: 'boardShow' });
 }
 
 type SnapshotEvent = { type: string; coins?: Coin[]; new?: Coin[]; lives?: number; mode?: string };
@@ -121,7 +142,6 @@ export function restoreHold(bookEvents: SnapshotEvent[]) {
 	placeCoins([...held.values()]);
 	hold.lives = lives;
 	hold.active = true;
-	eventEmitter.broadcast({ type: 'boardHide' });
 }
 
 // a new spin always starts outside the mode (an interrupted or skipped round must not leave it open)

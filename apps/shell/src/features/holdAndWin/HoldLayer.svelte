@@ -2,21 +2,30 @@
 	import { Container, Graphics, Rectangle } from 'pixi-svelte';
 
 	import BoardContainer from '../../components/BoardContainer.svelte';
+	import Symbol from '../../components/Symbol.svelte';
 	import { BOARD_DIMENSIONS, BOARD_SIZES, SYMBOL_SIZE } from '../../game/constants';
-	import { ACCENT } from '../../game/ui';
-	import { coinLayer } from '../coins/coinState.svelte';
-	import { hold, holdFx } from './holdState.svelte';
+	import { SYMBOL_NAMES } from '../../game/spec';
+	import { hold, holdFx, heldKeys } from './holdState.svelte';
 
 	const S = SYMBOL_SIZE;
 	const cells = Array.from({ length: BOARD_DIMENSIONS.x * BOARD_DIMENSIONS.y }, (_, i) => ({
 		reel: Math.floor(i / BOARD_DIMENSIONS.y),
 		row: i % BOARD_DIMENSIONS.y,
 	}));
-	// empty cell = no coin on it right now (a collector that frees a cell makes it empty again)
+	// empty cell = no coin or marker on it right now (a collector that frees a cell makes it empty again)
 	const empty = $derived.by(() => {
-		const taken = new Set(coinLayer.views.map((v) => `${v.coin.pos.reel}:${v.coin.pos.row}`));
+		const taken = heldKeys();
 		return cells.filter((c) => !taken.has(`${c.reel}:${c.row}`));
 	});
+	// filler symbols that scroll through a spinning cell (cosmetic only, never tied to a result)
+	const FILLER = SYMBOL_NAMES.filter((n) => n[0] === 'L' || n[0] === 'H');
+	const SPEED = 0.42; // cells per phase tick
+	const strip = (cell: { reel: number; row: number }) => {
+		const travel = hold.phase * SPEED + cell.reel * 1.9 + cell.row * 0.7;
+		const offset = (travel % 1) * S;
+		const base = Math.floor(travel) + cell.reel * 3 + cell.row;
+		return [-1, 0, 1].map((k) => ({ y: offset + k * S, name: FILLER[(((base - k) % FILLER.length) + FILLER.length) % FILLER.length] }));
+	};
 
 	const heart = (filled: boolean) => (g: any) => {
 		const s = S * 0.2;
@@ -31,18 +40,24 @@
 
 {#if hold.active}
 	<BoardContainer zIndex={95}>
-		<!-- empty cells: dark tiles; while a respin runs a ghost coin shimmers on each -->
+		<!-- empty cells: dark tiles; on a respin the reel spins (a scrolling symbol strip per cell) and stops left to right -->
 		{#each empty as cell (`${cell.reel}:${cell.row}`)}
-			{@const wave = 0.5 + 0.5 * Math.sin(hold.phase * 0.9 + cell.reel * 1.7 + cell.row * 2.3)}
 			<Container x={S * (cell.reel + 0.5)} y={S * (cell.row + 0.5)}>
-				<Rectangle x={-S * 0.45} y={-S * 0.45} width={S * 0.9} height={S * 0.9} borderRadius={S * 0.12} backgroundColor={0x0d1220} backgroundAlpha={0.88} borderColor={0x3b4a6b} borderWidth={S * 0.03} />
-				{#if hold.spinning}
-					<Graphics draw={(g) => g.clear().circle(0, 0, S * 0.3).fill({ color: ACCENT, alpha: 0.12 + wave * 0.3 })} />
+				<Rectangle x={-S * 0.45} y={-S * 0.45} width={S * 0.9} height={S * 0.9} borderRadius={S * 0.12} backgroundColor={0x0d1220} backgroundAlpha={0.92} borderColor={0x3b4a6b} borderWidth={S * 0.03} />
+				{#if hold.spinCols[cell.reel]}
+					<Container>
+						<Rectangle isMask x={-S * 0.45} y={-S * 0.45} width={S * 0.9} height={S * 0.9} borderRadius={S * 0.12} />
+						{#each strip(cell) as piece, i (i)}
+							<Container y={piece.y - S * 0.5} alpha={0.9}>
+								<Symbol state="spin" rawSymbol={{ name: piece.name }} />
+							</Container>
+						{/each}
+					</Container>
 				{/if}
 			</Container>
 		{/each}
-		<!-- life meter above the board, right side (the running win pill sits in the middle) -->
-		<Container x={BOARD_SIZES.width - S * 0.3} y={-S * 0.42} scale={holdFx.pulse.current}>
+		<!-- life meter under the board, right side (above it sit the running win pill and, with jackpots, the pills) -->
+		<Container x={BOARD_SIZES.width - S * 0.3} y={BOARD_SIZES.height + S * 0.38} scale={holdFx.pulse.current}>
 			{#each Array.from({ length: hold.maxLives }) as _, i}
 				<Container x={-(hold.maxLives - 1 - i) * S * 0.46}>
 					<Graphics draw={heart(i < hold.lives)} />

@@ -1,7 +1,7 @@
 # hold-and-win
 
 - **Branch:** `feature/hold-and-win` · **Needs:** coins, (jackpot-ladder for markers; refill-respins for the counter) · **Shells:** 2, 4 (gift-box variant)
-- **Player view:** a trigger fills the board with coin cells that STICK. You get 3 respins (lives, shown as
+- **Player view:** a base spin lands coin symbols (`C`, 6 or more in the demo books); they turn into coin cells that STICK. You get 3 respins (lives, shown as
   hearts in a life meter outside the board). Each landing special sticks and resets the lives to 3.
   The round ends when lives hit 0 or the board is full. A full grid pays everything.
   Two modes in the spec: normal (`mode: 'standard'`) and epic (`mode: 'epic'`: starts on a guaranteed
@@ -9,6 +9,8 @@
 - **Events:** `holdStart { board, coins, lives, mode }`, then per respin `respin { new, lives, remaining? }`
   (`lives` already reset to 3 when `new` is non-empty), then `holdEnd { total, fullGrid }`.
   Pots/collectors inside H&W use `collect {collector:'pot'}` (see collectors) and free cells.
+- **Reels (reworked):** during the hold the board stays up; every cell with no coin or jackpot marker is a dark tile with a scrolling strip of symbols
+  while a respin runs (the reels spin together, then stop left to right; coins and markers land as their reel stops). Strip symbols are cosmetic.
 - **Build:** `features/holdAndWin/`: state machine (`idle -> intro -> respin loop -> outro`), life meter,
   sticky coin layer (reuses `coinLayer`), respin spin that only spins EMPTY cells (the rest stay),
   intro banner, full-grid celebration, total fly-up. Works with `reveal: spin|respin`. Resume from

@@ -29,6 +29,12 @@
 		: { x: board.x - boardW * 0.5 - D * 1.45, y: boardTop + D * 0.1 });
 	const tierSpec = (tier: JackpotTier) => SPEC.jackpots?.[tier] ?? { name: tier.toUpperCase(), mult: 0 };
 	const pillText = (tier: JackpotTier) => bookEventAmountToCurrencyString(tierSpec(tier).mult * 100);
+	// three pips under each pill: one lights per held marker of that tier (3 win the jackpot)
+	const held = (tier: JackpotTier) => jackpot.markers.filter((marker) => marker.tier === tier).length;
+	const pips = (count: number) => (g: any) => {
+		g.clear();
+		for (let i = 0; i < 3; i++) g.circle((i - 1) * D * 0.16, D * 0.215, D * 0.045).fill({ color: i < count ? 0xffffff : 0x000000, alpha: i < count ? 1 : 0.35 });
+	};
 	const draw = (tier: JackpotTier, active: boolean, w: number) => (g: any) => {
 		const look = looks[tier];
 		g.clear().roundRect(-w * 0.5, -D * 0.3, w, D * 0.6, D * 0.18)
@@ -50,7 +56,8 @@
 					<Graphics draw={draw(tier, active, W)} />
 				{/if}
 				<Text anchor={0.5} y={-D * 0.1} text={tierSpec(tier).name} style={textStyle(D * 0.16, 0xffffff, look.rim)} />
-				<Text anchor={0.5} y={D * 0.12} text={pillText(tier)} style={textStyle(D * 0.15, 0xfff5cf, look.rim)} />
+				<Graphics draw={pips(held(tier))} />
+				<Text anchor={0.5} y={D * 0.08} text={pillText(tier)} style={textStyle(D * 0.15, 0xfff5cf, look.rim)} />
 			</Container>
 		{/each}
 	</Container>

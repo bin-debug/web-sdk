@@ -95,6 +95,7 @@ export function buildArt(spec: ShellSpec, slotsIn: SlotMap): Art {
 
 	// symbols
 	const names = new Set(symbolNames(spec));
+	if (spec.features?.includes('holdAndWin')) names.add('C'); // trigger coin symbol (art slot symbol.C.static)
 	if (spec.symbols.epicVariants) for (let i = 1; i <= Math.min(4, spec.symbols.high); i++) names.add(`E${i}`);
 	for (const name of names) {
 		addSprite(`symbol.${name}.static`, () => drawSymbolFallback(name));

@@ -336,6 +336,30 @@
        },
        "kind": "bronze",
        "value": 1
+      },
+      {
+       "pos": {
+        "reel": 0,
+        "row": 0
+       },
+       "kind": "jackpot",
+       "tier": "mini"
+      },
+      {
+       "pos": {
+        "reel": 2,
+        "row": 0
+       },
+       "kind": "jackpot",
+       "tier": "mini"
+      },
+      {
+       "pos": {
+        "reel": 4,
+        "row": 0
+       },
+       "kind": "jackpot",
+       "tier": "mini"
       }
      ],
      "lives": 3,
@@ -358,15 +382,29 @@
      "index": 21
     },
     {
-     "type": "holdEnd",
-     "total": 30,
-     "fullGrid": false,
-     "index": 22
-    },
-    {
      "type": "jackpotWin",
      "tier": "mini",
      "amount": 1000,
+     "index": 22,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 0
+      },
+      {
+       "reel": 2,
+       "row": 0
+      },
+      {
+       "reel": 4,
+       "row": 0
+      }
+     ]
+    },
+    {
+     "type": "holdEnd",
+     "total": 30,
+     "fullGrid": false,
      "index": 23
     },
     {

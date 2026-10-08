@@ -39,9 +39,17 @@ Conventions
 { type: 'holdStart',   board: RawSymbol[][], coins: coin[], lives: number, mode: string }
 { type: 'respin',      new: coin[], lives: number, remaining?: number }   // lives resets when new.length > 0
 { type: 'holdEnd',     total: number, fullGrid: boolean }
-{ type: 'jackpotWin',  tier: 'mini'|'minor'|'major'|'grand', amount: number, positions?: Position[] }
+{ type: 'jackpotWin',  tier: 'mini'|'minor'|'major'|'grand', amount: number, positions: Position[] }
 { type: 'respinCounter', remaining: number, reset: boolean } // refillRespins
 ```
+
+A hold and win round is ONE real round, in this order: `reveal` (a base spin; the trigger coins land as `C` symbols, reveal rows
+are padded) -> `holdStart` (`coins` sit exactly on those `C` cells, visible rows) -> `respin` x N (the client spins every cell that
+holds no coin or marker, the reels stop left to right, `new` lists what lands; `lives` is 3 again whenever something lands) ->
+`collect {collector:'pot'}` (optional) -> `jackpotWin` per tier -> `holdEnd` -> `setWin` / `setTotalWin` / `finalWin`.
+Jackpots: a coin of `kind: 'jackpot'` + `tier` is a marker (no value). When the hold ends, 3 or more held markers of one tier win that
+tier: one `jackpotWin` per tier after the last respin and before `holdEnd`, `positions` = the held markers, `amount` = the spec's
+`jackpots.<tier>.mult` x bet. `holdEnd.total` includes coin values and jackpots. The contract check enforces all of this.
 
 ## Layers and dynamite
 
