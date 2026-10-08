@@ -90,7 +90,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		needs: ['coins'],
 		reveal: ['drop'],
 		events: ['expandReel'],
-		implemented: false,
+		implemented: true,
 	}),
 	reelStash: f({
 		id: 'reelStash',

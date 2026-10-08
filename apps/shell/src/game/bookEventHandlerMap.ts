@@ -21,6 +21,8 @@ import { clearCollectors } from '../features/collectors/collectorState.svelte';
 import { clearCoins } from '../features/coins/coinState.svelte';
 import { squareHandlers } from '../features/squares/register';
 import { holdHandlers } from '../features/holdAndWin/register';
+import { triggerHandlers } from '../features/triggerRow/register';
+import { clearTrigger } from '../features/triggerRow/triggerState.svelte';
 import { restoreHold, clearHold } from '../features/holdAndWin/holdState.svelte';
 import { clearExpanding, restoreExpanding } from '../features/wilds/expandState.svelte';
 import { restoreSquares, resetSquares } from '../features/squares/squaresState.svelte';
@@ -58,6 +60,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		if (bookEvent.index === 0) (clearSticky(), clearExpanding()); // sticky boxes last for the whole round, not past it
 		clearCoins();
 		clearHold();
+		clearTrigger();
 		clearClovers();
 		clearCollectors();
 		if (bookEvent.gameType === 'basegame') resetSquares();
@@ -269,6 +272,7 @@ Object.assign(handlers, cloverHandlers);
 Object.assign(handlers, collectorHandlers);
 Object.assign(handlers, squareHandlers);
 Object.assign(handlers, holdHandlers);
+Object.assign(handlers, triggerHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {

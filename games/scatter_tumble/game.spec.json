@@ -21,7 +21,8 @@
 	},
 	"features": [
 		"tumble",
-		"globalMultiplier"
+		"globalMultiplier",
+		"bottomRowExpand"
 	],
 	"bonuses": [
 		{
