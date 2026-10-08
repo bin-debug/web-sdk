@@ -5,6 +5,9 @@
 </script>
 
 <BoardContainer>
+	{#each wildLayer.sticky as view (view.id)}
+		<MultiplierWild {view} />
+	{/each}
 	{#each wildLayer.views as view (view.id)}
 		<MultiplierWild {view} />
 	{/each}

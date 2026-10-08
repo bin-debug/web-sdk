@@ -13,7 +13,7 @@ import config from './config';
 import { coinHandlers } from '../features/coins/register';
 import { bonusTier } from '../features/bonusTiers/tiers';
 import { wildHandlers } from '../features/wilds/register';
-import { clearWilds, openWilds } from '../features/wilds/wildState.svelte';
+import { clearWilds, openWilds, clearSticky, restoreSticky } from '../features/wilds/wildState.svelte';
 import { cloverHandlers } from '../features/clovers/register';
 import { clearClovers } from '../features/clovers/cloverState.svelte';
 import { collectorHandlers } from '../features/collectors/register';
@@ -54,6 +54,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	reveal: async (bookEvent: BookEventOfType<'reveal'>, { bookEvents }: BookEventContext) => {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
 		clearWilds();
+		if (bookEvent.index === 0) clearSticky(); // sticky boxes last for the whole round, not past it
 		clearCoins();
 		clearHold();
 		clearClovers();
@@ -250,6 +251,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		const mult = last('updateGlobalMult');
 		restoreSquares(bookEvents);
 		restoreHold(bookEvents);
+		restoreSticky(bookEvents);
 
 		if (trigger) await playBookEvent(trigger, { bookEvents });
 		if (update) playBookEvent(update, { bookEvents });

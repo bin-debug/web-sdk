@@ -9,4 +9,5 @@
   cells spin), landing slam, glow idle, restored from the bonus snapshot.
 - **Art slots:** `MW1`-`MW3`, `W`. Fallback: code tiles. Timing: land slam 250 ms.
 - **Mock scenarios:** `sticky_bonus` (3 respins, reset twice, ends 0), `sticky_stacked`.
+- **Shipped as:** `wildLayer.sticky` (wildState.svelte.ts) + `StickyCounter.svelte` stub; round = several reveals, sticky boxes clear on the next reveal with `index === 0`; a box with no `mults` entry shows "W". Test books: lines_classic ids 322 (`sticky_bonus`) and 323 (`sticky_stacked`).
 - **Acceptance:** stuck boxes stay across respins; counter follows the book; reload restores them.

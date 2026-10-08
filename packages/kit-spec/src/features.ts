@@ -109,7 +109,7 @@ export const FEATURES: Record<string, FeatureInfo> = {
 		id: 'stickyWilds',
 		title: 'Sticky wilds',
 		events: ['addStickyWilds'],
-		implemented: false,
+		implemented: true,
 	}),
 	expandingReelWild: f({
 		id: 'expandingReelWild',
