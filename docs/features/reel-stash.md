@@ -12,3 +12,4 @@
 - **Art slots:** none required (code boxes in the board-frame style); `COL1` may be used as the bank icon. Timing: bump 250 ms.
 - **Mock scenarios:** `stash_multiply` (x1 -> x4 over a bonus), `stash_bank` (bank with neighbour multipliers).
 - **Acceptance:** displayed stash/bank == book numbers after every event; end payout == book; reload restores boxes.
+- **Shipped as:** `features/stash/` (`stashState.svelte.ts`, `StashRow.svelte`, `register.ts`). `scatter_tumble` selects both variants and provides books 308 (`stash_multiply`) and 309 (`stash_bank`). Bank totals drain at free-spin end; snapshot restoration is instant.
