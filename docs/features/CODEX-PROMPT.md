@@ -1,12 +1,12 @@
 # Prompt for Codex (copy everything inside the box, paste into Codex, send)
 
-Third run: one feature, `tumble-super`. The first (`reel-stash`) merged after one review round, the second (`jackpot-ladder`) needed a full
-rework because the real game flow was not researched. Codex builds and opens the PR but does NOT merge; a Claude session reviews it.
+Fourth run: one feature, `refill-respins`. reel-stash and refill-respins merged after one review round; the review always finds bugs that only show with ART ON
+(not `?art=none`) and on mobile, so test those first. Codex builds and opens the PR but does NOT merge; a Claude session reviews it.
 
 ```
 You are building ONE item for a slot game-shell engine. Repo https://github.com/bin-debug/web-sdk (origin),
 integration branch `studio-kit`, main checkout C:\source\_studio-kit\web-sdk (Windows, Git Bash / PowerShell).
-Item: `tumble-super` (row in docs/features/STATUS.md). Do it end to end yourself; the owner only tests on a phone.
+Item: `refill-respins` (row in docs/features/STATUS.md). Do it end to end yourself; the owner only tests on a phone.
 
 HARD RULES
 - PUBLIC repo: no IPs, hostnames, tokens, emails or client names in code, docs, commits, branch names or PRs.
@@ -23,22 +23,23 @@ HARD RULES
 
 STEPS
 1. cd C:\source\_studio-kit\web-sdk ; git fetch origin ; git checkout studio-kit ; git pull --ff-only
-   Read docs/features/STATUS.md. Confirm `tumble-super` is `todo`, its Needs are `merged`, and
-   `git ls-remote --heads origin feature/tumble-super` is empty. Claim it first:
-   git worktree add ..\_feat-tumble-super -b feature/tumble-super origin/studio-kit ; cd ..\_feat-tumble-super
-   set the row to `claimed`, commit "claim tumble-super", git push -u origin feature/tumble-super
+   Read docs/features/STATUS.md. Confirm `refill-respins` is `todo`, its Needs are `merged`, and
+   `git ls-remote --heads origin feature/refill-respins` is empty. Claim it first:
+   git worktree add ..\_feat-refill-respins -b feature/refill-respins origin/studio-kit ; cd ..\_feat-refill-respins
+   set the row to `claimed`, commit "claim refill-respins", git push -u origin feature/refill-respins
    pnpm install ; pnpm run build --filter=pixi-svelte
-2. RESEARCH FIRST (this was the biggest miss last time): before writing code, look up how this mechanic works in real
-   slots ("super tumble" / "all matching symbols removed on a cascade win", industry standard behaviour) and write 5-8 lines
-   in the PR on what the standard is and where you follow or deviate from it. If the spec in docs/features/tumble-super.md
-   differs from the industry standard, build the spec but say so in the PR.
-3. Read ONLY: docs/HANDOFF.md (Status + top 6 log entries), docs/features/README.md, docs/features/tumble-super.md,
-   docs/features/golden-squares.md (a tumble feature already built), docs/features/BOOK-EVENTS.md.
-   Study as the pattern: apps/shell/src/game/bookEventHandlerMap.ts (winInfo / tumbleBoard handlers),
-   apps/shell/src/components/TumbleBoard*.svelte, apps/shell/src/features/squares/, tools/book-gen/features/goldenSquares.mjs.
-4. Build `tumble-super` as the spec says. Test game: scatter_tumble. Wire: the tumble handler, typesBookEvent.ts if needed,
-   tools/book-gen/features/<featureId>.mjs (feature id `superTumble`), the game spec features list,
-   packages/kit-spec/src/features.ts (`implemented: true` only when it all works).
+2. RESEARCH FIRST: before writing code, look up how a refilling respin counter works in real slots (respins that reset to 3 when a new
+   symbol lands, shown as a number outside the board) and write 5-8 lines in the PR on the standard and where you follow or deviate.
+   NOTE: hold-and-win already shows a RESPINS number pill (apps/shell/src/features/holdAndWin/HoldLayer.svelte) fed by `respin.lives`.
+   Build `respinCounter` as a shared component the hold bonus and other respin bonuses (e.g. sticky wilds respins) can use, and make
+   hold-and-win use it instead of its own pill, without changing how hold plays. If the spec differs from the standard, build the spec and say so.
+3. Read ONLY: docs/HANDOFF.md (Status + top 6 log entries), docs/features/README.md, docs/features/refill-respins.md,
+   docs/features/hold-and-win.md, docs/features/sticky-wilds.md, docs/features/BOOK-EVENTS.md.
+   Study as the pattern: apps/shell/src/features/holdAndWin/ (holdState, HoldLayer, register.ts), apps/shell/src/features/stickyWilds/,
+   tools/book-gen/features/holdAndWin.mjs and _holdRound.mjs, tools/book-gen/contract/rules/holdwin.mjs (respinCounter rule exists).
+4. Build `refill-respins` as the spec says. Test game: lines_classic (feature id `refillRespins`, books `refill_basic` and one
+   hold-and-win book still playing with the shared counter). Wire: handler/register, typesBookEvent.ts, tools/book-gen/features/refillRespins.mjs,
+   the game spec features list (append at the END so earlier book ids do not shift), packages/kit-spec/src/features.ts.
 
 LESSONS FROM THE LAST REVIEWS (apply every one)
 1. Every layer/state you add must be cleared by the `reveal` handler of a new spin and by a skipped or interrupted round.
@@ -60,20 +61,21 @@ LESSONS FROM THE LAST REVIEWS (apply every one)
    server running an old worktree): start your own from YOUR worktree on a free port and use that rgs_url. A board that
    stays black or a "reveal" that never ends is usually that, or the known flake where the first bet does nothing:
    click spin again. The first page load is slow (wait ~30 s) and Vite re-bundles after edits.
-10. Do not "fix" unrelated pre-existing failures (svelte-check errors on textStyle `align`, i18n messagesMap, the
+10. ART ON: always play with art on too (drop `&art=none`), check the console for errors, and never use a symbol/constant without importing it.
+11. Do not "fix" unrelated pre-existing failures (svelte-check errors on textStyle `align`, i18n messagesMap, the
    overlapping BALANCE/WIN labels in the bar). Do not touch other features' files beyond small wiring lines.
 
 VERIFY (do all of it, paste the evidence in the PR)
-- node tools/book-gen/shell.mjs scatter_tumble ; node tools/book-gen/check-contract.mjs <each of: lines_classic
+- node tools/book-gen/shell.mjs lines_classic ; node tools/book-gen/check-contract.mjs <each of: lines_classic
   cluster_classic scatter_tumble ways_classic> all `0 problems` ; node tools/book-gen/contract-tests/run.mjs all pass.
 - Demo RGS: `node tools/mock-rgs/server.mjs <free port>` from your worktree; after regenerating books call
-  curl -XPOST localhost:<port>/mock/reset -d '{"gameId":"scatter_tumble"}' and reload the page. Dev server:
+  curl -XPOST localhost:<port>/mock/reset -d '{"gameId":"lines_classic"}' and reload the page. Dev server:
   `cd apps/shell ; npx vite dev --host --port <free port> --strictPort`.
 - Play your scenario books (force one with
-  curl -XPOST localhost:<rgs>/mock/queue -d '{"gameId":"scatter_tumble","mode":"BASE","id":[<book id>]}')
+  curl -XPOST localhost:<rgs>/mock/queue -d '{"gameId":"lines_classic","mode":"BASE","id":[<book id>]}')
   at 1600x900 and 375x812, with `?art=none` and with art, turbo on, and a reload mid-feature. Use
   tools/qa/hidden-pane-raf-shim.js if the browser is hidden. Zero console errors. URL form:
-  http://localhost:<dev>/?sessionID=qa-1&game_id=scatter_tumble&currency=ZAR&lang=en&device=desktop&rgs_url=http://localhost:<rgs>&art=none
+  http://localhost:<dev>/?sessionID=qa-1&game_id=lines_classic&currency=ZAR&lang=en&device=desktop&rgs_url=http://localhost:<rgs>  (add &art=none for the code-only view, but ALSO test without it)
   (click "press anywhere to continue" before the first bet; use a new sessionID after a reset).
 - If you cannot drive a browser, say so plainly in the PR and list exactly which checks you did and did not run.
   Do not claim a visual check you did not do.
@@ -81,9 +83,9 @@ VERIFY (do all of it, paste the evidence in the PR)
 
 SHIP (do NOT merge)
 - STATUS.md row to `PR open` with a short note, ONE log entry on top of the Session log in docs/HANDOFF.md,
-  a "Shipped as" line in docs/features/tumble-super.md.
+  a "Shipped as" line in docs/features/refill-respins.md.
 - Small clean commits in plain English. Trailer on each: Co-Authored-By: Codex <noreply@openai.com>
-- git fetch ; git rebase origin/studio-kit ; git push -u origin feature/tumble-super
+- git fetch ; git rebase origin/studio-kit ; git push -u origin feature/refill-respins
 - gh pr create --base studio-kit with a body: what changed, the industry research notes, files touched, scenario book ids
   and what each shows, verification evidence, known gaps. End with: "Built by Codex, review requested."
 - Leave the PR open and stop. Do not start another item.
