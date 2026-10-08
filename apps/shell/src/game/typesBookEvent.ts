@@ -63,6 +63,7 @@ type BookEventTumbleBoard = {
 	type: 'tumbleBoard';
 	explodingSymbols: Position[];
 	newSymbols: RawSymbol[][];
+	sympathyPositions?: Position[];
 };
 type BookEventFinalWin = { index: number; type: 'finalWin'; amount: number };
 type BookEventSetWin = { index: number; type: 'setWin'; amount: number; winLevel: number };

@@ -3,13 +3,14 @@
 
 	type AddingBoard = RawSymbol[][];
 	type ExplodingPositions = Position[];
+	type SympathyPositions = Position[];
 
 	export type EmitterEventTumbleBoard =
 		| { type: 'tumbleBoardShow' }
 		| { type: 'tumbleBoardHide' }
 		| { type: 'tumbleBoardInit'; addingBoard: AddingBoard }
 		| { type: 'tumbleBoardReset' }
-		| { type: 'tumbleBoardExplode'; explodingPositions: ExplodingPositions }
+		| { type: 'tumbleBoardExplode'; explodingPositions: ExplodingPositions; sympathyPositions?: SympathyPositions }
 		| { type: 'tumbleBoardRemoveExploded' }
 		| { type: 'tumbleBoardSlideDown' };
 </script>
@@ -21,6 +22,7 @@
 
 	import { BoardContext } from 'components-shared';
 	import { waitForResolve } from 'utils-shared/wait';
+	import { stateBet } from 'state-shared';
 
 	import TumbleBoardBase from './TumbleBoardBase.svelte';
 	import BoardContainer from './BoardContainer.svelte';
@@ -31,6 +33,7 @@
 	const context = getContext();
 
 	let show = $state(false);
+	const t = (ms: number) => ms * (stateBet.isTurbo || stateBet.isSpaceHold ? 0.4 : 1);
 
 	const createTumbleSymbol = ({ initY, rawSymbol }: { initY: number; rawSymbol: RawSymbol }) => {
 		const symbolY = new Tween(initY);
@@ -81,7 +84,11 @@
 			context.stateGame.tumbleBoardAdding = [];
 			context.stateGame.tumbleBoardBase = [];
 		},
-		tumbleBoardExplode: async ({ explodingPositions }) => {
+		tumbleBoardExplode: async ({ explodingPositions, sympathyPositions = [] }) => {
+			for (const position of sympathyPositions) {
+				context.stateGame.tumbleBoardBase[position.reel][position.row].symbolState = 'sympathy';
+			}
+			if (sympathyPositions.length) await new Promise((resolve) => setTimeout(resolve, t(120)));
 			const getPromises = () =>
 				explodingPositions.map(async (position) => {
 					const tumbleSymbol = context.stateGame.tumbleBoardBase[position.reel][position.row];

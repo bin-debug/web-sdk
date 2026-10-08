@@ -14,3 +14,7 @@
 - **Mock scenarios:** `supertumble_basic` (cluster of 5, 9 matching symbols removed), `supertumble_chain`.
 - **Acceptance:** removed set == `explodingSymbols` exactly; after refill the board equals the book's
   next board; turbo ok; works inside bonuses.
+
+Shipped as `feature/tumble-super`: `sympathyPositions` is optional book data, so every matching
+symbol is removed without client outcome logic. `scatter_tumble` scenarios 304 (`supertumble_basic`)
+and 305 (`supertumble_chain`) cover the basic and chained flows.

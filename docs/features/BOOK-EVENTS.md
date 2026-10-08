@@ -16,6 +16,17 @@ Conventions
 - `coin` shape used by several events: `{ pos: Position, kind: 'bronze'|'silver'|'gold'|'diamond'|'bag'|'pot'|'clover'|'collector'|'jackpot', value?: number, tier?: 'mini'|'minor'|'major'|'grand', mult?: number }`.
   (`value` = payout in x bet for coins, bags; `mult` for clovers; `tier` for jackpot markers.)
 
+## Tumble
+
+```ts
+{ type: 'tumbleBoard', explodingSymbols: Position[], newSymbols: RawSymbol[][], sympathyPositions?: Position[] }
+```
+
+`explodingSymbols` and its rows are padded. `sympathyPositions`, when present, is the book-ordered
+subset that matches the paid symbol but is not in `winInfo.positions`; it gets the short pre-removal
+shimmer. It makes a super tumble book-directed: the client neither finds matching symbols nor derives
+which cells receive the extra animation.
+
 ## Squares and reveal
 
 ```ts
