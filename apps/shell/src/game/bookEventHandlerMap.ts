@@ -10,6 +10,7 @@ import { stateGame, stateGameDerived } from './stateGame.svelte';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
 import config from './config';
+import { SPEC } from './spec';
 import { coinHandlers } from '../features/coins/register';
 import { bonusTier } from '../features/bonusTiers/tiers';
 import { wildHandlers } from '../features/wilds/register';
@@ -26,6 +27,8 @@ import { clearTrigger } from '../features/triggerRow/triggerState.svelte';
 import { restoreHold, clearHold } from '../features/holdAndWin/holdState.svelte';
 import { clearExpanding, restoreExpanding } from '../features/wilds/expandState.svelte';
 import { restoreSquares, resetSquares } from '../features/squares/squaresState.svelte';
+import { stashHandlers } from '../features/stash/register';
+import { clearStash, payOutStash, restoreStash, startStash } from '../features/stash/stashState.svelte';
 
 // The shell's director: book event -> choreography of emitter events. Feature modules register more handlers
 // (kit-mechanics); this map is the core every shell has: reveal, wins, tumbles, free spins, win scenes.
@@ -63,6 +66,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		clearTrigger();
 		clearClovers();
 		clearCollectors();
+		if (bookEvent.index === 0) clearStash();
 		if (bookEvent.gameType === 'basegame') resetSquares();
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'spin_start' });
 		const isBonusGame = checkIsMultipleRevealEvents({ bookEvents });
@@ -146,6 +150,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 			colour: tier.colour,
 		});
 		stateGame.gameType = 'freegame';
+		if (SPEC.features.includes('reelStash')) startStash();
 		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
 		eventEmitter.broadcast({ type: 'boardFrameGlowShow' });
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
@@ -175,6 +180,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		});
 	},
 	freeSpinEnd: async (bookEvent: BookEventOfType<'freeSpinEnd'>) => {
+		if (SPEC.features.includes('reelStash')) await payOutStash();
 		await eventEmitter.broadcastAsync({ type: 'uiHide' });
 		stateGame.gameType = 'basegame';
 		eventEmitter.broadcast({ type: 'boardFrameGlowHide' });
@@ -259,6 +265,7 @@ const handlers: BookEventHandlerMap<BookEvent, BookEventContext> = {
 		restoreExpanding(bookEvents);
 
 		if (trigger) await playBookEvent(trigger, { bookEvents });
+		restoreStash(bookEvents);
 		if (update) playBookEvent(update, { bookEvents });
 		if (total) playBookEvent(total, { bookEvents });
 		if (mult) playBookEvent(mult, { bookEvents });
@@ -273,6 +280,7 @@ Object.assign(handlers, collectorHandlers);
 Object.assign(handlers, squareHandlers);
 Object.assign(handlers, holdHandlers);
 Object.assign(handlers, triggerHandlers);
+Object.assign(handlers, stashHandlers);
 
 // Dev only: trace every book event (start and end) so a stuck round shows which handler is waiting.
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {

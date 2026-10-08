@@ -58,6 +58,8 @@ export function validateSpec(spec: ShellSpec): SpecIssue[] {
 		if (!/^BONUS\d*$/.test(b.id)) warn('bonuses', `Bonus id "${b.id}" should look like BONUS, BONUS2, BONUS3 (it is the RGS bet mode).`);
 	}
 	for (const buy of spec.buys ?? []) if (!ids.has(buy.mode)) err('buys', `The buy for mode "${buy.mode}" has no matching bonus in "bonuses".`);
+	if (spec.reelStash && (!Array.isArray(spec.reelStash.variants) || !spec.reelStash.variants.length || spec.reelStash.variants.some((v) => !['multiply', 'bank'].includes(v))))
+		err('reelStash.variants', 'Reel stash variants must be a non-empty list containing "multiply" and/or "bank".');
 	if ((spec.bonuses?.length ?? 0) > 0 && spec.symbols?.scatter === false) warn('symbols.scatter', 'Bonuses are triggered by the scatter symbol S, but scatter is switched off.');
 
 	if (!['board-hero', 'stage', 'classic'].includes(spec.layout?.preset)) err('layout.preset', 'The layout preset must be "board-hero", "stage" or "classic".');

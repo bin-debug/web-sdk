@@ -35,6 +35,7 @@
 	import WildLayer from '../features/wilds/WildLayer.svelte';
 	import StickyCounter from '../features/wilds/StickyCounter.svelte';
 	import TriggerRow from '../features/triggerRow/TriggerRow.svelte';
+	import StashRow from '../features/stash/StashRow.svelte';
 	import ExpandedReels from '../features/wilds/ExpandedReels.svelte';
 	import CloverLayer from '../features/clovers/CloverLayer.svelte';
 	import CollectorLayer from '../features/collectors/CollectorLayer.svelte';
@@ -92,6 +93,9 @@
 			<RunningWin />
 			{#if SPEC.features.includes('bottomRowExpand')}
 				<TriggerRow />
+			{/if}
+			{#if SPEC.features.includes('reelStash')}
+				<StashRow />
 			{/if}
 			<HoldLayer />
 			<CoinLayer />

@@ -22,8 +22,12 @@
 	"features": [
 		"tumble",
 		"globalMultiplier",
-		"bottomRowExpand"
+		"bottomRowExpand",
+		"reelStash"
 	],
+	"reelStash": {
+		"variants": ["multiply", "bank"]
+	},
 	"bonuses": [
 		{
 			"id": "BONUS",
