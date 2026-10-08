@@ -102,6 +102,7 @@ type BookEventRespinCounter = { index: number; type: 'respinCounter'; remaining:
 type BookEventExpandingWildReel = { index: number; type: 'expandingWildReel'; reel: number; mult: number; who?: string };
 
 type BookEventExpandReel = { index: number; type: 'expandReel'; reel: number; kind: 'coin' | 'fs'; cells: Coin[] };
+type BookEventStashUpdate = { index: number; type: 'stashUpdate'; reel: number; value: number; banked?: number };
 
 type BookEventWildMults = {
 	index: number;
@@ -138,6 +139,7 @@ export type BookEvent =
 	| BookEventSquaresClear
 	| BookEventWildMults
 	| BookEventExpandReel
+	| BookEventStashUpdate
 	| BookEventExpandingWildReel
 	| BookEventAddStickyWilds
 	| BookEventRespinCounter

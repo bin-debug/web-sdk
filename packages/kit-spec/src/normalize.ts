@@ -17,6 +17,7 @@ export function normalizeSpec(raw: Partial<ShellSpec> & { gameId: string }): She
 		bonuses: raw.bonuses ?? [],
 		boosts: raw.boosts ?? [],
 		buys: raw.buys ?? [],
+		reelStash: raw.reelStash,
 		layout: { preset: 'board-hero', mascotSide: 'right', ...(raw.layout ?? {}) },
 		ui: { accent: '#F5C400', bar: 'kit', ...(raw.ui ?? {}) },
 		palette: raw.palette ?? ['#1b1030', '#e0245e', '#ffd23f'],

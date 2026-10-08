@@ -14,6 +14,7 @@ export type BonusSpec = {
 
 export type BoostSpec = { id: string; name: string; cost: number };
 export type BuySpec = { mode: string; cost: number };
+export type ReelStashSpec = { variants: ('multiply' | 'bank')[] };
 
 export type ShellSpec = {
 	gameId: string;
@@ -27,6 +28,7 @@ export type ShellSpec = {
 	bonuses: BonusSpec[];
 	boosts: BoostSpec[];
 	buys: BuySpec[];
+	reelStash?: ReelStashSpec;
 	layout: { preset: LayoutPreset; mascotSide: 'left' | 'right'; widget?: string };
 	ui: { accent: string; bar: 'kit' };
 	palette: string[];

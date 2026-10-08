@@ -95,8 +95,9 @@ export const FEATURES: Record<string, FeatureInfo> = {
 	reelStash: f({
 		id: 'reelStash',
 		title: 'Reel stash',
+		needs: ['bottomRowExpand'],
 		events: ['stashUpdate'],
-		implemented: false,
+		implemented: true,
 	}),
 	multiplierWilds: f({
 		id: 'multiplierWilds',
