@@ -1,5 +1,5 @@
 // Visual-test hold-and-win jackpot rounds. The jackpotWin amount and marker positions are supplied by the
-// book; setWin owns the payout once, so the client never derives or pays a jackpot a second time.
+// book (after the last respin, before holdEnd: jackpots pay when the hold ends); setWin owns the payout once, so the client never derives or pays a jackpot a second time.
 export function scenarios(ctx) {
 	const { spec, BOOK, winLevel, randomBoard } = ctx;
 	const { reels, rows } = spec.board;
@@ -19,11 +19,11 @@ export function scenarios(ctx) {
 
 	const miniAmount = 5 * BOOK;
 	const miniTotal = miniAmount + BOOK;
-	const mini = finish('jackpot_mini', [reveal(), hold([coin(0, 'bronze', 1), coin(4, 'jackpot', undefined, 'mini')]), jackpot('mini', 4, miniAmount), ...misses(), { type: 'holdEnd', total: miniTotal, fullGrid: false }], miniTotal);
+	const mini = finish('jackpot_mini', [reveal(), hold([coin(0, 'bronze', 1), coin(4, 'jackpot', undefined, 'mini')]), ...misses(), jackpot('mini', 4, miniAmount), { type: 'holdEnd', total: miniTotal, fullGrid: false }], miniTotal);
 	const grandAmount = 2500 * BOOK;
 	const grandTotal = grandAmount + 2 * BOOK;
-	const grand = finish('jackpot_grand', [reveal(), hold([coin(2, 'silver', 2), coin(10, 'jackpot', undefined, 'grand')]), jackpot('grand', 10, grandAmount), ...misses(), { type: 'holdEnd', total: grandTotal, fullGrid: false }], grandTotal);
+	const grand = finish('jackpot_grand', [reveal(), hold([coin(2, 'silver', 2), coin(10, 'jackpot', undefined, 'grand')]), ...misses(), jackpot('grand', 10, grandAmount), { type: 'holdEnd', total: grandTotal, fullGrid: false }], grandTotal);
 	const twoAmount = (5 + 250) * BOOK;
-	const two = finish('jackpot_two_tiers', [reveal(), hold([coin(1, 'jackpot', undefined, 'mini'), coin(13, 'jackpot', undefined, 'major')]), jackpot('mini', 1, miniAmount), jackpot('major', 13, 250 * BOOK), ...misses(), { type: 'holdEnd', total: twoAmount, fullGrid: false }], twoAmount);
+	const two = finish('jackpot_two_tiers', [reveal(), hold([coin(1, 'jackpot', undefined, 'mini'), coin(13, 'jackpot', undefined, 'major')]), ...misses(), jackpot('mini', 1, miniAmount), jackpot('major', 13, 250 * BOOK), { type: 'holdEnd', total: twoAmount, fullGrid: false }], twoAmount);
 	return [mini, grand, two];
 }

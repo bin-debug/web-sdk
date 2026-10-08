@@ -7,6 +7,13 @@ import type { Position } from '../../game/types';
 import type { Coin } from '../coins/tiers';
 
 export type JackpotTier = 'mini' | 'minor' | 'major' | 'grand';
+// tier colours shared by the pills and the markers on the board, so a marker matches its pill
+export const TIER_LOOK = {
+	mini: { face: 0x35be76, rim: 0x0f643b },
+	minor: { face: 0x4298e8, rim: 0x19558c },
+	major: { face: 0xdf4f9b, rim: 0x8b2158 },
+	grand: { face: 0xee8b35, rim: 0x9a4612 },
+} as const;
 
 export const jackpot = $state({
 	active: null as JackpotTier | null,
@@ -41,6 +48,7 @@ export async function winJackpot(tier: JackpotTier, amount: number, positions: P
 	jackpotFx.flash.set(0, { duration: t(220), easing: cubicOut });
 	jackpot.positions = [];
 	jackpot.grand = false;
+	jackpot.active = null;
 }
 
 // Hold and win supplies jackpot markers inside its coin arrays. Keep them visible until its payout event.

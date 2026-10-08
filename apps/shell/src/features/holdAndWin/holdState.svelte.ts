@@ -6,7 +6,7 @@ import { stateBet } from 'state-shared';
 import { eventEmitter } from '../../game/eventEmitter';
 import type { Coin } from '../coins/tiers';
 import { flipIn, payOut, placeCoins, clearCoins } from '../coins/coinState.svelte';
-import { addJackpotMarkers } from '../jackpots/jackpotState.svelte';
+import { addJackpotMarkers, clearJackpots } from '../jackpots/jackpotState.svelte';
 
 // Hold and win: the board turns into coin cells that stick. This module only stages what the book says
 // (holdStart / respin / holdEnd): lives, coins and totals all come from the events, never from the client.
@@ -94,6 +94,7 @@ export async function endHold(total: number, fullGrid: boolean) {
 	await payOut();
 	hold.active = false;
 	hold.banner = '';
+	clearJackpots();
 	eventEmitter.broadcast({ type: 'boardShow' });
 }
 
