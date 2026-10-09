@@ -11,3 +11,4 @@ export type BetType<TBookEvent extends object> = BaseBetWithoutState & {
 export type PromoSummary = NonNullable<Awaited<ReturnType<typeof requestAuthenticate>>['promos']>[number];
 export type PromoSpinResult = NonNullable<Awaited<ReturnType<typeof requestBet>>['promos']>;
 export type PromoAward = PromoSpinResult['awards'][number];
+export type ForceTool = NonNullable<Awaited<ReturnType<typeof requestAuthenticate>>['forceTool']>;

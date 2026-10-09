@@ -1,13 +1,15 @@
 import { fromPromise } from 'xstate';
 
 import { API_AMOUNT_MULTIPLIER } from 'constants-shared/bet';
-import { stateBet, stateFreeSpins, stateUrlDerived, stateModal, statePromo, promoActions } from 'state-shared';
+import { stateBet, stateFreeSpins, stateUrlDerived, stateModal, statePromo, promoActions, stateForce } from 'state-shared';
 import { requestBet, requestEndRound } from 'rgs-requests';
 
 import type { BaseBet } from './types';
 
 const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 	try {
+		const force = stateForce.pendingForce;
+		stateForce.pendingForce = null;
 		const data = await requestBet({
 			rgsUrl: stateUrlDerived.rgsUrl(),
 			sessionID: stateUrlDerived.sessionID(),
@@ -17,6 +19,7 @@ const handleRequestBet = async ({ onError }: { onError: () => void }) => {
 			operatorId: stateUrlDerived.operatorId(),
 			brandId: stateUrlDerived.brandId(),
 			freeSpinAllocationId: stateFreeSpins.activeAllocation?.id,
+			force: force ?? undefined,
 		});
 
 		if (data?.error) {

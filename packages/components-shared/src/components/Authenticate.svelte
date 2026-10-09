@@ -2,7 +2,7 @@
 	import { onMount, type Snippet } from 'svelte';
 
 	import { requestAuthenticate, requestReplay } from 'rgs-requests';
-	import { stateUrlDerived, stateBet, stateConfig, stateFreeSpins, stateModal, stateUi, stateMeta, promoActions } from 'state-shared';
+	import { stateUrlDerived, stateBet, stateConfig, stateFreeSpins, stateModal, stateUi, stateMeta, promoActions, stateForce } from 'state-shared';
 	import { API_AMOUNT_MULTIPLIER, MOST_USED_BET_INDEXES } from 'constants-shared/bet';
 
 	type Props = { children: Snippet };
@@ -129,6 +129,7 @@
 			}
 
 			promoActions.setActive(authenticateData?.promos);
+			stateForce.forceTool = authenticateData?.forceTool ?? null;
 
 			// round
 			if (authenticateData?.freeSpins?.length) {

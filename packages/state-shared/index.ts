@@ -8,3 +8,4 @@ export * from './src/stateSound.svelte';
 export * from './src/stateUi.svelte';
 export * from './src/stateI18n.svelte';
 export * from './src/statePromo.svelte';
+export * from './src/stateForce.svelte';

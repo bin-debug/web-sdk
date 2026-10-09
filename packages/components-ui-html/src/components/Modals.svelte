@@ -13,6 +13,7 @@
 	import ModalFreeSpinAward from './ModalFreeSpinAward.svelte';
 	import ModalFreeSpinComplete from './ModalFreeSpinComplete.svelte';
 	import PromoLayer from './PromoLayer.svelte';
+	import ForcePanel from './ForcePanel.svelte';
 
 	type Props = {
 		version: Snippet;
@@ -37,6 +38,7 @@
 <ModalFreeSpinAward />
 <ModalFreeSpinComplete />
 <PromoLayer />
+<ForcePanel />
 
 <style lang="scss">
 	:global(html) {

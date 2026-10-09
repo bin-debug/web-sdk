@@ -11,6 +11,7 @@ export const requestAuthenticate = async (options: {
 	operatorId?: string;
 	brandId?: string;
 	freeSpinAllocationId?: string;
+	force?: string;
 	gameId?: string;
 }) => {
 	const data = await rgsFetcher.post({
@@ -22,6 +23,7 @@ export const requestAuthenticate = async (options: {
 			operatorId: options.operatorId,
 			brandId: options.brandId,
 			freeSpinAllocationId: options.freeSpinAllocationId,
+			force: options.force,
 			gameId: options.gameId,
 		} as any,
 	});

@@ -238,6 +238,7 @@ export interface components {
 			config?: components['schemas']['ConfigObject'];
 			freeSpins?: components['schemas']['FreeSpinAllocation'][];
 			promos?: components['schemas']['PromoSummary'][];
+			forceTool?: components['schemas']['ForceTool'];
 			error?: components['schemas']['Error'];
 		};
 		req_Balance: {
@@ -257,7 +258,10 @@ export interface components {
 			mode: components['schemas']['Mode'];
 			meta?: components['schemas']['Meta'];
 			freeSpinAllocationId?: string;
+			force?: string;
 		};
+		ForceTool: { enabled: boolean; scenarios: components['schemas']['ForceScenario'][]; };
+		ForceScenario: { key: string; label: string; };
 		FreeSpinAllocation: { id: string; type: string; spinCount: number; spinsUsed: number; spinValue: number; gameIds: string[] | null; wageringMultiplier: number; expiresAt: string | null; };
 		/** Promo engine: operator-funded promos. Amounts are API micro-units. */
 		PromoSummary: { promoId: string; type: string; title: string; subtitle: string; termsText?: string | null; phase: 'accumulating' | 'live' | 'ended'; pot: number; currency: string; prizesRemaining: number; prizesTotal: number; windowStart: string; windowEnd: string; endsAt: string; };
