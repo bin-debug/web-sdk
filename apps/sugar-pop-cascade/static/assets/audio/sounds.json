@@ -2,12 +2,12 @@
   "sprite": {
     "bgm_freespin": [
       0,
-      59420,
+      60000,
       true
     ],
     "bgm_main": [
       71000,
-      118920,
+      120000,
       true
     ],
     "bgm_winlevel_big": [
