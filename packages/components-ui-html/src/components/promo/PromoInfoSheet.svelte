@@ -76,7 +76,8 @@
 					<div><dt>Jackpot pot</dt><dd>{money(p.pot)}</dd></div>
 					<div><dt>Jackpots</dt><dd>{(p.jackpotRace ?? []).length}</dd></div>
 				{:else if p.type === 'prize_drop'}
-					<div><dt>Prize pot</dt><dd>{money(p.pot)}</dd></div>
+					{#if p.pot != null}<div><dt>Prize pot</dt><dd>{money(p.pot)}</dd></div>{/if}
+					{#each p.prizes ?? [] as pr (pr.tier)}<div><dt>{pr.label}</dt><dd>{money(pr.amount)} × {pr.count}</dd></div>{/each}
 					<div><dt>Prizes left</dt><dd>{p.prizesRemaining} of {p.prizesTotal}</dd></div>
 				{:else if p.boost}
 					<div><dt>Boost</dt><dd>{multiplier(p.boost.multiplier)}</dd></div>

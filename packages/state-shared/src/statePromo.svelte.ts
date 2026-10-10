@@ -11,7 +11,8 @@ export type PromoSummary = {
 	termsText?: string | null;
 	// upcoming = teaser before the start (display only).
 	phase: 'upcoming' | 'accumulating' | 'live' | 'ended';
-	pot: number;
+	/** null for South African (za_fixed) brands: show the fixed prizes instead of a pot. */
+	pot: number | null;
 	currency: string;
 	prizesRemaining: number;
 	prizesTotal: number;

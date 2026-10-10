@@ -4,6 +4,12 @@
 	import PromoIcon from './PromoIcon.svelte';
 	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal, clock, whenText, lookStyle } from './promoFormat';
 
+	// South African brands never send a pot (spec 03): show the fixed top prize instead.
+	const fixedMain = (p: PromoSummary) => {
+		const top = [...(p.prizes ?? [])].sort((a, b) => a.tier - b.tier)[0];
+		return top ? `${top.label} ${money(top.amount)}` : 'Fixed prizes';
+	};
+
 	type Props = { promos: PromoSummary[]; now: number };
 	const props: Props = $props();
 
@@ -83,7 +89,7 @@
 				const won = [...rounds].reverse().find((r) => r.youWon);
 				return {
 					icon: 'crown' as const,
-					main: money(p.pot),
+					main: p.pot == null ? 'Fixed prizes' : money(p.pot),
 					line: won && !next
 						? `You won the ${won.label}!`
 						: live
@@ -180,7 +186,7 @@
 				};
 			}
 			default:
-				return { icon: 'star' as const, main: money(p.pot), line: `${p.prizesRemaining}/${p.prizesTotal} prizes left`, progress: null, t };
+				return { icon: 'star' as const, main: p.pot == null ? fixedMain(p) : money(p.pot), line: `${p.prizesRemaining}/${p.prizesTotal} prizes left`, progress: null, t };
 		}
 	};
 </script>
