@@ -73,7 +73,7 @@
 						<div><dt>Still to wager</dt><dd>{money(Math.max(0, p.bonus.wageringTarget - p.bonus.wageringProgress))}</dd></div>
 					{/if}
 				{:else if p.type === 'jackpot_race'}
-					<div><dt>Jackpot pot</dt><dd>{money(p.pot)}</dd></div>
+					{#if p.pot != null}<div><dt>Jackpot pot</dt><dd>{money(p.pot)}</dd></div>{/if}
 					<div><dt>Jackpots</dt><dd>{(p.jackpotRace ?? []).length}</dd></div>
 				{:else if p.type === 'prize_drop'}
 					{#if p.pot != null}<div><dt>Prize pot</dt><dd>{money(p.pot)}</dd></div>{/if}

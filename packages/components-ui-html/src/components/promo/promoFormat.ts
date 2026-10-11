@@ -23,7 +23,8 @@ export const lookStyle = (look?: PromoSummary['look']) => {
 	return vars.filter(([, v]) => !!v).map(([k, v]) => `${k}:${v}`).join(';');
 };
 
-export const money = (micro: number) => numberToCurrencyString(micro / API_AMOUNT_MULTIPLIER);
+/** Null-safe: a missing amount (e.g. a pot South African brands never send) formats as zero, never NaN. */
+export const money = (micro: number | null | undefined) => numberToCurrencyString((micro ?? 0) / API_AMOUNT_MULTIPLIER);
 
 /** Local wall-clock time, e.g. "20:30". */
 export const clock = (iso: string) =>
