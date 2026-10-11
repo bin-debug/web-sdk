@@ -2,6 +2,7 @@
 	import { statePromo, type PromoSummary } from 'state-shared';
 
 	import PromoIcon from './PromoIcon.svelte';
+	import PromoNewCard from './PromoNewCard.svelte';
 	import { money, multiplier, timing, goalText, progressText, scoreText, ordinal, clock, whenText, lookStyle } from './promoFormat';
 
 	// South African brands never send a pot (spec 03): show the fixed top prize instead.
@@ -21,7 +22,7 @@
 	// Depend on the count only, so the 15s data refresh doesn't restart the rotation timer.
 	// Paused while an info sheet is open.
 	const count = $derived(props.promos.length);
-	const paused = $derived(statePromo.infoPromoId !== null);
+	const paused = $derived(statePromo.infoPromoId !== null || statePromo.confirmingPromoId !== null);
 	$effect(() => {
 		if (count < 2 || paused) return;
 		const id = setInterval(() => (index = (index + 1) % count), ROTATE_MS);
@@ -191,7 +192,9 @@
 	};
 </script>
 
-{#if promo && view}
+{#if promo && (promo.type === 'spin_insurance' || promo.type === 'collect_win') && (promo.insurance || promo.collect)}
+	{#key promo.promoId}<PromoNewCard promo={promo} />{/key}
+{:else if promo && view}
 	<button
 		class="promo-banner"
 		class:promo-banner--live={promo.phase === 'live' || promo.phase === 'upcoming'}

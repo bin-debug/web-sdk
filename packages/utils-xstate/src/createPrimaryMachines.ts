@@ -168,6 +168,7 @@ function createPrimaryMachines<TBet extends BaseBet>(options: Options<TBet>) {
 		if (data) {
 			promoActions.setActive(data.promos?.active);
 			promoActions.holdAwards(data.promos?.awards);
+			promoActions.spinExtras(data.promos);
 
 			if (data.balance) {
 				handleUpdateBalance({ balanceAmountFromApi: data.balance.amount });

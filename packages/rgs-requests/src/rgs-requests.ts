@@ -133,3 +133,34 @@ export const requestActivePromos = async (options: {
 	if (!response.ok) return null;
 	return (await response.json()) as { active: PromoSummary[] };
 };
+
+// Gambit extension: opt in to a spin insurance policy (spec 04). The stake is in rands (as the bet amount is); the RGS refuses
+// with 403 (not eligible), 404 (not running), 409 (already has a policy) or 422 (stake or budget).
+export const requestInsuranceOptIn = async (options: {
+	sessionID: string;
+	rgsUrl: string;
+	operatorId?: string;
+	brandId?: string;
+	promoId: string;
+	gameId: string;
+	stake: number;
+}) => {
+	const base = /^https?:\/\//.test(options.rgsUrl)
+		? options.rgsUrl
+		: `${/^(localhost|127\.)/.test(options.rgsUrl) ? 'http' : 'https'}://${options.rgsUrl}`;
+	const response = await fetch(`${base}/promos/insurance/optin`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			sessionID: options.sessionID,
+			operatorId: options.operatorId ?? '',
+			brandId: options.brandId ?? '',
+			promoId: options.promoId,
+			gameId: options.gameId,
+			stake: options.stake * API_AMOUNT_MULTIPLIER,
+		}),
+	});
+	const body = await response.json().catch(() => null);
+	if (!response.ok) throw new Error(body?.error?.message ?? 'Could not insure your spins');
+	return body as { policyId: string; spins: number; stake: number; expiresAt: string; thresholdPct: number; coverPct: number; maxPayout: number };
+};

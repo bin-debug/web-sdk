@@ -69,9 +69,24 @@ export type PromoSummary = {
 		// Increases every time a new result is paid (e.g. each jackpot-race round won off-spin).
 		resultSeq?: number;
 	};
+	// Spin insurance (spec 04): the offer and this player's live policy, if any.
+	insurance?: {
+		offer: { spins: number; thresholdPct: number; coverPct: number; maxPayout: number; premium: number; stakes: number[]; minStake: number };
+		policy: { policyId: string; status: string; spinsDone: number; spinsTarget: number; stake: number; staked: number; won: number; expiresAt: string } | null;
+	};
+	// Collect & Win (spec 05): the player's cards, and the odds of each letter on a spin.
+	collect?: { words: PromoCollectWord[]; letterOdds: Record<string, number>; letterChance: number };
 	// Operator wording and colours from the backoffice. Every field is optional.
 	look?: PromoLook;
 };
+
+export type PromoCollectWord = { word: string; prize: number; collected: string; completions: number; repeatable: boolean; locked: boolean };
+
+/** The letter a spin drew (Collect & Win). Duplicate = already collected, nothing changed. */
+export type PromoCollectEvent = { promoId: string; letter: string | null; duplicate: boolean; newLetters: string[]; cards: PromoCollectWord[] };
+
+/** A policy that settled on the last spin. Paid ones also arrive as an award. */
+export type PromoInsuranceSettled = { promoId: string; status: 'settled_paid' | 'settled_nil'; staked: number; won: number; payout: number; currency: string };
 
 export type PromoLook = {
 	icon?: 'star' | 'bolt' | 'flag' | 'trophy' | 'crown' | 'shield' | 'tag' | 'coins' | 'gift';
@@ -133,8 +148,14 @@ export const statePromo = $state({
 	queue: [] as PromoAward[],
 	// Promo shown in the info sheet (null = closed).
 	infoPromoId: null as string | null,
+	// Promo whose insurance confirm step is open: the banner stops rotating until it closes.
+	confirmingPromoId: null as string | null,
 	// Leaderboard results already announced to this player.
 	resultsShown: [] as string[],
+	// The last spin's letter and insurance settlements, for the banner animation and the no-claim toast.
+	collectEvent: null as PromoCollectEvent | null,
+	collectEventSeq: 0,
+	insuranceSettled: [] as PromoInsuranceSettled[],
 });
 
 const isShowable = (p: PromoSummary) =>
@@ -157,6 +178,17 @@ export const promoActions = {
 		if (!cash.length) return;
 		statePromo.pending = [...statePromo.pending, ...cash];
 		statePromo.pendingAmount += cash.reduce((sum, a) => sum + a.amount, 0);
+	},
+	/** Per-spin promo extras: the collect letter and any insurance settlement. */
+	spinExtras: (promos: { collect?: PromoCollectEvent | null; insuranceSettled?: PromoInsuranceSettled[] | null } | null | undefined) => {
+		if (promos?.collect) {
+			statePromo.collectEvent = promos.collect;
+			statePromo.collectEventSeq += 1;
+		}
+		if (promos?.insuranceSettled?.length) statePromo.insuranceSettled = [...statePromo.insuranceSettled, ...promos.insuranceSettled];
+	},
+	dismissInsuranceSettled: () => {
+		statePromo.insuranceSettled = statePromo.insuranceSettled.slice(1);
 	},
 	/** Moves held awards to the pop-up queue. Returns the micro-units now revealed. */
 	revealAwards: () => {
