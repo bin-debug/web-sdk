@@ -12,6 +12,10 @@
 		return `${range} → ${pay}×`;
 	};
 
+	const minC = (gameMeta as any).minCluster ?? 5;
+	// Free spins / multiplier / buy rules for this math model (absent on older builds).
+	const r = (gameMeta as any).rules as undefined | { fsMin: number; fsTrigger: [number, number][]; fsRetrigger: [number, number][]; multCap: number; buyCost: number; buyScatters: string };
+
 	import { onMount } from 'svelte';
 	let gameVersion = $state('');
 	onMount(async () => {
@@ -57,18 +61,40 @@
 		<h2>How to Play</h2>
 		<ul>
 			<li>Set your bet with the <b>+ / −</b> controls, then press <b>Spin</b>.</li>
-			<li><b>Pay anywhere:</b> wins are formed by <b>{(gameMeta as any).minCluster ?? 5}+</b> matching symbols anywhere on the grid — no paylines.</li>
-			<li><b>Tumbling Reels:</b> winning symbols are removed and new ones drop in; tumbles continue while new wins form.</li>
-			<li><b>Free Spins:</b> land enough <b>Scatters</b> to trigger the bonus round.</li>
-			<li><b>Wild</b> substitutes for paying symbols; <b>Multiplier</b> boosts the wins it joins.</li>
+			<li><b>Cluster Pays:</b> a win is a group of <b>{minC}+</b> matching symbols connected horizontally or vertically (not diagonally). Each cluster pays by its size, as shown in the paytable.</li>
+			<li><b>Tumbles:</b> winning symbols are removed and the symbols above drop down, with new ones filling from the top. Tumbles continue while new wins form.</li>
+			<li><b>Free Spins:</b> {#if r}<b>{r.fsMin}+ Scatters</b> anywhere on the grid award Free Spins (see below).{:else}land enough <b>Scatters</b> to trigger Free Spins.{/if}</li>
 		</ul>
 
+		{#if r}
+			<h2>Free Spins</h2>
+			<table class="grid">
+				<thead><tr><th>Scatters</th><th>Free Spins</th></tr></thead>
+				<tbody>{#each r.fsTrigger as [n, fs]}<tr><td>{n}</td><td>{fs}</td></tr>{/each}</tbody>
+			</table>
+			<p class="note">Scatters are counted once all tumbles have finished.</p>
+			<p><b>Retrigger:</b> Scatters landing during Free Spins add more spins.</p>
+			<table class="grid">
+				<thead><tr><th>Scatters</th><th>Extra Spins</th></tr></thead>
+				<tbody>{#each r.fsRetrigger as [n, fs]}<tr><td>{n}</td><td>+{fs}</td></tr>{/each}</tbody>
+			</table>
+			<ul>
+				<li><b>Wild</b> symbols appear in Free Spins only. A Wild substitutes for any paying symbol to complete a cluster.</li>
+				<li><b>Multiplier spots:</b> in Free Spins, every grid position can hold a multiplier. The first time a winning symbol is on a position, that position is marked ×1; each later win on it adds +1, up to <b>×{r.multCap}</b>.</li>
+				<li>A cluster win is multiplied by the <b>total of the multipliers</b> on its positions before that win (×1 if none are marked).</li>
+				<li>Multiplier spots stay for the whole Free Spins round and are cleared when it ends.</li>
+			</ul>
+		{/if}
+
+		<h2>Maximum Win</h2>
+		<p>The maximum win is <b>{gameMeta.maxWin}</b> the total bet per game round, including Free Spins. Once it is reached, no further wins are added in that round.</p>
+
 		<h2>Buy Bonus</h2>
-		<p>The <b>Buy Bonus</b> button skips you straight to Free Spins — no waiting for Scatters. You pay a one-time fee to enter.</p>
+		<p>The <b>Buy Bonus</b> button starts Free Spins straight away{#if r}{' '}for <b>{r.buyCost}×</b> the total bet{/if}.</p>
 		<ul>
-			<li>Your Free Spins wins are based on your <b>stake</b> (the bet amount shown in the bottom bar), not the bonus fee.</li>
-			<li>To win more during Free Spins, <b>set a higher stake first</b>, then buy the bonus.</li>
-			<li>The bonus fee buys you guaranteed entry into Free Spins. Free Spins typically pay back a similar amount to playing the same number of regular spins.</li>
+			{#if r}<li>The bought round starts with <b>{r.buyScatters} Scatters</b>, awarding Free Spins as per the table above.</li>{/if}
+			<li>Free Spins wins are paid on your <b>total bet</b> (the bet shown in the bottom bar), not on the bonus price.</li>
+			<li>The theoretical RTP of the Buy Bonus is <b>{gameMeta.rtp}</b>, the same as the main game.</li>
 		</ul>
 
 		<h2>Game Information</h2>
@@ -79,7 +105,7 @@
 				<tr><td>RTP</td><td>{gameMeta.rtp}</td></tr>
 				<tr><td>Maximum Win</td><td>{gameMeta.maxWin} total bet</td></tr>
 				<tr><td>Reels × Rows</td><td>{gameMeta.reels} × {gameMeta.rows}</td></tr>
-				<tr><td>Ways to Win</td><td>Pay anywhere ({(gameMeta as any).minCluster ?? 5}+)</td></tr>
+				<tr><td>Ways to Win</td><td>Cluster pays ({minC}+)</td></tr>
 				<tr><td>Volatility</td><td>{gameMeta.volatility}</td></tr>
 			</tbody>
 		</table>
@@ -126,6 +152,9 @@
 	table { width: 100%; border-collapse: collapse; }
 	td { padding: 1.1rem 0.5rem; border-bottom: 0.1rem solid rgba(255,255,255,.1); font-size: clamp(1.5rem, 5vw, 2rem); }
 	td:last-child { text-align: right; color: #ffe9a0; font-weight: 700; }
+	.grid { margin-bottom: 1rem; }
+	th { padding: 0.8rem 0.5rem; text-align: left; color: #ffd83a; font-size: clamp(1.3rem, 4.4vw, 1.7rem); border-bottom: 0.1rem solid rgba(255,216,58,.3); }
+	th:last-child { text-align: right; }
 	.fine { font-size: clamp(1.1rem, 3.6vw, 1.45rem); opacity: .68; line-height: 1.5; margin-top: 1.3rem; }
 	.spacer { height: 2rem; }
 </style>

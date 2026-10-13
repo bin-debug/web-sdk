@@ -11,7 +11,7 @@ export const gameMeta = {
   "rows": 7,
   "volatility": "Low-Medium",
   "minCluster": 5,
-  "about": "Play Cheerful Charlie — a 7×7 pay-anywhere adventure where 5 or more matching symbols land a win from anywhere on the reels. Winning symbols tumble away and fresh ones drop in for chained wins, with a top prize of 2,500× your total bet.",
+  "about": "Play Cheerful Charlie — a 7×7 cluster pays game where groups of 5 or more matching symbols, connected horizontally or vertically, form a win. Winning symbols tumble away and new ones drop in for chained wins. In Free Spins, multiplier spots build up on the grid. The top prize is 2,500× your total bet.",
   "pays": [
     {
       "name": "H1",
@@ -166,40 +166,72 @@ export const gameMeta = {
           5
         ]
       ]
-    },
-    {
-      "name": "L4",
-      "label": "Low 4",
-      "tiers": [
-        [
-          5,
-          0.2
-        ],
-        [
-          6,
-          0.6
-        ],
-        [
-          9,
-          1.5
-        ],
-        [
-          13,
-          3.5
-        ]
-      ]
     }
   ],
   "specials": [
     {
       "name": "S",
       "label": "Scatter",
-      "desc": "Lands the Free Spins bonus when enough appear anywhere on the reels."
+      "desc": "Scatter: 4 or more anywhere on the grid award Free Spins. Scatters do not form clusters."
     },
     {
       "name": "W",
       "label": "Wild",
-      "desc": "Substitutes for any paying symbol to help complete wins."
+      "desc": "Wild: appears in Free Spins only and substitutes for any paying symbol to complete a cluster."
     }
-  ]
+  ],
+  "rules": {
+    "fsMin": 4,
+    "fsTrigger": [
+      [
+        "4",
+        10
+      ],
+      [
+        "5",
+        12
+      ],
+      [
+        "6",
+        15
+      ],
+      [
+        "7",
+        18
+      ],
+      [
+        "8",
+        20
+      ]
+    ],
+    "fsRetrigger": [
+      [
+        "3",
+        5
+      ],
+      [
+        "4",
+        8
+      ],
+      [
+        "5",
+        10
+      ],
+      [
+        "6",
+        12
+      ],
+      [
+        "7",
+        15
+      ],
+      [
+        "8",
+        18
+      ]
+    ],
+    "multCap": 256,
+    "buyCost": 25,
+    "buyScatters": "4 or 5"
+  }
 } as const;

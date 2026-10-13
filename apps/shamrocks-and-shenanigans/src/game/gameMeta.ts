@@ -11,7 +11,7 @@ export const gameMeta = {
   "rows": 7,
   "volatility": "Low",
   "minCluster": 5,
-  "about": "Play Shamrocks and Shenanigans — a 7×7 pay-anywhere adventure where 5 or more matching symbols land a win from anywhere on the reels. Winning symbols tumble away and fresh ones drop in for chained wins, with a top prize of 2,500× your total bet.",
+  "about": "Play Shamrocks and Shenanigans — a 7×7 cluster pays game where groups of 5 or more matching symbols, connected horizontally or vertically, form a win. Winning symbols tumble away and new ones drop in for chained wins. In Free Spins, multiplier spots build up on the grid. The top prize is 2,500× your total bet.",
   "pays": [
     {
       "name": "H1",
@@ -166,40 +166,80 @@ export const gameMeta = {
           5
         ]
       ]
-    },
-    {
-      "name": "L4",
-      "label": "Low 4",
-      "tiers": [
-        [
-          5,
-          0.3
-        ],
-        [
-          6,
-          0.8
-        ],
-        [
-          9,
-          2
-        ],
-        [
-          13,
-          4
-        ]
-      ]
     }
   ],
   "specials": [
     {
       "name": "S",
       "label": "Scatter",
-      "desc": "Lands the Free Spins bonus when enough appear anywhere on the reels."
+      "desc": "Scatter: 3 or more anywhere on the grid award Free Spins. Scatters do not form clusters."
     },
     {
       "name": "W",
       "label": "Wild",
-      "desc": "Substitutes for any paying symbol to help complete wins."
+      "desc": "Wild: appears in Free Spins only and substitutes for any paying symbol to complete a cluster."
     }
-  ]
+  ],
+  "rules": {
+    "fsMin": 3,
+    "fsTrigger": [
+      [
+        "3",
+        12
+      ],
+      [
+        "4",
+        15
+      ],
+      [
+        "5",
+        18
+      ],
+      [
+        "6",
+        20
+      ],
+      [
+        "7",
+        22
+      ],
+      [
+        "8",
+        25
+      ]
+    ],
+    "fsRetrigger": [
+      [
+        "2",
+        3
+      ],
+      [
+        "3",
+        5
+      ],
+      [
+        "4",
+        8
+      ],
+      [
+        "5",
+        10
+      ],
+      [
+        "6",
+        12
+      ],
+      [
+        "7",
+        15
+      ],
+      [
+        "8",
+        18
+      ]
+    ],
+    "multCap": 128,
+    "buyCost": 25,
+    "buyScatters": "3 to 5"
+  }
 } as const;
