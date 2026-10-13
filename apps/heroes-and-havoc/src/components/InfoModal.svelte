@@ -87,7 +87,7 @@
 		{/if}
 
 		<h2>Maximum Win</h2>
-		<p>The maximum win is <b>{gameMeta.maxWin}</b> the total bet per game round, including Free Spins. Once it is reached, no further wins are added in that round.</p>
+		<p>The maximum win is <b>{gameMeta.maxWin}</b> the total bet per game round, including Free Spins. When it is reached, the round ends immediately and any remaining Free Spins are forfeited.</p>
 
 		<h2>Buy Bonus</h2>
 		<p>The <b>Buy Bonus</b> button starts Free Spins straight away{#if r}{' '}for <b>{r.buyCost}×</b> the total bet{/if}.</p>
