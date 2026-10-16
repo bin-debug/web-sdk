@@ -11,7 +11,7 @@
 	);
 
 	const FPS = 12;
-	const FRAME = 360; // px per frame in the sprite sheets
+	const FRAME = 360; // px height of the (untrimmed) sprite-sheet frames
 	let state = $state<'idle' | 'cheer'>('idle');
 
 	const cheer = () => (state = 'cheer');
@@ -25,21 +25,28 @@
 	// Landscape: right of the reels, feet level with the bottom of the frame.
 	// Portrait: under the reels, bottom-right next to the spin button.
 	const size = $derived(isLandscape ? bl().height * 0.95 : bl().width * 0.85);
-	const x = $derived(isLandscape ? bl().x + bl().width * 0.5 + size * 0.38 : bl().x + bl().width * 0.26);
-	const y = $derived(isLandscape ? bl().y + bl().height * 0.56 : bl().y + bl().height * 0.5 + bl().width * 0.78);
+	const x = $derived(
+		isLandscape ? bl().x + bl().width * 0.5 + size * 0.38 : bl().x + bl().width * 0.26,
+	);
+	const y = $derived(
+		isLandscape ? bl().y + bl().height * 0.56 : bl().y + bl().height * 0.5 + bl().width * 0.78,
+	);
 </script>
 
 <!-- Layout lives on the Container: changing any SpriteSheet prop re-applies its textures,
      which stops the animation (so resizes would freeze him). -->
-<Container {x} {y} scale={size / FRAME}>
-	{#key state}
-		<SpriteSheet
-			key={state === 'idle' ? 'mascotIdle' : 'mascotCheer'}
-			anchor={{ x: 0.5, y: 1 }}
-			animationSpeed={FPS / 60}
-			loop={state === 'idle'}
-			play
-			onComplete={() => (state = 'idle')}
-		/>
-	{/key}
-</Container>
+<!-- The sheets aren't preloaded: show him once both have arrived. -->
+{#if context.stateApp.loadedAssets?.mascotIdle && context.stateApp.loadedAssets?.mascotCheer}
+	<Container {x} {y} scale={size / FRAME}>
+		{#key state}
+			<SpriteSheet
+				key={state === 'idle' ? 'mascotIdle' : 'mascotCheer'}
+				anchor={{ x: 0.5, y: 1 }}
+				animationSpeed={FPS / 60}
+				loop={state === 'idle'}
+				play
+				onComplete={() => (state = 'idle')}
+			/>
+		{/key}
+	</Container>
+{/if}

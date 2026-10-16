@@ -1,13 +1,12 @@
 export default {
+	// mascot loads with the game assets, not before the loading screen
 	mascotIdle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/mascot/idle.json', import.meta.url).href,
-		preload: true,
 	},
 	mascotCheer: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/mascot/cheer.json', import.meta.url).href,
-		preload: true,
 	},
 	bgDesktop: {
 		type: 'sprite' as const,
