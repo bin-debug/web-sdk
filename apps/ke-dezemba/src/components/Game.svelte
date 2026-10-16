@@ -30,7 +30,7 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
-	import Mascot from './Mascot.svelte';
+	import Lasers from './Lasers.svelte';
 
 	const context = getContext();
 
@@ -63,6 +63,9 @@
 		-->
 		<Sound />
 
+		<!-- club lasers behind the reels -->
+		<Lasers />
+
 		<MainContainer>
 			<BoardFrame />
 		</MainContainer>
@@ -81,9 +84,8 @@
 			<ClusterWinAmounts />
 		</MainContainer>
 
-		<MainContainer>
-			<Mascot />
-		</MainContainer>
+		<!-- on a win the lasers and strobe come over the reels -->
+		<Lasers front />
 
 		<BettingBar />
 		<Win />
