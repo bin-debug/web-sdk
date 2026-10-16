@@ -30,6 +30,8 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
+	import Mascot from './Mascot.svelte';
+	import Zaps from './Zaps.svelte';
 
 	const context = getContext();
 
@@ -50,6 +52,7 @@
 
 	<Background />
 	<Particles />
+	<Zaps />
 
 	{#if context.stateLayout.showLoadingScreen}
 		<LoadingScreen onloaded={() => (context.stateLayout.showLoadingScreen = false)} />
@@ -78,6 +81,10 @@
 		<MainContainer>
 			<TumbleBoard />
 			<ClusterWinAmounts />
+		</MainContainer>
+
+		<MainContainer>
+			<Mascot />
 		</MainContainer>
 
 		<BettingBar />

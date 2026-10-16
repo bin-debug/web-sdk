@@ -1,4 +1,17 @@
 export default {
+	// mascot and zaps load with the game assets, not before the loading screen
+	mascotIdle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/idle.json', import.meta.url).href,
+	},
+	mascotCheer: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/cheer.json', import.meta.url).href,
+	},
+	zap: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/zap.webp', import.meta.url).href,
+	},
 	bgDesktop: {
 		type: 'sprite' as const,
 		src: new URL('../../assets/sprites/game/bg-desktop.webp', import.meta.url).href,

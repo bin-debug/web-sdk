@@ -43,8 +43,8 @@
 
 {#if introVisible}
 	<IntroOverlay
-		logoUrl="/assets/sprites/game/logo.webp"
-		bgUrl="/assets/sprites/game/bg-mobile.webp"
+		logoUrl="./assets/sprites/game/logo.webp"
+		bgUrl="./assets/sprites/game/bg-mobile.webp"
 		studioName="Atomic-Labs"
 		tagline="Fortune Favours The Brave"
 		features={introFeatures}
@@ -65,7 +65,7 @@
 {/if}
 
 {#if !introVisible && !bonusModalOpen}
-	<img class="game-logo" src="/assets/sprites/game/logo.webp" alt="Heroes and Havoc" />
+	<img class="game-logo" src="./assets/sprites/game/logo.webp" alt="Heroes and Havoc" />
 {/if}
 
 <style>
