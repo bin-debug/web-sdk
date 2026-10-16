@@ -1,4 +1,25 @@
 export default {
+	// mascot and dust load with the game assets, not before the loading screen
+	mascotIdle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/idle.json', import.meta.url).href,
+	},
+	mascotCheer: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/cheer.json', import.meta.url).href,
+	},
+	dustGrain: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/dust-grain.webp', import.meta.url).href,
+	},
+	dustStreak: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/dust-streak.webp', import.meta.url).href,
+	},
+	dustPuff: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/dust-puff.webp', import.meta.url).href,
+	},
 	bgDesktop: {
 		type: 'sprite' as const,
 		src: new URL('../../assets/sprites/game/bg-desktop.webp', import.meta.url).href,

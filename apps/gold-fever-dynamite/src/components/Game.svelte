@@ -30,6 +30,8 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
+	import Mascot from './Mascot.svelte';
+	import Dust from './Dust.svelte';
 
 	const context = getContext();
 
@@ -79,6 +81,12 @@
 			<TumbleBoard />
 			<ClusterWinAmounts />
 		</MainContainer>
+
+		<MainContainer>
+			<Mascot />
+		</MainContainer>
+
+		<Dust />
 
 		<BettingBar />
 		<Win />
