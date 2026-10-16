@@ -1,4 +1,25 @@
 export default {
+	// mascot and snow load with the game assets, not before the loading screen
+	mascotIdle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/idle.json', import.meta.url).href,
+	},
+	mascotCheer: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/cheer.json', import.meta.url).href,
+	},
+	snowDot: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/snow-dot.webp', import.meta.url).href,
+	},
+	snowCrystal: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/snow-crystal.webp', import.meta.url).href,
+	},
+	frost: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/frost.webp', import.meta.url).href,
+	},
 	bgDesktop: {
 		type: 'sprite' as const,
 		src: new URL('../../assets/sprites/game/bg-desktop.webp', import.meta.url).href,
