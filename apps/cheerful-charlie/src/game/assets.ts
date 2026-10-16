@@ -1,4 +1,17 @@
 export default {
+	// mascot loads with the game assets, not before the loading screen
+	mascotIdle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/idle.json', import.meta.url).href,
+	},
+	mascotCheer: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/cheer.json', import.meta.url).href,
+	},
+	twinkle: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/twinkle.webp', import.meta.url).href,
+	},
 	bgDesktop: {
 		type: 'sprite' as const,
 		src: new URL('../../assets/sprites/game/bg-desktop.webp', import.meta.url).href,
