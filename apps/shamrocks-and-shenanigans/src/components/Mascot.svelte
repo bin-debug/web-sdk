@@ -22,29 +22,32 @@
 		freeSpinIntroShow: cheer,
 	});
 
-	// Landscape: right of the reels, feet level with the bottom of the frame.
-	// Portrait: bottom-right next to the spin button, feet on the pub floor. The background
-	// is stretched to the canvas, so the floor sits at a fixed fraction of the canvas height;
-	// convert it into MainContainer space (it is scaled and centred) so he stands on it.
-	const FLOOR = 0.875; // floorboards in bg-mobile, where the barrel and drum stand
+	// Both layouts stand him on the pub floor. The background is stretched to the canvas, so
+	// the floor sits at a fixed fraction of the canvas height; convert it into MainContainer
+	// space (it is scaled and centred) so his feet land on it.
+	// Portrait: bottom-right beside the spin button, shoes tucked just behind the betting bar,
+	// as big as fits under the reels (his hat may reach the frame, never the symbols).
+	// Landscape: right of the reels.
+	const FLOOR = { portrait: 0.965, landscape: 0.93 };
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
 	const ml = $derived(context.stateLayoutDerived.mainLayout());
 	const pivot = $derived(
 		anchorToPivot({ anchor: ml.anchor, sizes: { width: ml.width, height: ml.height } }),
 	);
-	const floorY = $derived((canvas.height * FLOOR - ml.y) / ml.scale + pivot.y);
+	const toLocalY = (cy: number) => (cy - ml.y) / ml.scale + pivot.y;
 	const rightX = $derived((canvas.width - ml.x) / ml.scale + pivot.x);
-	// as big as fits between the reels and the floor (his hat may overlap the reel frame a little)
+	const floorY = $derived(
+		toLocalY(canvas.height * (isLandscape ? FLOOR.landscape : FLOOR.portrait)),
+	);
 	const size = $derived(
 		isLandscape
-			? bl().height * 0.95
-			: Math.min(bl().width * 0.9, (floorY - (bl().y + bl().height * 0.5)) * 1.4),
+			? bl().height * 1.05
+			: Math.min(bl().width * 0.95, (floorY - (bl().y + bl().height * 0.5)) * 1.2),
 	);
 	const x = $derived(
-		// portrait: against the right edge (fiddle tip may just touch it), feet clear of the spin button
-		isLandscape ? bl().x + bl().width * 0.5 + size * 0.38 : rightX - size * 0.31,
+		isLandscape ? bl().x + bl().width * 0.5 + size * 0.34 : rightX - size * 0.31,
 	);
-	const y = $derived(isLandscape ? bl().y + bl().height * 0.56 : floorY);
+	const y = $derived(floorY);
 </script>
 
 <!-- Layout lives on the Container: changing any SpriteSheet prop re-applies its textures,
