@@ -9,6 +9,6 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 		desktop: { width: 1422, height: 800 },
 		tablet: { width: 1000, height: 1000 },
 		landscape: { width: 1600, height: 900 },
-		portrait: { width: 697, height: 1239 },
+		portrait: { width: 678, height: 1205 },
 	},
 });
