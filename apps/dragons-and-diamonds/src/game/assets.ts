@@ -1,4 +1,8 @@
 export default {
+	twinkle: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/twinkle.webp', import.meta.url).href,
+	},
 	bgDesktop: {
 		type: 'sprite' as const,
 		src: new URL('../../assets/sprites/game/bg-desktop.webp', import.meta.url).href,
