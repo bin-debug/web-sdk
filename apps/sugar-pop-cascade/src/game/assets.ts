@@ -8,6 +8,10 @@ export default {
 		type: 'spriteSheet' as const,
 		src: new URL('../../assets/sprites/mascot/cheer.json', import.meta.url).href,
 	},
+	twinkle: {
+		type: 'sprite' as const,
+		src: new URL('../../assets/sprites/fx/twinkle.webp', import.meta.url).href,
+	},
 	bgDesktop: {
 		type: 'sprite' as const,
 		src: new URL('../../assets/sprites/game/bg-desktop.webp', import.meta.url).href,

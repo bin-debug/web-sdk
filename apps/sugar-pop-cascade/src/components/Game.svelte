@@ -17,6 +17,7 @@
 	import Sound from './Sound.svelte';
 	import Background from './Background.svelte';
 	import Particles from './Particles.svelte';
+	import Twinkles from './Twinkles.svelte';
 	import LoadingScreen from './LoadingScreen.svelte';
 	import BoardFrame from './BoardFrame.svelte';
 	import MultiplierGrid from './MultiplierGrid.svelte';
@@ -51,6 +52,7 @@
 
 	<Background />
 	<Particles />
+	<Twinkles />
 
 	{#if context.stateLayout.showLoadingScreen}
 		<LoadingScreen onloaded={() => (context.stateLayout.showLoadingScreen = false)} />
