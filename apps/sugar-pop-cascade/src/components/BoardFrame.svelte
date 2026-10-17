@@ -42,15 +42,15 @@
 </script>
 
 <!-- panel fills the frame's measured hole (drawn behind the reels) -->
-<Sprite key="bgFrame" anchor={0.5} x={bl().x} y={bl().y} width={bl().width * 1.0893} height={bl().height * 1.0975} zIndex={-2} />
+<Sprite key="bgFrame" anchor={0.5} x={bl().x} y={bl().y} width={bl().width * 1.1197} height={bl().height * 1.1322} zIndex={-2} />
 
 <!-- ornate frame: hole aligned to the board via measured insets -->
 <Sprite
 	key="reelFrame"
 	anchor={0.5}
-	x={bl().x + bl().width * 0.0000}
-	y={bl().y + bl().height * 0.0077}
-	width={bl().width * 1.2493 * frameScale}
-	height={bl().height * 1.2831 * frameScale}
+	x={bl().x + bl().width * 0.0005}
+	y={bl().y + bl().height * -0.0005}
+	width={bl().width * 1.3148 * frameScale}
+	height={bl().height * 1.3413 * frameScale}
 	zIndex={0}
 />
