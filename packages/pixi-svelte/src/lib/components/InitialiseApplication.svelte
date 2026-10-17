@@ -18,17 +18,21 @@
 		PIXI.Assets.reset();
 
 		await preloadFont();
+		// Capped at 2: phones report 3, which renders 2.25x the pixels of 2 for no visible gain and
+		// keeps the GPU at full load (the phone gets hot, then throttles and the game slows down).
+		// At 2x density edges are already smooth, so multisampling is only paid for below that.
+		const resolution = Math.min(devicePixelRatio.current ?? 1, 2);
 		context.stateApp.pixiApplication = new PIXI.Application<PIXI.Renderer<HTMLCanvasElement>>();
 		await context.stateApp.pixiApplication.init({
 			autoDensity: true,
 			backgroundAlpha: 0,
 			hello: true,
 			multiView: false,
-			antialias: true,
+			antialias: resolution < 2,
 			clearBeforeRender: true,
 			preference: 'webgpu',
 			powerPreference: 'high-performance',
-			resolution: devicePixelRatio.current,
+			resolution,
 			resizeTo: window,
 		});
 
