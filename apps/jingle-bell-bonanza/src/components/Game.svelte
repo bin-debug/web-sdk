@@ -6,7 +6,8 @@
 	import { MainContainer } from 'components-layout';
 	import { App, Text, REM } from 'pixi-svelte';
 	import { stateModal } from 'state-shared';
-
+
+
 	import { GameVersion, Modals } from 'components-ui-html';
 
 	import { getContext } from '../game/context';
@@ -23,13 +24,15 @@
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
 	import ClusterWinAmounts from './ClusterWinAmounts.svelte';
-	import TumbleBoard from './TumbleBoard.svelte';
+	import TumbleBoard from './TumbleBoard.svelte';
+
 	import GlobalMultiplier from './GlobalMultiplier.svelte';
 	import Win from './Win.svelte';
 	import FreeSpinIntro from './FreeSpinIntro.svelte';
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
-	import Transition from './Transition.svelte';
+	import Transition from './Transition.svelte';
+
 	import Mascot from './Mascot.svelte';
 	import Snow from './Snow.svelte';
 
@@ -64,13 +67,17 @@
 		-->
 		<Sound />
 
+		<!-- Behind the frame and reels: nothing may cover the symbols. -->
+		<Snow />
+
 		<MainContainer>
 			<BoardFrame />
 		</MainContainer>
 
 		<MainContainer>
 			<Board />
-			<Anticipations />
+			<Anticipations />
+
 		</MainContainer>
 
 		<MainContainer>
@@ -86,8 +93,6 @@
 			<Mascot />
 		</MainContainer>
 
-		<Snow />
-
 		<BettingBar />
 		<Win />
 		<FreeSpinIntro />
@@ -96,7 +101,8 @@
 		{/if}
 		<FreeSpinOutro />
 		<Transition />
-
+
+
 	{/if}
 </App>
 

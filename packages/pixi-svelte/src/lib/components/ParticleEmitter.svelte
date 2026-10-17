@@ -35,17 +35,14 @@
 		if (props.emit) emitter.init(updatedConfig);
 	});
 
-	if (context.stateApp.pixiApplication) {
-		context.stateApp.pixiApplication.ticker.add(() => {
-			if (context.stateApp.pixiApplication) {
-				const deltaUpdate =
-					context.stateApp.pixiApplication.ticker.deltaMS * (props.emitSpeed || 0.00234);
-				emitter.update(deltaUpdate);
-			}
-		});
-	}
+	// Keep the ticker and callback so onDestroy can remove them; otherwise every emitter ever
+	// mounted (one per win) keeps updating every frame and the game slows down over time.
+	const ticker = context.stateApp.pixiApplication?.ticker;
+	const update = () => emitter.update(ticker!.deltaMS * (props.emitSpeed || 0.00234));
+	ticker?.add(update);
 
 	onDestroy(() => {
+		ticker?.remove(update);
 		emitter.emit = false;
 		emitter.destroy();
 	});

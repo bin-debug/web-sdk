@@ -10,6 +10,7 @@
 </script>
 
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import type { LoadedSprite } from '../types';
 	import { getContextApp, getContextParticleParent } from '../context.svelte';
 
@@ -27,12 +28,14 @@
 	particleContainer.addParticle(...particles);
 	props.init(particles);
 
-	if (context.stateApp.pixiApplication) {
-		context.stateApp.pixiApplication.ticker.add(() => {
-			props.update(particles);
-			particleContainer.update();
-		});
-	}
+	// Removed on destroy, so remounts don't stack up per-frame updates.
+	const ticker = context.stateApp.pixiApplication?.ticker;
+	const update = () => {
+		props.update(particles);
+		particleContainer.update();
+	};
+	ticker?.add(update);
+	onDestroy(() => ticker?.remove(update));
 </script>
 
 {#if texture === PIXI.Texture.EMPTY}
