@@ -3,62 +3,74 @@
 	import { onMount } from 'svelte';
 	import { getContext } from '../game/context';
 
-	// Ambient particles: slow-drifting gold sparkle dust with a soft twinkle. Kept as a
-	// small, self-contained, game-scoped layer — the count/palette/drift are
-	// the knobs a different game's theme would tune.
+	// Ambient particles: candy-coloured sugar sparkles that rise from the bottom of the
+	// screen, sway side to side and fade out as they climb. Drawn behind the board, so
+	// they show around the reels and never over the symbols.
 	//
-	// Performance: each circle is drawn once (fixed colour, full alpha) and only its
-	// position and display alpha change per frame. Particles are mutated in place, so
-	// there are no per-frame allocations and no Graphics redraws / GPU re-uploads.
+	// Solid saturated candy dots: soft glows and pastel tints vanish on the bright ground.
+	// Each circle is drawn once; only position and alpha change per frame, mutated in
+	// place, so there are no per-frame allocations.
 	type Particle = {
 		x: number;
 		y: number;
+		baseX: number;
 		size: number;
 		speed: number;
+		sway: number;
 		phase: number;
 		color: number;
 		alpha: number;
+		peak: number;
 	};
 
 	const context = getContext();
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
 
-	const PALETTE = [0xffe9a0, 0xf5a524, 0x4ecdc4, 0xff6fb0];
-	const COUNT = 26;
+	const PALETTE = [0xffffff, 0xff3d9a, 0xffb000, 0x22c7ff, 0xa45bff, 0xff7ac8];
+	const COUNT = 40;
 
 	const particles = $state<Particle[]>([]);
 	let raf = 0;
 
-	function seed(width: number, height: number) {
-		particles.length = 0;
-		for (let i = 0; i < COUNT; i++) {
-			particles.push({
-				x: Math.random() * width,
-				y: Math.random() * height,
-				size: 1.5 + Math.random() * 2.5,
-				speed: 6 + Math.random() * 14, // px/sec upward drift
-				phase: Math.random() * Math.PI * 2,
-				color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-				alpha: 0.6,
-			});
-		}
+	// first = spread over the whole screen at start; afterwards they enter from below
+	function spawn(p: Particle, width: number, height: number, first = false) {
+		const unit = Math.min(width, height) / 1000;
+		p.baseX = Math.random() * width;
+		p.x = p.baseX;
+		p.y = first ? Math.random() * height : height + 20 * unit + Math.random() * 120 * unit;
+		p.size = (9 + Math.random() * 11) * unit;
+		p.speed = (35 + Math.random() * 55) * unit; // px/sec upward
+		p.sway = (8 + Math.random() * 22) * unit;
+		p.phase = Math.random() * Math.PI * 2;
+		p.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+		p.peak = 0.85 + Math.random() * 0.15;
+		p.alpha = 0;
 	}
 
 	onMount(() => {
-		seed(canvas.width, canvas.height);
+		for (let i = 0; i < COUNT; i++) {
+			const p = {} as Particle;
+			spawn(p, canvas.width, canvas.height, true);
+			particles.push(p);
+		}
 		let last = performance.now();
 
 		const tick = (now: number) => {
 			// Clamp so a backgrounded tab doesn't teleport particles on return.
 			const dt = Math.min(0.1, (now - last) / 1000);
 			last = now;
-			const height = canvas.height;
+			const { width, height } = canvas;
+			const t = now / 1000;
 
 			for (const p of particles) {
-				let y = p.y - p.speed * dt;
-				if (y < -10) y = height + 10;
-				p.y = y;
-				p.alpha = 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(p.phase + y * 0.02));
+				p.y -= p.speed * dt;
+				// size 0 = spawned while the window had no size yet (hidden tab): try again
+				if (p.y < height * 0.08 || p.size === 0) spawn(p, width, height);
+				p.x = p.baseX + Math.sin(t * 1.3 + p.phase) * p.sway;
+				// fade in over the bottom 15%, fade out over the top 45%
+				const h = p.y / height;
+				const fade = Math.min(1, (1 - h) / 0.15, Math.max(0, (h - 0.08) / 0.45));
+				p.alpha = Math.max(0, fade) * p.peak * (0.75 + 0.25 * Math.sin(t * 4 + p.phase));
 			}
 
 			raf = requestAnimationFrame(tick);
