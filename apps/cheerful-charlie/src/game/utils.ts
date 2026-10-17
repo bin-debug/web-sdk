@@ -12,9 +12,23 @@ import type { RawSymbol, SymbolState } from './types';
 // general utils
 export const { getEmptyBoard } = createGetEmptyPaddedBoard({ reelsDimensions: BOARD_DIMENSIONS });
 export const { playBookEvent, playBookEvents } = createPlayBookUtils({ bookEventHandlerMap });
+// Max win: once the round reaches the cap ('wincap'), no further wins are paid, so the free
+// spins left in the book are not played; playback jumps to the end of the feature.
+const KEEP_AFTER_WINCAP = ['freeSpinEnd', 'finalWin'];
+export const skipAfterWinCap = <T extends { type: string }>(bookEvents: T[], capped = false) => {
+	let reachedCap = capped;
+	return bookEvents.filter((bookEvent) => {
+		if (!reachedCap) {
+			reachedCap = bookEvent.type === 'wincap';
+			return true;
+		}
+		return KEEP_AFTER_WINCAP.includes(bookEvent.type);
+	});
+};
+
 export const playBet = async (bet: Bet) => {
 	stateBet.winBookEventAmount = 0;
-	await playBookEvents(bet.state);
+	await playBookEvents(skipAfterWinCap(bet.state));
 	eventEmitter.broadcast({ type: 'stopButtonEnable' });
 };
 
@@ -43,7 +57,11 @@ export const convertTorResumableBet = (betToResume: Bet) => {
 		),
 	};
 
-	const stateToResume = [bookEventToCreateSnapshot, ...bookEventsAfterResume];
+	const cappedBeforeResume = bookEventsBeforeResume.some((bookEvent) => bookEvent.type === 'wincap');
+	const stateToResume = [
+		bookEventToCreateSnapshot,
+		...skipAfterWinCap(bookEventsAfterResume, cappedBeforeResume),
+	];
 
 	return { ...betToResume, state: stateToResume };
 };
