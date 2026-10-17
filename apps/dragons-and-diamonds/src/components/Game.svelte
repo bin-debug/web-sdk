@@ -18,6 +18,7 @@
 	import Background from './Background.svelte';
 	import Particles from './Particles.svelte';
 	import Twinkles from './Twinkles.svelte';
+	import Mascot from './Mascot.svelte';
 	import LoadingScreen from './LoadingScreen.svelte';
 	import BoardFrame from './BoardFrame.svelte';
 	import MultiplierGrid from './MultiplierGrid.svelte';
@@ -80,6 +81,9 @@
 		<MainContainer>
 			<TumbleBoard />
 			<ClusterWinAmounts />
+		</MainContainer>
+		<MainContainer>
+			<Mascot />
 		</MainContainer>
 
 		<BettingBar />
