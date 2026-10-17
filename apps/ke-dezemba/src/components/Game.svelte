@@ -30,7 +30,8 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
-	import Lasers from './Lasers.svelte';
+	import Lasers from './Lasers.svelte';
+	import StrobeLights from './StrobeLights.svelte';
 
 	const context = getContext();
 
@@ -63,8 +64,10 @@
 		-->
 		<Sound />
 
-		<!-- club lasers behind the reels -->
+		<!-- club lasers, and the win strobes round the screen edges, behind the frame and reels:
+		     nothing may cover the symbols -->
 		<Lasers />
+		<StrobeLights />
 
 		<MainContainer>
 			<BoardFrame />
@@ -83,9 +86,6 @@
 			<TumbleBoard />
 			<ClusterWinAmounts />
 		</MainContainer>
-
-		<!-- on a win the lasers and strobe come over the reels -->
-		<Lasers front />
 
 		<BettingBar />
 		<Win />

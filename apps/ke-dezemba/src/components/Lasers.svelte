@@ -1,15 +1,17 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Graphics } from 'pixi-svelte';
-	import type * as PIXI from 'pixi.js';
+	import { onDestroy } from 'svelte';
+	import { PIXI, getContextParent } from 'pixi-svelte';
 	import { getContext } from '../game/context';
 
 	// Lasers: club laser beams fanning out from two emitters high in the yard, sweeping to the
-	// amapiano beat and swapping patterns every few bars. Two layers: `front={false}` is the
-	// everyday show behind the reels; `front` only lights up on a cluster win, big win or free
-	// spins trigger, sweeping fast over the reels with extra, thicker beams and strobe lights.
-	const { front = false }: { front?: boolean } = $props();
+	// amapiano beat and swapping patterns every few bars, behind the reels. A win speeds the
+	// sweep up for a few seconds.
+	//
+	// Performance: every beam is a stretched white sprite (a straight stroke is a rectangle), so
+	// nothing is re-tessellated per frame; one ticker callback moves them in place, no Svelte
+	// state changes per frame, and the callback is removed when the component goes away.
 	const context = getContext();
+	const parent = getContextParent();
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
 	const isLandscape = $derived(
 		['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()),
@@ -18,9 +20,17 @@
 	const BPM = 110; // bgm_main tempo
 	const COLOURS = [0x39ff6a, 0xff2d55, 0x3d7bff, 0xb44dff, 0x39ff6a, 0xff2d55];
 	const BAR = (60 / BPM) * 4;
+	const BEAMS = 4;
+	// soft glow, then the hard core: [width, alpha, white core]
+	const STROKES = [
+		[18, 0.2, false],
+		[6, 0.45, false],
+		[2.2, 0.85, true],
+	] as const;
+	const CIRCLE_R = 40; // drawn once at this radius, then scaled
 
-	let time = $state(0);
-	let boost = $state(0); // 1 on a win, decays
+	let time = 0;
+	let boost = 0; // 1 on a win, decays
 
 	const cheer = () => (boost = 1);
 	context.eventEmitter.subscribeOnMount({
@@ -29,22 +39,36 @@
 		freeSpinIntroShow: cheer,
 	});
 
-	onMount(() => {
-		let last = performance.now();
-		let raf = 0;
-		const tick = (now: number) => {
-			const dt = Math.min(0.1, (now - last) / 1000);
-			last = now;
-			time += dt * (1 + boost * 2);
-			boost = Math.max(0, boost - dt * 0.3);
-			raf = requestAnimationFrame(tick);
-		};
-		raf = requestAnimationFrame(tick);
-		return () => cancelAnimationFrame(raf);
+	const root = new PIXI.Container();
+	type Emitter = { dir: number; beams: PIXI.Sprite[][]; core: PIXI.Graphics; halo: PIXI.Graphics };
+	const emitters: Emitter[] = [1, -1].map((dir) => {
+		const beams = Array.from({ length: BEAMS }, (_, i) =>
+			STROKES.map(([, , white]) => {
+				const s = new PIXI.Sprite(PIXI.Texture.WHITE);
+				s.anchor.set(0, 0.5);
+				s.blendMode = 'add';
+				s.tint = white ? 0xffffff : COLOURS[(i + (dir > 0 ? 0 : 2)) % COLOURS.length];
+				root.addChild(s);
+				return s;
+			}),
+		);
+		const core = new PIXI.Graphics().circle(0, 0, CIRCLE_R).fill(0xffffff);
+		const halo = new PIXI.Graphics().circle(0, 0, CIRCLE_R).fill(COLOURS[0]);
+		core.blendMode = halo.blendMode = 'add';
+		root.addChild(core, halo);
+		return { dir, beams, core, halo };
 	});
+	parent.addToParent(root);
 
-	function draw(g: PIXI.Graphics) {
+	function update() {
+		const ticker = context.stateApp.pixiApplication?.ticker;
+		if (!ticker) return;
+		const dt = Math.min(0.1, ticker.deltaMS / 1000);
+		time += dt * (1 + boost * 2);
+		boost = Math.max(0, boost - dt * 0.3);
+
 		const { width: W, height: H } = canvas;
+		root.visible = W > 0;
 		if (!W) return;
 		const u = Math.max(Math.min(W, H) / 1000, 0.5);
 		const beatPhase = ((time * BPM) / 60) % 1;
@@ -52,43 +76,42 @@
 		const len = Math.hypot(W, H) * 1.2;
 		// emitters up among the string lights: top corners on desktop, above the reels on mobile
 		const ey = H * (isLandscape ? 0.06 : 0.09);
-		const emitters = [
-			{ x: W * (isLandscape ? 0.06 : 0.1), y: ey, dir: 1 },
-			{ x: W * (isLandscape ? 0.94 : 0.9), y: ey, dir: -1 },
-		];
-		if (front && boost <= 0) return;
-		const beams = front ? 8 : 4;
 		const pattern = Math.floor(time / (BAR * 2)) % 3; // fan sweep, scissor, spin
-		const level = front ? (0.6 + 0.4 * thump) * Math.min(1, boost * 2) * 1.4 : (0.55 + 0.45 * thump) * 0.85;
-		const w = front ? 1.7 : 1;
+		const level = (0.55 + 0.45 * thump) * 0.85;
 
 		for (const e of emitters) {
-			for (let i = 0; i < beams; i++) {
-				const k = i / Math.max(1, beams - 1); // 0..1 across the fan
+			const ex = e.dir > 0 ? W * (isLandscape ? 0.06 : 0.1) : W * (isLandscape ? 0.94 : 0.9);
+			for (let i = 0; i < BEAMS; i++) {
+				const k = i / (BEAMS - 1); // 0..1 across the fan
 				let a: number; // angle from straight down, + towards the middle of the screen
 				if (pattern === 0) a = 0.15 + k * 0.9 + Math.sin(time * 0.9) * 0.35;
 				else if (pattern === 1) a = 0.55 + Math.sin(time * 1.6 + k * 2.2) * 0.55;
 				else a = 0.6 + Math.sin(time * 0.7 + k * 6.28) * 0.6;
 				const ang = Math.PI / 2 - a * e.dir; // canvas angle
-				const x2 = e.x + Math.cos(ang) * len;
-				const y2 = e.y + Math.sin(ang) * len;
-				const c = COLOURS[(i + (e.dir > 0 ? 0 : 2)) % COLOURS.length];
-				// soft glow, then the hard core
-				g.moveTo(e.x, e.y).lineTo(x2, y2).stroke({ width: 18 * w * u, color: c, alpha: 0.2 * level });
-				g.moveTo(e.x, e.y).lineTo(x2, y2).stroke({ width: 6 * w * u, color: c, alpha: 0.45 * level });
-				g.moveTo(e.x, e.y).lineTo(x2, y2).stroke({ width: 2.2 * w * u, color: 0xffffff, alpha: 0.85 * level });
+				const strokes = e.beams[i];
+				for (let j = 0; j < STROKES.length; j++) {
+					const s = strokes[j];
+					s.position.set(ex, ey);
+					s.rotation = ang;
+					s.width = len;
+					s.height = STROKES[j][0] * u;
+					s.alpha = STROKES[j][1] * level;
+				}
 			}
-			g.circle(e.x, e.y, 10 * u * (1 + thump * 0.4)).fill({ color: 0xffffff, alpha: 0.6 * level });
-			g.circle(e.x, e.y, 26 * u * (1 + thump * 0.4)).fill({ color: COLOURS[0], alpha: 0.18 * level });
-		}
-		// win strobe: one hard flash per beat (under 2 a second, kept below the 3 Hz photosensitivity
-		// limit), white on the downbeat of each bar, laser colours on the other beats
-		if (front && boost > 0.15 && beatPhase < 0.1) {
-			const beat = Math.floor((time * BPM) / 60) % 4;
-			const color = beat === 0 ? 0xffffff : COLOURS[beat];
-			g.rect(0, 0, W, H).fill({ color, alpha: (beat === 0 ? 0.45 : 0.3) * Math.min(1, boost * 1.5) * (1 - beatPhase * 10) });
+			const grow = 1 + thump * 0.4;
+			e.core.position.set(ex, ey);
+			e.core.scale.set((10 * u * grow) / CIRCLE_R);
+			e.core.alpha = 0.6 * level;
+			e.halo.position.set(ex, ey);
+			e.halo.scale.set((26 * u * grow) / CIRCLE_R);
+			e.halo.alpha = 0.18 * level;
 		}
 	}
-</script>
 
-<Graphics blendMode="add" {draw} />
+	const ticker = context.stateApp.pixiApplication?.ticker;
+	ticker?.add(update);
+	onDestroy(() => {
+		ticker?.remove(update);
+		root.destroy({ children: true });
+	});
+</script>

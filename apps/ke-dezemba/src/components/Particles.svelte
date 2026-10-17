@@ -1,82 +1,77 @@
 <script lang="ts">
-	import { Circle } from 'pixi-svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
+	import { PIXI, getContextParent } from 'pixi-svelte';
 	import { getContext } from '../game/context';
 
 	// Ambient particles: slow-drifting gold sparkle dust with a soft twinkle. Kept as a
 	// small, self-contained, game-scoped layer — the count/palette/drift are
 	// the knobs a different game's theme would tune.
 	//
-	// Performance: each circle is drawn once (fixed colour, full alpha) and only its
-	// position and display alpha change per frame. Particles are mutated in place, so
-	// there are no per-frame allocations and no Graphics redraws / GPU re-uploads.
-	type Particle = {
-		x: number;
-		y: number;
-		size: number;
-		speed: number;
-		phase: number;
-		color: number;
-		alpha: number;
-	};
+	// Performance: the dots are tinted sprites of one small circle texture in one container
+	// (one draw call), moved in place by a single ticker callback. No Svelte state changes per
+	// frame, and the callback and textures are released when the component goes away.
+	type Particle = { sprite: PIXI.Sprite; speed: number; phase: number };
 
 	const context = getContext();
+	const parent = getContextParent();
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
 
 	const PALETTE = [0xffe9a0, 0xf5a524, 0x4ecdc4, 0xff6fb0];
 	const COUNT = 26;
 
-	const particles = $state<Particle[]>([]);
-	let raf = 0;
+	function dotTexture() {
+		const size = 16;
+		const c = document.createElement('canvas');
+		c.width = c.height = size;
+		const g = c.getContext('2d')!;
+		g.fillStyle = '#fff';
+		g.beginPath();
+		g.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+		g.fill();
+		return PIXI.Texture.from(c);
+	}
 
-	function seed(width: number, height: number) {
-		particles.length = 0;
-		for (let i = 0; i < COUNT; i++) {
-			particles.push({
-				x: Math.random() * width,
-				y: Math.random() * height,
-				size: 1.5 + Math.random() * 2.5,
-				speed: 6 + Math.random() * 14, // px/sec upward drift
-				phase: Math.random() * Math.PI * 2,
-				color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-				alpha: 0.6,
-			});
+	const texture = dotTexture();
+	const root = new PIXI.Container({ zIndex: -1 });
+	let seeded = false;
+	const particles: Particle[] = Array.from({ length: COUNT }, () => {
+		const sprite = new PIXI.Sprite(texture);
+		sprite.anchor.set(0.5);
+		sprite.width = sprite.height = 1.5 + Math.random() * 2.5;
+		sprite.tint = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+		root.addChild(sprite);
+		return {
+			sprite,
+			speed: 6 + Math.random() * 14, // px/sec upward drift
+			phase: Math.random() * Math.PI * 2,
+		};
+	});
+	parent.addToParent(root);
+
+	function update() {
+		const ticker = context.stateApp.pixiApplication?.ticker;
+		const { width, height } = canvas;
+		if (!ticker || !width) return;
+		if (!seeded) {
+			seeded = true;
+			for (const p of particles) p.sprite.position.set(Math.random() * width, Math.random() * height);
+		}
+		// Clamp so a backgrounded tab doesn't teleport particles on return.
+		const dt = Math.min(0.1, ticker.deltaMS / 1000);
+		for (const p of particles) {
+			const s = p.sprite;
+			let y = s.y - p.speed * dt;
+			if (y < -10) y = height + 10;
+			s.y = y;
+			s.alpha = 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(p.phase + y * 0.02));
 		}
 	}
 
-	onMount(() => {
-		seed(canvas.width, canvas.height);
-		let last = performance.now();
-
-		const tick = (now: number) => {
-			// Clamp so a backgrounded tab doesn't teleport particles on return.
-			const dt = Math.min(0.1, (now - last) / 1000);
-			last = now;
-			const height = canvas.height;
-
-			for (const p of particles) {
-				let y = p.y - p.speed * dt;
-				if (y < -10) y = height + 10;
-				p.y = y;
-				p.alpha = 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(p.phase + y * 0.02));
-			}
-
-			raf = requestAnimationFrame(tick);
-		};
-		raf = requestAnimationFrame(tick);
-
-		return () => cancelAnimationFrame(raf);
+	const ticker = context.stateApp.pixiApplication?.ticker;
+	ticker?.add(update);
+	onDestroy(() => {
+		ticker?.remove(update);
+		root.destroy({ children: true });
+		texture.destroy(true);
 	});
 </script>
-
-{#each particles as p, i (i)}
-	<Circle
-		x={p.x}
-		y={p.y}
-		alpha={p.alpha}
-		diameter={p.size}
-		backgroundColor={p.color}
-		anchor={0.5}
-		zIndex={-1}
-	/>
-{/each}
