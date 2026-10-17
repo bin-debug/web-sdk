@@ -40,24 +40,9 @@ export default {
 		src: new URL('../../assets/sprites/game/bg-frame.webp', import.meta.url).href,
 		preload: true,
 	},
-	gameLogo: {
-		type: 'sprite' as const,
-		src: new URL('../../assets/sprites/game/logo.webp', import.meta.url).href,
-		preload: true,
-	},
-	loader: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/loader/loader.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/loader/loader.json', import.meta.url).href,
-			scale: 2,
-		},
-		preload: true,
-	},
 	pressToContinueText: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/pressToContinueText/MM_pressanywhere.json', import.meta.url).href,
-		preload: true,
 	},
 	H1: {
 		type: 'spine',
@@ -163,14 +148,6 @@ export default {
 			scale: 2,
 		},
 	},
-	reelsFrame: {
-		type: 'sprites',
-		src: new URL('../../assets/sprites/reelsFrame/reels_frame.json', import.meta.url).href,
-	},
-	payFrame: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/payFrame/payFrame.png', import.meta.url).href,
-	},
 	anticipation: {
 		type: 'spine',
 		src: {
@@ -235,24 +212,6 @@ export default {
 			scale: 2,
 		},
 	},
-	foregroundAnimation: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/foregroundAnimation/mm_bg.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/foregroundAnimation/mm_bg.json', import.meta.url).href,
-			scale: 2,
-		},
-		preload: true,
-	},
-	foregroundFeatureAnimation: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/foregroundFeatureAnimation/mm_bg_feature.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/foregroundFeatureAnimation/mm_bg_feature.json', import.meta.url).href,
-			scale: 2,
-		},
-		preload: true,
-	},
 	tumble_multiplier: {
 		type: 'spine',
 		src: {
@@ -276,11 +235,6 @@ export default {
 			skeleton: new URL('../../assets/spines/reelhouse/reelhouse_glow.json', import.meta.url).href,
 			scale: 2,
 		},
-	},
-	progressBar: {
-		type: 'sprites',
-		src: new URL('../../assets/sprites/progressBar/progressBar.json', import.meta.url).href,
-		preload: true,
 	},
 	freeSpins: {
 		type: 'sprites',

@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
+	import { stateApp } from '../game/stateApp';
 
 	type Props = {
 		logoUrl: string;
@@ -13,42 +14,90 @@
 	};
 
 	const props: Props = $props();
-	const studioName = props.studioName ?? 'Atomic-Labs';
-	const tagline = props.tagline ?? 'Fortune Favors The Brave';
-
 	let phase = $state<'studio' | 'features'>('studio');
-	let progress = $state(0);
 
-	// Measured from page open (performance.now), so time spent loading the app counts.
-	const STUDIO_MS = 3000;
+	// The studio screen itself is #boot-splash in app.html: it is painted and animating before any
+	// JavaScript loads, and this component only drives its progress bar and fades it out, so the
+	// screen is never re-rendered. Progress follows the real loading (art, mascot and audio), and the
+	// screen only leaves once everything is in, so the board, mascot and sound are ready on the tap.
+	const MIN_MS = 1800; // long enough for the name and tagline to finish animating in
 	const ASSET_TIMEOUT_MS = 8000;
+	const HARD_TIMEOUT_MS = 30000; // never trap the player on the splash (e.g. an auth error behind it)
+	const AUDIO_GRACE_MS = 6000; // on a slow network, stop waiting for the audio this long after the art
+
+	// The Pixi loader only fetches sounds.json; Howler downloads and decodes the audio file itself
+	// once EnableSound mounts. Wait for that too, so music and effects work from the first spin.
+	// howler.js exposes its global on window; the app doesn't depend on it directly.
+	const audioReady = () => {
+		const howls = (window as { Howler?: { _howls: { state: () => string }[] } }).Howler?._howls ?? [];
+		return howls.length > 0 && howls.every((h) => h.state() === 'loaded');
+	};
 
 	const preload = (url: string) =>
 		new Promise<void>((resolve) => {
 			const img = new Image();
-			img.onload = () => img.decode().catch(() => {}).then(() => resolve());
+			// decode() waits for a rendered frame, so it never settles in a background tab: start it, don't wait on it
+			img.onload = () => {
+				img.decode().catch(() => {});
+				resolve();
+			};
 			img.onerror = () => resolve();
 			img.src = url;
 		});
 
 	onMount(() => {
-		// Hand over from the static splash in app.html, which shows the same screen.
-		document.getElementById('boot-splash')?.remove();
+		const splash = document.getElementById('boot-splash');
+		const fill = document.getElementById('boot-fill');
+		const head = document.getElementById('boot-head');
+		const label = document.getElementById('boot-pc');
 
-		let assetsReady = false;
+		let imagesReady = false;
 		const urls = [props.logoUrl, props.bgUrl].filter((u): u is string => !!u);
 		const timeout = new Promise<void>((resolve) => setTimeout(resolve, ASSET_TIMEOUT_MS));
-		Promise.race([Promise.all(urls.map(preload)), timeout]).then(() => (assetsReady = true));
+		Promise.race([Promise.all(urls.map(preload)), timeout]).then(() => (imagesReady = true));
 
-		let raf = 0;
-		const step = (now: number) => {
-			const timeProgress = Math.min(100, Math.round((now / STUDIO_MS) * 100));
-			progress = assetsReady ? timeProgress : Math.min(timeProgress, 95);
-			if (progress >= 100) phase = 'features';
-			else raf = requestAnimationFrame(step);
+		// A timer, not requestAnimationFrame: rAF stops in a background tab, which would leave the
+		// player stuck on the splash. The bar's CSS transition does the smoothing.
+		let shown = 0;
+		let done = false;
+		let artLoadedAt = 0;
+		const start = performance.now();
+		const tick = () => {
+			const now = performance.now();
+			const preDone = Object.keys(stateApp.loadedAssets).length > 0;
+			if (stateApp.loaded && !artLoadedAt) artLoadedAt = now;
+			const audioDone = audioReady() || (artLoadedAt > 0 && now - artLoadedAt > AUDIO_GRACE_MS);
+			// preload set 0–40%, rest of the art 40–90%, audio decoded 90–100%
+			let target = stateApp.loaded
+				? audioDone
+					? 100
+					: 90
+				: preDone
+					? 40 + stateApp.loadingProgress * 0.5
+					: Math.min(38, (now - start) / 40);
+			if (!imagesReady) target = Math.min(target, 97);
+			if (now > HARD_TIMEOUT_MS) target = 100;
+			// the bar never moves backwards, and moves at most 12% per tick so it reads as filling
+			shown = Math.max(shown, Math.min(target, shown + 12));
+
+			if (fill) fill.style.transform = `scaleX(${shown / 100})`;
+			if (head) head.style.left = `${shown}%`;
+			if (label) label.textContent = `${Math.round(shown)}%`;
+
+			if (!done && shown >= 100 && now >= MIN_MS) {
+				done = true;
+				clearInterval(id);
+				// let the bar's last stretch finish before fading
+				setTimeout(() => {
+					phase = 'features';
+					splash?.classList.add('out');
+					setTimeout(() => splash?.remove(), 500);
+				}, 300);
+			}
 		};
-		raf = requestAnimationFrame(step);
-		return () => cancelAnimationFrame(raf);
+		const id = setInterval(tick, 80);
+		tick();
+		return () => clearInterval(id);
 	});
 
 	function dismiss() {
@@ -60,19 +109,7 @@
 <!-- Opaque backdrop: nothing behind the intro shows through while the two screens cross-fade. -->
 <div class="backdrop"></div>
 
-{#if phase === 'studio'}
-	<div class="studio" out:fade={{ duration: 400 }}>
-		<div class="studio-inner">
-			<div class="studio-name">{studioName}</div>
-			<div class="studio-rule"></div>
-			<div class="studio-tag">{tagline}</div>
-			<div class="pbar">
-				<div class="pbar-fill" style="width:{progress}%"></div>
-			</div>
-			<div class="pbar-label">Loading… {progress}%</div>
-		</div>
-	</div>
-{:else}
+{#if phase === 'features'}
 	<div
 		class="features"
 		style="background-image:linear-gradient(rgba(4,10,14,.45),rgba(4,10,14,.65)),url({props.bgUrl});"
@@ -85,40 +122,8 @@
 {/if}
 
 <style>
-	.studio, .features { position: fixed; inset: 0; z-index: 500; user-select: none; overflow: hidden; }
+	.features { position: fixed; inset: 0; z-index: 500; user-select: none; overflow: hidden; }
 	.backdrop { position: fixed; inset: 0; z-index: 499; background: #000; }
-
-	/* ── Studio splash ─────────────────────────────────────────────── */
-	.studio { display: flex; align-items: center; justify-content: center; background: #000; }
-	.studio-inner { text-align: center; padding: 0 6vw; width: 100%; box-sizing: border-box; }
-
-	.studio-name {
-		font-family: 'Megrim', system-ui, sans-serif; font-weight: 700; letter-spacing: 0.08em;
-		font-size: clamp(3.6rem, 17vw, 8rem); line-height: 1; color: #ffe9a0;
-		text-shadow: 0 0 1.8rem rgba(240,196,80,.55), 0 0.2rem 0.6rem rgba(0,0,0,.6);
-	}
-	.studio-rule {
-		width: min(72%, 34rem); height: 0.14rem; margin: 1.4rem auto;
-		background: linear-gradient(90deg, transparent, rgba(245,197,24,.9), transparent);
-	}
-	.studio-tag {
-		font-family: 'Jura', system-ui, sans-serif; font-weight: 600;
-		letter-spacing: 0.34em; text-transform: uppercase;
-		font-size: clamp(0.95rem, 4vw, 1.6rem); color: #eaf3f2; opacity: .95;
-	}
-	.pbar {
-		width: min(74%, 30rem); height: 0.8rem; margin: 2.6rem auto 0.8rem;
-		background: rgba(255,255,255,.12); border-radius: 1rem; overflow: hidden;
-		box-shadow: inset 0 0 0 0.08rem rgba(245,197,24,.35);
-	}
-	.pbar-fill {
-		height: 100%; background: linear-gradient(90deg, #e0932f, #ffe9a0);
-		box-shadow: 0 0 1rem rgba(240,196,80,.6); border-radius: 1rem; transition: width .1s linear;
-	}
-	.pbar-label {
-		font-family: 'Jura', system-ui, sans-serif; font-size: 1rem;
-		letter-spacing: .18em; color: #cfe; opacity: .72;
-	}
 
 	/* ── Logo screen ───────────────────────────────────────────────── */
 	.features {
