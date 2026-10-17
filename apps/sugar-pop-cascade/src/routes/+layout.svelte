@@ -83,5 +83,7 @@
 		z-index: 89; pointer-events: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); display: block; object-fit: contain; object-position: left top;
 		animation: logo-pulse 3s ease-in-out infinite; }
 	@keyframes logo-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.92; } }
+	/* Portrait (phones, tablets): the reels fill the width, so the logo would sit on them. */
+	@media (orientation: portrait) { .game-logo { display: none; } }
 	:global(.intro-active canvas) { visibility: hidden; }
 </style>

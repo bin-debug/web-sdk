@@ -4,7 +4,7 @@
 	import { getContext } from '../game/context';
 
 	// Twinkles: soft star glints that bloom and fade in the candy sky and on the sugar,
-	// so the still background feels alive. Kept sparse and slow (never more than COUNT at
+	// so the still background feels alive. Busy enough to notice, but capped (never more than COUNT at
 	// once, long gaps, white/pink/gold) so they read as sparkle, not confetti.
 	// Drawn behind the board, so only the ones around the edges are seen.
 	type Twinkle = {
@@ -21,7 +21,7 @@
 	const context = getContext();
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
 
-	const COUNT = 9;
+	const COUNT = 18;
 	const TINTS = [0xffffff, 0xfff6dc, 0xffc8ec, 0xffd98a];
 
 	const twinkles = $state<Twinkle[]>([]);
@@ -30,12 +30,12 @@
 		const { width, height } = canvas;
 		const unit = Math.min(width, height) / 1000;
 		tw.x = Math.random() * width;
-		tw.y = Math.random() * height * 0.7; // upper part: sky, rainbow, candy hills
-		tw.size = (32 + Math.random() * 36) * unit;
+		tw.y = Math.random() * height * 0.85; // sky, rainbow, candy hills and sugar
+		tw.size = (55 + Math.random() * 60) * unit;
 		tw.tint = TINTS[Math.floor(Math.random() * TINTS.length)];
 		tw.spin = (Math.random() - 0.5) * 0.6;
 		tw.life = 1.1 + Math.random() * 0.7;
-		tw.age = -(first ? Math.random() * 3 : 0.6 + Math.random() * 2.4);
+		tw.age = -(first ? Math.random() * 1.5 : 0.2 + Math.random() * 1.2);
 		tw.t = 0;
 	}
 
@@ -78,7 +78,7 @@
 				width={tw.size * shape(tw.t)}
 				height={tw.size * shape(tw.t)}
 				rotation={tw.spin * tw.t}
-				alpha={0.9 * shape(tw.t)}
+				alpha={shape(tw.t)}
 				tint={tw.tint}
 				blendMode="add"
 				zIndex={-1}
