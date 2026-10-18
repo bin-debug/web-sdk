@@ -10,6 +10,11 @@
 		['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()),
 	);
 
+	// desktop only: 15% smaller than in phone landscape; he keeps the full-size gap from the
+	// reels, so the smaller figure sits further off the symbols
+	const DESKTOP_SCALE = 0.85;
+	const isDesktop = $derived(context.stateLayoutDerived.layoutType() === 'desktop');
+
 	const FPS = 12;
 	const FRAME = 306; // px height of the (untrimmed) sprite-sheet frames
 	let state = $state<'idle' | 'cheer'>('idle');
@@ -43,11 +48,11 @@
 	);
 	const size = $derived(
 		isLandscape
-			? bl().height * 1.2
+			? bl().height * 1.2 * (isDesktop ? DESKTOP_SCALE : 1)
 			: Math.min(bl().width * 0.78, (floorY - (bl().y + bl().height * 0.5)) * 1.3),
 	);
 	const x = $derived(
-		isLandscape ? bl().x + bl().width * 0.5 + size * 0.34 : rightX - size * 0.42,
+		isLandscape ? bl().x + bl().width * 0.5 + (size / (isDesktop ? DESKTOP_SCALE : 1)) * 0.34 : rightX - size * 0.42,
 	);
 	const y = $derived(floorY - size * HOVER);
 </script>
