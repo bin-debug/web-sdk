@@ -17,10 +17,12 @@
 	let phase = $state<'studio' | 'features'>('studio');
 
 	// The studio screen itself is #boot-splash in app.html: it is painted and animating before any
-	// JavaScript loads, and this component only drives its progress bar and fades it out, so the
-	// screen is never re-rendered. Progress follows the real loading (art, mascot and audio), and the
-	// screen only leaves once everything is in, so the board, mascot and sound are ready on the tap.
-	const MIN_MS = 1800; // long enough for the name and tagline to finish animating in
+	// JavaScript loads, and this component only feeds it progress (window.__boot.set, shown on the
+	// logo's chip ring) and asks it to finish, so the screen is never re-rendered. Progress follows
+	// the real loading (art, mascot and audio), and the screen only leaves once everything is in, so
+	// the board, mascot and sound are ready on the tap.
+	type BootSplash = { t0: number; set: (p: number) => void; finish: () => Promise<void> };
+	const MIN_MS = 3000; // long enough for the logo, studio name and tagline to finish animating in
 	const ASSET_TIMEOUT_MS = 8000;
 	const HARD_TIMEOUT_MS = 30000; // never trap the player on the splash (e.g. an auth error behind it)
 	const AUDIO_GRACE_MS = 6000; // on a slow network, stop waiting for the audio this long after the art
@@ -46,10 +48,10 @@
 		});
 
 	onMount(() => {
-		const splash = document.getElementById('boot-splash');
-		const fill = document.getElementById('boot-fill');
-		const head = document.getElementById('boot-head');
-		const label = document.getElementById('boot-pc');
+		const boot = (window as unknown as { __boot?: BootSplash }).__boot;
+		// Measured from the splash's first frame; until that frame (it never comes in a background
+		// tab) fall back to page open, so the player is never held on the splash.
+		const sinceSplash = (now: number) => (boot && boot.t0 <= now ? now - boot.t0 : now);
 
 		let imagesReady = false;
 		const urls = [props.logoUrl, props.bgUrl].filter((u): u is string => !!u);
@@ -80,19 +82,14 @@
 			// the bar never moves backwards, and moves at most 12% per tick so it reads as filling
 			shown = Math.max(shown, Math.min(target, shown + 12));
 
-			if (fill) fill.style.transform = `scaleX(${shown / 100})`;
-			if (head) head.style.left = `${shown}%`;
-			if (label) label.textContent = `${Math.round(shown)}%`;
+			boot?.set(shown / 100);
 
-			if (!done && shown >= 100 && now >= MIN_MS) {
+			if (!done && shown >= 100 && sinceSplash(now) >= MIN_MS) {
 				done = true;
 				clearInterval(id);
-				// let the bar's last stretch finish before fading
-				setTimeout(() => {
-					phase = 'features';
-					splash?.classList.add('out');
-					setTimeout(() => splash?.remove(), 500);
-				}, 300);
+				// finish() lets the ring's last segment light, bursts, then fades over the logo screen
+				if (boot) boot.finish().then(() => (phase = 'features'));
+				else phase = 'features';
 			}
 		};
 		const id = setInterval(tick, 80);
