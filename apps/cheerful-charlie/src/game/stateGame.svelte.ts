@@ -87,6 +87,7 @@ export const stateGame = $state({
 	tumbleBoardBase: [] as TumbleSymbol[][],
 	multiplierBoard: [] as (MultiplierSymbol | undefined)[][],
 	scatterCounter: 0,
+	winDim: false, // a cluster is celebrating: the other symbols dim
 });
 
 export const setBoardCenterY = (y: number | null) => { stateGame.boardCenterY = y; };

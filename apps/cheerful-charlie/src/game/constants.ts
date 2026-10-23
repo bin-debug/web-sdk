@@ -4,6 +4,22 @@ import type { RawSymbol, SymbolState } from './types';
 
 export const SYMBOL_SIZE = 80;
 
+// colour of the confetti a symbol bursts into when its cluster pays (WinBurst)
+export const BURST_COLORS = {
+	H1: 0xe8403a, // big top
+	H2: 0x2fb3a8, // organ
+	H3: 0xe23a2a, // drum
+	H4: 0xf0a830, // ticket
+	H5: 0xffd27a,
+	L1: 0xffc21a, // Q
+	L2: 0x2aa8f0, // K
+	L3: 0xe8303a, // A
+	L4: 0xff4fa8, // J
+	W: 0xffc84a,
+	S: 0xe8403a,
+	M: 0xffd27a,
+};
+
 export const REEL_PADDING = 0.53;
 
 // initial board (padded top and bottom)

@@ -12,7 +12,10 @@
 		const loadedAudio = $state.snapshot(
 			context.stateApp.loadedAssets['sound'],
 		) as LoadedAudio<SoundName>;
-		const { destroy } = sound.load(loadedAudio);
+		const bonusAudio = $state.snapshot(
+			context.stateApp.loadedAssets['soundBonus'],
+		) as LoadedAudio<SoundName> | undefined;
+		const { destroy } = sound.load(loadedAudio, bonusAudio);
 
 		return () => {
 			// Equivalent to onDestroy(); Leave this comment for searching.
