@@ -3,6 +3,7 @@ import { Howler } from 'howler';
 import { type LoadedAudio } from 'pixi-svelte';
 import { stateSoundDerived } from 'state-shared';
 
+import { createHowlGroup } from './createHowlGroup';
 import { createPlayer, type Player } from './createPlayer.svelte';
 import { createPlayMusic } from './createPlayMusic.svelte';
 import { createPlayLoop } from './createPlayLoop.svelte';
@@ -23,15 +24,25 @@ function createSound<TSoundName extends string>() {
 		once: Player<TSoundName, PlayOnce>;
 	};
 
-	const load = (loadedAudioValue: LoadedAudio<TSoundName>) => {
-		// loadedAudio
-		loadedAudio = loadedAudioValue;
+	// extraAudio: further sprites (e.g. bonus music) that download after the first one has loaded
+	const load = (
+		loadedAudioValue: LoadedAudio<TSoundName>,
+		...extraAudio: (LoadedAudio<TSoundName> | undefined)[]
+	) => {
+		const extra = extraAudio.filter((audio): audio is LoadedAudio<TSoundName> => !!audio);
+		// loadedAudio: one config covering every sprite's sounds
+		loadedAudio = {
+			...loadedAudioValue,
+			config: Object.assign({}, loadedAudioValue.config, ...extra.map((audio) => audio.config)),
+		};
 
-		const howl = new Howl({
-			src: loadedAudio.src,
-			sprite: loadedAudio.sprite,
-			volume: 1,
-		});
+		const howl = extra.length
+			? createHowlGroup([loadedAudioValue, ...extra])
+			: new Howl({
+					src: loadedAudio.src,
+					sprite: loadedAudio.sprite,
+					volume: 1,
+				});
 		// players
 		players = {
 			music: createPlayer<TSoundName, PlayMusic>({ loadedAudio, loop: true, howl, createPlay: createPlayMusic<TSoundName> }), // prettier-ignore
@@ -50,11 +61,8 @@ function createSound<TSoundName extends string>() {
 			Howler.ctx.removeEventListener('statechange', onAudioContextChange);
 			document.removeEventListener('visibilitychange', onVisibilityStateChange);
 
-			if (players) {
-				players.music.howl.unload();
-				players.loop.howl.unload();
-				players.once.howl.unload();
-			}
+			// the three players share one howl
+			if (players) players.music.howl.unload();
 		};
 
 		return {

@@ -1,220 +1,169 @@
 {
   "sprite": {
-    "bgm_freespin": [
-      0,
-      59460,
-      true
-    ],
     "bgm_main": [
-      71000,
-      118880,
+      0.0,
+      118880.0,
       true
-    ],
-    "bgm_winlevel_big": [
-      205000,
-      8000,
-      true
-    ],
-    "bgm_winlevel_epic": [
-      214000,
-      8000,
-      true
-    ],
-    "bgm_winlevel_max": [
-      223000,
-      8000,
-      true
-    ],
-    "bgm_winlevel_mega": [
-      232000,
-      8000,
-      true
-    ],
-    "bgm_winlevel_superwin": [
-      241000,
-      8000,
-      true
-    ],
-    "jng_intro_fs": [
-      250000,
-      2002.585034013606
     ],
     "sfx_anticipation": [
-      254000,
-      7680.5442176871
+      118880.0,
+      7680.542
     ],
     "sfx_anticipation_start": [
-      263000,
-      1000
-    ],
-    "sfx_bigwin_coinloop": [
-      265000,
-      17125.0113378685,
-      true
+      126560.542,
+      1000.0
     ],
     "sfx_btn_general": [
-      284000,
-      58.66213151927013
+      127560.542,
+      58.667
     ],
     "sfx_btn_spin": [
-      286000,
-      1005.5782312925317
-    ],
-    "sfx_fs_respins": [
-      289000,
-      4062.49433106575
+      127619.208,
+      1005.583
     ],
     "sfx_multiplier_combine_a": [
-      295000,
-      1208.843537414964
+      128624.792,
+      1208.833
     ],
     "sfx_multiplier_combine_b": [
-      298000,
-      1045.8503401360417
+      129833.625,
+      1045.854
     ],
     "sfx_multiplier_explosion_a": [
-      301000,
-      769.2743764172292
+      130879.479,
+      769.271
     ],
     "sfx_multiplier_explosion_b": [
-      303000,
-      2046.643990929681
+      131648.75,
+      2046.646
     ],
     "sfx_multiplier_explosion_c": [
-      307000,
-      1202.2675736961332
+      133695.396,
+      1202.271
     ],
     "sfx_multiplier_landing": [
-      310000,
-      999.4784580499072
+      134897.667,
+      999.479
     ],
     "sfx_multiplier_reset": [
-      312000,
-      584.4217687075002
+      135897.146,
+      584.417
     ],
     "sfx_multiplier_up": [
-      314000,
-      1499.2517006802473
+      136481.562,
+      1499.25
     ],
     "sfx_multiplier_update": [
-      317000,
-      1607.823129251699
+      137980.812,
+      1607.833
     ],
     "sfx_multiplier_win": [
-      320000,
-      3791.678004535129
+      139588.646,
+      3791.688
     ],
     "sfx_reel_stop_1": [
-      325000,
-      243.6281179138291
+      143380.333,
+      243.625
     ],
     "sfx_reel_stop_2": [
-      327000,
-      246.6666666666697
+      143623.958,
+      246.667
     ],
     "sfx_reel_stop_3": [
-      329000,
-      240.99773242630818
+      143870.625,
+      241.0
     ],
     "sfx_reel_stop_4": [
-      331000,
-      241.972789115664
+      144111.625,
+      241.979
     ],
     "sfx_reel_stop_5": [
-      333000,
-      239.88662131517913
+      144353.604,
+      239.896
     ],
     "sfx_royals_landing": [
-      335000,
-      1199.2290249432926
+      144593.5,
+      1199.229
     ],
     "sfx_scatter_reveal": [
-      338000,
-      1487.3696145124882
+      145792.729,
+      1487.375
     ],
     "sfx_scatter_stop_1": [
-      341000,
-      994.8526077097313
+      147280.104,
+      994.854
     ],
     "sfx_scatter_stop_2": [
-      343000,
-      1344.7845804988674
+      148274.958,
+      1344.792
     ],
     "sfx_scatter_stop_3": [
-      346000,
-      1060.521541950095
+      149619.75,
+      1060.521
     ],
     "sfx_scatter_stop_4": [
-      349000,
-      996.1451247165769
+      150680.271,
+      996.146
     ],
     "sfx_scatter_stop_5": [
-      351000,
-      997.5283446711956
+      151676.417,
+      997.521
     ],
     "sfx_scatter_win": [
-      353000,
-      1992.970521541963
+      152673.938,
+      1992.979
     ],
     "sfx_scatter_win_v2": [
-      356000,
-      3670.340136054449
-    ],
-    "sfx_superfreespin": [
-      361000,
-      6000
+      154666.917,
+      3670.333
     ],
     "sfx_symbols_landing": [
-      368000,
-      1202.585034013623
+      158337.25,
+      1202.583
     ],
     "sfx_wild_explode": [
-      371000,
-      1401.2244897959363
+      159539.833,
+      1401.229
     ],
     "sfx_winlevel_end": [
-      374000,
-      1998.911564625871
+      160941.062,
+      1998.917
     ],
     "sfx_winlevel_nice": [
-      377000,
-      1474.2857142857133
+      162939.979,
+      1474.292
     ],
     "sfx_winlevel_small": [
-      380000,
-      1000.5668934240362
+      164414.271,
+      1000.562
     ],
     "sfx_winlevel_standard": [
-      383000,
-      1250
+      165414.833,
+      1250.0
     ],
     "sfx_winlevel_substantial": [
-      386000,
-      2490.317460317442
-    ],
-    "sfx_youwon_panel": [
-      390000,
-      2996.689342403613
+      166664.833,
+      2490.312
     ],
     "tumble_win_1": [
-      394000,
-      996.2358276644068
+      169155.146,
+      996.229
     ],
     "tumble_win_2": [
-      396000,
-      1134.671201814058
+      170151.375,
+      1134.667
     ],
     "tumble_win_3": [
-      399000,
-      1134.8299319727744
+      171286.042,
+      1134.833
     ],
     "tumble_win_4": [
-      402000,
-      998.8208616779843
+      172420.875,
+      998.812
     ],
     "tumble_win_5": [
-      404000,
-      989.6145124716327
+      173419.688,
+      989.604
     ]
   },
   "src": [
@@ -224,28 +173,7 @@
     "./assets/audio/sounds.ac3"
   ],
   "config": {
-    "bgm_freespin": {
-      "volume": 1
-    },
     "bgm_main": {
-      "volume": 1
-    },
-    "bgm_winlevel_big": {
-      "volume": 1
-    },
-    "bgm_winlevel_epic": {
-      "volume": 1
-    },
-    "bgm_winlevel_max": {
-      "volume": 1
-    },
-    "bgm_winlevel_mega": {
-      "volume": 1
-    },
-    "bgm_winlevel_superwin": {
-      "volume": 1
-    },
-    "jng_intro_fs": {
       "volume": 1
     },
     "sfx_anticipation": {
@@ -254,16 +182,10 @@
     "sfx_anticipation_start": {
       "volume": 1
     },
-    "sfx_bigwin_coinloop": {
-      "volume": 1
-    },
     "sfx_btn_general": {
       "volume": 1
     },
     "sfx_btn_spin": {
-      "volume": 1
-    },
-    "sfx_fs_respins": {
       "volume": 1
     },
     "sfx_multiplier_combine_a": {
@@ -338,9 +260,6 @@
     "sfx_scatter_win_v2": {
       "volume": 1
     },
-    "sfx_superfreespin": {
-      "volume": 1
-    },
     "sfx_symbols_landing": {
       "volume": 1
     },
@@ -360,9 +279,6 @@
       "volume": 1
     },
     "sfx_winlevel_substantial": {
-      "volume": 1
-    },
-    "sfx_youwon_panel": {
       "volume": 1
     },
     "tumble_win_1": {

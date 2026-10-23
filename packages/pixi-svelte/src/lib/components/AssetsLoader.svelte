@@ -16,7 +16,9 @@
 	const assetNameList = $derived(
 		context.stateApp.assets
 			? Object.keys(context.stateApp.assets).filter(
-					(key) => Boolean(context.stateApp.assets?.[key].preload) === false,
+					(key) =>
+						Boolean(context.stateApp.assets?.[key].preload) === false &&
+						!context.stateApp.assets?.[key].lazy,
 				)
 			: [],
 	);
@@ -29,10 +31,16 @@
 			: [],
 	);
 
+	const lazyAssetNameList = $derived(
+		context.stateApp.assets
+			? Object.keys(context.stateApp.assets).filter((key) => context.stateApp.assets?.[key].lazy)
+			: [],
+	);
+
 	let counter = 0;
 
 	const onProgress = (value: number) => {
-		if (preLoaded && value === 1) {
+		if (preLoaded && !context.stateApp.loaded && value === 1) {
 			counter = counter + 1;
 			const ratio = counter / assetNameList.length;
 			context.stateApp.loadingProgress = ratio * 100;
@@ -88,6 +96,30 @@
 						};
 				}
 				context.stateApp.loaded = true;
+			})();
+		}
+	});
+
+	// Lazy assets: fetched in the background once the game is playable (and released, see holdLazy).
+	let lazyStarted = false;
+	// a hold is a preference, never a lock: release it a while after the rest has loaded
+	const LAZY_HOLD_MAX_MS = 8000;
+	$effect(() => {
+		if (context.stateApp.loaded && context.stateApp.lazyHeld) {
+			const id = setTimeout(() => context.stateApp.releaseLazy(), LAZY_HOLD_MAX_MS);
+			return () => clearTimeout(id);
+		}
+	});
+	$effect(() => {
+		if (context.stateApp.loaded && !context.stateApp.lazyHeld && !lazyStarted) {
+			lazyStarted = true;
+			(async () => {
+				if (lazyAssetNameList.length > 0) {
+					const lazyAssets = await loadAssets(lazyAssetNameList);
+					if (lazyAssets)
+						context.stateApp.loadedAssets = { ...context.stateApp.loadedAssets, ...lazyAssets };
+				}
+				context.stateApp.markLazyLoaded();
 			})();
 		}
 	});

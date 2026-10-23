@@ -20,12 +20,16 @@ export function createPlayOnce<TSoundName extends string>(options: {
 
 		options.initSoundVolume(sound.soundName);
 
-		options.howl.on('end', (soundIdOnEnd) => {
-			if (soundIdOnEnd === soundId) {
+		// once(), for this sound id: on() added a listener per play that was never removed
+		options.howl.once(
+			'end',
+			() => {
 				options.howl.stop(soundId);
-				delete options.getSoundMap()[sound.soundName];
-			}
-		});
+				if (options.getSoundMap()[sound.soundName]?.soundId === soundId)
+					delete options.getSoundMap()[sound.soundName];
+			},
+			soundId,
+		);
 	};
 
 	const soundPlayMap = {
