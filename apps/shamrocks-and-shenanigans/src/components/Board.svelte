@@ -26,9 +26,15 @@
 
 	context.eventEmitter.subscribeOnMount({
 		stopButtonClick: () => context.stateGameDerived.enhancedBoard.stop(),
-		boardSettle: ({ board }) => context.stateGameDerived.enhancedBoard.settle(board),
+		boardSettle: ({ board }) => {
+			context.stateGame.winDim = false;
+			context.stateGameDerived.enhancedBoard.settle(board);
+		},
 		boardShow: () => (show = true),
-		boardHide: () => (show = false),
+		boardHide: () => {
+			show = false;
+			context.stateGame.winDim = false;
+		},
 		boardWithAnimateSymbols: async ({ symbolPositions }) => {
 			// Winning clusters can overlap on Wilds. A cell must only receive one
 			// animation promise, otherwise a duplicate position replaces its
@@ -44,6 +50,8 @@
 					reelSymbol.symbolState = 'postWinStatic';
 				});
 
+			// the rest of the board stays dimmed while the cluster amounts show, until the tumble
+			context.stateGame.winDim = true;
 			await Promise.all(getPromises());
 		},
 	});
