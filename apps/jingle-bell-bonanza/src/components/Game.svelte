@@ -35,6 +35,8 @@
 
 	import Mascot from './Mascot.svelte';
 	import Snow from './Snow.svelte';
+	import WinBurst from './WinBurst.svelte';
+	import BoardContainer from './BoardContainer.svelte';
 
 	const context = getContext();
 
@@ -86,6 +88,9 @@
 
 		<MainContainer>
 			<TumbleBoard />
+			<BoardContainer>
+				<WinBurst />
+			</BoardContainer>
 			<ClusterWinAmounts />
 		</MainContainer>
 
