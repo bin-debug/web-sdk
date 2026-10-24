@@ -22,6 +22,7 @@
 	import PressToContinue from './PressToContinue.svelte';
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
+	import { triggerScreenShake } from '../game/stateShake.svelte';
 
 	const context = getContext();
 
@@ -37,6 +38,8 @@
 		winUpdate: async (emitterEvent) => {
 			amount = emitterEvent.amount;
 			winLevelData = emitterEvent.winLevelData;
+			// big wins land with a thump on the board
+			if (winLevelData?.type === 'big') triggerScreenShake({ intensity: 14, duration: 600 });
 			await waitForResolve((resolve) => (oncomplete = resolve));
 		},
 	});
