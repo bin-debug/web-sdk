@@ -3,6 +3,7 @@
 	import SymbolWrap from './SymbolWrap.svelte';
 	import { getSymbolInfo, getSymbolX } from '../game/utils';
 	import type { ReelSymbol } from '../game/stateGame.svelte';
+	import { THEME } from '../game/theme';
 
 	type Props = {
 		reelIndex: number;
@@ -18,8 +19,9 @@
 <SymbolWrap
 	x={getSymbolX(props.reelIndex)}
 	y={props.reelSymbol.symbolY()}
-	animating={symbolInfo.type === 'spine' &&
-		(props.reelSymbol.symbolState === 'land' || props.reelSymbol.symbolState === 'win')}
+	animating={(symbolInfo.type === 'spine' &&
+		(props.reelSymbol.symbolState === 'land' || props.reelSymbol.symbolState === 'win')) ||
+		(THEME.staticSymbols && props.reelSymbol.symbolState === 'win')}
 >
 	<Symbol
 		state={props.reelSymbol.symbolState}

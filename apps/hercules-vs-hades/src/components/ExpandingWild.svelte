@@ -6,6 +6,7 @@
 
 	import { SYMBOL_SIZE, BOARD_DIMENSIONS } from '../game/constants';
 	import { THEME } from '../game/theme';
+	import { clock } from '../game/clock.svelte';
 
 	type Props = {
 		loop: SpineTrackProps['loop'];
@@ -18,6 +19,12 @@
 	// theme art: one tall wild_reel image that grows down the reel, then pops on a win
 	const grow = new Tween(THEME.staticSymbols ? 0 : 1);
 	const pop = new Tween(1);
+	// while it holds the reel, a brighter copy flickers on top like crackling lightning
+	const flicker = $derived(
+		THEME.staticSymbols && props.animationName === 'wild_loop'
+			? Math.max(0, 0.25 * Math.sin(clock.t * 7) + 0.18 * Math.sin(clock.t * 17.3))
+			: 0,
+	);
 	const complete = () => props.listener?.complete?.(undefined as never);
 
 	$effect(() => {
@@ -45,6 +52,16 @@
 			width={SYMBOL_SIZE}
 			height={SYMBOL_SIZE * BOARD_DIMENSIONS.y}
 		/>
+		{#if flicker > 0.01}
+			<Sprite
+				key="wild_reel.webp"
+				anchor={{ x: 0.5, y: 0 }}
+				width={SYMBOL_SIZE}
+				height={SYMBOL_SIZE * BOARD_DIMENSIONS.y}
+				alpha={flicker}
+				blendMode="add"
+			/>
+		{/if}
 	</Container>
 {:else}
 	<SpineProvider key="symbols" width={SYMBOL_SIZE * 1.2} height={SYMBOL_SIZE * 1.3}>

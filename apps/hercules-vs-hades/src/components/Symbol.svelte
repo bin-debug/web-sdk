@@ -28,7 +28,7 @@
 		x={props.x}
 		y={props.y}
 		oncomplete={props.oncomplete}
-		pulse={props.state === 'win'}
+		state={props.state}
 	/>
 {:else}
 	<SymbolSpine

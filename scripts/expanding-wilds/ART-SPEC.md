@@ -29,8 +29,8 @@ What the script makes of it (`static/assets/theme/`):
 | `symbols.webp` + `symbols.json` | One sprite sheet, 1280x1280: a 4-column grid of 256x256 cells (h1-h5, l1-l5, w, s, p, x) plus the wild reel as a 256x1280 strip on the right. Frame names are `h1.webp`, ..., `wild_reel.webp`. `h5` copies `h1` (it's in the stock front end but not the maths) and `x` (superspin's empty cell) is blank. |
 | `background*.webp` | 1920x1080 and 1080x1920, cropped to cover |
 | `frame.webp` | 1200x1200; the board sits in the centre 1000x1000 |
-| `logo.webp` | 1200x600 |
-| `mascot_left.webp`, `mascot_right.webp` | 800x1000, standing on the bottom edge |
+| `logo.webp` | 1200x800, empty margins trimmed |
+| `mascot_left.webp`, `mascot_right.webp` | 800x1200, empty margins trimmed, feet on the bottom edge |
 
 Maths symbols (Stake's sample `0_0_expwilds`, 5x5, 15 lines): H1-H4, L1-L5, W (wild, also pays),
 S (scatter), P (superspin prize coin), X (superspin blank).

@@ -5,8 +5,8 @@
 //   bonusBackground theme/bonus_background.webp + bonus_background_portrait.webp (free spins)
 //   frame          theme/frame.webp, drawn behind the 5x5 board; frameScale = frame size / board size,
 //                  measured from the art so the frame's window sits just outside the reels
-//   logo           theme/logo.webp
-//   mascots        theme/mascot_left.webp + mascot_right.webp
+//   logo           theme/logo.webp (1200x800)
+//   mascots        theme/mascot_left.webp + mascot_right.webp (800x1200)
 export const THEME = {
 	staticSymbols: false,
 	background: false,

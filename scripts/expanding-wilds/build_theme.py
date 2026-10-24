@@ -37,6 +37,25 @@ def contain(image: Image.Image, size):
     return canvas
 
 
+def trim_contain(image: Image.Image, size):
+    """contain() after cutting away empty transparent margins, so the art fills its slot."""
+    image = image.convert("RGBA")
+    box = image.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
+    return contain(image.crop(box) if box else image, size)
+
+
+def trim_stand(image: Image.Image, size):
+    """trim_contain() for characters: feet stay on the bottom edge."""
+    image = image.convert("RGBA")
+    box = image.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
+    image = image.crop(box) if box else image
+    scale = min(size[0] / image.width, size[1] / image.height)
+    resized = image.resize((max(1, round(image.width * scale)), max(1, round(image.height * scale))), Image.LANCZOS)
+    canvas = Image.new("RGBA", size, (0, 0, 0, 0))
+    canvas.paste(resized, ((size[0] - resized.width) // 2, size[1] - resized.height))
+    return canvas
+
+
 def cover(image: Image.Image, size):
     """Scale to fill size and crop the overflow evenly (for backgrounds)."""
     image = image.convert("RGB")
@@ -98,6 +117,18 @@ def frame_window(image: Image.Image):
     return max(0.4, min(0.95, min(width, height)))
 
 
+def radial_glow(size):
+    """Soft white disc fading to transparent; the game tints it and adds it behind winning symbols."""
+    glow = Image.new("RGBA", (size, size), (255, 255, 255, 0))
+    centre = (size - 1) / 2
+    pixels = glow.load()
+    for y in range(size):
+        for x in range(size):
+            distance = (((x - centre) ** 2 + (y - centre) ** 2) ** 0.5) / centre
+            pixels[x, y] = (255, 255, 255, round(255 * max(0.0, 1 - distance) ** 2))
+    return glow
+
+
 def build_symbols(art: Path, out: Path, problems: list):
     folder = art / "symbols"
     images = {}
@@ -114,6 +145,7 @@ def build_symbols(art: Path, out: Path, problems: list):
     frames = {name: contain(images[name], (CELL, CELL)) for name in SYMBOLS}
     frames["h5"] = frames["h1"]
     frames["x"] = Image.new("RGBA", (CELL, CELL), (0, 0, 0, 0))
+    frames["glow"] = radial_glow(CELL)
 
     columns = 4
     names = list(frames)
@@ -179,8 +211,8 @@ def main():
     if theme["frame"]:
         # draw the frame so its window sits just outside the 5x5 board
         frame_scale = round(1.02 / frame_window(Image.open(out / "frame.webp")), 3)
-    single(["logo"], "logo", contain, {"logo": (1200, 600)})
-    single(["mascot_left", "mascot_right"], "mascots", contain, {"mascot_left": (800, 1000), "mascot_right": (800, 1000)})
+    single(["logo"], "logo", trim_contain, {"logo": (1200, 800)})
+    single(["mascot_left", "mascot_right"], "mascots", trim_stand, {"mascot_left": (800, 1200), "mascot_right": (800, 1200)})
 
     if problems:
         print("ART PROBLEMS:\n  " + "\n  ".join(problems))

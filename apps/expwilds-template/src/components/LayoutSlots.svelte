@@ -3,16 +3,17 @@
 
 	import { getContext } from '../game/context';
 	import { THEME } from '../game/theme';
+	import Mascot from './Mascot.svelte';
 	import { boardOnCanvas, hudSpace, isPortraitHud } from './hud/layout';
 
 	// Where the logo and the two mascots go, measured from Hacksaw's Coffee Dealer.
 	// Phone: logo above the board, mascots under it either side of the spin button.
 	// Desktop: logo top-left, mascots standing in the bottom corners beside the board.
-	// Theme art fills a slot (logo 1200x600, mascots 800x1000, both transparent PNG/WebP);
+	// Theme art fills a slot (logo 1200x800, mascots 800x1200, both transparent PNG/WebP);
 	// a slot without art shows a faint placeholder.
 	const SHOW_PLACEHOLDERS = true;
-	const LOGO_RATIO = 1200 / 600;
-	const MASCOT_RATIO = 800 / 1000;
+	const LOGO_RATIO = 1200 / 800;
+	const MASCOT_RATIO = 800 / 1200;
 
 	type Slot = { x: number; y: number; width: number; height: number };
 
@@ -39,26 +40,31 @@
 		const s = hudSpace().scale;
 
 		if (isPortraitHud()) {
-			const mascotHeight = Math.max(0, canvas.height - board.bottom - 70 * s);
+			// mascots stand from just under the frame (heads tucked behind it) down to the controls
+			const mascotTop = board.bottom - 24 * s;
+			const mascotBottom = canvas.height - 46 * s;
+			const mascotHeight = Math.max(0, mascotBottom - mascotTop);
 			return {
-				logo: { x: canvas.width / 2, y: board.top / 2, width: Math.min(260 * s, canvas.width * 0.7), height: board.top * 0.7 },
-				mascots: [0.25, 0.75].map((fx) => ({
+				logo: { x: canvas.width / 2, y: board.top / 2, width: canvas.width * 0.86, height: board.top * 0.92 },
+				mascots: [0.27, 0.73].map((fx) => ({
 					x: canvas.width * fx,
-					y: board.bottom + 10 * s + mascotHeight / 2,
-					width: Math.min(mascotHeight * 0.8, canvas.width * 0.42),
+					y: mascotTop + mascotHeight / 2,
+					width: canvas.width * 0.5,
 					height: mascotHeight,
 				})),
 			};
 		}
 
 		const side = board.left;
-		const mascotHeight = Math.min(380 * s, canvas.height * 0.45);
+		const logoWidth = Math.min(side * 0.92, 440 * s);
+		const mascotHeight = canvas.height * 0.64;
 		return {
-			logo: { x: side / 2, y: 150 * s, width: Math.min(side * 0.8, 260 * s), height: 160 * s },
+			logo: { x: side / 2, y: 30 * s + logoWidth / LOGO_RATIO / 2, width: logoWidth, height: logoWidth / LOGO_RATIO },
+			// feet at the bottom edge, the bet bar overlaps them like in Hacksaw's games
 			mascots: [side / 2, canvas.width - side / 2].map((x) => ({
 				x,
-				y: canvas.height - mascotHeight / 2 - 10 * s,
-				width: Math.min(side * 0.85, mascotHeight * 0.8),
+				y: canvas.height - mascotHeight / 2 + 8 * s,
+				width: side * 0.98,
 				height: mascotHeight,
 			})),
 		};
@@ -70,8 +76,8 @@
 	<Sprite key="themeLogo" {...fit(slots.logo, LOGO_RATIO)} anchor={0.5} y={slots.logo.y} />
 {/if}
 {#if THEME.mascots}
-	<Sprite key="themeMascotLeft" {...fit(slots.mascots[0], MASCOT_RATIO)} />
-	<Sprite key="themeMascotRight" {...fit(slots.mascots[1], MASCOT_RATIO)} />
+	<Mascot key="themeMascotLeft" {...fit(slots.mascots[0], MASCOT_RATIO)} phase={0} facing={1} />
+	<Mascot key="themeMascotRight" {...fit(slots.mascots[1], MASCOT_RATIO)} phase={1.7} facing={-1} />
 {/if}
 
 {#if SHOW_PLACEHOLDERS}
