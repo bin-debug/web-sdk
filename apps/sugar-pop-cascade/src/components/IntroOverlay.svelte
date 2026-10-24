@@ -32,7 +32,8 @@
 	// howler.js exposes its global on window; the app doesn't depend on it directly.
 	const audioReady = () => {
 		const howls = (window as { Howler?: { _howls: { state: () => string }[] } }).Howler?._howls ?? [];
-		return howls.length > 0 && howls.every((h) => h.state() === 'loaded');
+		// only the first sprite: the bonus music downloads after it, while the player is playing
+		return howls.length > 0 && howls[0].state() === 'loaded';
 	};
 
 	const preload = (url: string) =>
@@ -88,6 +89,7 @@
 				done = true;
 				clearInterval(id);
 				// finish() lets the ring's last segment light, bursts, then fades over the logo screen
+				stateApp.releaseLazy(); // bonus art downloads while the player is on the tap screen
 				if (boot) boot.finish().then(() => (phase = 'features'));
 				else phase = 'features';
 			}

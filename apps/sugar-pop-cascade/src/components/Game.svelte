@@ -32,6 +32,8 @@
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
 	import Mascot from './Mascot.svelte';
+	import WinBurst from './WinBurst.svelte';
+	import BoardContainer from './BoardContainer.svelte';
 
 	const context = getContext();
 
@@ -80,6 +82,9 @@
 
 		<MainContainer>
 			<TumbleBoard />
+			<BoardContainer>
+				<WinBurst />
+			</BoardContainer>
 			<ClusterWinAmounts />
 		</MainContainer>
 
