@@ -4,6 +4,22 @@ import type { RawSymbol, SymbolState } from './types';
 
 export const SYMBOL_SIZE = 80;
 
+// colour a symbol bursts into when its cluster pays (WinBurst)
+export const BURST_COLORS = {
+	H1: 0x23c660,
+	H2: 0xf39a07,
+	H3: 0xed9a10,
+	H4: 0x0cd2b9,
+	L1: 0xffa819,
+	L2: 0xf3a21b,
+	L3: 0xde900e,
+	L4: 0x00d8bd,
+	W: 0xffa30a,
+	S: 0xdd8f0e,
+	H5: 0xffd27a,
+	M: 0xffd27a,
+};
+
 export const REEL_PADDING = 0.53;
 
 // initial board (padded top and bottom)

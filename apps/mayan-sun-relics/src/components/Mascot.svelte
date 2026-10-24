@@ -14,7 +14,10 @@
 	const FRAME = 330; // px height of the (untrimmed) sprite-sheet frames
 	let state = $state<'idle' | 'cheer'>('idle');
 
-	const cheer = () => (state = 'cheer');
+	// the cheer sheet loads lazily: until it's in, he just keeps idling
+	const cheer = () => {
+		if (context.stateApp.loadedAssets?.mascotCheer) state = 'cheer';
+	};
 
 	context.eventEmitter.subscribeOnMount({
 		showClusterWinAmounts: cheer,
@@ -35,8 +38,8 @@
 
 <!-- Layout lives on the Container: changing any SpriteSheet prop re-applies its textures,
      which stops the animation (so resizes would freeze him). -->
-<!-- The sheets aren't preloaded: show him once both have arrived. -->
-{#if context.stateApp.loadedAssets?.mascotIdle && context.stateApp.loadedAssets?.mascotCheer}
+<!-- The idle sheet isn't preloaded: show him once it has arrived. -->
+{#if context.stateApp.loadedAssets?.mascotIdle}
 	<Container {x} {y} scale={size / FRAME}>
 		{#key state}
 			<SpriteSheet
