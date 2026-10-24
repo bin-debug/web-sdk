@@ -27,5 +27,6 @@
 		state={props.tumbleSymbol.symbolState}
 		rawSymbol={props.tumbleSymbol.rawSymbol}
 		oncomplete={props.tumbleSymbol.oncomplete}
+		burstAt={{ x: getSymbolX(props.reelIndex), y: props.tumbleSymbol.symbolY.current }}
 	/>
 </SymbolWrap>
