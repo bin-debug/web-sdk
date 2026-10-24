@@ -60,9 +60,18 @@ $packageJson = Join-Path $app 'package.json'
 
 if ($ArtPath) {
 	Step 'Pack the art into static\assets\theme'
-	python -c 'import PIL' 2>$null
-	if ($LASTEXITCODE -ne 0) { throw 'Pillow is missing: run  python -m pip install pillow' }
-	python (Join-Path $PSScriptRoot 'build_theme.py') $ArtPath $app
+	# several Pythons can be on PATH; use one that has Pillow, else install it into the first
+	$pythons = @(Get-Command python -All -ErrorAction SilentlyContinue | ForEach-Object Source |
+		Where-Object { $_ -notlike '*WindowsApps*' })
+	if (-not $pythons) { throw 'Python not found on PATH' }
+	$python = $pythons | Where-Object { cmd /c "`"$_`" -c `"import PIL`" 2>nul"; $LASTEXITCODE -eq 0 } | Select-Object -First 1
+	if (-not $python) {
+		$python = $pythons[0]
+		Write-Host "Installing Pillow into $python"
+		cmd /c "`"$python`" -m pip install --quiet pillow 2>&1"
+		if ($LASTEXITCODE -ne 0) { throw "Could not install Pillow: run  `"$python`" -m pip install pillow" }
+	}
+	& $python (Join-Path $PSScriptRoot 'build_theme.py') $ArtPath $app
 	if ($LASTEXITCODE -ne 0) { throw 'Art check failed; fix the files listed above and run again (with -Force).' }
 } else {
 	Write-Host 'No -ArtPath: the game keeps the stock Stake art.'

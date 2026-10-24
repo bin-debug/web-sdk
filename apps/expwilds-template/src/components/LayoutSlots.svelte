@@ -27,7 +27,15 @@
 
 	const slots = $derived.by(() => {
 		const canvas = context.stateLayoutDerived.canvasSizes();
-		const board = boardOnCanvas();
+		// measure from the outside of the theme frame (if any) so nothing tucks under it
+		const reels = boardOnCanvas();
+		const grow = THEME.frame ? (reels.width * (THEME.frameScale - 1)) / 2 : 0;
+		const board = {
+			left: reels.left - grow,
+			right: reels.right + grow,
+			top: reels.top - grow,
+			bottom: reels.bottom + grow,
+		};
 		const s = hudSpace().scale;
 
 		if (isPortraitHud()) {

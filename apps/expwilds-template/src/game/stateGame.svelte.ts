@@ -9,6 +9,7 @@ import type { GameType, Prize, RawSymbol, Wild } from './types';
 import { stateLayoutDerived } from './stateLayout';
 import { winLevelMap } from './winLevelMap';
 import { eventEmitter } from './eventEmitter';
+import { THEME } from './theme';
 import {
 	SYMBOL_SIZE,
 	BOARD_SIZES,
@@ -89,7 +90,7 @@ export const stateGame = $state({
 const boardLayout = () => ({
 	x: stateLayoutDerived.mainLayout().width * 0.5,
 	// sit the board above centre so it clears the bet bar
-	y: stateLayoutDerived.mainLayout().height * (stateLayoutDerived.layoutType() === 'portrait' ? 0.44 : 0.42),
+	y: stateLayoutDerived.mainLayout().height * (stateLayoutDerived.layoutType() === 'portrait' ? 0.44 : THEME.frame ? 0.45 : 0.42),
 	anchor: { x: 0.5, y: 0.5 },
 	pivot: { x: BOARD_SIZES.width / 2, y: BOARD_SIZES.height / 2 },
 	...BOARD_SIZES,

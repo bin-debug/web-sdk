@@ -57,6 +57,47 @@ def cover_rgba(image: Image.Image, size):
     return resized.crop((left, top, left + size[0], top + size[1]))
 
 
+def fit_reel(image: Image.Image):
+    """The expanded wild fills one reel (1:5). Generators can't draw 1:5, so trim the empty space
+    around the art, then fill the reel height; a thin column is widened up to 1.8x so it doesn't
+    look like a stick, anything wider is cropped from the centre."""
+    image = image.convert("RGBA")
+    box = image.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
+    if box:
+        image = image.crop(box)
+    scale = REEL[1] / image.height
+    width = round(image.width * scale)
+    if width < REEL[0]:
+        width = min(REEL[0], round(width * 1.8))
+        canvas = Image.new("RGBA", REEL, (0, 0, 0, 0))
+        canvas.paste(image.resize((width, REEL[1]), Image.LANCZOS), ((REEL[0] - width) // 2, 0))
+        return canvas
+    return cover_rgba(image, REEL)
+
+
+def frame_window(image: Image.Image):
+    """Fraction of the frame taken by its reel window: walk out from the centre until a solid run of
+    border pixels (bright or transparent) starts, so stars or texture in the window don't stop it."""
+    image = image.convert("RGBA")
+    w, h = image.size
+
+    def is_border(p):
+        return p[3] < 64 or p[0] + p[1] + p[2] > 330
+
+    def edge(dx, dy):
+        x, y, run = w // 2, h // 2, 0
+        while 0 <= x < w and 0 <= y < h:
+            run = run + 1 if is_border(image.getpixel((x, y))) else 0
+            if run >= 10:
+                return (x - dx * 9, y - dy * 9)
+            x, y = x + dx, y + dy
+        return (x, y)
+
+    width = (edge(1, 0)[0] - edge(-1, 0)[0]) / w
+    height = (edge(0, 1)[1] - edge(0, -1)[1]) / h
+    return max(0.4, min(0.95, min(width, height)))
+
+
 def build_symbols(art: Path, out: Path, problems: list):
     folder = art / "symbols"
     images = {}
@@ -84,8 +125,7 @@ def build_symbols(art: Path, out: Path, problems: list):
         sheet.paste(frames[name], (x, y))
         meta_frames[f"{name}.webp"] = rect(x, y, CELL, CELL)
     reel_x = columns * CELL
-    # generators make 2:3 at most, so the 1:5 reel is cropped from the centre of the image
-    sheet.paste(cover_rgba(images["wild_reel"], REEL), (reel_x, 0))
+    sheet.paste(fit_reel(images["wild_reel"]), (reel_x, 0))
     meta_frames["wild_reel.webp"] = rect(reel_x, 0, *REEL)
 
     sheet.save(out / "symbols.webp", "WEBP", quality=90, method=6)
@@ -135,6 +175,10 @@ def main():
     single(["bonus_background", "bonus_background_portrait"], "bonusBackground", cover,
            {"bonus_background": landscape, "bonus_background_portrait": portrait})
     single(["frame"], "frame", contain, {"frame": (1200, 1200)})
+    frame_scale = 1.2
+    if theme["frame"]:
+        # draw the frame so its window sits just outside the 5x5 board
+        frame_scale = round(1.02 / frame_window(Image.open(out / "frame.webp")), 3)
     single(["logo"], "logo", contain, {"logo": (1200, 600)})
     single(["mascot_left", "mascot_right"], "mascots", contain, {"mascot_left": (800, 1000), "mascot_right": (800, 1000)})
 
@@ -145,9 +189,14 @@ def main():
     theme_ts = app / "src" / "game" / "theme.ts"
     text = theme_ts.read_text()
     start = text.index("export const THEME = {")
-    body = "export const THEME = {\n" + "".join(f"\t{key}: {str(value).lower()},\n" for key, value in theme.items()) + "};\n"
+    body = (
+        "export const THEME = {\n"
+        + "".join(f"\t{key}: {str(value).lower()},\n" for key, value in theme.items())
+        + f"\tframeScale: {frame_scale},\n"
+        + "};\n"
+    )
     theme_ts.write_text(text[:start] + body)
-    print(json.dumps(theme))
+    print(json.dumps({**theme, "frameScale": frame_scale}))
 
 
 if __name__ == "__main__":

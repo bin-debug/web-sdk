@@ -16,7 +16,7 @@ exact: the script scales, crops and packs everything (PNG, WebP or JPG all work)
   background_portrait.png   portrait 9:16 (1024x1536 is fine)
   bonus_background.png            optional, free spins (landscape)
   bonus_background_portrait.png   optional, free spins (portrait)
-  frame.png           optional, square board frame; centre 83% is the reel window
+  frame.png           optional, square board frame; aim for the centre ~83% as the reel window (the script measures the real window, but a thick border leaves less room for the logo and mascots on phones)
   logo.png            optional, transparent, wide (1536x1024)
   mascot_left.png     optional, transparent, portrait (1024x1536), faces right
   mascot_right.png    optional, transparent, portrait (1024x1536), faces left
