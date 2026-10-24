@@ -1,82 +1,107 @@
 <script lang="ts">
-	import { Circle } from 'pixi-svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
+	import { PIXI, getContextParent } from 'pixi-svelte';
 	import { getContext } from '../game/context';
 
-	// Ambient particles: slow-drifting gold sparkle dust with a soft twinkle. Kept as a
-	// small, self-contained, game-scoped layer — the count/palette/drift are
-	// the knobs a different game's theme would tune.
+	// Ambient sparkle dust: motes in the theme's colours drifting up with a little
+	// sway and twinkle, plus a few big soft glows. A win livens them for a few seconds
+	// (faster, brighter). The count/palette/drift are the knobs a different theme would tune.
 	//
-	// Performance: each circle is drawn once (fixed colour, full alpha) and only its
-	// position and display alpha change per frame. Particles are mutated in place, so
-	// there are no per-frame allocations and no Graphics redraws / GPU re-uploads.
-	type Particle = {
+	// Performance: sprites on the WHITE texture, built once and mutated in place by one ticker
+	// callback; nothing is allocated or redrawn per frame and Svelte does no per-frame work.
+	const context = getContext();
+	const parent = getContextParent();
+	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
+
+	const PALETTE = [0x5fb4ff, 0xffffff, 0xffd23a, 0xa070ff];
+	const SPARKS = 28;
+	const GLOWS = 4;
+
+	type Ember = {
+		s: PIXI.Sprite;
 		x: number;
 		y: number;
 		size: number;
-		speed: number;
+		speed: number; // px/s upwards
+		sway: number;
 		phase: number;
-		color: number;
-		alpha: number;
+		base: number; // resting alpha
 	};
 
-	const context = getContext();
-	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
+	let boost = 0; // 1 on a win, decays over ~3 s
+	const stoke = () => (boost = 1);
+	context.eventEmitter.subscribeOnMount({
+		showClusterWinAmounts: stoke,
+		winShow: stoke,
+		freeSpinIntroShow: stoke,
+	});
 
-	const PALETTE = [0xffe9a0, 0xf5a524, 0x4ecdc4, 0xff6fb0];
-	const COUNT = 26;
+	const root = new PIXI.Container();
+	root.zIndex = -1;
+	const GLOW_R = 64;
+	const glowTexture = (() => {
+		// soft radial dot, drawn once
+		const g = new PIXI.Graphics();
+		for (let i = 8; i >= 1; i--) g.circle(0, 0, (GLOW_R * i) / 8).fill({ color: 0xffffff, alpha: 0.06 });
+		return context.stateApp.pixiApplication?.renderer.generateTexture(g) ?? PIXI.Texture.WHITE;
+	})();
 
-	const particles = $state<Particle[]>([]);
-	let raf = 0;
+	const make = (texture: PIXI.Texture, size: () => number, speed: () => number, base: number) => {
+		const s = new PIXI.Sprite(texture);
+		s.anchor.set(0.5);
+		s.blendMode = 'add';
+		s.tint = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+		root.addChild(s);
+		return {
+			s,
+			x: Math.random(),
+			y: Math.random(),
+			size: size(),
+			speed: speed(),
+			sway: 6 + Math.random() * 14,
+			phase: Math.random() * Math.PI * 2,
+			base,
+		} as Ember;
+	};
+	const embers: Ember[] = [
+		...Array.from({ length: GLOWS }, () => make(glowTexture, () => 60 + Math.random() * 80, () => 5 + Math.random() * 6, 0.25)),
+		...Array.from({ length: SPARKS }, () => make(PIXI.Texture.WHITE, () => 1.6 + Math.random() * 2.6, () => 8 + Math.random() * 18, 0.75)),
+	];
+	parent.addToParent(root);
 
-	function seed(width: number, height: number) {
-		particles.length = 0;
-		for (let i = 0; i < COUNT; i++) {
-			particles.push({
-				x: Math.random() * width,
-				y: Math.random() * height,
-				size: 1.5 + Math.random() * 2.5,
-				speed: 6 + Math.random() * 14, // px/sec upward drift
-				phase: Math.random() * Math.PI * 2,
-				color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-				alpha: 0.6,
-			});
+	let time = 0;
+	function update() {
+		const ticker = context.stateApp.pixiApplication?.ticker;
+		if (!ticker) return;
+		const dt = Math.min(0.1, ticker.deltaMS / 1000); // clamp: no teleporting after a background tab
+		time += dt;
+		boost = Math.max(0, boost - dt * 0.35);
+		const { width: W, height: H } = canvas;
+		root.visible = W > 0;
+		if (!W) return;
+		const heat = 1 + boost * 1.8;
+
+		for (const e of embers) {
+			e.y -= (e.speed * heat * dt) / H;
+			if (e.y < -0.05) {
+				e.y = 1.05;
+				e.x = Math.random();
+			}
+			const flicker = 0.6 + 0.4 * Math.sin(time * 7 + e.phase * 3);
+			e.s.x = e.x * W + Math.sin(time * 1.3 + e.phase) * e.sway;
+			e.s.y = e.y * H;
+			e.s.width = e.s.height = e.size;
+			// fade in from the bottom and out near the top
+			const edge = Math.min(1, (1.05 - e.y) * 4, e.y * 3);
+			e.s.alpha = Math.max(0, e.base * flicker * edge * Math.min(1, 0.7 + boost));
 		}
 	}
 
-	onMount(() => {
-		seed(canvas.width, canvas.height);
-		let last = performance.now();
-
-		const tick = (now: number) => {
-			// Clamp so a backgrounded tab doesn't teleport particles on return.
-			const dt = Math.min(0.1, (now - last) / 1000);
-			last = now;
-			const height = canvas.height;
-
-			for (const p of particles) {
-				let y = p.y - p.speed * dt;
-				if (y < -10) y = height + 10;
-				p.y = y;
-				p.alpha = 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(p.phase + y * 0.02));
-			}
-
-			raf = requestAnimationFrame(tick);
-		};
-		raf = requestAnimationFrame(tick);
-
-		return () => cancelAnimationFrame(raf);
+	const ticker = context.stateApp.pixiApplication?.ticker;
+	ticker?.add(update);
+	onDestroy(() => {
+		ticker?.remove(update);
+		root.destroy({ children: true });
+		if (glowTexture !== PIXI.Texture.WHITE) glowTexture.destroy(true);
 	});
 </script>
-
-{#each particles as p, i (i)}
-	<Circle
-		x={p.x}
-		y={p.y}
-		alpha={p.alpha}
-		diameter={p.size}
-		backgroundColor={p.color}
-		anchor={0.5}
-		zIndex={-1}
-	/>
-{/each}

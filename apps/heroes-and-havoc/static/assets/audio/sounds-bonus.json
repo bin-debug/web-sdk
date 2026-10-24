@@ -1,0 +1,96 @@
+{
+  "sprite": {
+    "bgm_freespin": [
+      0.0,
+      55338.792,
+      true
+    ],
+    "bgm_winlevel_big": [
+      55338.792,
+      8000.0,
+      true
+    ],
+    "bgm_winlevel_epic": [
+      63338.792,
+      8000.0,
+      true
+    ],
+    "bgm_winlevel_max": [
+      71338.792,
+      8000.0,
+      true
+    ],
+    "bgm_winlevel_mega": [
+      79338.792,
+      8000.0,
+      true
+    ],
+    "bgm_winlevel_superwin": [
+      87338.792,
+      8000.0,
+      true
+    ],
+    "jng_intro_fs": [
+      95338.792,
+      2002.583
+    ],
+    "sfx_bigwin_coinloop": [
+      97341.375,
+      17125.021,
+      true
+    ],
+    "sfx_fs_respins": [
+      114466.396,
+      4062.5
+    ],
+    "sfx_superfreespin": [
+      118528.896,
+      6000.0
+    ],
+    "sfx_youwon_panel": [
+      124528.896,
+      2996.688
+    ]
+  },
+  "src": [
+    "./assets/audio/sounds-bonus.ogg",
+    "./assets/audio/sounds-bonus.m4a",
+    "./assets/audio/sounds-bonus.mp3",
+    "./assets/audio/sounds-bonus.ac3"
+  ],
+  "config": {
+    "bgm_freespin": {
+      "volume": 1
+    },
+    "bgm_winlevel_big": {
+      "volume": 1
+    },
+    "bgm_winlevel_epic": {
+      "volume": 1
+    },
+    "bgm_winlevel_max": {
+      "volume": 1
+    },
+    "bgm_winlevel_mega": {
+      "volume": 1
+    },
+    "bgm_winlevel_superwin": {
+      "volume": 1
+    },
+    "jng_intro_fs": {
+      "volume": 1
+    },
+    "sfx_bigwin_coinloop": {
+      "volume": 1
+    },
+    "sfx_fs_respins": {
+      "volume": 1
+    },
+    "sfx_superfreespin": {
+      "volume": 1
+    },
+    "sfx_youwon_panel": {
+      "volume": 1
+    }
+  }
+}

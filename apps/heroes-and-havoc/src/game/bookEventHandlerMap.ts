@@ -9,6 +9,11 @@ import { winLevelMap, type WinLevel, type WinLevelData } from './winLevelMap';
 import { stateGame, stateGameDerived } from './stateGame.svelte';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
+import { stateApp } from './stateApp';
+
+// Bonus and big-win art loads in the background after the game is playable (assets.ts `lazy`);
+// on a fast first spin, hold the presentation until it is in rather than show nothing.
+const lazyArt = () => stateApp.lazyAssetsReady();
 
 const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) => {
 	if (winLevelData?.alias === 'max') eventEmitter.broadcastAsync({ type: 'uiHide' });
@@ -52,6 +57,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		}
 
 		stateGame.gameType = bookEvent.gameType;
+		stateGame.winDim = false;
 		await stateGameDerived.enhancedBoard.spin({ revealEvent: bookEvent });
 		eventEmitter.broadcast({ type: 'soundScatterCounterClear' });
 	},
@@ -92,6 +98,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		stateBet.winBookEventAmount = bookEvent.amount;
 	},
 	freeSpinTrigger: async (bookEvent: BookEventOfType<'freeSpinTrigger'>) => {
+		await lazyArt();
 		// animate scatters
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_scatter_win_v2' });
 		await animateSymbols({ positions: bookEvent.positions });
@@ -121,6 +128,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'drawerFold' });
 	},
 	freeSpinRetrigger: async (bookEvent: BookEventOfType<'freeSpinTrigger'>) => {
+		await lazyArt();
 		// animate scatters
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_scatter_win_v2' });
 		await animateSymbols({ positions: bookEvent.positions });
@@ -156,6 +164,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		});
 	},
 	updateGlobalMult: async (bookEvent: BookEventOfType<'updateGlobalMult'>) => {
+		await lazyArt();
 		eventEmitter.broadcast({ type: 'globalMultiplierShow' });
 		if (bookEvent.globalMult === 1) {
 			eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
@@ -166,6 +175,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		});
 	},
 	freeSpinEnd: async (bookEvent: BookEventOfType<'freeSpinEnd'>) => {
+		await lazyArt();
 		const winLevelData = winLevelMap[bookEvent.winLevel as WinLevel];
 
 		await eventEmitter.broadcastAsync({ type: 'uiHide' });
@@ -213,6 +223,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'boardShow' });
 	},
 	setWin: async (bookEvent: BookEventOfType<'setWin'>) => {
+		await lazyArt();
 		const winLevelData = winLevelMap[bookEvent.winLevel as WinLevel];
 
 		eventEmitter.broadcast({ type: 'winShow' });
