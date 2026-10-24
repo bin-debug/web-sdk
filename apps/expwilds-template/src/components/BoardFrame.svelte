@@ -8,6 +8,7 @@
 	import { Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import { THEME } from '../game/theme';
 
 	const context = getContext();
 	const SPINE_SCALE = { width: 0.62, height: 0.62 };
@@ -62,6 +63,17 @@
 	</SpineProvider>
 {/if}
 
+{#if THEME.frame}
+	<!-- theme frame: 1200x1200 image whose centre 1000x1000 is the reel window -->
+	<Sprite
+		key="themeFrame"
+		anchor={0.5}
+		x={context.stateGameDerived.boardLayout().x}
+		y={context.stateGameDerived.boardLayout().y}
+		width={context.stateGameDerived.boardLayout().width * 1.2}
+		height={context.stateGameDerived.boardLayout().height * 1.2}
+	/>
+{:else}
 <Sprite
 	key="frame_bg.png"
 	anchor={0.5}
@@ -79,3 +91,4 @@
 	width={context.stateGameDerived.boardLayout().width * SPRITE_SCALE.width}
 	height={context.stateGameDerived.boardLayout().width * SPRITE_SCALE.height}
 />
+{/if}

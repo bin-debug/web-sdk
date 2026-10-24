@@ -1,14 +1,27 @@
 <script lang="ts">
-	import { Rectangle } from 'pixi-svelte';
+	import { Rectangle, Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import { THEME } from '../game/theme';
 	import { boardOnCanvas, hudSpace, isPortraitHud } from './hud/layout';
 
 	// Where the logo and the two mascots go, measured from Hacksaw's Coffee Dealer.
 	// Phone: logo above the board, mascots under it either side of the spin button.
 	// Desktop: logo top-left, mascots standing in the bottom corners beside the board.
-	// Drawn as faint placeholders until a theme supplies the art.
+	// Theme art fills a slot (logo 1200x600, mascots 800x1000, both transparent PNG/WebP);
+	// a slot without art shows a faint placeholder.
 	const SHOW_PLACEHOLDERS = true;
+	const LOGO_RATIO = 1200 / 600;
+	const MASCOT_RATIO = 800 / 1000;
+
+	type Slot = { x: number; y: number; width: number; height: number };
+
+	// largest image of the given width/height ratio that fits the slot, standing on its bottom edge
+	const fit = (slot: Slot, ratio: number) => {
+		const width = Math.min(slot.width, slot.height * ratio);
+		const height = width / ratio;
+		return { x: slot.x, y: slot.y + slot.height / 2, width, height, anchor: { x: 0.5, y: 1 } };
+	};
 
 	const context = getContext();
 
@@ -44,8 +57,17 @@
 	});
 </script>
 
+{#if THEME.logo}
+	<!-- the logo is centred in its slot; mascots stand on the slot's bottom edge -->
+	<Sprite key="themeLogo" {...fit(slots.logo, LOGO_RATIO)} anchor={0.5} y={slots.logo.y} />
+{/if}
+{#if THEME.mascots}
+	<Sprite key="themeMascotLeft" {...fit(slots.mascots[0], MASCOT_RATIO)} />
+	<Sprite key="themeMascotRight" {...fit(slots.mascots[1], MASCOT_RATIO)} />
+{/if}
+
 {#if SHOW_PLACEHOLDERS}
-	{#each [slots.logo, ...slots.mascots] as slot}
+	{#each [...(THEME.logo ? [] : [slots.logo]), ...(THEME.mascots ? [] : slots.mascots)] as slot}
 		{#if slot.width > 0 && slot.height > 0}
 			<Rectangle
 				anchor={0.5}

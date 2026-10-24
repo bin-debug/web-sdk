@@ -1,4 +1,6 @@
-export default {
+import { THEME } from './theme';
+
+const stockAssets = {
 	loader: {
 		type: 'spine',
 		src: {
@@ -294,3 +296,49 @@ export default {
 		},
 	},
 } as const;
+
+// Theme art (see theme.ts); only loaded when the theme supplies it. Each URL is written out in
+// full: Vite rewrites a new URL() built from a template string into a file glob, which misses static/.
+const themeAssets = {
+	...(THEME.staticSymbols
+		? { themeSymbols: { type: 'sprites', src: new URL('../../assets/theme/symbols.json', import.meta.url).href } as const }
+		: {}),
+	...(THEME.background
+		? {
+				themeBackground: { type: 'sprite', src: new URL('../../assets/theme/background.webp', import.meta.url).href } as const,
+				themeBackgroundPortrait: {
+					type: 'sprite',
+					src: new URL('../../assets/theme/background_portrait.webp', import.meta.url).href,
+				} as const,
+			}
+		: {}),
+	...(THEME.bonusBackground
+		? {
+				themeBonusBackground: {
+					type: 'sprite',
+					src: new URL('../../assets/theme/bonus_background.webp', import.meta.url).href,
+				} as const,
+				themeBonusBackgroundPortrait: {
+					type: 'sprite',
+					src: new URL('../../assets/theme/bonus_background_portrait.webp', import.meta.url).href,
+				} as const,
+			}
+		: {}),
+	...(THEME.frame
+		? { themeFrame: { type: 'sprite', src: new URL('../../assets/theme/frame.webp', import.meta.url).href } as const }
+		: {}),
+	...(THEME.logo
+		? { themeLogo: { type: 'sprite', src: new URL('../../assets/theme/logo.webp', import.meta.url).href } as const }
+		: {}),
+	...(THEME.mascots
+		? {
+				themeMascotLeft: { type: 'sprite', src: new URL('../../assets/theme/mascot_left.webp', import.meta.url).href } as const,
+				themeMascotRight: {
+					type: 'sprite',
+					src: new URL('../../assets/theme/mascot_right.webp', import.meta.url).href,
+				} as const,
+			}
+		: {}),
+};
+
+export default { ...stockAssets, ...themeAssets };

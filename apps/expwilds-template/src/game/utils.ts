@@ -8,6 +8,7 @@ import { eventEmitter } from './eventEmitter';
 import type { Bet, BookEventOfType } from './typesBookEvent';
 import { bookEventHandlerMap } from './bookEventHandlerMap';
 import type { RawSymbol, SymbolState } from './types';
+import { THEME } from './theme';
 
 // general utils
 export const { getEmptyBoard } = createGetEmptyPaddedBoard({ reelsDimensions: BOARD_DIMENSIONS });
@@ -59,5 +60,14 @@ export const getSymbolInfo = ({
 	rawSymbol: RawSymbol;
 	state: SymbolState;
 }) => {
+	// a theme draws every state from its flat sheet (theme/symbols.json); wins pulse in SymbolSprite
+	if (THEME.staticSymbols) return themeSymbolInfo(rawSymbol.name);
 	return SYMBOL_INFO_MAP[rawSymbol.name][state];
 };
+
+const themeSymbolInfo = (name: string) =>
+	({
+		type: 'sprite',
+		assetKey: `${name.toLowerCase()}.webp`,
+		sizeRatios: { width: 1, height: 1 },
+	}) as const;

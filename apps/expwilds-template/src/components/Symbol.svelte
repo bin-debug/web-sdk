@@ -23,7 +23,13 @@
 </script>
 
 {#if isSprite}
-	<SymbolSprite {symbolInfo} x={props.x} y={props.y} oncomplete={props.oncomplete} />
+	<SymbolSprite
+		{symbolInfo}
+		x={props.x}
+		y={props.y}
+		oncomplete={props.oncomplete}
+		pulse={props.state === 'win'}
+	/>
 {:else}
 	<SymbolSpine
 		{symbolInfo}
