@@ -65,7 +65,7 @@
 			width={SYMBOL_SIZE * 2.2}
 			height={reelHeight * 1.1}
 			alpha={flash.current * 0.9}
-			tint={0x9fdcff}
+			tint={THEME.accentColor}
 			blendMode="add"
 		/>
 		<!-- pop around the reel's centre, grow from the landing cell -->
@@ -76,7 +76,7 @@
 					y={-origin}
 					width={SYMBOL_SIZE}
 					height={reelHeight}
-					backgroundColor={0x0b1020}
+					backgroundColor={THEME.windowColor}
 				/>
 				<Sprite
 					key="wild_reel.webp"

@@ -6,6 +6,7 @@
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
 	import TopBar from '../components/TopBar.svelte';
+	import FilmOverlay from '../components/FilmOverlay.svelte';
 	import { setContext } from '../game/context';
 	import { THEME } from '../game/theme';
 
@@ -46,6 +47,10 @@
 {/if}
 
 {@render props.children()}
+
+{#if THEME.film}
+	<FilmOverlay />
+{/if}
 
 {#if !introVisible}
 	<TopBar />

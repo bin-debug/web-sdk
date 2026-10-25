@@ -9,6 +9,10 @@
 //   mascots        theme/mascot_left.webp + mascot_right.webp (800x1200)
 //   mascotAnim     theme/mascot_{left,right}_anim/{idle,cheer}.json sprite sheets (300x400 frames, feet at
 //                  the bottom): idle loops, cheer plays on a win; the stills show until they load
+//   windowColor    colour of the frame's reel window, measured from the art; the expanded wild sits on it
+//   accentColor    the wild's main colour, measured from wild_reel; tints its landing flash
+//   film           old-cartoon look: film grain, flicker and vignette over the game, iris wipe into
+//                  and out of the bonus (New-ExpandingWildsGame.ps1 -FilmEffects)
 export const THEME = {
 	name: 'Expanding Wilds',
 	staticSymbols: false,
@@ -19,4 +23,7 @@ export const THEME = {
 	mascots: false,
 	mascotAnim: false,
 	frameScale: 1.2,
+	windowColor: 0x0b1020,
+	accentColor: 0x9fdcff,
+	film: false,
 };

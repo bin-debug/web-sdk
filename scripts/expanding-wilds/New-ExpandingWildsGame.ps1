@@ -12,6 +12,7 @@
     5. registers <GameId> in the local brand DB on book 0_0_expwilds (Stake's sample maths,
        until our own math-sdk model replaces it) and restarts backoffice-api so the RGS sees it
   Prints the full phone URL at the end.
+  -FilmEffects gives it the old-cartoon look: film grain, flicker and vignette, and an iris wipe into the bonus.
 
 .EXAMPLE
   .\New-ExpandingWildsGame.ps1 -GameName "Shisa Nyama Wilds" -ArtPath C:\source\shared\expwilds-themes\shisa-nyama-wilds
@@ -27,6 +28,7 @@ param(
 	[string] $SourceRoot = 'C:\source',
 	[string] $TailscaleHost = 'thor.tail8ad778.ts.net',
 	[string] $Token = 'tok_player1_Z1KSR8CaQ5UWivXAkO5LIQ',
+	[switch] $FilmEffects,
 	[switch] $Force,
 	[switch] $SkipInstall,
 	[switch] $SkipRegister
@@ -71,7 +73,8 @@ if ($ArtPath) {
 		cmd /c "`"$python`" -m pip install --quiet pillow 2>&1"
 		if ($LASTEXITCODE -ne 0) { throw "Could not install Pillow: run  `"$python`" -m pip install pillow" }
 	}
-	& $python (Join-Path $PSScriptRoot 'build_theme.py') $ArtPath $app $GameName
+	$themeArgs = @($ArtPath, $app, $GameName) + $(if ($FilmEffects) { '--film' })
+	& $python (Join-Path $PSScriptRoot 'build_theme.py') @themeArgs
 	if ($LASTEXITCODE -ne 0) { throw 'Art check failed; fix the files listed above and run again (with -Force).' }
 } else {
 	Write-Host 'No -ArtPath: the game keeps the stock Stake art.'

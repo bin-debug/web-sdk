@@ -3,9 +3,11 @@
 
 	import { getContext } from '../game/context';
 	import { clock } from '../game/clock.svelte';
+	import { THEME } from '../game/theme';
 
 	// The in-game logo, centred on (x, y): it pulses gently, slow light rays turn behind it with a
-	// warm glow, and small sparkles twinkle over the lettering.
+	// warm glow, and small sparkles twinkle over the lettering. The film look skips the rays: in black and
+// white they read as a camera iris.
 	type Props = { x: number; y: number; width: number; height: number };
 
 	const props: Props = $props();
@@ -28,6 +30,7 @@
 
 <Container x={props.x} y={props.y}>
 	<!-- light rays: soft additive wedges that slowly turn -->
+	{#if !THEME.film}
 	<Graphics
 		rotation={t * 0.12}
 		alpha={0.22 + 0.06 * Math.sin(t * 1.6)}
@@ -45,6 +48,7 @@
 			g.fill(0xffd987);
 		}}
 	/>
+	{/if}
 	{#if hasGlow}
 		<Sprite
 			key="glow.webp"

@@ -1,6 +1,6 @@
 """Turn an expanding-wilds art folder into the files the game loads.
 
-    python build_theme.py <art folder> <game app folder> [game name]
+    python build_theme.py <art folder> <game app folder> [game name] [--film]
 
 Reads the art described in ART-SPEC.md, writes static/assets/theme/ (symbol sprite sheet,
 backgrounds, frame, logo, mascots as WebP) and rewrites src/game/theme.ts so the game uses it.
@@ -125,6 +125,26 @@ def frame_window(image: Image.Image):
     return max(0.4, min(0.95, min(width, height)))
 
 
+def window_color(image: Image.Image):
+    """The frame window's colour (its centre), as 0xRRGGBB; the expanded wild is backed with it."""
+    r, g, b, a = image.convert("RGBA").resize((64, 64), Image.BOX).getpixel((32, 32))
+    r, g, b = (round(c * a / 255) for c in (r, g, b))  # the window is drawn over a dark board
+    return (r << 16) | (g << 8) | b
+
+
+def accent_color(image: Image.Image):
+    """The wild's main colour as 0xRRGGBB: the average of its bright, saturated pixels."""
+    small = image.convert("RGBA").resize((96, 144), Image.BOX)
+    picked = []
+    for r, g, b, a in small.getdata():
+        if a > 200 and max(r, g, b) > 150 and max(r, g, b) - min(r, g, b) > 90:
+            picked.append((r, g, b))
+    if not picked:
+        return 0xFFD987
+    r, g, b = (round(sum(c[i] for c in picked) / len(picked)) for i in range(3))
+    return (r << 16) | (g << 8) | b
+
+
 def radial_glow(size):
     """Soft white disc fading to transparent; the game tints it and adds it behind winning symbols."""
     glow = Image.new("RGBA", (size, size), (255, 255, 255, 0))
@@ -168,6 +188,7 @@ def build_symbols(art: Path, out: Path, problems: list):
     sheet.paste(fit_reel(images["wild_reel"]), (reel_x, 0))
     meta_frames["wild_reel.webp"] = rect(reel_x, 0, *REEL)
 
+    build_symbols.accent = accent_color(images["wild_reel"])
     sheet.save(out / "symbols.webp", "WEBP", quality=90, method=6)
     (out / "symbols.json").write_text(
         json.dumps(
@@ -192,8 +213,10 @@ def rect(x, y, w, h):
 
 
 def main():
-    art, app = Path(sys.argv[1]), Path(sys.argv[2])
-    name = sys.argv[3] if len(sys.argv) > 3 else "Expanding Wilds"
+    film = "--film" in sys.argv
+    args = [a for a in sys.argv[1:] if a != "--film"]
+    art, app = Path(args[0]), Path(args[1])
+    name = args[2] if len(args) > 2 else "Expanding Wilds"
     out = app / "static" / "assets" / "theme"
     out.mkdir(parents=True, exist_ok=True)
     problems = []
@@ -217,9 +240,12 @@ def main():
            {"bonus_background": landscape, "bonus_background_portrait": portrait})
     single(["frame"], "frame", contain, {"frame": (1200, 1200)})
     frame_scale = 1.2
+    window = 0x0B1020
     if theme["frame"]:
         # draw the frame so its window sits just outside the 5x5 board (3% clearance)
         frame_scale = round(1.03 / frame_window(Image.open(out / "frame.webp")), 3)
+        window = window_color(Image.open(out / "frame.webp"))
+    accent = getattr(build_symbols, "accent", 0x9FDCFF)
     single(["logo"], "logo", trim_contain, {"logo": (1200, 800)})
     if theme["logo"]:
         # browser tab icon from the logo (replaces the template's plain gold disc)
@@ -249,10 +275,13 @@ def main():
         + f"\tname: {json.dumps(name)},\n"
         + "".join(f"\t{key}: {str(value).lower()},\n" for key, value in theme.items())
         + f"\tframeScale: {frame_scale},\n"
+        + f"\twindowColor: 0x{window:06x},\n"
+        + f"\taccentColor: 0x{accent:06x},\n"
+        + f"\tfilm: {str(film).lower()},\n"
         + "};\n"
     )
     theme_ts.write_text(text[:start] + body)
-    print(json.dumps({**theme, "frameScale": frame_scale}))
+    print(json.dumps({**theme, "frameScale": frame_scale, "windowColor": f"#{window:06x}", "accentColor": f"#{accent:06x}", "film": film}))
 
 
 if __name__ == "__main__":
