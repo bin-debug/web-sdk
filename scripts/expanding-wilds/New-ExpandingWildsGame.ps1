@@ -71,7 +71,7 @@ if ($ArtPath) {
 		cmd /c "`"$python`" -m pip install --quiet pillow 2>&1"
 		if ($LASTEXITCODE -ne 0) { throw "Could not install Pillow: run  `"$python`" -m pip install pillow" }
 	}
-	& $python (Join-Path $PSScriptRoot 'build_theme.py') $ArtPath $app
+	& $python (Join-Path $PSScriptRoot 'build_theme.py') $ArtPath $app $GameName
 	if ($LASTEXITCODE -ne 0) { throw 'Art check failed; fix the files listed above and run again (with -Force).' }
 } else {
 	Write-Host 'No -ArtPath: the game keeps the stock Stake art.'

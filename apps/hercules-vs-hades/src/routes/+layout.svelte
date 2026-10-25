@@ -5,6 +5,7 @@
 	import { Authenticate, LoadI18n } from 'components-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
+	import TopBar from '../components/TopBar.svelte';
 	import { setContext } from '../game/context';
 	import { THEME } from '../game/theme';
 
@@ -45,3 +46,7 @@
 {/if}
 
 {@render props.children()}
+
+{#if !introVisible}
+	<TopBar />
+{/if}

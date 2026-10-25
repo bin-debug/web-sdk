@@ -4,6 +4,7 @@
 	import { getContext } from '../game/context';
 	import { THEME } from '../game/theme';
 	import Mascot from './Mascot.svelte';
+	import GameLogo from './GameLogo.svelte';
 	import { boardOnCanvas, hudSpace, isPortraitHud } from './hud/layout';
 
 	// Where the logo and the two mascots go, measured from Hacksaw's Coffee Dealer.
@@ -45,7 +46,7 @@
 			const mascotBottom = canvas.height - 46 * s;
 			const mascotHeight = Math.max(0, mascotBottom - mascotTop);
 			return {
-				logo: { x: canvas.width / 2, y: board.top / 2, width: canvas.width * 0.86, height: board.top * 0.92 },
+				logo: { x: canvas.width / 2, y: 14 * s + board.top / 2, width: canvas.width * 0.68, height: board.top * 0.72 },
 				mascots: [0.27, 0.73].map((fx) => ({
 					x: canvas.width * fx,
 					y: mascotTop + mascotHeight / 2,
@@ -56,10 +57,10 @@
 		}
 
 		const side = board.left;
-		const logoWidth = Math.min(side * 0.92, 440 * s);
+		const logoWidth = Math.min(side * 0.78, 360 * s);
 		const mascotHeight = canvas.height * 0.64;
 		return {
-			logo: { x: side / 2, y: 30 * s + logoWidth / LOGO_RATIO / 2, width: logoWidth, height: logoWidth / LOGO_RATIO },
+			logo: { x: side / 2, y: 50 * s + logoWidth / LOGO_RATIO / 2, width: logoWidth, height: logoWidth / LOGO_RATIO },
 			// feet at the bottom edge, the bet bar overlaps them like in Hacksaw's games
 			mascots: [side / 2, canvas.width - side / 2].map((x) => ({
 				x,
@@ -73,7 +74,8 @@
 
 {#if THEME.logo}
 	<!-- the logo is centred in its slot; mascots stand on the slot's bottom edge -->
-	<Sprite key="themeLogo" {...fit(slots.logo, LOGO_RATIO)} anchor={0.5} y={slots.logo.y} />
+	{@const logo = fit(slots.logo, LOGO_RATIO)}
+	<GameLogo x={slots.logo.x} y={slots.logo.y} width={logo.width} height={logo.height} />
 {/if}
 {#if THEME.mascots}
 	<Mascot key="themeMascotLeft" side="Left" {...fit(slots.mascots[0], MASCOT_RATIO)} phase={0} facing={1} />

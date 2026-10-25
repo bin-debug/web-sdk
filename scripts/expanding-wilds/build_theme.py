@@ -1,6 +1,6 @@
 """Turn an expanding-wilds art folder into the files the game loads.
 
-    python build_theme.py <art folder> <game app folder>
+    python build_theme.py <art folder> <game app folder> [game name]
 
 Reads the art described in ART-SPEC.md, writes static/assets/theme/ (symbol sprite sheet,
 backgrounds, frame, logo, mascots as WebP) and rewrites src/game/theme.ts so the game uses it.
@@ -193,6 +193,7 @@ def rect(x, y, w, h):
 
 def main():
     art, app = Path(sys.argv[1]), Path(sys.argv[2])
+    name = sys.argv[3] if len(sys.argv) > 3 else "Expanding Wilds"
     out = app / "static" / "assets" / "theme"
     out.mkdir(parents=True, exist_ok=True)
     problems = []
@@ -245,6 +246,7 @@ def main():
     start = text.index("export const THEME = {")
     body = (
         "export const THEME = {\n"
+        + f"\tname: {json.dumps(name)},\n"
         + "".join(f"\t{key}: {str(value).lower()},\n" for key, value in theme.items())
         + f"\tframeScale: {frame_scale},\n"
         + "};\n"
