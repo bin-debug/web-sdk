@@ -2,7 +2,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { backOut } from 'svelte/easing';
-	import { Container, SpineProvider, SpineTrack, Sprite, type SpineTrackProps } from 'pixi-svelte';
+	import { Container, Rectangle, SpineProvider, SpineTrack, Sprite, type SpineTrackProps } from 'pixi-svelte';
 	import { stateBetDerived } from 'state-shared';
 
 	import { SYMBOL_SIZE, BOARD_DIMENSIONS } from '../game/constants';
@@ -19,12 +19,11 @@
 
 	const props: Props = $props();
 
-	// theme art: one tall wild_reel image that bursts out of the landing cell to fill the reel,
-	// kept just inside the reel so it sits on the board like the other symbols; pops on a win
+	// theme art: one tall wild_reel image that bursts out of the landing cell and covers the whole
+	// reel, on a solid backing so no symbol underneath ever shows through; pops on a win
 	const grow = new Tween(THEME.staticSymbols ? 0 : 1);
 	const pop = new Tween(1);
 	const flash = new Tween(0);
-	const REEL_FIT = 0.96;
 	const reelHeight = SYMBOL_SIZE * BOARD_DIMENSIONS.y;
 	// y of the landing cell's centre, measured from the top of the reel
 	const origin = $derived(((props.row ?? 0) + 0.5) * SYMBOL_SIZE);
@@ -69,9 +68,16 @@
 			tint={0x9fdcff}
 			blendMode="add"
 		/>
-		<!-- fit the reel around its centre, then grow from the landing cell -->
-		<Container y={reelHeight / 2} scale={pop.current * REEL_FIT}>
+		<!-- pop around the reel's centre, grow from the landing cell -->
+		<Container y={reelHeight / 2} scale={pop.current}>
 			<Container y={origin - reelHeight / 2} scale={{ x: 1, y: grow.current }}>
+				<Rectangle
+					anchor={{ x: 0.5, y: 0 }}
+					y={-origin}
+					width={SYMBOL_SIZE}
+					height={reelHeight}
+					backgroundColor={0x0b1020}
+				/>
 				<Sprite
 					key="wild_reel.webp"
 					anchor={{ x: 0.5, y: 0 }}
