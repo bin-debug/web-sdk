@@ -76,8 +76,8 @@
 	<Sprite key="themeLogo" {...fit(slots.logo, LOGO_RATIO)} anchor={0.5} y={slots.logo.y} />
 {/if}
 {#if THEME.mascots}
-	<Mascot key="themeMascotLeft" {...fit(slots.mascots[0], MASCOT_RATIO)} phase={0} facing={1} />
-	<Mascot key="themeMascotRight" {...fit(slots.mascots[1], MASCOT_RATIO)} phase={1.7} facing={-1} />
+	<Mascot key="themeMascotLeft" side="Left" {...fit(slots.mascots[0], MASCOT_RATIO)} phase={0} facing={1} />
+	<Mascot key="themeMascotRight" side="Right" {...fit(slots.mascots[1], MASCOT_RATIO)} phase={1.7} facing={-1} />
 {/if}
 
 {#if SHOW_PLACEHOLDERS}

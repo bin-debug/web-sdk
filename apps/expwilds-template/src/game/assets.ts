@@ -339,6 +339,26 @@ const themeAssets = {
 				} as const,
 			}
 		: {}),
+	...(THEME.mascotAnim
+		? {
+				themeMascotLeftIdle: {
+					type: 'spriteSheet',
+					src: new URL('../../assets/theme/mascot_left_anim/idle.json', import.meta.url).href,
+				} as const,
+				themeMascotLeftCheer: {
+					type: 'spriteSheet',
+					src: new URL('../../assets/theme/mascot_left_anim/cheer.json', import.meta.url).href,
+				} as const,
+				themeMascotRightIdle: {
+					type: 'spriteSheet',
+					src: new URL('../../assets/theme/mascot_right_anim/idle.json', import.meta.url).href,
+				} as const,
+				themeMascotRightCheer: {
+					type: 'spriteSheet',
+					src: new URL('../../assets/theme/mascot_right_anim/cheer.json', import.meta.url).href,
+				} as const,
+			}
+		: {}),
 };
 
 export default { ...stockAssets, ...themeAssets };

@@ -20,6 +20,9 @@ exact: the script scales, crops and packs everything (PNG, WebP or JPG all work)
   logo.png            optional, transparent, wide (1536x1024)
   mascot_left.png     optional, transparent, portrait (1024x1536), faces right
   mascot_right.png    optional, transparent, portrait (1024x1536), faces left
+  mascot_left_anim/   optional animated mascots: idle.{json,webp} + cheer.{json,webp} from
+  mascot_right_anim/    C:\source\shared\mascots\make_mascot_sheets.py <video> <dir> 2.0 400
+                        (green screen; KEY=red for characters with green in them)
 ```
 
 What the script makes of it (`static/assets/theme/`):

@@ -7,6 +7,8 @@
 //                  measured from the art so the frame's window sits just outside the reels
 //   logo           theme/logo.webp (1200x800)
 //   mascots        theme/mascot_left.webp + mascot_right.webp (800x1200)
+//   mascotAnim     theme/mascot_{left,right}_anim/{idle,cheer}.json sprite sheets (300x400 frames, feet at
+//                  the bottom): idle loops, cheer plays on a win; the stills show until they load
 export const THEME = {
 	staticSymbols: false,
 	background: false,
@@ -14,5 +16,6 @@ export const THEME = {
 	frame: false,
 	logo: false,
 	mascots: false,
+	mascotAnim: false,
 	frameScale: 1.2,
 };

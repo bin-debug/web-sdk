@@ -8,6 +8,7 @@ Anything optional that is missing keeps the template's stock art or placeholder.
 """
 
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -195,7 +196,7 @@ def main():
     out = app / "static" / "assets" / "theme"
     out.mkdir(parents=True, exist_ok=True)
     problems = []
-    theme = {key: False for key in ["staticSymbols", "background", "bonusBackground", "frame", "logo", "mascots"]}
+    theme = {key: False for key in ["staticSymbols", "background", "bonusBackground", "frame", "logo", "mascots", "mascotAnim"]}
 
     theme["staticSymbols"] = build_symbols(art, out, problems)
 
@@ -220,6 +221,17 @@ def main():
         frame_scale = round(1.03 / frame_window(Image.open(out / "frame.webp")), 3)
     single(["logo"], "logo", trim_contain, {"logo": (1200, 800)})
     single(["mascot_left", "mascot_right"], "mascots", trim_stand, {"mascot_left": (800, 1200), "mascot_right": (800, 1200)})
+
+    # animated mascots: mascot_left_anim/ and mascot_right_anim/, each with idle.{json,webp} and
+    # cheer.{json,webp} sprite sheets from shared/mascots/make_mascot_sheets.py (idle loops, cheer plays on wins)
+    anim_dirs = [art / "mascot_left_anim", art / "mascot_right_anim"]
+    if all((d / f"{k}.{ext}").exists() for d in anim_dirs for k in ["idle", "cheer"] for ext in ["json", "webp"]):
+        for d in anim_dirs:
+            target = out / d.name
+            target.mkdir(exist_ok=True)
+            for f in d.glob("*.*"):
+                shutil.copyfile(f, target / f.name)
+        theme["mascotAnim"] = True
 
     if problems:
         print("ART PROBLEMS:\n  " + "\n  ".join(problems))
