@@ -9,6 +9,7 @@
 	import { THEME } from '../game/theme';
 	import { clock } from '../game/clock.svelte';
 	import type { SymbolState } from '../game/types';
+	import { getContext } from '../game/context';
 
 	type Props = {
 		x?: number;
@@ -19,6 +20,9 @@
 	};
 
 	const props: Props = $props();
+	const context = getContext();
+	// the board is built behind the intro screen, before the symbol sheet has arrived
+	const loaded = $derived(!!context.stateApp.loadedAssets?.[props.symbolInfo.assetKey]);
 
 	// Flat theme art has no Spine animations, so the motion is done here, Hacksaw style:
 	// a squash-and-stretch when a reel lands, a pop with a warm glow on a win, and a slow
@@ -84,11 +88,13 @@
 		/>
 	{/if}
 	<Container scale={{ x: scaleX.current, y: scaleY.current }}>
+		{#if loaded}
 		<Sprite
 			anchor={0.5}
 			key={props.symbolInfo.assetKey}
 			width={SYMBOL_SIZE * props.symbolInfo.sizeRatios.width}
 			height={SYMBOL_SIZE * props.symbolInfo.sizeRatios.height}
 		/>
+		{/if}
 	</Container>
 </Container>

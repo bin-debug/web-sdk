@@ -220,6 +220,9 @@ def main():
         # draw the frame so its window sits just outside the 5x5 board (3% clearance)
         frame_scale = round(1.03 / frame_window(Image.open(out / "frame.webp")), 3)
     single(["logo"], "logo", trim_contain, {"logo": (1200, 800)})
+    if theme["logo"]:
+        # browser tab icon from the logo (replaces the template's plain gold disc)
+        trim_contain(Image.open(find(art, "logo")), (128, 128)).save(app / "static" / "favicon.png")
     single(["mascot_left", "mascot_right"], "mascots", trim_stand, {"mascot_left": (800, 1200), "mascot_right": (800, 1200)})
 
     # animated mascots: mascot_left_anim/ and mascot_right_anim/, each with idle.{json,webp} and
