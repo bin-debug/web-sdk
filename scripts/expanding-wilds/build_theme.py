@@ -95,25 +95,32 @@ def fit_reel(image: Image.Image):
 
 
 def frame_window(image: Image.Image):
-    """Fraction of the frame taken by its reel window: walk out from the centre until a solid run of
-    border pixels (bright or transparent) starts, so stars or texture in the window don't stop it."""
+    """Fraction of the frame taken by its reel window. The window is the dark panel in the middle:
+    walk out from the centre until 3 pixels in a row are not dark (the inner gold line, the border,
+    or transparency). 3 in a row skips the odd tiny star in a patterned window."""
     image = image.convert("RGBA")
     w, h = image.size
 
     def is_border(p):
-        return p[3] < 64 or p[0] + p[1] + p[2] > 330
+        return p[3] < 64 or (p[0] + p[1] + p[2]) / 3 > 45
 
-    def edge(dx, dy):
-        x, y, run = w // 2, h // 2, 0
+    def edge(dx, dy, x, y):
+        run = 0
         while 0 <= x < w and 0 <= y < h:
             run = run + 1 if is_border(image.getpixel((x, y))) else 0
-            if run >= 10:
-                return (x - dx * 9, y - dy * 9)
+            if run >= 3:
+                return (x - dx * 2, y - dy * 2)
             x, y = x + dx, y + dy
         return (x, y)
 
-    width = (edge(1, 0)[0] - edge(-1, 0)[0]) / w
-    height = (edge(0, 1)[1] - edge(0, -1)[1]) / h
+    # several scan lines; the widest wins, so a star or ornament on one line can't shrink the window
+    lines = [0.3, 0.4, 0.5, 0.6, 0.7]
+    width = max(
+        (edge(1, 0, w // 2, round(h * f))[0] - edge(-1, 0, w // 2, round(h * f))[0]) / w for f in lines
+    )
+    height = max(
+        (edge(0, 1, round(w * f), h // 2)[1] - edge(0, -1, round(w * f), h // 2)[1]) / h for f in lines
+    )
     return max(0.4, min(0.95, min(width, height)))
 
 
@@ -209,8 +216,8 @@ def main():
     single(["frame"], "frame", contain, {"frame": (1200, 1200)})
     frame_scale = 1.2
     if theme["frame"]:
-        # draw the frame so its window sits just outside the 5x5 board
-        frame_scale = round(1.02 / frame_window(Image.open(out / "frame.webp")), 3)
+        # draw the frame so its window sits just outside the 5x5 board (3% clearance)
+        frame_scale = round(1.03 / frame_window(Image.open(out / "frame.webp")), 3)
     single(["logo"], "logo", trim_contain, {"logo": (1200, 800)})
     single(["mascot_left", "mascot_right"], "mascots", trim_stand, {"mascot_left": (800, 1200), "mascot_right": (800, 1200)})
 

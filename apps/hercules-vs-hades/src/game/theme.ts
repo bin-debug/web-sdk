@@ -14,5 +14,5 @@ export const THEME = {
 	frame: true,
 	logo: true,
 	mascots: true,
-	frameScale: 1.23,
+	frameScale: 1.339,
 };

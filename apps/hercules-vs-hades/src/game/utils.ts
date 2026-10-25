@@ -69,5 +69,6 @@ const themeSymbolInfo = (name: string) =>
 	({
 		type: 'sprite',
 		assetKey: `${name.toLowerCase()}.webp`,
-		sizeRatios: { width: 1, height: 1 },
+		// a little air around each symbol so the art never touches the frame or its neighbours
+		sizeRatios: { width: 0.9, height: 0.9 },
 	}) as const;

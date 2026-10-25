@@ -2,10 +2,14 @@ import { createLayout } from 'utils-layout';
 
 import { THEME } from './theme';
 
-// With a theme frame, desktop and tablet size the whole frame (not just the reels) to the space
-// Hacksaw's board takes: ~78% of the height. Phones keep the reels big and let the frame bleed.
-const desktopHeight = THEME.frame ? (450 * THEME.frameScale) / 0.78 : 633;
-const tabletSize = THEME.frame ? (450 * THEME.frameScale) / 0.8 : 680;
+// With a theme frame, desktop and tablet size the whole frame (not just the reels): ~84% of the
+// height, and a narrower main area so 16:10 screens are limited by height, not width.
+// Phones fit the frame's gold border to the screen width; only its outer edge may bleed off.
+const frameHeight = 450 * THEME.frameScale;
+const desktopHeight = THEME.frame ? frameHeight / 0.84 : 633;
+const desktopWidth = THEME.frame ? desktopHeight * 1.5 : 1125;
+const tabletSize = THEME.frame ? frameHeight / 0.84 : 680;
+const portraitWidth = THEME.frame ? frameHeight * 0.92 : 450;
 
 export const { stateLayout, stateLayoutDerived } = createLayout({
 	backgroundRatio: {
@@ -15,11 +19,9 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 	mainSizesMap: {
 		// Board-first sizing, matched to Hacksaw: the 450px board spans the full phone width
 		// and about 70% of a desktop's height.
-		desktop: { width: desktopHeight * (1125 / 633), height: desktopHeight },
+		desktop: { width: desktopWidth, height: desktopHeight },
 		tablet: { width: tabletSize, height: tabletSize },
-		landscape: { width: desktopHeight * (1125 / 633), height: desktopHeight },
-		// a theme frame is wider than the board, so on phones the board steps in to ~89% width
-		// and the frame's border only just bleeds off the screen edges
-		portrait: THEME.frame ? { width: 504, height: 896 } : { width: 450, height: 800 },
+		landscape: { width: desktopWidth, height: desktopHeight },
+		portrait: { width: portraitWidth, height: portraitWidth * (16 / 9) },
 	},
 });

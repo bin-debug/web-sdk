@@ -106,6 +106,7 @@
 			>
 				<ExpandingWild
 					{animationName}
+					row={expandingWild.wild.row}
 					loop={expandingWild.state === 'expandedIdle'}
 					listener={{
 						complete: () => {
