@@ -92,8 +92,8 @@
 		<Sprite
 			anchor={0.5}
 			key={props.symbolInfo.assetKey}
-			width={SYMBOL_SIZE * props.symbolInfo.sizeRatios.width}
-			height={SYMBOL_SIZE * props.symbolInfo.sizeRatios.height}
+			width={SYMBOL_SIZE * props.symbolInfo.sizeRatios.width * THEME.symbolScale}
+			height={SYMBOL_SIZE * props.symbolInfo.sizeRatios.height * THEME.symbolScale}
 		/>
 		{/if}
 	</Container>

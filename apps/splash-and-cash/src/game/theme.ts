@@ -15,6 +15,8 @@
 //                  and out of the bonus (New-ExpandingWildsGame.ps1 -FilmEffects)
 //   ground         theme/ground.webp: what the mascots stand on in the phone layout (a dock, a stage),
 //                  drawn across the bottom behind them; without it their feet fade into a dark shade
+//   symbolScale    symbol size within its cell (1 = fills it); lower spaces the symbols out
+//                  (New-ExpandingWildsGame.ps1 -SymbolScale)
 //   intro          theme/intro/panel.webp + icon_{wild,bonus,maxwin}.webp: three Hacksaw-style feature
 //                  panels on the tap-to-play screen; their text is INTRO_PANELS unless the art folder's
 //                  intro/intro.json gives THEME.introPanels
@@ -37,8 +39,9 @@ export const THEME = {
 	mascotAnim: false,
 	ground: false,
 	intro: true,
-	frameScale: 1.751,
-	windowColor: 0x432418,
+	frameScale: 1.349,
+	windowColor: 0x3f2317,
 	accentColor: 0x82ba84,
 	film: false,
+	symbolScale: 0.85,
 };

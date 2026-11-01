@@ -13,6 +13,7 @@
        until our own math-sdk model replaces it) and restarts backoffice-api so the RGS sees it
   Prints the full phone URL at the end.
   -FilmEffects gives it the old-cartoon look: film grain, flicker and vignette, and an iris wipe into the bonus.
+  -SymbolScale 0.85 draws the symbols smaller than their cells, for more space between them.
   -NoAudio ships the game silent: no music or effects, and the loader doesn't wait for audio.
 
 .EXAMPLE
@@ -31,6 +32,7 @@ param(
 	[string] $Token = 'tok_player1_Z1KSR8CaQ5UWivXAkO5LIQ',
 	[switch] $FilmEffects,
 	[switch] $NoAudio,
+	[double] $SymbolScale = 1,
 	[switch] $Force,
 	[switch] $SkipInstall,
 	[switch] $SkipRegister
@@ -75,7 +77,7 @@ if ($ArtPath) {
 		cmd /c "`"$python`" -m pip install --quiet pillow 2>&1"
 		if ($LASTEXITCODE -ne 0) { throw "Could not install Pillow: run  `"$python`" -m pip install pillow" }
 	}
-	$themeArgs = @($ArtPath, $app, $GameName) + $(if ($FilmEffects) { '--film' })
+	$themeArgs = @($ArtPath, $app, $GameName, "--symbol-scale=$SymbolScale") + $(if ($FilmEffects) { '--film' })
 	& $python (Join-Path $PSScriptRoot 'build_theme.py') @themeArgs
 	if ($LASTEXITCODE -ne 0) { throw 'Art check failed; fix the files listed above and run again (with -Force).' }
 } else {

@@ -110,10 +110,10 @@ def fit_reel(image: Image.Image):
     return canvas
 
 
-def frame_window(image: Image.Image):
-    """Fraction of the frame taken by its reel window. The window is the dark panel in the middle:
-    walk out from the centre until 3 pixels in a row are not dark (the inner gold line, the border,
-    or transparency). 3 in a row skips the odd tiny star in a patterned window."""
+def window_box(image: Image.Image):
+    """The frame's reel window as (left, top, right, bottom) pixels. The window is the dark panel
+    in the middle: walk out from the centre until 3 pixels in a row are not dark (the inner gold
+    line, the border, or transparency). 3 in a row skips the odd tiny star in a patterned window."""
     image = image.convert("RGBA")
     w, h = image.size
     # "dark" is relative to the window's own centre: a wooden or tinted panel can sit right on a
@@ -135,13 +135,46 @@ def frame_window(image: Image.Image):
 
     # several scan lines; the widest wins, so a star or ornament on one line can't shrink the window
     lines = [0.3, 0.4, 0.5, 0.6, 0.7]
-    width = max(
-        (edge(1, 0, w // 2, round(h * f))[0] - edge(-1, 0, w // 2, round(h * f))[0]) / w for f in lines
+    left, right = max(
+        ((edge(-1, 0, w // 2, round(h * f))[0], edge(1, 0, w // 2, round(h * f))[0]) for f in lines),
+        key=lambda lr: lr[1] - lr[0],
     )
-    height = max(
-        (edge(0, 1, round(w * f), h // 2)[1] - edge(0, -1, round(w * f), h // 2)[1]) / h for f in lines
+    top, bottom = max(
+        ((edge(0, -1, round(w * f), h // 2)[1], edge(0, 1, round(w * f), h // 2)[1]) for f in lines),
+        key=lambda tb: tb[1] - tb[0],
     )
-    return max(0.4, min(0.95, min(width, height)))
+    return left, top, right, bottom
+
+
+def frame_window(image: Image.Image):
+    """Fraction of the frame taken by its reel window (see window_box)."""
+    left, top, right, bottom = window_box(image)
+    return max(0.4, min(0.95, min((right - left) / image.width, (bottom - top) / image.height)))
+
+
+def thin_frame(image: Image.Image, target=0.76):
+    """A frame whose border takes much more room than the others' (window under 70% of the frame)
+    looks heavy and leaves small reels. Shrink its border nine-slice style until the window is
+    `target` of the frame: corners scale down evenly, edges only get thinner (stretched along
+    their length), and the window panel stretches to fill the middle."""
+    image = image.convert("RGBA")
+    w, h = image.size
+    left, top, right, bottom = window_box(image)
+    window = min((right - left) / w, (bottom - top) / h)
+    if window >= 0.7:
+        return image
+    k = (1 - target) / (1 - window)
+    src_x, src_y = [0, left, right, w], [0, top, bottom, h]
+    dst_x = [0, round(left * k), w - round((w - right) * k), w]
+    dst_y = [0, round(top * k), h - round((h - bottom) * k), h]
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    for i in range(3):
+        for j in range(3):
+            cell = image.crop((src_x[i], src_y[j], src_x[i + 1], src_y[j + 1]))
+            size = (dst_x[i + 1] - dst_x[i], dst_y[j + 1] - dst_y[j])
+            if min(cell.size) > 0 and min(size) > 0:
+                out.alpha_composite(cell.resize(size, Image.LANCZOS), (dst_x[i], dst_y[j]))
+    return out
 
 
 def window_color(image: Image.Image):
@@ -234,7 +267,9 @@ def rect(x, y, w, h):
 
 def main():
     film = "--film" in sys.argv
-    args = [a for a in sys.argv[1:] if a != "--film"]
+    # --symbol-scale=0.85: symbols drawn smaller than their cell, for more space between them
+    symbol_scale = next((float(a.split("=", 1)[1]) for a in sys.argv if a.startswith("--symbol-scale=")), 1)
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
     art, app = Path(args[0]), Path(args[1])
     name = args[2] if len(args) > 2 else "Expanding Wilds"
     out = app / "static" / "assets" / "theme"
@@ -258,7 +293,7 @@ def main():
            {"background": landscape, "background_portrait": portrait}, required=True)
     single(["bonus_background", "bonus_background_portrait"], "bonusBackground", cover,
            {"bonus_background": landscape, "bonus_background_portrait": portrait})
-    single(["frame"], "frame", contain, {"frame": (1200, 1200)})
+    single(["frame"], "frame", lambda image, size: thin_frame(contain(image, size)), {"frame": (1200, 1200)})
     frame_scale = 1.2
     window = 0x0B1020
     if theme["frame"]:
@@ -313,6 +348,7 @@ def main():
         + f"\twindowColor: 0x{window:06x},\n"
         + f"\taccentColor: 0x{accent:06x},\n"
         + f"\tfilm: {str(film).lower()},\n"
+        + f"\tsymbolScale: {symbol_scale},\n"
         + (f"\tintroPanels: {json.dumps(intro_panels)},\n" if intro_panels else "")
         + "};\n"
     )
