@@ -295,11 +295,25 @@ def main():
            {"bonus_background": landscape, "bonus_background_portrait": portrait})
     single(["frame"], "frame", lambda image, size: thin_frame(contain(image, size)), {"frame": (1200, 1200)})
     frame_scale = 1.2
+    frame_fit = {"frameScaleX": 1.2, "frameScaleY": 1.2, "frameOffsetX": 0, "frameOffsetY": 0}
     window = 0x0B1020
     if theme["frame"]:
         # draw the frame so its window sits just outside the 5x5 board (3% clearance)
-        frame_scale = round(1.03 / frame_window(Image.open(out / "frame.webp")), 3)
         window = window_color(Image.open(out / "frame.webp"))
+        # fit each axis on its own and centre the window on the reels, so the gap round the board
+        # is even: a window a little wider than tall, or off centre (a bucket on the top edge),
+        # otherwise leaves the top row on the border and extra room at the bottom and sides
+        frame_image = Image.open(out / "frame.webp")
+        left, top, right, bottom = window_box(frame_image)
+        fw, fh = frame_image.size
+        frame_fit = {
+            "frameScaleX": round(1.03 * fw / (right - left), 3),
+            "frameScaleY": round(1.03 * fh / (bottom - top), 3),
+        }
+        frame_fit["frameOffsetX"] = round(-((left + right) / 2 - fw / 2) / fw * frame_fit["frameScaleX"], 4)
+        frame_fit["frameOffsetY"] = round(-((top + bottom) / 2 - fh / 2) / fh * frame_fit["frameScaleY"], 4)
+        # layout keeps clear of the frame's larger side
+        frame_scale = max(frame_fit["frameScaleX"], frame_fit["frameScaleY"])
     accent = getattr(build_symbols, "accent", 0x9FDCFF)
     single(["logo"], "logo", trim_contain, {"logo": (1200, 800)})
     if theme["logo"]:
@@ -345,6 +359,7 @@ def main():
         + f"\tname: {json.dumps(name)},\n"
         + "".join(f"\t{key}: {str(value).lower()},\n" for key, value in theme.items())
         + f"\tframeScale: {frame_scale},\n"
+        + "".join(f"\t{key}: {value},\n" for key, value in frame_fit.items())
         + f"\twindowColor: 0x{window:06x},\n"
         + f"\taccentColor: 0x{accent:06x},\n"
         + f"\tfilm: {str(film).lower()},\n"

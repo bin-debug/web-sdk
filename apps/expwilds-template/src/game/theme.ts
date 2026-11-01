@@ -13,6 +13,21 @@
 //   accentColor    the wild's main colour, measured from wild_reel; tints its landing flash
 //   film           old-cartoon look: film grain, flicker and vignette over the game, iris wipe into
 //                  and out of the bonus (New-ExpandingWildsGame.ps1 -FilmEffects)
+//   ground         theme/ground.webp: what the mascots stand on in the phone layout (a dock, a stage),
+//                  drawn across the bottom behind them; without it their feet fade into a dark shade
+//   symbolScale    symbol size within its cell (1 = fills it); lower spaces the symbols out
+//                  (New-ExpandingWildsGame.ps1 -SymbolScale)
+//   intro          theme/intro/panel.webp + icon_{wild,bonus,maxwin}.webp: three Hacksaw-style feature
+//                  panels on the tap-to-play screen; their text is INTRO_PANELS unless the art folder's
+//                  intro/intro.json gives THEME.introPanels
+
+// Feature panels on the tap-to-play screen, in order wild, bonus, max win. Matches book 0_0_expwilds.
+export const INTRO_PANELS = [
+	{ title: 'Sticky Wild Reels', text: 'In free spins, wilds fill the reel, stick and add a 2x to 50x multiplier!' },
+	{ title: 'Free Spins', text: 'Land 3, 4 or 5 BONUS symbols for 8, 12 or 15 free spins!' },
+	{ title: 'Max Win', text: 'Win up to 5 000x your bet!' },
+];
+
 export const THEME = {
 	name: 'Expanding Wilds',
 	staticSymbols: false,
@@ -22,8 +37,15 @@ export const THEME = {
 	logo: false,
 	mascots: false,
 	mascotAnim: false,
+	ground: false,
 	frameScale: 1.2,
+	frameScaleX: 1.2,
+	frameScaleY: 1.2,
+	frameOffsetX: 0,
+	frameOffsetY: 0,
 	windowColor: 0x0b1020,
 	accentColor: 0x9fdcff,
 	film: false,
+	intro: false,
+	symbolScale: 1,
 };

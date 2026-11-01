@@ -64,14 +64,15 @@
 {/if}
 
 {#if THEME.frame}
-	<!-- theme frame, sized so its window sits just outside the reels (frameScale is measured from the art) -->
+	<!-- theme frame, sized and shifted so its window sits evenly just outside the reels
+	     (frameScaleX/Y and frameOffsetX/Y are measured from the art) -->
 	<Sprite
 		key="themeFrame"
 		anchor={0.5}
-		x={context.stateGameDerived.boardLayout().x}
-		y={context.stateGameDerived.boardLayout().y}
-		width={context.stateGameDerived.boardLayout().width * THEME.frameScale}
-		height={context.stateGameDerived.boardLayout().height * THEME.frameScale}
+		x={context.stateGameDerived.boardLayout().x + context.stateGameDerived.boardLayout().width * THEME.frameOffsetX}
+		y={context.stateGameDerived.boardLayout().y + context.stateGameDerived.boardLayout().height * THEME.frameOffsetY}
+		width={context.stateGameDerived.boardLayout().width * THEME.frameScaleX}
+		height={context.stateGameDerived.boardLayout().height * THEME.frameScaleY}
 	/>
 {:else}
 <Sprite
