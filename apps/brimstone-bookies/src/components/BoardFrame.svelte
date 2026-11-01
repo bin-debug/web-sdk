@@ -41,8 +41,8 @@
 	});
 </script>
 
-<!-- panel fills the frame's measured hole (drawn behind the reels) -->
-<Sprite key="bgFrame" anchor={0.5} x={bl().x} y={bl().y} width={bl().width * 1.0600 * frameScale} height={bl().height * 1.0600 * frameScale} zIndex={-2} />
+<!-- panel tucks under the frame on every side (drawn behind the reels) -->
+<Sprite key="bgFrame" anchor={0.5} x={bl().x} y={bl().y} width={bl().width * 1.1000 * frameScale} height={bl().height * 1.1000 * frameScale} zIndex={-2} />
 
 <!-- ornate frame: hole aligned to the board via measured insets -->
 <Sprite
