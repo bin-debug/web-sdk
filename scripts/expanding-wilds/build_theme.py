@@ -79,20 +79,35 @@ def cover_rgba(image: Image.Image, size):
 
 def fit_reel(image: Image.Image):
     """The expanded wild fills one reel (1:5). Generators can't draw 1:5, so trim the empty space
-    around the art, then fill the reel height; a thin column is widened up to 1.8x so it doesn't
-    look like a stick, anything wider is cropped from the centre."""
+    around the art and show all of it, never cropped:
+    - a thin column (narrower than 1:5) fills the reel height, widened up to 1.8x so it doesn't
+      look like a stick;
+    - wider art fills the reel width, centred, and whatever runs off its top and bottom edges (a
+      rope, a column, a beam) is carried on to the ends of the reel."""
     image = image.convert("RGBA")
     box = image.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
     if box:
         image = image.crop(box)
-    scale = REEL[1] / image.height
-    width = round(image.width * scale)
-    if width < REEL[0]:
-        width = min(REEL[0], round(width * 1.8))
-        canvas = Image.new("RGBA", REEL, (0, 0, 0, 0))
+    canvas = Image.new("RGBA", REEL, (0, 0, 0, 0))
+    if image.width * REEL[1] < image.height * REEL[0]:
+        width = min(REEL[0], round(image.width * REEL[1] / image.height * 1.8))
         canvas.paste(image.resize((width, REEL[1]), Image.LANCZOS), ((REEL[0] - width) // 2, 0))
         return canvas
-    return cover_rgba(image, REEL)
+    height = round(image.height * REEL[0] / image.width)
+    art = image.resize((REEL[0], height), Image.LANCZOS)
+    top = (REEL[1] - height) // 2
+    canvas.paste(art, (0, top))
+
+    def carry(row: Image.Image, y0: int, y1: int):
+        # only solid pixels on the edge row continue (the rope), not half-cut coins or sparkles
+        alpha = row.getchannel("A").point(lambda a: 255 if a > 200 else 0)
+        row.putalpha(alpha)
+        canvas.alpha_composite(row.resize((REEL[0], y1 - y0)), (0, y0))
+
+    if top > 0:
+        carry(art.crop((0, 1, REEL[0], 2)), 0, top + 1)
+        carry(art.crop((0, height - 2, REEL[0], height - 1)), top + height - 1, REEL[1])
+    return canvas
 
 
 def frame_window(image: Image.Image):
@@ -101,9 +116,13 @@ def frame_window(image: Image.Image):
     or transparency). 3 in a row skips the odd tiny star in a patterned window."""
     image = image.convert("RGBA")
     w, h = image.size
+    # "dark" is relative to the window's own centre: a wooden or tinted panel can sit right on a
+    # fixed cut-off and stop the walk after a few pixels (Splash & Cash measured 39% for a 63% window)
+    centre = sorted(image.crop((w * 2 // 5, h * 2 // 5, w * 3 // 5, h * 3 // 5)).convert("L").tobytes())
+    limit = max(45, centre[len(centre) // 2] + 25)
 
     def is_border(p):
-        return p[3] < 64 or (p[0] + p[1] + p[2]) / 3 > 45
+        return p[3] < 64 or (p[0] + p[1] + p[2]) / 3 > limit
 
     def edge(dx, dy, x, y):
         run = 0
@@ -136,7 +155,8 @@ def accent_color(image: Image.Image):
     """The wild's main colour as 0xRRGGBB: the average of its bright, saturated pixels."""
     small = image.convert("RGBA").resize((96, 144), Image.BOX)
     picked = []
-    for r, g, b, a in small.getdata():
+    data = small.tobytes()
+    for r, g, b, a in (data[i : i + 4] for i in range(0, len(data), 4)):
         if a > 200 and max(r, g, b) > 150 and max(r, g, b) - min(r, g, b) > 90:
             picked.append((r, g, b))
     if not picked:
@@ -220,7 +240,7 @@ def main():
     out = app / "static" / "assets" / "theme"
     out.mkdir(parents=True, exist_ok=True)
     problems = []
-    theme = {key: False for key in ["staticSymbols", "background", "bonusBackground", "frame", "logo", "mascots", "mascotAnim"]}
+    theme = {key: False for key in ["staticSymbols", "background", "bonusBackground", "frame", "logo", "mascots", "mascotAnim", "ground", "intro"]}
 
     theme["staticSymbols"] = build_symbols(art, out, problems)
 
@@ -251,6 +271,7 @@ def main():
         # browser tab icon from the logo (replaces the template's plain gold disc)
         trim_contain(Image.open(find(art, "logo")), (128, 128)).save(app / "static" / "favicon.png")
     single(["mascot_left", "mascot_right"], "mascots", trim_stand, {"mascot_left": (800, 1200), "mascot_right": (800, 1200)})
+    single(["ground"], "ground", trim_contain, {"ground": (1800, 600)})
 
     # animated mascots: mascot_left_anim/ and mascot_right_anim/, each with idle.{json,webp} and
     # cheer.{json,webp} sprite sheets from shared/mascots/make_mascot_sheets.py (idle loops, cheer plays on wins)
@@ -262,6 +283,20 @@ def main():
             for f in d.glob("*.*"):
                 shutil.copyfile(f, target / f.name)
         theme["mascotAnim"] = True
+
+    # intro/: the three feature panels on the tap-to-play screen (an empty sign plus wild, bonus and
+    # max-win icons); intro/intro.json may replace their text: [{"title": ..., "text": ...}] x3
+    intro_names = ["panel", "icon_wild", "icon_bonus", "icon_maxwin"]
+    intro_paths = [find(art / "intro", name) for name in intro_names]
+    intro_panels = None
+    if all(intro_paths):
+        (out / "intro").mkdir(exist_ok=True)
+        for intro_name, path in zip(intro_names, intro_paths):
+            size = (600, 800) if intro_name == "panel" else (512, 512)
+            trim_contain(Image.open(path), size).save(out / "intro" / f"{intro_name}.webp", "WEBP", quality=88, method=6)
+        theme["intro"] = True
+        if (art / "intro" / "intro.json").exists():
+            intro_panels = json.loads((art / "intro" / "intro.json").read_text(encoding="utf-8"))
 
     if problems:
         print("ART PROBLEMS:\n  " + "\n  ".join(problems))
@@ -278,6 +313,7 @@ def main():
         + f"\twindowColor: 0x{window:06x},\n"
         + f"\taccentColor: 0x{accent:06x},\n"
         + f"\tfilm: {str(film).lower()},\n"
+        + (f"\tintroPanels: {json.dumps(intro_panels)},\n" if intro_panels else "")
         + "};\n"
     )
     theme_ts.write_text(text[:start] + body)
