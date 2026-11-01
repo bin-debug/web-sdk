@@ -71,6 +71,6 @@
 			? `${bookEventAmountToCurrencyString(props.win.win)} X ${props.win.mult}`
 			: bookEventAmountToCurrencyString(props.win.result)}
 		anchor={0.5}
-		style={fxText(SYMBOL_SIZE * 0.38, '#FFD400')}
+		style={fxText(SYMBOL_SIZE * 0.38, '#F7C23A')}
 	/>
 </FadeContainer>

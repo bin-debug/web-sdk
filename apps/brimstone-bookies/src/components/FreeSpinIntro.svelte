@@ -55,8 +55,8 @@
 		<Container scale={pop.current}>
 			<FxPanel width={PW} height={PH} />
 			<Text anchor={0.5} y={-PH * 0.29} text="FREE SPINS" style={fxText(PH * 0.15, '#ffffff')} />
-			<Text anchor={0.5} y={PH * 0.03} text={String(Math.round(roll.current))} style={fxText(PH * 0.38, '#E1121B')} />
-			<Text anchor={0.5} y={PH * 0.3} text="AWARDED" style={fxText(PH * 0.08, '#FFD400')} />
+			<Text anchor={0.5} y={PH * 0.03} text={String(Math.round(roll.current))} style={fxText(PH * 0.38, '#3FCF5E')} />
+			<Text anchor={0.5} y={PH * 0.3} text="AWARDED" style={fxText(PH * 0.08, '#F7C23A')} />
 		</Container>
 	</Container>
 	{#if show}

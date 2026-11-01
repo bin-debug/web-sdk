@@ -69,9 +69,9 @@
 							anchor={0.5}
 							y={PH * 0.04}
 							text={bookEventAmountToCurrencyString(countUpAmount)}
-							style={fxText(PH * 0.2, '#FFD400')}
+							style={fxText(PH * 0.2, '#F7C23A')}
 						/>
-						<Text anchor={0.5} y={PH * 0.3} text="BONUS COMPLETE" style={fxText(PH * 0.06, '#E1121B')} />
+						<Text anchor={0.5} y={PH * 0.3} text="BONUS COMPLETE" style={fxText(PH * 0.06, '#3FCF5E')} />
 					</Container>
 				</Container>
 				<FxTapToContinue y={canvas.height / 2 + (PH * k) / 2 + 18} onpress={() => (countUpCompleted ? oncomplete() : finishCountUp())} />

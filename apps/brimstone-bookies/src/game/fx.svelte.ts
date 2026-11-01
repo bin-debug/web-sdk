@@ -2,12 +2,12 @@
 // The transition flips `bonus` while the screen is covered, so the background and effects swap unseen.
 
 export const FX = {
-	red: 0xe1121b,
-	yellow: 0xffd400,
-	panel: 0x181818,
-	edge: 0x9a9a9a,
-	redCss: '#E1121B',
-	yellowCss: '#FFD400',
+	red: 0x3fcf5e,
+	yellow: 0xf7c23a,
+	panel: 0x12271b,
+	edge: 0xf2b630,
+	redCss: '#3FCF5E',
+	yellowCss: '#F7C23A',
 };
 
 export const fx = $state({

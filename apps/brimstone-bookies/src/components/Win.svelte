@@ -71,8 +71,8 @@
 						<FxBurst size={PW} count={40} key={fired} />
 						<Container scale={pop.current}>
 							<FxPanel width={PW} height={PH} />
-							<Text anchor={0.5} y={-PH * 0.2} text={winLevelData?.text ?? 'BIG WIN'} style={fxText(PH * 0.19, '#E1121B')} />
-							<Text anchor={0.5} y={PH * 0.14} text={formatWin(countUpAmount)} style={fxText(PH * 0.22, '#FFD400')} />
+							<Text anchor={0.5} y={-PH * 0.2} text={winLevelData?.text ?? 'BIG WIN'} style={fxText(PH * 0.19, '#3FCF5E')} />
+							<Text anchor={0.5} y={PH * 0.14} text={formatWin(countUpAmount)} style={fxText(PH * 0.22, '#F7C23A')} />
 						</Container>
 					</Container>
 					<FxTapToContinue y={canvas.height / 2 + (PH * k) / 2 + 18} onpress={() => (countUpCompleted ? oncomplete() : finishCountUp())} />
@@ -81,7 +81,7 @@
 						<Text
 							anchor={0.5}
 							text={formatWin(countUpAmount)}
-							style={fxText(Math.min(canvas.width, canvas.height) * 0.09, '#FFD400')}
+							style={fxText(Math.min(canvas.width, canvas.height) * 0.09, '#F7C23A')}
 						/>
 					</Container>
 				{/if}

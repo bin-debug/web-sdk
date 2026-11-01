@@ -61,7 +61,7 @@
 				anchor={{ x: 0, y: 0.5 }}
 				x={-numbersWidth / 2}
 				text={String(current)}
-				style={fxText(numberSize, '#E1121B')}
+				style={fxText(numberSize, '#3FCF5E')}
 				onresize={(s) => (leftSizes = s)}
 			/>
 			<Text

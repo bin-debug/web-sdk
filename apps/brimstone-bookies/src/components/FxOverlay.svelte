@@ -57,18 +57,18 @@
 	.bonus.on { opacity: 1; }
 	.redglow {
 		position: absolute; inset: 0;
-		background: radial-gradient(ellipse at center, transparent 50%, rgba(225, 18, 27, 0.42) 100%);
+		background: radial-gradient(ellipse at center, transparent 50%, rgba(63, 207, 94, 0.42) 100%);
 		animation: pulse 2.4s ease-in-out infinite;
 	}
 	.haze {
 		position: absolute; inset: -20%;
-		background: radial-gradient(circle at 20% 80%, rgba(225, 18, 27, 0.16), transparent 40%),
-			radial-gradient(circle at 80% 30%, rgba(225, 18, 27, 0.12), transparent 45%);
+		background: radial-gradient(circle at 20% 80%, rgba(63, 207, 94, 0.16), transparent 40%),
+			radial-gradient(circle at 80% 30%, rgba(63, 207, 94, 0.12), transparent 45%);
 		animation: drift 14s ease-in-out infinite alternate;
 	}
 	.ember {
 		position: absolute; bottom: -10px; border-radius: 50%;
-		background: #ff3b2f; box-shadow: 0 0 8px 2px rgba(255, 60, 40, 0.8);
+		background: #F7C23A; box-shadow: 0 0 8px 2px rgba(247, 194, 58, 0.8);
 		animation-name: rise; animation-timing-function: linear; animation-iteration-count: infinite;
 	}
 	@keyframes jitter {
