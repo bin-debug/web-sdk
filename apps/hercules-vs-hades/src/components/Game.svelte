@@ -10,10 +10,8 @@
 	import { GameVersion, Modals } from 'components-ui-html';
 
 	import { getContext } from '../game/context';
-	import EnableSound from './EnableSound.svelte';
 	import EnableGameActor from './EnableGameActor.svelte';
 	import ResumeBet from './ResumeBet.svelte';
-	import Sound from './Sound.svelte';
 	import Background from './Background.svelte';
 	import LayoutSlots from './LayoutSlots.svelte';
 	import Hud from './hud/Hud.svelte';
@@ -41,7 +39,6 @@
 </script>
 
 <App>
-	<EnableSound />
 	<EnableHotkey />
 	<EnableGameActor />
 	<EnablePixiExtension />
@@ -52,13 +49,6 @@
 		<LoadingScreen onloaded={() => (context.stateLayout.showLoadingScreen = false)} />
 	{:else}
 		<ResumeBet />
-		<!--
-			The reason why <Sound /> is rendered after clicking the loading screen:
-			"Autoplay with sound is allowed if: The user has interacted with the domain (click, tap, etc.)."
-			Ref: https://developer.chrome.com/blog/autoplay
-		-->
-		<Sound />
-
 		<LayoutSlots />
 
 		<MainContainer>

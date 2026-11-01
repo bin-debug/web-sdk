@@ -69,7 +69,7 @@
 			const now = performance.now();
 			const preDone = Object.keys(stateApp.loadedAssets).length > 0;
 			if (stateApp.loaded && !artLoadedAt) artLoadedAt = now;
-			const audioDone = audioReady() || (artLoadedAt > 0 && now - artLoadedAt > AUDIO_GRACE_MS);
+			const audioDone = true; // this game ships without audio
 			// preload set 0–40%, rest of the art 40–90%, audio decoded 90–100%
 			let target = stateApp.loaded
 				? audioDone

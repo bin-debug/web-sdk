@@ -259,11 +259,6 @@ const stockAssets = {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/coin/SD2_Coin.json', import.meta.url).href,
 	},
-	sound: {
-		type: 'audio',
-		src: new URL('../../assets/audio/sounds.json', import.meta.url).href,
-		preload: true,
-	},
 	specialSymbolsStatic: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/symbols-static/symbols-static.json', import.meta.url).href,
