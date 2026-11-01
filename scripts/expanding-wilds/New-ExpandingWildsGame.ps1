@@ -13,6 +13,7 @@
        until our own math-sdk model replaces it) and restarts backoffice-api so the RGS sees it
   Prints the full phone URL at the end.
   -FilmEffects gives it the old-cartoon look: film grain, flicker and vignette, and an iris wipe into the bonus.
+  -NoAudio ships the game silent: no music or effects, and the loader doesn't wait for audio.
 
 .EXAMPLE
   .\New-ExpandingWildsGame.ps1 -GameName "Shisa Nyama Wilds" -ArtPath C:\source\shared\expwilds-themes\shisa-nyama-wilds
@@ -29,6 +30,7 @@ param(
 	[string] $TailscaleHost = 'thor.tail8ad778.ts.net',
 	[string] $Token = 'tok_player1_Z1KSR8CaQ5UWivXAkO5LIQ',
 	[switch] $FilmEffects,
+	[switch] $NoAudio,
 	[switch] $Force,
 	[switch] $SkipInstall,
 	[switch] $SkipRegister
@@ -78,6 +80,27 @@ if ($ArtPath) {
 	if ($LASTEXITCODE -ne 0) { throw 'Art check failed; fix the files listed above and run again (with -Force).' }
 } else {
 	Write-Host 'No -ArtPath: the game keeps the stock Stake art.'
+}
+
+if ($NoAudio) {
+	Step 'Remove audio'
+	# same edits as the silent Hercules vs Hades build: drop the sound components, the sound asset
+	# and the loader's wait for decoded audio
+	$edits = @(
+		@('src\components\Game.svelte', "(?m)^\s*import (EnableSound|Sound) from '\./\1\.svelte';\r?\n", ''),
+		@('src\components\Game.svelte', '(?m)^\s*<EnableSound />\r?\n', ''),
+		@('src\components\Game.svelte', '(?s)\s*<!--\s*The reason why <Sound />.*?-->\s*<Sound />', ''),
+		@('src\components\IntroOverlay.svelte', 'const audioDone = audioReady\(\) \|\| \([^;]*\);', 'const audioDone = true; // this game ships without audio'),
+		@('src\game\assets.ts', "(?s)\r?\n\tsound: \{\s*type: 'audio',.*?\},", '')
+	)
+	foreach ($e in $edits) {
+		$file = Join-Path $app $e[0]
+		$text = [IO.File]::ReadAllText($file, $utf8)  # Get-Content would read it as ANSI and mangle the dashes
+		$new = [regex]::Replace($text, $e[1], $e[2])
+		if ($new -eq $text) { throw "No-audio edit didn't match in $($e[0]); the template changed, update -NoAudio" }
+		[IO.File]::WriteAllText($file, $new, $utf8)
+	}
+	Remove-Item (Join-Path $app 'assets\audio') -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 if (-not $SkipInstall) {
