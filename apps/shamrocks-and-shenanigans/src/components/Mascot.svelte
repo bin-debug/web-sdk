@@ -36,7 +36,8 @@
 	// Portrait: bottom-right beside the spin button, shoes tucked just behind the betting bar,
 	// as big as fits under the reels (his hat may reach the frame, never the symbols).
 	// Landscape: right of the reels.
-	const FLOOR = { portrait: 0.965, landscape: 0.93 };
+	// landscape: level with the bar stool's feet, not the barrels behind him (he floated there)
+	const FLOOR = { portrait: 0.965, landscape: 0.985 };
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
 	const ml = $derived(context.stateLayoutDerived.mainLayout());
 	const pivot = $derived(
