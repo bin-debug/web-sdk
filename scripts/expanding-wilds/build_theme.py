@@ -119,10 +119,15 @@ def window_box(image: Image.Image):
     # "dark" is relative to the window's own centre: a wooden or tinted panel can sit right on a
     # fixed cut-off and stop the walk after a few pixels (Splash & Cash measured 39% for a 63% window)
     centre = sorted(image.crop((w * 2 // 5, h * 2 // 5, w * 3 // 5, h * 3 // 5)).convert("L").tobytes())
-    limit = max(45, centre[len(centre) // 2] + 25)
+    middle = centre[len(centre) // 2]
+    limit = max(45, middle + 25)
+    # a window clearly lighter than ink also ends at the border's black outline: a log's shaded
+    # underside can be the very colour of a wooden window, but the ink line between them is not
+    ink = 10 if middle > 30 else -1
 
     def is_border(p):
-        return p[3] < 64 or (p[0] + p[1] + p[2]) / 3 > limit
+        lum = (p[0] + p[1] + p[2]) / 3
+        return p[3] < 64 or lum > limit or lum < ink
 
     def edge(dx, dy, x, y):
         run = 0
@@ -133,16 +138,14 @@ def window_box(image: Image.Image):
             x, y = x + dx, y + dy
         return (x, y)
 
-    # several scan lines; the widest wins, so a star or ornament on one line can't shrink the window
+    # several scan lines, each edge the median of them: a star or ornament on one line can't pull
+    # the window in, and a dark crack in the border on one line can't push it out
     lines = [0.3, 0.4, 0.5, 0.6, 0.7]
-    left, right = max(
-        ((edge(-1, 0, w // 2, round(h * f))[0], edge(1, 0, w // 2, round(h * f))[0]) for f in lines),
-        key=lambda lr: lr[1] - lr[0],
-    )
-    top, bottom = max(
-        ((edge(0, -1, round(w * f), h // 2)[1], edge(0, 1, round(w * f), h // 2)[1]) for f in lines),
-        key=lambda tb: tb[1] - tb[0],
-    )
+    median = lambda values: sorted(values)[len(values) // 2]
+    left = median([edge(-1, 0, w // 2, round(h * f))[0] for f in lines])
+    right = median([edge(1, 0, w // 2, round(h * f))[0] for f in lines])
+    top = median([edge(0, -1, round(w * f), h // 2)[1] for f in lines])
+    bottom = median([edge(0, 1, round(w * f), h // 2)[1] for f in lines])
     return left, top, right, bottom
 
 
@@ -298,7 +301,7 @@ def main():
     frame_fit = {"frameScaleX": 1.2, "frameScaleY": 1.2, "frameOffsetX": 0, "frameOffsetY": 0}
     window = 0x0B1020
     if theme["frame"]:
-        # draw the frame so its window sits just outside the 5x5 board (3% clearance)
+        # draw the frame so its window sits just outside the 5x5 board (5% clearance)
         window = window_color(Image.open(out / "frame.webp"))
         # fit each axis on its own and centre the window on the reels, so the gap round the board
         # is even: a window a little wider than tall, or off centre (a bucket on the top edge),
@@ -307,8 +310,8 @@ def main():
         left, top, right, bottom = window_box(frame_image)
         fw, fh = frame_image.size
         frame_fit = {
-            "frameScaleX": round(1.03 * fw / (right - left), 3),
-            "frameScaleY": round(1.03 * fh / (bottom - top), 3),
+            "frameScaleX": round(1.05 * fw / (right - left), 3),
+            "frameScaleY": round(1.05 * fh / (bottom - top), 3),
         }
         frame_fit["frameOffsetX"] = round(-((left + right) / 2 - fw / 2) / fw * frame_fit["frameScaleX"], 4)
         frame_fit["frameOffsetY"] = round(-((top + bottom) / 2 - fh / 2) / fh * frame_fit["frameScaleY"], 4)

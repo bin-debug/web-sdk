@@ -11,8 +11,9 @@
 	// Phone: logo above the board, mascots under it either side of the spin button.
 	// Desktop: logo top-left, mascots standing in the bottom corners beside the board.
 	// Theme art fills a slot (logo 1200x800, mascots 800x1200, both transparent PNG/WebP);
-	// a slot without art shows a faint placeholder.
-	const SHOW_PLACEHOLDERS = true;
+	// a slot without art shows a faint placeholder, but only in the unthemed template: a themed
+	// game without mascots or logo just leaves the space empty.
+	const SHOW_PLACEHOLDERS = !THEME.background;
 	const LOGO_RATIO = 1200 / 800;
 	const MASCOT_RATIO = 800 / 1200;
 

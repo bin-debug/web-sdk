@@ -154,7 +154,7 @@
 	/* ── Logo screen ───────────────────────────────────────────────── */
 	.features {
 		display: flex; flex-direction: column; align-items: center; justify-content: center;
-		gap: 6vh; padding: 4vh 4vw; box-sizing: border-box;
+		gap: 4vh; padding: 3vh 4vw; box-sizing: border-box;
 		background-size: cover; background-position: center; cursor: pointer;
 		font-family: 'Jura', system-ui, sans-serif; height: 100vh; height: 100dvh;
 	}
@@ -186,16 +186,19 @@
 		gap: clamp(0.4rem, 2vw, 2rem); width: 100%; max-width: 64rem;
 	}
 	.panel {
-		position: relative; flex: 0 1 15rem; aspect-ratio: 3 / 4; max-height: 46vh;
-		background: center / contain no-repeat;
+		/* the sign is stretched to the box, so the text area below always lies on it, whatever
+		   the sign art's own proportions */
+		position: relative; flex: 0 1 18rem; aspect-ratio: 3 / 4; max-height: 54vh;
+		background: center / 100% 100% no-repeat;
+		container-type: inline-size; /* the text below is sized to the sign (cqw), not the screen */
 		filter: drop-shadow(0 0.6rem 1.2rem rgba(0,0,0,.55));
 	}
 	/* the icon sits on the top of the sign and overhangs it a little */
 	.icon { position: absolute; left: 50%; top: -9%; width: 68%; transform: translateX(-50%); }
 	.board {
-		position: absolute; left: 11%; right: 11%; top: 47%; bottom: 8%;
+		position: absolute; left: 16%; right: 16%; top: 45%; bottom: 9%;
 		display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0.35em;
-		text-align: center; font-size: clamp(0.6rem, 1.7vw, 1.15rem); line-height: 1.15;
+		text-align: center; font-size: 6.1cqw; line-height: 1.15;
 	}
 	.title, .chunky {
 		font-family: 'Arial Black', 'Avenir Next', system-ui, sans-serif; font-weight: 900;
@@ -214,7 +217,6 @@
 
 	@media (orientation: portrait) {
 		.panel { flex-basis: 31vw; }
-		.board { font-size: clamp(0.5rem, 2.8vw, 1rem); }
 	}
 
 	@media (orientation: landscape) and (min-width: 900px) {

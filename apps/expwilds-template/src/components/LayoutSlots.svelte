@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Rectangle, Sprite } from 'pixi-svelte';
+	import { Graphics, Rectangle, Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
 	import { THEME } from '../game/theme';
@@ -11,8 +11,9 @@
 	// Phone: logo above the board, mascots under it either side of the spin button.
 	// Desktop: logo top-left, mascots standing in the bottom corners beside the board.
 	// Theme art fills a slot (logo 1200x800, mascots 800x1200, both transparent PNG/WebP);
-	// a slot without art shows a faint placeholder.
-	const SHOW_PLACEHOLDERS = true;
+	// a slot without art shows a faint placeholder, but only in the unthemed template: a themed
+	// game without mascots or logo just leaves the space empty.
+	const SHOW_PLACEHOLDERS = !THEME.background;
 	const LOGO_RATIO = 1200 / 800;
 	const MASCOT_RATIO = 800 / 1200;
 
@@ -46,6 +47,9 @@
 			const mascotBottom = canvas.height - 46 * s;
 			const mascotHeight = Math.max(0, mascotBottom - mascotTop);
 			return {
+				// they stand on the theme's ground (a dock, a stage) or, without one, their feet fade into
+				// a dark shade behind the controls, so they never look as if they float on the background
+				floor: { y: mascotBottom, width: canvas.width, height: canvas.height },
 				logo: { x: canvas.width / 2, y: 14 * s + board.top / 2, width: canvas.width * 0.68, height: board.top * 0.72 },
 				mascots: [0.27, 0.73].map((fx) => ({
 					x: canvas.width * fx,
@@ -60,6 +64,7 @@
 		const logoWidth = Math.min(side * 0.78, 360 * s);
 		const mascotHeight = canvas.height * 0.64;
 		return {
+			floor: undefined,
 			logo: { x: side / 2, y: 50 * s + logoWidth / LOGO_RATIO / 2, width: logoWidth, height: logoWidth / LOGO_RATIO },
 			// feet at the bottom edge, the bet bar overlaps them like in Hacksaw's games
 			mascots: [side / 2, canvas.width - side / 2].map((x) => ({
@@ -78,8 +83,26 @@
 	<GameLogo x={slots.logo.x} y={slots.logo.y} width={logo.width} height={logo.height} />
 {/if}
 {#if THEME.mascots}
+	{@const floor = slots.floor}
+	{#if floor && THEME.ground}
+		<!-- the ground's top third is where they stand -->
+		<Sprite key="themeGround" anchor={{ x: 0.5, y: 0 }} x={floor.width / 2} y={floor.y - (floor.width / 3) * 0.3} width={floor.width} height={floor.width / 3} />
+	{/if}
 	<Mascot key="themeMascotLeft" side="Left" {...fit(slots.mascots[0], MASCOT_RATIO)} phase={0} facing={1} />
 	<Mascot key="themeMascotRight" side="Right" {...fit(slots.mascots[1], MASCOT_RATIO)} phase={1.7} facing={-1} />
+	{#if floor && !THEME.ground}
+		<Graphics
+			draw={(g) => {
+				// dark shade from just above their feet to the bottom of the screen, in bands
+				const top = floor.y - floor.height * 0.17;
+				const bands = 14;
+				const step = (floor.height - top) / bands;
+				for (let i = 0; i < bands; i++) {
+					g.rect(0, top + i * step, floor.width, step + 1).fill({ color: 0x07040f, alpha: Math.min(0.94, ((i + 1) / bands) ** 0.5 * 0.94) });
+				}
+			}}
+		/>
+	{/if}
 {/if}
 
 {#if SHOW_PLACEHOLDERS}

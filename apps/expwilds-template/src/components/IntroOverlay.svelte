@@ -3,6 +3,18 @@
 	import { fade, scale } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 	import { stateApp } from '../game/stateApp';
+	import { INTRO_PANELS, THEME } from '../game/theme';
+
+	// THEME.intro: three Hacksaw-style feature panels under the logo (a sign board each, with an icon
+	// on top and the feature's title and line of text on the board)
+	const ICONS = ['icon_wild', 'icon_bonus', 'icon_maxwin'];
+	const panels = THEME.intro
+		? ((THEME as { introPanels?: typeof INTRO_PANELS }).introPanels ?? INTRO_PANELS).map((panel, i) => ({
+				...panel,
+				icon: `./assets/theme/intro/${ICONS[i]}.webp`,
+			}))
+		: [];
+	const panelUrl = './assets/theme/intro/panel.webp';
 
 	type Props = {
 		logoUrl: string;
@@ -55,7 +67,9 @@
 		const sinceSplash = (now: number) => (boot && boot.t0 <= now ? now - boot.t0 : now);
 
 		let imagesReady = false;
-		const urls = [props.logoUrl, props.bgUrl].filter((u): u is string => !!u);
+		const urls = [props.logoUrl, props.bgUrl, ...(panels.length ? [panelUrl, ...panels.map((p) => p.icon)] : [])].filter(
+			(u): u is string => !!u,
+		);
 		const timeout = new Promise<void>((resolve) => setTimeout(resolve, ASSET_TIMEOUT_MS));
 		Promise.race([Promise.all(urls.map(preload)), timeout]).then(() => (imagesReady = true));
 
@@ -115,8 +129,21 @@
 		role="button" tabindex="0" onclick={dismiss} onkeydown={(e) => e.key === 'Enter' && dismiss()}
 		in:fade={{ duration: 500 }}
 	>
-		<img class="logo" src={props.logoUrl} alt="game logo" in:scale={{ duration: 700, easing: backOut, start: 0.6 }} />
-		<div class="tap">Tap to play</div>
+		<img class="logo" class:small={panels.length} src={props.logoUrl} alt="game logo" in:scale={{ duration: 700, easing: backOut, start: 0.6 }} />
+		{#if panels.length}
+			<div class="panels">
+				{#each panels as panel, i}
+					<div class="panel" style:background-image="url({panelUrl})" in:scale={{ duration: 600, delay: 250 + i * 140, easing: backOut, start: 0.5 }}>
+						<img class="icon" src={panel.icon} alt="" />
+						<div class="board">
+							<div class="title">{panel.title}</div>
+							<div class="text">{panel.text}</div>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
+		<div class="tap" class:chunky={panels.length}>{panels.length ? 'Tap to continue' : 'Tap to play'}</div>
 	</div>
 {/if}
 
@@ -127,7 +154,7 @@
 	/* ── Logo screen ───────────────────────────────────────────────── */
 	.features {
 		display: flex; flex-direction: column; align-items: center; justify-content: center;
-		gap: 6vh; padding: 4vh 4vw; box-sizing: border-box;
+		gap: 4vh; padding: 3vh 4vw; box-sizing: border-box;
 		background-size: cover; background-position: center; cursor: pointer;
 		font-family: 'Jura', system-ui, sans-serif; height: 100vh; height: 100dvh;
 	}
@@ -151,6 +178,46 @@
 		padding-bottom: env(safe-area-inset-bottom, 0);
 	}
 	@keyframes pulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+
+	/* ── Feature panels (THEME.intro) ─────────────────────────────── */
+	.logo.small { width: min(70%, 26rem); max-height: 24vh; }
+	.panels {
+		display: flex; justify-content: center; align-items: flex-end;
+		gap: clamp(0.4rem, 2vw, 2rem); width: 100%; max-width: 64rem;
+	}
+	.panel {
+		/* the sign is stretched to the box, so the text area below always lies on it, whatever
+		   the sign art's own proportions */
+		position: relative; flex: 0 1 18rem; aspect-ratio: 3 / 4; max-height: 54vh;
+		background: center / 100% 100% no-repeat;
+		container-type: inline-size; /* the text below is sized to the sign (cqw), not the screen */
+		filter: drop-shadow(0 0.6rem 1.2rem rgba(0,0,0,.55));
+	}
+	/* the icon sits on the top of the sign and overhangs it a little */
+	.icon { position: absolute; left: 50%; top: -9%; width: 68%; transform: translateX(-50%); }
+	.board {
+		position: absolute; left: 16%; right: 16%; top: 45%; bottom: 9%;
+		display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0.35em;
+		text-align: center; font-size: 6.1cqw; line-height: 1.15;
+	}
+	.title, .chunky {
+		font-family: 'Arial Black', 'Avenir Next', system-ui, sans-serif; font-weight: 900;
+		text-transform: uppercase; letter-spacing: 0.02em;
+	}
+	.title {
+		font-size: 1.25em; color: #ffd24a;
+		text-shadow: 0 0.12em 0 #4a2208, 0 0 0.3em rgba(0,0,0,.6);
+		-webkit-text-stroke: 0.04em #4a2208;
+	}
+	.text { color: #fff4dc; font-weight: 700; text-shadow: 0 0.1em 0.2em rgba(0,0,0,.85); }
+	.tap.chunky {
+		font-size: clamp(1.1rem, 3.2vw, 2rem); letter-spacing: 0.04em; color: #ffd24a;
+		text-shadow: 0 0.12em 0 #4a2208, 0 0 0.5em rgba(0,0,0,.7);
+	}
+
+	@media (orientation: portrait) {
+		.panel { flex-basis: 31vw; }
+	}
 
 	@media (orientation: landscape) and (min-width: 900px) {
 		.logo { width: min(55%, 28rem); }
