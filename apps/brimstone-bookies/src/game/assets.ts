@@ -34,6 +34,14 @@ export default {
 		src: new URL('../../assets/sprites/game/logo.webp', import.meta.url).href,
 		preload: true,
 	},
+	mascotBruiser: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/bruiser/idle.json', import.meta.url).href,
+	},
+	mascotGuvnor: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/mascot/guvnor/idle.json', import.meta.url).href,
+	},
 	loader: {
 		type: 'spine',
 		src: {

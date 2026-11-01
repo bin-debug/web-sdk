@@ -6,7 +6,8 @@
 	import { MainContainer } from 'components-layout';
 	import { App, Text, REM } from 'pixi-svelte';
 	import { stateModal } from 'state-shared';
-
+
+
 	import { GameVersion, Modals } from 'components-ui-html';
 
 	import { getContext } from '../game/context';
@@ -23,14 +24,17 @@
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
 	import ClusterWinAmounts from './ClusterWinAmounts.svelte';
-	import TumbleBoard from './TumbleBoard.svelte';
+	import TumbleBoard from './TumbleBoard.svelte';
+
 	import GlobalMultiplier from './GlobalMultiplier.svelte';
 	import Win from './Win.svelte';
 	import FreeSpinIntro from './FreeSpinIntro.svelte';
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
-	import FxOverlay from './FxOverlay.svelte';
+	import FxOverlay from './FxOverlay.svelte';
+	import Mascot from './Mascot.svelte';
+
 
 	const context = getContext();
 
@@ -69,7 +73,8 @@
 
 		<MainContainer>
 			<Board />
-			<Anticipations />
+			<Anticipations />
+
 		</MainContainer>
 
 		<MainContainer>
@@ -81,13 +86,18 @@
 			<ClusterWinAmounts />
 		</MainContainer>
 
+		<MainContainer>
+			<Mascot />
+		</MainContainer>
+
 		<BettingBar />
 		<Win />
 		<FreeSpinIntro />
 		<FreeSpinCounter />
 		<FreeSpinOutro />
 		<Transition />
-
+
+
 	{/if}
 </App>
 
