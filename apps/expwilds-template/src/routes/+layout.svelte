@@ -3,6 +3,7 @@
 	import { innerWidth, innerHeight } from 'svelte/reactivity/window';
 	import { GlobalStyle } from 'components-ui-html';
 	import { Authenticate, LoadI18n } from 'components-shared';
+	import { stateMeta } from 'state-shared';
 	import Game from '../components/Game.svelte';
 	import IntroOverlay from '../components/IntroOverlay.svelte';
 	import TopBar from '../components/TopBar.svelte';
@@ -26,6 +27,13 @@
 	const bgUrl = THEME.background
 		? `./assets/theme/${portrait ? 'background_portrait' : 'background'}.webp`
 		: undefined;
+
+	// The sample maths' superspin mode still carries Stake's "SAMURAI SPIN" card; themed games don't
+	// offer it. Authenticate only shows modes the game has metadata for, so dropping it here hides it.
+	if (THEME.staticSymbols) {
+		const { SUPERSPIN: _superspin, ...modes } = stateMeta.betModeMeta;
+		stateMeta.betModeMeta = modes;
+	}
 
 	setContext();
 </script>

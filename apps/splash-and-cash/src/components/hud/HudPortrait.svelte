@@ -5,7 +5,7 @@
 	import HudSpin from './HudSpin.svelte';
 	import HudBuyBonus from './HudBuyBonus.svelte';
 	import HudAmount from './HudAmount.svelte';
-	import { createHud } from './hudState.svelte';
+	import { createHud, MENU_ENABLED } from './hudState.svelte';
 	import { hudSpace } from './layout';
 	import { iconAutoplay, iconMenu, iconMinus, iconPlus, iconTurbo } from './icons';
 
@@ -31,7 +31,7 @@
 		onpress={hud.turbo}
 	/>
 
-	<HudButton x={28} y={bottom - 50} size={44} icon={iconMenu} onpress={hud.menu} />
+	<HudButton x={28} y={bottom - 50} size={44} icon={iconMenu} onpress={hud.menu} disabled={!MENU_ENABLED} />
 	<HudButton
 		x={space.width - 28}
 		y={bottom - 50}

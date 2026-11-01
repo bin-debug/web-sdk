@@ -8,6 +8,9 @@ import { getContext } from '../../game/context';
 
 // Labels and actions shared by the phone and desktop HUDs; same behaviour as the stock UI buttons.
 // Call from a component's script (it sets up tweens and effects).
+// The menu (paytable, rules, settings) is switched off for now: its button shows but can't be pressed.
+export const MENU_ENABLED = false;
+
 export const createHud = () => {
 	const context = getContext();
 	const balanceTween = new Tween(stateBet.balanceAmount);
